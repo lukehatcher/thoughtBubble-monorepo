@@ -10,14 +10,19 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:code-todos.todos"
+		"onCommand:code-todos.test",
+		"onCommand:code-todos.todosView"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "code-todos.todos",
-				"title": "todos"
+				"command": "code-todos.test",
+				"title": "test"
+			},
+			{
+				"command": "code-todos.todosView",
+				"title": "see todos"
 			}
 		]
 	},
