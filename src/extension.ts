@@ -27,7 +27,7 @@ export function activate(context: vscode.ExtensionContext) {
       panel.webview.html = getWebviewContent(methodsSrc);
 
       // get data to display
-      // let userData;
+      // let userData
       const placeholder = 'jon doe';
       await axios.get(`http://localhost:3001/api/projects/get/${placeholder}`)
         .then(async (response) => {
@@ -39,7 +39,7 @@ export function activate(context: vscode.ExtensionContext) {
           console.error('error fetching user data', err);
         });
 
-      // Handle messages from the webview;
+      // Handle messages from the webview
       panel.webview.onDidReceiveMessage(
         (message) => {
           switch (message.command) {
@@ -68,13 +68,13 @@ function getWebviewContent(src: any) {
       <h1>Let's get to work!</h1>
       <h1 id="lines-of-code-counter">0</h1>
 
-      <form>
+      <form id="project-form">
 				<label>new project:</label>
 				<input id="project-input" type="text">
         <input id="project-submit" type="submit">
       </form>
 
-      <form>
+      <form id="todo-form">
 				<label>new todo:</label>
         <input id="todo-input" type="text">
         <label>for project:</label>
