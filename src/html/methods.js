@@ -4,7 +4,6 @@
   const vscode = acquireVsCodeApi();
 
   const oldState = vscode.getState();
-
   const counter = document.getElementById('lines-of-code-counter');
   let currentCount = (oldState && oldState.count) || 0;
   counter.textContent = currentCount;
@@ -27,12 +26,13 @@
 
   // Handle messages sent from the extension to the webview
   window.addEventListener('message', (event) => {
-    console.log('hi');
     const message = event.data; // The json data that the extension sent
     switch (message.command) {
-      case 'refactor':
-        currentCount = Math.ceil(currentCount * 0.5);
-        counter.textContent = currentCount;
+      case 'sendingData':
+        vscode.postMessage({
+          command: 'alert',
+          text: JSON.stringify(message.data),
+        });
         break;
     }
   });
