@@ -3,30 +3,28 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 
-
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+  // Use the console to output diagnostic information (console.log) and errors (console.error)
+  // This line of code will only be executed once when your extension is activated
+  console.log('Congratulations, your extension "code-todos" is now active!');
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "code-todos" is now active!');
+  // The command has been defined in the package.json file
+  // Now provide the implementation of the command with registerCommand
+  // The commandId parameter must match the command field in package.json
+  const disposable = vscode.commands.registerCommand('code-todos.test', () => {
+    // The code you place here will be executed every time your command is executed
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('code-todos.test', () => {
-		// The code you place here will be executed every time your command is executed
+    // Display a message box to the user
+    vscode.window.showInformationMessage('this is a test');
+  });
 
-		// Display a message box to the user
-		vscode.window.showInformationMessage('this is a test');
-	});
+  context.subscriptions.push(disposable);
 
-	context.subscriptions.push(disposable);
+  // ==================================================
 
-	// ==================================================
-	
-	context.subscriptions.push(
+  context.subscriptions.push(
     vscode.commands.registerCommand('code-todos.todosView', () => {
       // Create and show a new webview
       const panel = vscode.window.createWebviewPanel(
@@ -34,38 +32,35 @@ export function activate(context: vscode.ExtensionContext) {
         'My Project Todos', // Title of the panel displayed to the user
         vscode.ViewColumn.One, // Editor column to show the new webview panel in.
         {
-					enableScripts: true // Webview options
-				}
-			);
+          enableScripts: true, // Webview options
+        },
+      );
 
-		const onDiskPath = vscode.Uri.file(
-			path.join(context.extensionPath, 'src', 'html', 'methods.js')
-		);
-		const methodsSrc = panel.webview.asWebviewUri(onDiskPath);
+      const onDiskPath = vscode.Uri.file(
+        path.join(context.extensionPath, 'src', 'html', 'methods.js'),
+      );
+      const methodsSrc = panel.webview.asWebviewUri(onDiskPath);
 
-		panel.webview.html = getWebviewContent(methodsSrc);
+      panel.webview.html = getWebviewContent(methodsSrc);
 
-		// Handle messages from the webview
-		panel.webview.onDidReceiveMessage(
-			message => {
-				switch (message.command) {
-					case 'alert':
-						vscode.window.showErrorMessage(message.text);
-						return;
-				}
-			},
-			undefined,
-			context.subscriptions
-		);
-
-    })
+      // Handle messages from the webview
+      panel.webview.onDidReceiveMessage(
+        (message) => {
+          switch (message.command) {
+            case 'alert':
+              vscode.window.showErrorMessage(message.text);
+          }
+        },
+        undefined,
+        context.subscriptions,
+      );
+    }),
   );
-	
 }
 
 function getWebviewContent(src: any) {
-	return (
-		`<!DOCTYPE html>
+  return (
+    `<!DOCTYPE html>
 		<html lang="en">
 		<head>
 			<meta charset="UTF-8">
@@ -79,7 +74,7 @@ function getWebviewContent(src: any) {
 			<script src="${src}"></script>
 		</body>
 		<html>`
-	);
+  );
 }
 
 // function getNonce() {
