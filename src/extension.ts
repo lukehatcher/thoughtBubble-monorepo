@@ -27,19 +27,19 @@ export function activate(context: vscode.ExtensionContext) {
       panel.webview.html = getWebviewContent(methodsSrc);
 
       // get data to display
-      let userData;
+      // let userData;
       const placeholder = 'jon doe';
       await axios.get(`http://localhost:3001/api/projects/get/${placeholder}`)
         .then(async (response) => {
-          userData = response.data;
+          const userData = response.data;
           console.log(userData);
-          await panel.webview.postMessage({ command: 'sendingData', data: userData }); // whole obj = event.data
+          await panel.webview.postMessage({ command: 'sendingData', responseData: userData }); // whole obj = event.data
         })
         .catch((err) => {
           console.error('error fetching user data', err);
         });
 
-      // Handle messages from the webview
+      // Handle messages from the webview;
       panel.webview.onDidReceiveMessage(
         (message) => {
           switch (message.command) {
@@ -65,13 +65,25 @@ function getWebviewContent(src: any) {
       <title>this is a title</title>
     </head>
     <body>
-      <h1>hello test test</h1>
+      <h1>Let's get to work!</h1>
       <h1 id="lines-of-code-counter">0</h1>
+
       <form>
 				<label>new project:</label>
-				<input type="text">
-				<input type="submit">
+				<input id="project-input" type="text">
+        <input id="project-submit" type="submit">
       </form>
+
+      <form>
+				<label>new todo:</label>
+        <input id="todo-input" type="text">
+        <label>for project:</label>
+        <select id="project-dropdown">
+        </select>
+				<input id="todo-submit" type="submit">
+      </form>
+
+      <div id="list-container"></div>
       <script src="${src}"></script>
     </body>
     <html>`
