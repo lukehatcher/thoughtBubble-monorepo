@@ -5,6 +5,10 @@
         "ecmaVersion": 6,
         "sourceType": "module"
     },
+    "extends": [
+        "airbnb-base",
+        "plugin:@typescript-eslint/recommended"
+    ],
     "plugins": [
         "@typescript-eslint"
     ],
