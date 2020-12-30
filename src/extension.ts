@@ -42,7 +42,7 @@ export function activate(context: vscode.ExtensionContext) {
       }
       await fetchData();
 
-      // Handle messages from the webview;
+      // Handle messages from the webview
       panel.webview.onDidReceiveMessage(
         async (message) => {
           const { command, type, username, projectName, todo, text } = message;
@@ -51,7 +51,8 @@ export function activate(context: vscode.ExtensionContext) {
               vscode.window.showErrorMessage(text);
               break;
             case 'add project':
-              // handleDbPost(type, username, projectName, todo);
+              // posts data and triggers page refresh with fetchData callback
+              await handleDbPost(type, username, projectName, todo, fetchData);
               break;
             case 'add todo':
               await handleDbPost(type, username, projectName, todo, fetchData);

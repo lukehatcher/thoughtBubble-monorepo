@@ -42,22 +42,22 @@
     specificDropdown.appendChild(projectOption);
   }
 
-  function addProject(name) {
-    const className = parseClassName(name); // remove any spaces
-    // add the title
-    const projectTitle = document.createElement('h3');
-    projectTitle.setAttribute('class', className);
-    const titleText = document.createTextNode(name);
-    projectTitle.appendChild(titleText);
-    listContainer.appendChild(projectTitle);
-    // add the empty list underneath
-    const emptyList = document.createElement('ul');
-    emptyList.setAttribute('class', className);
-    listContainer.appendChild(emptyList);
-    // add dropdown option
-    addDropdownOption(name, dropdown);
-    addDropdownOption(name, dropdownD);
-  }
+  // function addProject(name) {
+  //   const className = parseClassName(name); // remove any spaces
+  //   // add the title
+  //   const projectTitle = document.createElement('h3');
+  //   projectTitle.setAttribute('class', className);
+  //   const titleText = document.createTextNode(name);
+  //   projectTitle.appendChild(titleText);
+  //   listContainer.appendChild(projectTitle);
+  //   // add the empty list underneath
+  //   const emptyList = document.createElement('ul');
+  //   emptyList.setAttribute('class', className);
+  //   listContainer.appendChild(emptyList);
+  //   // add dropdown option
+  //   addDropdownOption(name, dropdown);
+  //   addDropdownOption(name, dropdownD);
+  // }
 
   // function addTodo(name, project) {
   //   const newTodo = document.createElement('li');
@@ -78,7 +78,7 @@
       todo: null,
     });
     // update webview
-    addProject(textInput);
+    // addProject(textInput);
     projectForm.reset();
   })
 
