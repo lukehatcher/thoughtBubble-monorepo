@@ -28,7 +28,7 @@ export function activate(context: vscode.ExtensionContext) {
       const methodsSrc = panel.webview.asWebviewUri(onDiskPath);
       panel.webview.html = getWebviewContent(methodsSrc);
 
-      // get data to display;
+      // get data to display
       await axios.get(`http://localhost:3001/api/projects/get/${PLACE_HOLDER}`)
         .then(async (response) => {
           const userData = response.data;
@@ -74,7 +74,6 @@ function getWebviewContent(src: any) {
     </head>
     <body>
       <h1>Let's get to work!</h1>
-      <h1 id="lines-of-code-counter">0</h1>
 
       <form id="project-form">
 				<label>new project:</label>
@@ -89,6 +88,13 @@ function getWebviewContent(src: any) {
         <select id="project-dropdown">
         </select>
 				<input id="todo-submit" type="submit">
+      </form>
+
+      <form id="project-delete-form">
+        <label>delete project:</label>
+        <select id="delete-dropdown">
+        </select>
+        <input id="project-delete-submit" type="submit" value="Delete">
       </form>
 
       <div id="list-container"></div>

@@ -7,6 +7,7 @@
 
   const listContainer = document.getElementById('list-container');
   const dropdown = document.getElementById('project-dropdown');
+  const dropdownD = document.getElementById('delete-dropdown');
   const projectForm = document.getElementById('project-form');
   const projectSubmit = document.getElementById('project-submit');
   const projectInput = document.getElementById('project-input');
@@ -31,14 +32,14 @@
     return string.split(' ').join('-');
   }
 
-  function addDropdownOption(name) {
+  function addDropdownOption(name, specificDropdown) {
     const className = parseClassName(name); // create classname without spaces
     const projectOption = document.createElement('option');
     const projectOptionText = document.createTextNode(name);
     projectOption.appendChild(projectOptionText);
     projectOption.setAttribute("class", className);
     projectOption.setAttribute("value", name);
-    dropdown.appendChild(projectOption);
+    specificDropdown.appendChild(projectOption);
   }
 
   function addProject(name) {
@@ -54,7 +55,8 @@
     emptyList.setAttribute('class', className);
     listContainer.appendChild(emptyList);
     // add dropdown option
-    addDropdownOption(name);
+    addDropdownOption(name, dropdown);
+    addDropdownOption(name, dropdownD);
   }
 
   function addTodo(name, project) {
@@ -120,7 +122,8 @@
           listContainer.appendChild(projectTitle);
 
           // add project title to dropdown
-          addDropdownOption(userProjects[i].projectName);
+          addDropdownOption(userProjects[i].projectName, dropdown);
+          addDropdownOption(userProjects[i].projectName, dropdownD);
 
           // create todo list for that project
           const projectList = mapArrayToList(userProjects[i].todos);
