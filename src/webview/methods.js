@@ -2,9 +2,9 @@
 // It cannot access the main VS Code APIs directly.
 (function () {
   const vscode = acquireVsCodeApi();
-  const oldState = vscode.getState();
+  // const oldState = vscode.getState();
+  const PLACE_HOLDER = 'jon doe';
 
-  const counter = document.getElementById('lines-of-code-counter');
   const listContainer = document.getElementById('list-container');
   const dropdown = document.getElementById('project-dropdown');
   const projectForm = document.getElementById('project-form');
@@ -13,25 +13,6 @@
   const todoForm = document.getElementById('todo-form');
   const todoSubmit = document.getElementById('todo-submit');
   const todoInput = document.getElementById('todo-input');
-
-  let currentCount = (oldState && oldState.count) || 0;
-  counter.textContent = currentCount;
-
-  setInterval(() => {
-    counter.textContent = currentCount++;
-
-    // Update state
-    vscode.setState({ count: currentCount });
-
-    // Alert the extension when the cat introduces a bug
-    if (Math.random() < Math.min(0.001 * currentCount, 0.05)) {
-      // Send a message back to the extension
-      vscode.postMessage({
-        command: 'alert',
-        text: `🐛  on line ${currentCount}`,
-      });
-    }
-  }, 100000);
 
   function mapArrayToList(arr) {
     const rootList = document.createElement('ul');
@@ -43,25 +24,34 @@
     return rootList;
   }
 
+  function parseClassName(string) {
+    // turn string seperated with spaces into string seperated with hyphens
+    // leaves strings without spaces unchanged
+    // used for creating classnames
+    return string.split(' ').join('-');
+  }
+
   function addDropdownOption(name) {
+    const className = parseClassName(name); // create classname without spaces
     const projectOption = document.createElement('option');
     const projectOptionText = document.createTextNode(name);
     projectOption.appendChild(projectOptionText);
-    projectOption.setAttribute("class", name);
+    projectOption.setAttribute("class", className);
     projectOption.setAttribute("value", name);
     dropdown.appendChild(projectOption);
   }
 
   function addProject(name) {
+    const className = parseClassName(name); // remove any spaces
     // add the title
     const projectTitle = document.createElement('h3');
-    projectTitle.setAttribute('class', name) // class
+    projectTitle.setAttribute('class', className);
     const titleText = document.createTextNode(name);
     projectTitle.appendChild(titleText);
     listContainer.appendChild(projectTitle);
     // add the empty list underneath
     const emptyList = document.createElement('ul');
-    emptyList.setAttribute('class', name);
+    emptyList.setAttribute('class', className);
     listContainer.appendChild(emptyList);
     // add dropdown option
     addDropdownOption(name);
@@ -70,11 +60,22 @@
   function addTodo(name, project) {
     const newTodo = document.createElement('li');
     newTodo.appendChild(document.createTextNode(name));
-    document.querySelector(`ul.${project}`).appendChild(newTodo); // add to ul with name
+    const className = parseClassName(project);
+    document.querySelector(`ul.${className}`).appendChild(newTodo); // add to ul with name
   }
 
   projectSubmit.addEventListener('click', () => {
     const textInput = projectInput.value;
+    // send message to ext where db update is fired
+    vscode.postMessage({
+      command: 'add project',
+      text: null,
+      type: 'project',
+      username: PLACE_HOLDER, // hardcoded
+      projectName: textInput,
+      todo: null,
+    });
+    // update webview
     addProject(textInput);
     projectForm.reset();
   })
@@ -82,9 +83,14 @@
   todoSubmit.addEventListener('click', () => {
     const textInput = todoInput.value;
     const dropdownValue = dropdown.value;
+    // send message to ext where db update is fired
     vscode.postMessage({
-      command: 'alert',
-      text: dropdownValue,
+      command: 'add todo',
+      text: null,
+      type: 'todo',
+      username: PLACE_HOLDER, // hardcoded
+      projectName: dropdownValue,
+      todo: textInput,
     });
     addTodo(textInput, dropdownValue);
     todoForm.reset();
@@ -96,17 +102,19 @@
     switch (message.command) {
       case 'sendingData':
         // redundant
-        vscode.postMessage({
-          command: 'alert',
-          text: JSON.stringify(message.responseData),
-        });
+        // vscode.postMessage({
+        //   command: 'alert',
+        //   text: JSON.stringify(message.responseData),
+        // });
 
         // ==== add data to webview ====
         const userProjects = message.responseData.projects;
         for (let i = 0; i < userProjects.length; i++) {
+          // remove spaces for classname
+          const className = parseClassName(userProjects[i].projectName);
           // create project title:
           const projectTitle = document.createElement('h3');
-          projectTitle.setAttribute('class', userProjects[i].projectName) // class
+          projectTitle.setAttribute('class', className);
           const titleText = document.createTextNode(userProjects[i].projectName);
           projectTitle.appendChild(titleText);
           listContainer.appendChild(projectTitle);
@@ -116,7 +124,7 @@
 
           // create todo list for that project
           const projectList = mapArrayToList(userProjects[i].todos);
-          projectList.setAttribute("class", userProjects[i].projectName); // will append here later
+          projectList.setAttribute("class", className);
           listContainer.appendChild(projectList);
         }
         break;

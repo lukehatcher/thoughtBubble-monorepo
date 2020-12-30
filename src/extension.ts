@@ -4,6 +4,8 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import axios from 'axios';
 
+const PLACE_HOLDER = 'jon doe';
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -22,14 +24,12 @@ export function activate(context: vscode.ExtensionContext) {
         },
       );
 
-      const onDiskPath = vscode.Uri.file(path.join(context.extensionPath, 'src', 'html', 'methods.js'));
+      const onDiskPath = vscode.Uri.file(path.join(context.extensionPath, 'src', 'webview', 'methods.js'));
       const methodsSrc = panel.webview.asWebviewUri(onDiskPath);
       panel.webview.html = getWebviewContent(methodsSrc);
 
-      // get data to display
-      // let userData
-      const placeholder = 'jon doe';
-      await axios.get(`http://localhost:3001/api/projects/get/${placeholder}`)
+      // get data to display;
+      await axios.get(`http://localhost:3001/api/projects/get/${PLACE_HOLDER}`)
         .then(async (response) => {
           const userData = response.data;
           console.log(userData);
@@ -39,12 +39,20 @@ export function activate(context: vscode.ExtensionContext) {
           console.error('error fetching user data', err);
         });
 
-      // Handle messages from the webview
+      // Handle messages from the webview;
       panel.webview.onDidReceiveMessage(
         (message) => {
-          switch (message.command) {
+          const { command, type, username, projectName, todo, text } = message;
+          switch (command) {
             case 'alert':
-              vscode.window.showErrorMessage(message.text);
+              vscode.window.showErrorMessage(text);
+              break;
+            case 'add project':
+              handleDbPost(type, username, projectName, todo);
+              break;
+            case 'add todo':
+              handleDbPost(type, username, projectName, todo);
+              break;
           }
         },
         undefined,
@@ -101,3 +109,16 @@ function getWebviewContent(src: any) {
 
 // this method is called when your extension is deactivated
 export function deactivate() {}
+
+
+function handleDbPost(type: string, username: string, projectName: string, todo: string | null) {
+  axios.post('http://localhost:3001/api/projects/post', {
+    type,
+    username, // hard coded username for now
+    projectName,
+    todo
+  })
+  .catch((err) => {
+    console.error('error posting new data to db', err);
+  });
+}
