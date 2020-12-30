@@ -21,6 +21,7 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.ViewColumn.One, // Editor column to show the new webview panel in.
         {
           enableScripts: true, // Webview options
+          retainContextWhenHidden: true,
         },
       );
 
@@ -29,29 +30,31 @@ export function activate(context: vscode.ExtensionContext) {
       panel.webview.html = getWebviewContent(methodsSrc);
 
       // get data to display
-      await axios.get(`http://localhost:3001/api/projects/get/${PLACE_HOLDER}`)
-        .then(async (response) => {
-          const userData = response.data;
-          console.log(userData);
-          await panel.webview.postMessage({ command: 'sendingData', responseData: userData }); // whole obj = event.data
-        })
-        .catch((err) => {
-          console.error('error fetching user data', err);
-        });
+      async function fetchData() {
+        await axios.get(`http://localhost:3001/api/projects/get/${PLACE_HOLDER}`)
+          .then(async (response) => {
+            const userData = response.data;
+            await panel.webview.postMessage({ command: 'sendingData', responseData: userData }); // whole obj = event.data
+          })
+          .catch((err) => {
+            console.error('error fetching user data', err);
+          });
+      }
+      await fetchData();
 
       // Handle messages from the webview;
       panel.webview.onDidReceiveMessage(
-        (message) => {
+        async (message) => {
           const { command, type, username, projectName, todo, text } = message;
           switch (command) {
             case 'alert':
               vscode.window.showErrorMessage(text);
               break;
             case 'add project':
-              handleDbPost(type, username, projectName, todo);
+              // handleDbPost(type, username, projectName, todo);
               break;
             case 'add todo':
-              handleDbPost(type, username, projectName, todo);
+              await handleDbPost(type, username, projectName, todo, fetchData);
               break;
           }
         },
@@ -105,7 +108,7 @@ function getWebviewContent(src: any) {
 }
 
 // function getNonce() {
-// 	let text = '';
+// 	let text = ''
 // 	const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 // 	for (let i = 0; i < 32; i++) {
 // 		text += possible.charAt(Math.floor(Math.random() * possible.length));
@@ -117,12 +120,15 @@ function getWebviewContent(src: any) {
 export function deactivate() {}
 
 
-function handleDbPost(type: string, username: string, projectName: string, todo: string | null) {
+function handleDbPost(type: string, username: string, projectName: string, todo: string | null, dataFetchCB: any) {
   axios.post('http://localhost:3001/api/projects/post', {
     type,
     username, // hard coded username for now
     projectName,
     todo
+  })
+  .then(() => {
+    dataFetchCB();
   })
   .catch((err) => {
     console.error('error posting new data to db', err);

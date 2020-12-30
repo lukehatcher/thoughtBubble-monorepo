@@ -59,12 +59,12 @@
     addDropdownOption(name, dropdownD);
   }
 
-  function addTodo(name, project) {
-    const newTodo = document.createElement('li');
-    newTodo.appendChild(document.createTextNode(name));
-    const className = parseClassName(project);
-    document.querySelector(`ul.${className}`).appendChild(newTodo); // add to ul with name
-  }
+  // function addTodo(name, project) {
+  //   const newTodo = document.createElement('li');
+  //   newTodo.appendChild(document.createTextNode(name));
+  //   const className = parseClassName(project);
+  //   document.querySelector(`ul.${className}`).appendChild(newTodo);
+  // }
 
   projectSubmit.addEventListener('click', () => {
     const textInput = projectInput.value;
@@ -94,7 +94,7 @@
       projectName: dropdownValue,
       todo: textInput,
     });
-    addTodo(textInput, dropdownValue);
+    // addTodo(textInput, dropdownValue);
     todoForm.reset();
   })
 
@@ -104,32 +104,36 @@
     switch (message.command) {
       case 'sendingData':
         // redundant
-        // vscode.postMessage({
-        //   command: 'alert',
-        //   text: JSON.stringify(message.responseData),
-        // });
+        vscode.postMessage({
+          command: 'alert',
+          text: JSON.stringify(message.responseData),
+        });
 
         // ==== add data to webview ====
-        const userProjects = message.responseData.projects;
-        for (let i = 0; i < userProjects.length; i++) {
-          // remove spaces for classname
-          const className = parseClassName(userProjects[i].projectName);
-          // create project title:
-          const projectTitle = document.createElement('h3');
-          projectTitle.setAttribute('class', className);
-          const titleText = document.createTextNode(userProjects[i].projectName);
-          projectTitle.appendChild(titleText);
-          listContainer.appendChild(projectTitle);
-
-          // add project title to dropdown
-          addDropdownOption(userProjects[i].projectName, dropdown);
-          addDropdownOption(userProjects[i].projectName, dropdownD);
-
-          // create todo list for that project
-          const projectList = mapArrayToList(userProjects[i].todos);
-          projectList.setAttribute("class", className);
-          listContainer.appendChild(projectList);
+        function wrapper() {
+          listContainer.innerHTML = '';
+          const userProjects = message.responseData.projects;
+          for (let i = 0; i < userProjects.length; i++) {
+            // remove spaces for classname
+            const className = parseClassName(userProjects[i].projectName);
+            // create project title:
+            const projectTitle = document.createElement('h3');
+            projectTitle.setAttribute('class', className);
+            const titleText = document.createTextNode(userProjects[i].projectName);
+            projectTitle.appendChild(titleText);
+            listContainer.appendChild(projectTitle);
+  
+            // add project title to dropdown
+            addDropdownOption(userProjects[i].projectName, dropdown);
+            addDropdownOption(userProjects[i].projectName, dropdownD);
+  
+            // create todo list for that project
+            const projectList = mapArrayToList(userProjects[i].todos);
+            projectList.setAttribute("class", className);
+            listContainer.appendChild(projectList);
+          }
         }
+        wrapper();
         break;
     }
   });
