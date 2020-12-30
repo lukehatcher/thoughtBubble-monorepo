@@ -42,7 +42,7 @@ export function activate(context: vscode.ExtensionContext) {
       }
       await fetchData();
 
-      // Handle messages from the webview
+      // Handle messages from the webview;
       panel.webview.onDidReceiveMessage(
         async (message) => {
           const { command, type, username, projectName, todo, text } = message;
@@ -56,6 +56,9 @@ export function activate(context: vscode.ExtensionContext) {
               break;
             case 'add todo':
               await handleDbPost(type, username, projectName, todo, fetchData);
+              break;
+            case 'delete project':
+              await handleDbDelete(type, username, projectName, todo, fetchData);
               break;
           }
         },
@@ -127,6 +130,23 @@ function handleDbPost(type: string, username: string, projectName: string, todo:
     username, // hard coded username for now
     projectName,
     todo
+  })
+  .then(() => {
+    dataFetchCB();
+  })
+  .catch((err) => {
+    console.error('error posting new data to db', err);
+  });
+}
+
+function handleDbDelete(type: string, username: string, projectName: string, todo: string | null, dataFetchCB: any) {
+  axios.delete('http://localhost:3001/api/projects/delete', {
+    params: {
+      type,
+      username, // hard coded username for now
+      projectName,
+      todo
+    }
   })
   .then(() => {
     dataFetchCB();

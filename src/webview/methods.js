@@ -14,6 +14,7 @@
   const todoForm = document.getElementById('todo-form');
   const todoSubmit = document.getElementById('todo-submit');
   const todoInput = document.getElementById('todo-input');
+  const projectDelete = document.getElementById('project-delete-submit');
 
   function mapArrayToList(arr) {
     const rootList = document.createElement('ul');
@@ -98,6 +99,19 @@
     todoForm.reset();
   })
 
+  projectDelete.addEventListener('click', () => {
+    const dropdownValue = dropdownD.value;
+    vscode.postMessage({
+      command: 'delete project',
+      text: null,
+      type: 'project',
+      username: PLACE_HOLDER, // hardcoded
+      projectName: dropdownValue,
+      todo: null,
+    });
+    document.getElementById('project-delete-form').reset();
+  })
+
   // Handle messages sent from the extension to the webview
   window.addEventListener('message', (event) => {
     const message = event.data; // The json data that the extension sent
@@ -112,6 +126,8 @@
         // ==== add data to webview ====
         function wrapper() {
           listContainer.innerHTML = '';
+          dropdown.innerHTML = '';
+          dropdownD.innerHTML = '';
           const userProjects = message.responseData.projects;
           for (let i = 0; i < userProjects.length; i++) {
             // remove spaces for classname
