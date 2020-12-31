@@ -18,23 +18,25 @@ export function activate(context: vscode.ExtensionContext) {
       const panel = vscode.window.createWebviewPanel(
         'view', // Identifies the type of the webview. Used internally
         'My Project Todos', // Title of the panel displayed to the user
-        vscode.ViewColumn.One, // Editor column to show the new webview panel in.
+        vscode.ViewColumn.One, // Editor column to show the new webview panel in
         {
           enableScripts: true, // Webview options
           retainContextWhenHidden: true,
         },
       );
 
-      const onDiskPath = vscode.Uri.file(path.join(context.extensionPath, 'src', 'webview', 'methods.js'));
-      const methodsSrc = panel.webview.asWebviewUri(onDiskPath);
-      panel.webview.html = getWebviewContent(methodsSrc);
+      const onDiskPathScripts = vscode.Uri.file(path.join(context.extensionPath, 'src', 'webview', 'methods.js'));
+      const onDiskPathStyles = vscode.Uri.file(path.join(context.extensionPath, 'src', 'webview', 'styles.css'));
+      const scriptsSrc = panel.webview.asWebviewUri(onDiskPathScripts);
+      const stylesSrc = panel.webview.asWebviewUri(onDiskPathStyles);
+      panel.webview.html = getWebviewContent(scriptsSrc, stylesSrc);
 
       // get data to display
       async function fetchData() {
         await axios.get(`http://localhost:3001/api/projects/get/${PLACE_HOLDER}`)
           .then(async (response) => {
             const userData = response.data;
-            await panel.webview.postMessage({ command: 'sendingData', responseData: userData }); // whole obj = event.data
+            await panel.webview.postMessage({ command: 'sendingData', responseData: userData }); // whole obj = event.data;
           })
           .catch((err) => {
             console.error('error fetching user data', err);
@@ -51,13 +53,16 @@ export function activate(context: vscode.ExtensionContext) {
               vscode.window.showErrorMessage(text);
               break;
             case 'add project':
-              // posts data and triggers page refresh with fetchData callback
+              // posts data and triggers page refresh with fetchData callback;
               await handleDbPost(type, username, projectName, todo, fetchData);
               break;
             case 'add todo':
               await handleDbPost(type, username, projectName, todo, fetchData);
               break;
             case 'delete project':
+              await handleDbDelete(type, username, projectName, todo, fetchData);
+              break;
+            case 'delete todo':
               await handleDbDelete(type, username, projectName, todo, fetchData);
               break;
           }
@@ -69,7 +74,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
 }
 
-function getWebviewContent(src: any) {
+function getWebviewContent(scriptsURI: any, stylesURI: any) {
   return (
     `<!DOCTYPE html>
     <html lang="en">
@@ -77,6 +82,7 @@ function getWebviewContent(src: any) {
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="Content-Security-Policy" content="default-src self; img-src vscode-resource:; script-src vscode-resource: 'self' 'unsafe-inline'; style-src vscode-resource: 'self' 'unsafe-inline'; "/>
+      <link href="${stylesURI}" rel="stylesheet">
       <title>this is a title</title>
     </head>
     <body>
@@ -105,7 +111,7 @@ function getWebviewContent(src: any) {
       </form>
 
       <div id="list-container"></div>
-      <script src="${src}"></script>
+      <script src="${scriptsURI}"></script>
     </body>
     <html>`
   );
@@ -143,7 +149,7 @@ function handleDbDelete(type: string, username: string, projectName: string, tod
   axios.delete('http://localhost:3001/api/projects/delete', {
     params: {
       type,
-      username, // hard coded username for now
+      username, // hard coded username for now;
       projectName,
       todo
     }
@@ -152,6 +158,6 @@ function handleDbDelete(type: string, username: string, projectName: string, tod
     dataFetchCB();
   })
   .catch((err) => {
-    console.error('error posting new data to db', err);
+    console.error('error deleting data from db', err);
   });
 }

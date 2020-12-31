@@ -16,16 +16,6 @@
   const todoInput = document.getElementById('todo-input');
   const projectDelete = document.getElementById('project-delete-submit');
 
-  function mapArrayToList(arr) {
-    const rootList = document.createElement('ul');
-    for (let i = 0; i < arr.length; i++) {
-      const listItem = document.createElement('li');
-      listItem.appendChild(document.createTextNode(arr[i]));
-      rootList.appendChild(listItem);
-    }
-    return rootList;
-  }
-
   function parseClassName(string) {
     // turn string seperated with spaces into string seperated with hyphens
     // leaves strings without spaces unchanged
@@ -43,30 +33,6 @@
     specificDropdown.appendChild(projectOption);
   }
 
-  // function addProject(name) {
-  //   const className = parseClassName(name); // remove any spaces
-  //   // add the title
-  //   const projectTitle = document.createElement('h3');
-  //   projectTitle.setAttribute('class', className);
-  //   const titleText = document.createTextNode(name);
-  //   projectTitle.appendChild(titleText);
-  //   listContainer.appendChild(projectTitle);
-  //   // add the empty list underneath
-  //   const emptyList = document.createElement('ul');
-  //   emptyList.setAttribute('class', className);
-  //   listContainer.appendChild(emptyList);
-  //   // add dropdown option
-  //   addDropdownOption(name, dropdown);
-  //   addDropdownOption(name, dropdownD);
-  // }
-
-  // function addTodo(name, project) {
-  //   const newTodo = document.createElement('li');
-  //   newTodo.appendChild(document.createTextNode(name));
-  //   const className = parseClassName(project);
-  //   document.querySelector(`ul.${className}`).appendChild(newTodo);
-  // }
-
   projectSubmit.addEventListener('click', () => {
     const textInput = projectInput.value;
     // send message to ext where db update is fired
@@ -78,8 +44,6 @@
       projectName: textInput,
       todo: null,
     });
-    // update webview
-    // addProject(textInput);
     projectForm.reset();
   })
 
@@ -112,6 +76,44 @@
     document.getElementById('project-delete-form').reset();
   })
 
+  function mapArrayToList(arr, projectName) {
+    const rootList = document.createElement('ul');
+    for (let i = 0; i < arr.length; i++) {
+      const listItem = document.createElement('li');
+      listItem.appendChild(document.createTextNode(arr[i]));
+      // rootList.appendChild(listItem);
+
+      // create info div
+      const todoInfoContainer = document.createElement('div');
+      todoInfoContainer.setAttribute('class', 'todo-info-container');
+      // create delete button
+      const deleteButton = document.createElement('button');
+      deleteButton.setAttribute('class', 'delete-todo-btn');
+      deleteButton.appendChild(document.createTextNode('\u2718')); // sloppy x
+      deleteButton.onclick = () => {
+        vscode.postMessage({
+          command: 'delete todo',
+          text: null,
+          type: 'todo',
+          username: PLACE_HOLDER, // hardcoded
+          projectName,
+          todo: arr[i],
+        });
+      }
+      // create completion button
+      const completionButton = document.createElement('button');
+      completionButton.setAttribute('class', 'check-todo-btn')
+      completionButton.appendChild(document.createTextNode('\u2714'));
+      // attach buttons to container
+      todoInfoContainer.appendChild(deleteButton);
+      todoInfoContainer.appendChild(completionButton);
+      // attach container to list item
+      listItem.appendChild(todoInfoContainer);
+      rootList.appendChild(listItem);
+    }
+    return rootList;
+  }
+
   // Handle messages sent from the extension to the webview
   window.addEventListener('message', (event) => {
     const message = event.data; // The json data that the extension sent
@@ -123,8 +125,8 @@
           text: JSON.stringify(message.responseData),
         });
 
-        // ==== add data to webview ====
-        function wrapper() {
+        // ==== add data to webview and render ====
+        function renderHTML() {
           listContainer.innerHTML = '';
           dropdown.innerHTML = '';
           dropdownD.innerHTML = '';
@@ -144,12 +146,12 @@
             addDropdownOption(userProjects[i].projectName, dropdownD);
   
             // create todo list for that project
-            const projectList = mapArrayToList(userProjects[i].todos);
+            const projectList = mapArrayToList(userProjects[i].todos, userProjects[i].projectName);
             projectList.setAttribute("class", className);
             listContainer.appendChild(projectList);
           }
         }
-        wrapper();
+        renderHTML();
         break;
     }
   });
