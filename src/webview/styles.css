@@ -1,0 +1,47 @@
+html {
+	box-sizing: border-box;
+  font-size: 13px;
+}
+
+h3 {
+  color: #0078d7;
+  font-size: 5;
+}
+
+li {
+  border: 0.5px solid white;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+li:hover {
+  transform: scale(1.05);
+}
+
+.todo-info-container {
+  border: 0.5px solid black;
+  /* margin: 15px; */
+  /* width: 50%; */
+}
+
+.delete-todo-btn, .check-todo-btn {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  margin-top: 5px;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.delete-todo-btn {
+  color: red;
+}
+
+.check-todo-btn {
+  color: green;
+}
+
+button:hover {
+  cursor: pointer;
+}
