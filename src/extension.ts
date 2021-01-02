@@ -89,25 +89,22 @@ function getWebviewContent(scriptsURI: any, stylesURI: any) {
       <h1>Let's get to work!</h1>
 
       <form id="project-form">
-				<label>new project:</label>
-				<input id="project-input" type="text">
+				<input id="project-input" type="text" placeholder="new project">
         <input id="project-submit" type="submit">
       </form>
 
       <form id="todo-form">
-				<label>new todo:</label>
-        <input id="todo-input" type="text">
+        <input id="todo-input" type="text" placeholder="new todo">
         <label>for project:</label>
-        <select id="project-dropdown">
+        <select id="project-dropdown" placeholder="test">
         </select>
 				<input id="todo-submit" type="submit">
       </form>
 
       <form id="project-delete-form">
-        <label>delete project:</label>
         <select id="delete-dropdown">
         </select>
-        <input id="project-delete-submit" type="submit" value="Delete">
+        <input id="project-delete-submit" type="submit" value="Delete project">
       </form>
 
       <div id="list-container"></div>
@@ -116,15 +113,6 @@ function getWebviewContent(scriptsURI: any, stylesURI: any) {
     <html>`
   );
 }
-
-// function getNonce() {
-// 	let text = ''
-// 	const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-// 	for (let i = 0; i < 32; i++) {
-// 		text += possible.charAt(Math.floor(Math.random() * possible.length));
-// 	}
-// 	return text;
-// }
 
 // this method is called when your extension is deactivated
 export function deactivate() {}

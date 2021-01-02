@@ -89,7 +89,8 @@
       // create delete button
       const deleteButton = document.createElement('button');
       deleteButton.setAttribute('class', 'delete-todo-btn');
-      deleteButton.appendChild(document.createTextNode('\u2718')); // sloppy x
+      // deleteButton.appendChild(document.createTextNode('\u2718')); // sloppy x U+1F5D1
+      deleteButton.appendChild(document.createTextNode('🗑'));
       deleteButton.onclick = () => {
         vscode.postMessage({
           command: 'delete todo',
