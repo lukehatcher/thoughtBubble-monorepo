@@ -74,6 +74,8 @@ export function activate(context: vscode.ExtensionContext) {
   );
 }
 
+// <meta http-equiv="Content-Security-Policy" content="default-src self; img-src vscode-resource:; script-src vscode-resource: 'self' 'unsafe-inline'; style-src vscode-resource: 'self' 'unsafe-inline'; "/>
+
 function getWebviewContent(scriptsURI: any, stylesURI: any) {
   return (
     `<!DOCTYPE html>
@@ -87,26 +89,25 @@ function getWebviewContent(scriptsURI: any, stylesURI: any) {
     </head>
     <body>
       <h1>Let's get to work!</h1>
+      <div id="form-container">
+        <form id="project-form">
+          <input id="project-input" type="text" placeholder="new project">
+          <input id="project-submit" type="submit">
+        </form>
 
-      <form id="project-form">
-				<input id="project-input" type="text" placeholder="new project">
-        <input id="project-submit" type="submit">
-      </form>
+        <form id="todo-form">
+          <input id="todo-input" type="text" placeholder="new todo">
+          <select id="project-dropdown" placeholder="test">
+          </select>
+          <input id="todo-submit" type="submit">
+        </form>
 
-      <form id="todo-form">
-        <input id="todo-input" type="text" placeholder="new todo">
-        <label>for project:</label>
-        <select id="project-dropdown" placeholder="test">
-        </select>
-				<input id="todo-submit" type="submit">
-      </form>
-
-      <form id="project-delete-form">
-        <select id="delete-dropdown">
-        </select>
-        <input id="project-delete-submit" type="submit" value="Delete project">
-      </form>
-
+        <form id="project-delete-form">
+          <select id="delete-dropdown">
+          </select>
+          <input id="project-delete-submit" type="submit" value="Submit">
+        </form>
+      </div>
       <div id="list-container"></div>
       <script src="${scriptsURI}"></script>
     </body>
