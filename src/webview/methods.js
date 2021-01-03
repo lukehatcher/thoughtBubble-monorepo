@@ -115,22 +115,34 @@
     return rootList;
   }
 
+  function addDropdownLabel(labelText, specificDropdown) {
+    const projectOption = document.createElement('option');
+    const projectOptionText = document.createTextNode(labelText);
+    projectOption.appendChild(projectOptionText);
+    projectOption.setAttribute('selected', true);
+    projectOption.setAttribute('disabled', true);
+    specificDropdown.appendChild(projectOption);
+  }
+
   // Handle messages sent from the extension to the webview
   window.addEventListener('message', (event) => {
     const message = event.data; // The json data that the extension sent
     switch (message.command) {
       case 'sendingData':
-        // redundant
-        vscode.postMessage({
-          command: 'alert',
-          text: JSON.stringify(message.responseData),
-        });
+        // how to post an alert to the webview:
+        // vscode.postMessage({
+        //   command: 'alert',
+        //   text: JSON.stringify(message.responseData),
+        // });
 
         // ==== add data to webview and render ====
         function renderHTML() {
           listContainer.innerHTML = '';
           dropdown.innerHTML = '';
           dropdownD.innerHTML = '';
+          // add drop down label
+          addDropdownLabel('select project', dropdown);
+          addDropdownLabel('delete project', dropdownD);
           const userProjects = message.responseData.projects;
           for (let i = 0; i < userProjects.length; i++) {
             // remove spaces for classname
