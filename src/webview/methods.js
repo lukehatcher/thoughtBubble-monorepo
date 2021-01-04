@@ -80,7 +80,8 @@
     const rootList = document.createElement('ul');
     for (let i = 0; i < arr.length; i++) {
       const listItem = document.createElement('li');
-      listItem.appendChild(document.createTextNode(arr[i]));
+      if (arr[i].completed) listItem.style.textDecoration = 'line-through';
+      listItem.appendChild(document.createTextNode(arr[i].text));
       // rootList.appendChild(listItem);
 
       // create info div
