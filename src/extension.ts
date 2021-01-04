@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import axios from 'axios';
 import { getWebviewContent } from './webviewContent';
-import { handleDbPost, handleDbDelete } from './apiHandlers';
+import { handleDbPost, handleDbDelete, handleTodoCompletionToggle } from './apiHandlers';
 
 const PLACE_HOLDER = 'jon doe';
 
@@ -66,6 +66,9 @@ export function activate(context: vscode.ExtensionContext) {
               break;
             case 'delete todo':
               await handleDbDelete(type, username, projectName, todo, fetchData);
+              break;
+            case 'toggle todo':
+              await handleTodoCompletionToggle(type, username, projectName, todo, fetchData);
               break;
           }
         },
