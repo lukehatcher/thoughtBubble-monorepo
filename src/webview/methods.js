@@ -80,7 +80,8 @@
     const rootList = document.createElement('ul');
     for (let i = 0; i < arr.length; i++) {
       const listItem = document.createElement('li');
-      listItem.appendChild(document.createTextNode(arr[i]));
+      if (arr[i].completed) listItem.style.textDecoration = 'line-through';
+      listItem.appendChild(document.createTextNode(arr[i].text));
       // rootList.appendChild(listItem);
 
       // create info div
@@ -98,13 +99,23 @@
           type: 'todo',
           username: PLACE_HOLDER, // hardcoded
           projectName,
-          todo: arr[i],
+          todo: arr[i].text,
         });
       }
       // create completion button
       const completionButton = document.createElement('button');
       completionButton.setAttribute('class', 'check-todo-btn')
-      completionButton.appendChild(document.createTextNode('\u2714'));
+      completionButton.appendChild(document.createTextNode('\u2714')); // check button
+      completionButton.onclick = () => {
+        vscode.postMessage({
+          command: 'toggle todo',
+          text: null,
+          type: 'todo',
+          username: PLACE_HOLDER, // hardcoded
+          projectName,
+          todo: arr[i].text,
+        });
+      }
       // attach buttons to container
       todoInfoContainer.appendChild(deleteButton);
       todoInfoContainer.appendChild(completionButton);
