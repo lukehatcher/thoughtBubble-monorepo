@@ -12,7 +12,7 @@ export function fetchData(panel: any) {
     });
 }
 
-export async function fetchUserProjectNames() : any{
+export async function fetchUserProjectNames() : Promise<any>{
   let usersProjects;
   await axios.get(`http://localhost:3001/api/projects/get/${PLACE_HOLDER}`)
     .then((response) => {
