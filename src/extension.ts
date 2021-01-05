@@ -4,40 +4,52 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { getWebviewContent } from './webviewContent';
-import { fetchData, fetchUserProjectNames, handleDbPost, handleDbDelete, handleTodoCompletionToggle } from './apiHandlers';
+import {
+  fetchData,
+  fetchUserProjectNames,
+  handleDbPost,
+  handleDbPostInactive,
+  handleDbDelete,
+  handleTodoCompletionToggle,
+} from './apiHandlers';
 
 const PLACE_HOLDER = 'jon doe';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-  // Create and show a new webview
-  const panel = vscode.window.createWebviewPanel(
-    'view', // Identifies the type of the webview. Used internally
-    'My Project Todos', // Title of the panel displayed to the user
-    vscode.ViewColumn.One, // Editor column to show the new webview panel in
-    {
-      enableScripts: true, // Webview options
-      retainContextWhenHidden: true,
-    },
-  );
 
-  const onDiskPathScripts = vscode.Uri.file(path.join(context.extensionPath, 'src', 'webview', 'methods.js'));
-  const onDiskPathStyles = vscode.Uri.file(path.join(context.extensionPath, 'src', 'webview', 'styles.css'));
-  const scriptsSrc = panel.webview.asWebviewUri(onDiskPathScripts);
-  const stylesSrc = panel.webview.asWebviewUri(onDiskPathStyles);
-  panel.webview.html = getWebviewContent(scriptsSrc, stylesSrc);
+  let panel: any;
+  let activeWebview = false;
 
   context.subscriptions.push(
     vscode.commands.registerCommand('code-todos.todosView', async () => {
       console.log('=== EXTENSION IS LIVE ===');
+
+      activeWebview = true;
+
+      panel = vscode.window.createWebviewPanel(
+        'view', // Identifies the type of the webview. Used internally
+        'My Project Todos', // Title of the panel displayed to the user
+        vscode.ViewColumn.One, // Editor column to show the new webview panel in
+        {
+          enableScripts: true, // Webview options
+          retainContextWhenHidden: true,
+        },
+      );
+    
+      const onDiskPathScripts = vscode.Uri.file(path.join(context.extensionPath, 'src', 'webview', 'methods.js'));
+      const onDiskPathStyles = vscode.Uri.file(path.join(context.extensionPath, 'src', 'webview', 'styles.css'));
+      const scriptsSrc = panel.webview.asWebviewUri(onDiskPathScripts);
+      const stylesSrc = panel.webview.asWebviewUri(onDiskPathStyles);
+      panel.webview.html = getWebviewContent(scriptsSrc, stylesSrc);
 
       // fetch data and display to webview
       await fetchData(panel);
 
       // Handle messages from the webview;
       panel.webview.onDidReceiveMessage(
-        async (message) => {
+        async (message: any) => {
           const { command, type, username, projectName, todo, text } = message;
           switch (command) {
             case 'alert':
@@ -64,6 +76,16 @@ export function activate(context: vscode.ExtensionContext) {
         undefined,
         context.subscriptions,
       );
+
+      panel.onDidDispose(
+        () => {
+          // set variable that signifies webview is open/close
+          activeWebview = false;
+        },
+        null,
+        context.subscriptions
+      );
+
     }),
   );
 
@@ -75,6 +97,7 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.window.showErrorMessage('please activate a code editor to use this command');
         return;
       }
+
       const selectedText = activeTextEditor.document.getText(activeTextEditor.selection);
 
       const userProjectNames = await fetchUserProjectNames(); // used for the quickpick
@@ -82,9 +105,13 @@ export function activate(context: vscode.ExtensionContext) {
       const quickPick = vscode.window.createQuickPick();
       quickPick.items = userProjectNames.map((label: string) => ({ label }));
       quickPick.onDidChangeSelection(([item]) => {
-        if (item) {
+        if (item && activeWebview) {
+          // if wevbiew is currently open, update database and webview
           handleDbPost('todo', PLACE_HOLDER, item.label, selectedText, panel);
-          // hide quickpicker after selection
+          quickPick.dispose();
+        } else if (item && !activeWebview) {
+          // if wevbiew is not currently open, just update database
+          handleDbPostInactive('todo', PLACE_HOLDER, item.label, selectedText);
           quickPick.dispose();
         }
       });

@@ -41,6 +41,19 @@ export function handleDbPost(type: string, username: string, projectName: string
   });
 }
 
+export function handleDbPostInactive(type: string, username: string, projectName: string, todo: string) {
+  // add to database without touching the webview (while webview is inactive)
+  axios.post('http://localhost:3001/api/projects/post', {
+    type,
+    username, // hard coded
+    projectName,
+    todo
+  })
+  .catch((err) => {
+    console.error('error posting new data to db', err);
+  });
+}
+
 export function handleDbDelete(type: string, username: string, projectName: string, todo: string | null, panel: any) {
   axios.delete('http://localhost:3001/api/projects/delete', {
     params: {
