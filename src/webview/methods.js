@@ -142,11 +142,6 @@
   window.addEventListener('message', (event) => {
     const message = event.data; // The json data that the extension sent
     switch (message.command) {
-      case 'new todo via selection':
-        console.log(message.todo, message.projectName);
-        // post to database and refresh
-        break;
-
       case 'sendingData':
         // how to post an alert to the webview:
         // vscode.postMessage({
