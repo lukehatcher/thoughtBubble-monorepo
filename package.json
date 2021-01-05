@@ -22,7 +22,7 @@
 			},
 			{
 				"command": "code-todos.addtodo",
-				"title": "add todo"
+				"title": "+ todo"
 			}
 		]
 	},
