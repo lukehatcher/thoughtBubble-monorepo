@@ -3,9 +3,8 @@
 // **logs here show up in the debug console**
 import * as vscode from 'vscode';
 import * as path from 'path';
-import axios from 'axios';
 import { getWebviewContent } from './webviewContent';
-import { fetchData, handleDbPost, handleDbDelete, handleTodoCompletionToggle } from './apiHandlers';
+import { fetchData, fetchUserProjectNames, handleDbPost, handleDbDelete, handleTodoCompletionToggle } from './apiHandlers';
 
 const PLACE_HOLDER = 'jon doe';
 
@@ -33,6 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('code-todos.todosView', async () => {
       console.log('=== EXTENSION IS LIVE ===');
 
+      // fetch data and display to webview
       await fetchData(panel);
 
       // Handle messages from the webview;
@@ -77,15 +77,7 @@ export function activate(context: vscode.ExtensionContext) {
       }
       const selectedText = activeTextEditor.document.getText(activeTextEditor.selection);
 
-      let userProjectNames: string[];
-      await axios.get(`http://localhost:3001/api/projects/get/${PLACE_HOLDER}`)
-        .then(async (response) => {
-          const userProjects = response.data.projects;
-          userProjectNames = userProjects.map((project: any) => project.projectName);
-        })
-        .catch((err) => {
-          console.error('error fetching user project names', err);
-        });
+      const userProjectNames = await fetchUserProjectNames(); // used for the quickpick
 
       const quickPick = vscode.window.createQuickPick();
       quickPick.items = userProjectNames.map((label: string) => ({ label }));
@@ -103,5 +95,5 @@ export function activate(context: vscode.ExtensionContext) {
   );
 }
 
-// this method is called when your extension is deactivated
+// this method is called when the extension is deactivated
 export function deactivate() {}
