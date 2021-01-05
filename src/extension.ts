@@ -38,11 +38,17 @@ export function activate(context: vscode.ExtensionContext) {
         },
       );
     
-      const onDiskPathScripts = vscode.Uri.file(path.join(context.extensionPath, 'src', 'webview', 'methods.js'));
+      const onDiskPathScripts = vscode.Uri.file(path.join(context.extensionPath, 'src', 'webview', 'main.js'));
       const onDiskPathStyles = vscode.Uri.file(path.join(context.extensionPath, 'src', 'webview', 'styles.css'));
       const scriptsSrc = panel.webview.asWebviewUri(onDiskPathScripts);
       const stylesSrc = panel.webview.asWebviewUri(onDiskPathStyles);
-      panel.webview.html = getWebviewContent(scriptsSrc, stylesSrc);
+      
+      const onDiskPathResetStyles = vscode.Uri.file(path.join(context.extensionPath, 'src', 'webview', 'reset.css'));
+      const onDiskPathVSStyles = vscode.Uri.file(path.join(context.extensionPath, 'src', 'webview', 'vscode.css'));
+      const stylesResetUri = panel.webview.asWebviewUri(onDiskPathResetStyles);
+      const stylesMainUri = panel.webview.asWebviewUri(onDiskPathVSStyles);
+      
+      panel.webview.html = getWebviewContent(scriptsSrc, stylesSrc, stylesResetUri, stylesMainUri);
 
       // fetch data and display to webview
       await fetchData(panel);

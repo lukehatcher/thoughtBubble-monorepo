@@ -1,4 +1,4 @@
-export function getWebviewContent(scriptsURI: any, stylesURI: any) {
+export function getWebviewContent(scriptsURI: any, stylesURI: any, stylesResetUri: any, stylesMainUri: any) {
   return (
     `<!DOCTYPE html>
     <html lang="en">
@@ -6,6 +6,8 @@ export function getWebviewContent(scriptsURI: any, stylesURI: any) {
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="Content-Security-Policy" content="default-src self; img-src vscode-resource:; script-src vscode-resource: 'self' 'unsafe-inline'; style-src vscode-resource: 'self' 'unsafe-inline'; "/>
+      <link href="${stylesResetUri}" rel="stylesheet">
+      <link href="${stylesMainUri}" rel="stylesheet">
       <link href="${stylesURI}" rel="stylesheet">
       <title>this is a title</title>
     </head>
