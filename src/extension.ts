@@ -5,7 +5,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import axios from 'axios';
 import { getWebviewContent } from './webviewContent';
-import { handleDbPost, handleDbDelete, handleTodoCompletionToggle } from './apiHandlers';
+import { fetchData, handleDbPost, handleDbDelete, handleTodoCompletionToggle } from './apiHandlers';
 
 const PLACE_HOLDER = 'jon doe';
 
@@ -33,18 +33,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('code-todos.todosView', async () => {
       console.log('=== EXTENSION IS LIVE ===');
 
-      // get data to display
-      async function fetchData() {
-        await axios.get(`http://localhost:3001/api/projects/get/${PLACE_HOLDER}`)
-          .then(async (response) => {
-            const userData = response.data;
-            await panel.webview.postMessage({ command: 'sendingData', responseData: userData }); // whole obj = event.data;
-          })
-          .catch((err) => {
-            console.error('error fetching user data', err);
-          });
-      }
-      await fetchData();
+      await fetchData(panel);
 
       // Handle messages from the webview;
       panel.webview.onDidReceiveMessage(
@@ -56,19 +45,19 @@ export function activate(context: vscode.ExtensionContext) {
               break;
             case 'add project':
               // posts data and triggers page refresh with fetchData callback;
-              await handleDbPost(type, username, projectName, todo, fetchData);
+              await handleDbPost(type, username, projectName, todo, panel);
               break;
             case 'add todo':
-              await handleDbPost(type, username, projectName, todo, fetchData);
+              await handleDbPost(type, username, projectName, todo, panel);
               break;
             case 'delete project':
-              await handleDbDelete(type, username, projectName, todo, fetchData);
+              await handleDbDelete(type, username, projectName, todo, panel);
               break;
             case 'delete todo':
-              await handleDbDelete(type, username, projectName, todo, fetchData);
+              await handleDbDelete(type, username, projectName, todo, panel);
               break;
             case 'toggle todo':
-              await handleTodoCompletionToggle(type, username, projectName, todo, fetchData);
+              await handleTodoCompletionToggle(type, username, projectName, todo, panel);
               break;
           }
         },
@@ -102,24 +91,7 @@ export function activate(context: vscode.ExtensionContext) {
       quickPick.items = userProjectNames.map((label: string) => ({ label }));
       quickPick.onDidChangeSelection(([item]) => {
         if (item) {
-
-          // panel.webview.postMessage({
-          //   command: 'new todo via selection',
-          //   todo: selectedText,
-          //   projectName: item.label, // the selected item
-          // });
-          
-          async function fetchData2() {
-            await axios.get(`http://localhost:3001/api/projects/get/${PLACE_HOLDER}`)
-              .then(async (response) => {
-                const userData = response.data;
-                await panel.webview.postMessage({ command: 'sendingData', responseData: userData }); // whole obj = event.data;
-              })
-              .catch((err) => {
-                console.error('error fetching user data', err);
-              });
-          }
-          handleDbPost('todo', PLACE_HOLDER, item.label, selectedText, fetchData2);
+          handleDbPost('todo', PLACE_HOLDER, item.label, selectedText, panel);
           // hide quickpicker after selection
           quickPick.dispose();
         }
