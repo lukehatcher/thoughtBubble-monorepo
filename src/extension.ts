@@ -1,5 +1,6 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
+// **logs here show up in the debug console**
 import * as vscode from 'vscode';
 import * as path from 'path';
 import axios from 'axios';
@@ -12,26 +13,25 @@ const PLACE_HOLDER = 'jon doe';
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
   // Create and show a new webview
+  const panel = vscode.window.createWebviewPanel(
+    'view', // Identifies the type of the webview. Used internally
+    'My Project Todos', // Title of the panel displayed to the user
+    vscode.ViewColumn.One, // Editor column to show the new webview panel in
+    {
+      enableScripts: true, // Webview options
+      retainContextWhenHidden: true,
+    },
+  );
+
+  const onDiskPathScripts = vscode.Uri.file(path.join(context.extensionPath, 'src', 'webview', 'methods.js'));
+  const onDiskPathStyles = vscode.Uri.file(path.join(context.extensionPath, 'src', 'webview', 'styles.css'));
+  const scriptsSrc = panel.webview.asWebviewUri(onDiskPathScripts);
+  const stylesSrc = panel.webview.asWebviewUri(onDiskPathStyles);
+  panel.webview.html = getWebviewContent(scriptsSrc, stylesSrc);
 
   context.subscriptions.push(
     vscode.commands.registerCommand('code-todos.todosView', async () => {
       console.log('=== EXTENSION IS LIVE ===');
-
-      const panel = vscode.window.createWebviewPanel(
-        'view', // Identifies the type of the webview. Used internally
-        'My Project Todos', // Title of the panel displayed to the user
-        vscode.ViewColumn.One, // Editor column to show the new webview panel in
-        {
-          enableScripts: true, // Webview options
-          retainContextWhenHidden: true,
-        },
-      );
-
-      const onDiskPathScripts = vscode.Uri.file(path.join(context.extensionPath, 'src', 'webview', 'methods.js'));
-      const onDiskPathStyles = vscode.Uri.file(path.join(context.extensionPath, 'src', 'webview', 'styles.css'));
-      const scriptsSrc = panel.webview.asWebviewUri(onDiskPathScripts);
-      const stylesSrc = panel.webview.asWebviewUri(onDiskPathStyles);
-      panel.webview.html = getWebviewContent(scriptsSrc, stylesSrc);
 
       // get data to display
       async function fetchData() {
@@ -76,6 +76,48 @@ export function activate(context: vscode.ExtensionContext) {
         context.subscriptions,
       );
     }),
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('code-todos.addtodo', async () => {
+
+      const { activeTextEditor } = vscode.window;
+      if (!activeTextEditor) {
+        vscode.window.showErrorMessage('please activate a code editor to use this command');
+        return;
+      }
+      const selectedText = activeTextEditor.document.getText(activeTextEditor.selection);
+
+      let userProjectNames: string[];
+      await axios.get(`http://localhost:3001/api/projects/get/${PLACE_HOLDER}`)
+        .then(async (response) => {
+          const userProjects = response.data.projects;
+          userProjectNames = userProjects.map((project: any) => project.projectName);
+        })
+        .catch((err) => {
+          console.error('error fetching user project names', err);
+        });
+
+      const quickPick = vscode.window.createQuickPick();
+      quickPick.items = userProjectNames.map((label: string) => ({ label }));
+      quickPick.onDidChangeSelection(([item]) => {
+        if (item) {
+          vscode.window.showInformationMessage(item.label); // item.label is the selected one
+          // hide quickpicker after selection
+          quickPick.dispose();
+        }
+      });
+      // hide quickpicker on quickpicker close without a selection
+      quickPick.onDidHide(() => quickPick.dispose());
+      quickPick.show();
+
+      panel.webview.postMessage({
+        command: 'new todo via selection',
+        todo: selectedText,
+        project: selectedProject,
+      });
+
+    })
   );
 }
 
