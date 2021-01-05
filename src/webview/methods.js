@@ -1,5 +1,8 @@
 // This script will be run within the webview itself
 // It cannot access the main VS Code APIs directly.
+/**
+ * logs here show up in the????
+ */
 (function () {
   const vscode = acquireVsCodeApi();
   // const oldState = vscode.getState();
@@ -140,7 +143,7 @@
     const message = event.data; // The json data that the extension sent
     switch (message.command) {
       case 'new todo via selection':
-        console.log(message.text);
+        console.log(message.todo, message.projectName);
         // post to database and refresh
         break;
 

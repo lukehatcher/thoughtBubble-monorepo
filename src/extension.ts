@@ -102,21 +102,31 @@ export function activate(context: vscode.ExtensionContext) {
       quickPick.items = userProjectNames.map((label: string) => ({ label }));
       quickPick.onDidChangeSelection(([item]) => {
         if (item) {
-          vscode.window.showInformationMessage(item.label); // item.label is the selected one
+
+          // panel.webview.postMessage({
+          //   command: 'new todo via selection',
+          //   todo: selectedText,
+          //   projectName: item.label, // the selected item
+          // });
+          
+          async function fetchData2() {
+            await axios.get(`http://localhost:3001/api/projects/get/${PLACE_HOLDER}`)
+              .then(async (response) => {
+                const userData = response.data;
+                await panel.webview.postMessage({ command: 'sendingData', responseData: userData }); // whole obj = event.data;
+              })
+              .catch((err) => {
+                console.error('error fetching user data', err);
+              });
+          }
+          handleDbPost('todo', PLACE_HOLDER, item.label, selectedText, fetchData2);
           // hide quickpicker after selection
           quickPick.dispose();
         }
       });
-      // hide quickpicker on quickpicker close without a selection
+      // hide quickpicker if closed without a selection
       quickPick.onDidHide(() => quickPick.dispose());
       quickPick.show();
-
-      panel.webview.postMessage({
-        command: 'new todo via selection',
-        todo: selectedText,
-        project: selectedProject,
-      });
-
     })
   );
 }
