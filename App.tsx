@@ -18,6 +18,8 @@ import {
 import Auth0 from 'react-native-auth0';
 import jwtDecode, { JwtPayload } from "jwt-decode";
 
+import { Home } from './src/components/HomeScreen';
+
 const auth0 = new Auth0({ domain: 'dev-4pq8almu.us.auth0.com', clientId: '4fzla6jGCLomMZwbRtHNg3c970TrydDs' });
 
 interface AppProps {}
@@ -51,6 +53,11 @@ const App: React.FC<AppProps> = () => {
 
   let logStatus = loggedIn.accessToken === null ? false : true;
 
+  if (logStatus) {
+    return (
+      <Home />
+    )
+  }
   return (
     <>
       <View style={styles.view}>
@@ -61,14 +68,6 @@ const App: React.FC<AppProps> = () => {
           title={logStatus ? 'logout' : 'login'}
           onPress={logStatus ? _onLogOut : _onLogIn}
         />
-        {/* <Button
-          title='login'
-          onPress={_onLogIn}
-        />
-        <Button
-          title='logout'
-          onPress={_onLogOut}
-        /> */}
       </View>
     </>
   );
