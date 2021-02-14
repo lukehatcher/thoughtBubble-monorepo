@@ -1,0 +1,23 @@
+import React from 'react';
+import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+
+interface HomeProps {}
+
+export const Home: React.FC = () => {
+  return (
+    <View style={styles.view}>
+      <ActivityIndicator size="small" />
+      <Text>
+        welcome to thoughtBubble [name here from async storage or redux]
+      </Text>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  view: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
