@@ -6,8 +6,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // similar to app.jsx for old app
 
 const Tab = createBottomTabNavigator();
+interface AppNavTabsProps {}
 
-export const AppTabs = () => {
+export const AppNavTabs: React.FC<AppNavTabsProps> = () => {
   return (
     <NavigationContainer>
       <Tab.Navigator>

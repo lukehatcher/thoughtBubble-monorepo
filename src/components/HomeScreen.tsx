@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 
-interface HomeProps {}
+interface HomeScreenProps {}
 
-export const Home: React.FC = () => {
+export const HomeScreen: React.FC<HomeScreenProps> = () => {
   return (
     <View style={styles.view}>
       <ActivityIndicator size="small" />

@@ -1,9 +1,12 @@
-import React from 'react'
+import React from 'react';
+import { View, Text } from 'react-native';
 
-export const ProjectsScreen = () => {
+interface ProjectsScreenProps {}
+
+export const ProjectsScreen: React.FC<ProjectsScreenProps> = () => {
   return (
-    <div>
-      
-    </div>
-  )
-}
+    <View>
+      <Text>projects screen</Text>
+    </View>
+  );
+};

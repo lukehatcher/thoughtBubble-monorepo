@@ -5,7 +5,9 @@ import { TodosScreen } from './TodosScreen';
 
 const ProjectStack = createStackNavigator();
 
-export const ProjectStackNavigation: React.FC = () => {
+interface ProjectsNavStackProps {}
+
+export const ProjectsNavStack: React.FC<ProjectsNavStackProps> = () => {
   return (
     <ProjectStack.Navigator
       screenOptions={{
