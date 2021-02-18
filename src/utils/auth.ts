@@ -1,13 +1,10 @@
 import Auth0 from 'react-native-auth0';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 import { Alert } from 'react-native';
-import {
-  persistidToken,
-  clearAsyncStorage,
-  checkForIdToken,
-} from './asyncStorage';
-import { changeLoginStatus } from '../actions/loginStatusAction';
+import { persistidToken, clearAsyncStorage } from './asyncStorage';
 import store from '../store';
+import { changeLoginStatus } from '../actions/loginStatusAction';
+import { storeUser } from '../actions/storeUserAction';
 
 const auth0 = new Auth0({
   domain: 'dev-4pq8almu.us.auth0.com',
@@ -22,6 +19,7 @@ export const _onLogIn = function () {
       const decodedJwt = jwtDecode<JwtPayload>(credentials.idToken);
       await persistidToken(decodedJwt); // update async storage
       store.dispatch(changeLoginStatus(true));
+      store.dispatch(storeUser(decodedJwt));
     })
     .catch((err) => console.error(err, 'error logging into auth0'));
 };
@@ -33,6 +31,7 @@ export const _onLogOut = function () {
       Alert.alert('Logged out!');
       await clearAsyncStorage();
       store.dispatch(changeLoginStatus(false));
+      store.dispatch(storeUser(null));
     })
     .catch((err) => console.error('Log out cancelled', err));
 };
