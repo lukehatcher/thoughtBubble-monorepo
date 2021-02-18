@@ -25,7 +25,7 @@ import store from './src/store';
 interface AppProps {}
 
 const App: React.FC<AppProps> = () => {
-  const selectStatus = (state) => state.loginStatus.status;
+  const selectStatus = (state) => state.loginStatus;
   const loginStatus = useSelector(selectStatus);
 
   if (loginStatus) {
