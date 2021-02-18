@@ -4,46 +4,35 @@ import { Alert } from 'react-native';
 import {
   persistidToken,
   clearAsyncStorage,
-  checkForidToken,
+  checkForIdToken,
 } from './asyncStorage';
+import { changeLoginStatus } from '../actions/loginStatusAction';
+import store from '../store';
 
 const auth0 = new Auth0({
   domain: 'dev-4pq8almu.us.auth0.com',
   clientId: '4fzla6jGCLomMZwbRtHNg3c970TrydDs',
 });
 
-export const _onLogIn = function (
-  stateChange: (value: React.SetStateAction<{ accessToken: any }>) => void, // react useState type
-) {
+export const _onLogIn = function () {
   auth0.webAuth
     .authorize({ scope: 'openid profile email', prompt: 'login' })
     .then(async (credentials) => {
       // credentials contains accessToken, idToken, and expiresIn properties
-      const decodedJwt = jwtDecode<JwtPayload>(credentials.idToken); // cant decode access token
-      await persistidToken(decodedJwt);
-      await checkForidToken();
-
-      // Alert.alert(
-      //   'AccessToken: ' +
-      //     credentials.accessToken +
-      //     ' IDtoken: ' +
-      //     credentials.idToken,
-      // );
-
-      stateChange({ accessToken: credentials.accessToken }); // set state
+      const decodedJwt = jwtDecode<JwtPayload>(credentials.idToken);
+      await persistidToken(decodedJwt); // update async storage
+      store.dispatch(changeLoginStatus(true));
     })
     .catch((err) => console.error(err, 'error logging into auth0'));
 };
 
-export const _onLogOut = function (
-  stateChange: (value: React.SetStateAction<{ accessToken: any }>) => void, // react useState type
-) {
+export const _onLogOut = function () {
   auth0.webAuth
     .clearSession()
     .then(async () => {
       Alert.alert('Logged out!');
-      stateChange({ accessToken: null });
-      await clearAsyncStorage(); // kind of replace state
+      await clearAsyncStorage();
+      store.dispatch(changeLoginStatus(false));
     })
     .catch((err) => console.error('Log out cancelled', err));
 };

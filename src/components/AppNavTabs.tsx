@@ -27,7 +27,7 @@ export const AppNavTabs: React.FC<AppNavTabsProps> = () => {
           name="Home"
           component={HomeScreen}
           // ===== this would go in the tabsparamlist type
-          // initialParams={{ userId: user.id }}
+          // initialparams...
           // =====
           // options={{
           //   title: 'Home',

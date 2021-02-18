@@ -1,5 +1,4 @@
 import React from 'react';
-import { StackNavigationProp } from '@react-navigation/stack';
 import {
   View,
   Text,
@@ -7,19 +6,16 @@ import {
   StyleSheet,
   Button,
 } from 'react-native';
-
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { _onLogOut } from '../utils/auth';
 
-interface HomeScreenProps {
-  // navigation: StackNavigationProp<>
-}
-// https://reactnavigation.org/docs/typescript/
+interface HomeScreenProps {}
 
 export const HomeScreen: React.FC<HomeScreenProps> = () => {
   return (
     <View style={styles.centerView}>
       <Text>this is a home screen</Text>
-      <Button title="logout" onPress={() => {}} />
+      <Button title="logout" onPress={() => _onLogOut()} />
     </View>
   );
 };

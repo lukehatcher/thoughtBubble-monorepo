@@ -6,34 +6,36 @@
  * @flow strict-local
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
   Text,
   ActivityIndicator,
   Button,
-  Alert,
 } from 'react-native';
-
+import { useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import { AppNavTabs } from './src/components/AppNavTabs';
-import { _onLogIn, _onLogOut } from './src/utils/auth';
+import { _onLogIn } from './src/utils/auth';
+import { checkForIdToken } from './src/utils/asyncStorage';
+import { changeLoginStatus } from './src/actions/loginStatusAction';
+import store from './src/store';
 
 interface AppProps {}
 
 const App: React.FC<AppProps> = () => {
-  const [loggedIn, setLoggedIn] = useState({ accessToken: null });
+  const selectStatus = (state) => state.loginStatus.status;
+  const loginStatus = useSelector(selectStatus);
 
-  let logStatus = loggedIn.accessToken === null ? false : true;
-
-  if (logStatus) {
+  if (loginStatus) {
     return <AppNavTabs />;
   }
   return (
     <>
       <View style={styles.view}>
-        <Text>you are not logged in.</Text>
-        <Button title="login" onPress={() => _onLogIn(setLoggedIn)} />
+        <Text>welcome to thoughtBubble</Text>
+        <Button title="login" onPress={() => _onLogIn()} />
       </View>
     </>
   );
@@ -47,4 +49,18 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+// =============================================
+
+checkForIdToken().then((res) => {
+  // this function updates the store to match my asyncstorage before rendering app
+  const status = res !== null ? true : false;
+  store.dispatch(changeLoginStatus(status));
+});
+
+// wrap app with redux provider
+const ReduxApp = () => (
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
+export default ReduxApp;
