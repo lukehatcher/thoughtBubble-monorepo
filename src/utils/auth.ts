@@ -11,12 +11,12 @@ export const _onLogIn = function (
   cb: (value: React.SetStateAction<{ accessToken: any }>) => void, // react useState type
 ) {
   auth0.webAuth
-    .authorize({ scope: 'openid profile email' })
+    .authorize({ scope: 'openid profile email', prompt: 'login' })
     .then((credentials) => {
       // credentials contains accessToken, idToken, and expiresIn val
       const decoded = jwtDecode<JwtPayload>(credentials.idToken); // cant decode access token
       console.log(decoded);
-
+      // save to async storage here
       Alert.alert(
         'AccessToken: ' +
           credentials.accessToken +
@@ -32,8 +32,8 @@ export const _onLogOut = function (
   cb: (value: React.SetStateAction<{ accessToken: any }>) => void, // react useState type
 ) {
   auth0.webAuth
-    .clearSession({})
-    .then((success) => {
+    .clearSession()
+    .then(() => {
       Alert.alert('Logged out!');
       cb({ accessToken: null });
     })
