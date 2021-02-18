@@ -9,7 +9,7 @@ export async function persistidToken(jwt: JwtPayload) {
   }
 }
 
-export async function checkForIdToken(): Promise<string | null> {
+export async function checkForIdToken(): Promise<JwtPayload | null> {
   try {
     const idToken = await AsyncStorage.getItem('idToken');
     if (idToken !== null) {
