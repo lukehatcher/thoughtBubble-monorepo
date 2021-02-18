@@ -1,12 +1,43 @@
+import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
-import { View, Text } from 'react-native';
+import {
+  View,
+  ScrollView,
+  Text,
+  Button,
+  StyleSheet,
+  TouchableOpacity,
+  Modal,
+} from 'react-native';
 
-interface ProjectsScreenProps {}
+import { StackParamList } from './ProjectsNavStack';
 
-export const ProjectsScreen: React.FC<ProjectsScreenProps> = () => {
+interface ProjectsScreenProps {
+  // all good here
+  navigation: StackNavigationProp<StackParamList, 'Projects'>;
+}
+// https://reactnavigation.org/docs/typescript/ & b a
+
+export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({
+  navigation,
+}) => {
   return (
-    <View>
-      <Text>projects screen</Text>
-    </View>
+    <ScrollView>
+      <View style={styles.centerView}>
+        <Text>this is your project data</Text>
+        <Button
+          title="navigate to todos"
+          onPress={() => navigation.navigate('Todos')}
+        />
+      </View>
+    </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  centerView: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});

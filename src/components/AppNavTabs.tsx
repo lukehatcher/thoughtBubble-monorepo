@@ -1,11 +1,22 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { HomeScreen } from './HomeScreen';
+import { ProjectsNavStack } from './ProjectsNavStack';
+import { StatsScreen } from './StatsScreen';
 // import Ionicon from 'react-native-vector-icons/Ionicons';
 
 // similar to app.jsx for old app
 
-const Tab = createBottomTabNavigator();
+type TabsParamList = {
+  // all good here
+  Home: undefined;
+  Projects: undefined;
+  Stats: undefined;
+}; // https://reactnavigation.org/docs/typescript/
+
+const Tab = createBottomTabNavigator<TabsParamList>();
+
 interface AppNavTabsProps {}
 
 export const AppNavTabs: React.FC<AppNavTabsProps> = () => {
@@ -14,33 +25,36 @@ export const AppNavTabs: React.FC<AppNavTabsProps> = () => {
       <Tab.Navigator>
         <Tab.Screen
           name="Home"
-          component={Home}
-          options={{
-            title: 'Home',
-            tabBarIcon: (
-              { color, size }, // destruc. default options
-            ) => <Ionicon name="home" size={size} color={color} />,
-          }}
+          component={HomeScreen}
+          // ===== this would go in the tabsparamlist type
+          // initialParams={{ userId: user.id }}
+          // =====
+          // options={{
+          //   title: 'Home',
+          //   tabBarIcon: (
+          //     { color, size }, // destruc. default options
+          //   ) => <Ionicon name="home" size={size} color={color} />,
+          // }}
         />
         <Tab.Screen
           name="Projects"
-          component={ProjectStackNavigation} // projects stack
-          options={{
-            title: 'Projects',
-            tabBarIcon: (
-              { color, size }, // destruc. default options
-            ) => <Ionicon name="list" size={size} color={color} />,
-          }}
+          component={ProjectsNavStack} // projects stack
+          // options={{
+          //   title: 'Projects',
+          //   tabBarIcon: (
+          //     { color, size }, // destruc. default options
+          //   ) => <Ionicon name="list" size={size} color={color} />,
+          // }}
         />
         <Tab.Screen
           name="Stats"
-          component={Stats}
-          options={{
-            title: 'Stats',
-            tabBarIcon: (
-              { color, size }, // destruc. default options
-            ) => <Ionicon name="analytics" size={size} color={color} />,
-          }}
+          component={StatsScreen}
+          // options={{
+          //   title: 'Stats',
+          //   tabBarIcon: (
+          //     { color, size }, // destruc. default options
+          //   ) => <Ionicon name="analytics" size={size} color={color} />,
+          // }}
         />
       </Tab.Navigator>
     </NavigationContainer>
