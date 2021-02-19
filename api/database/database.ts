@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+// import mongoose = require("mongoose");
 
 mongoose.connect('mongodb://localhost/nativetest', { useNewUrlParser: true, useUnifiedTopology: true })
   .catch((err) => {
@@ -16,22 +17,20 @@ db.on('error', (err) => {
 });
 
 const userInfoSchema = new mongoose.Schema({
-  username: String,
-  password: String,
+  userSub: String, // edited
   projects: [{
     projectName: String,
     todos: [{
       text: String,
-      completed: Boolean, // edited
+      completed: Boolean,
     }],
   }],
 });
 
 // =======
-https://stackoverflow.com/questions/42275358/mongoose-property-x-does-not-exist-on-type-document
+// https://stackoverflow.com/questions/42275358/mongoose-property-x-does-not-exist-on-type-document
 interface UserDoc extends mongoose.Document {
-  username: String,
-  password: String,
+  userSub: String,
   projects: [{
     projectName: String,
     todos: [{
@@ -43,6 +42,7 @@ interface UserDoc extends mongoose.Document {
 // =======
 const UserInfo = mongoose.model<UserDoc>('userInfo', userInfoSchema);
 
+// ==========
 export const initUserdata = async (data) => {
   const doc = new UserInfo(data);
   try {
@@ -52,9 +52,20 @@ export const initUserdata = async (data) => {
   }
 };
 
+// =========
+
+export const checkIfUserExists = async (userSub) => {
+  try {
+    const exists = await UserInfo.findOne({ userSub });
+    return !!exists;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 export const getUserData = async (user) => {
   try {
-    const result = await UserInfo.findOne({ username: user });
+    const result = await UserInfo.findOne({ userSub: user });
     return result;
   } catch (err) {
     console.error(err);
@@ -62,7 +73,7 @@ export const getUserData = async (user) => {
 };
 
 export const deleteTodo = async (user, project, todo) => {
-  const doc = await UserInfo.findOne({ username: user });
+  const doc = await UserInfo.findOne({ userSub: user });
   const projectIdx = doc.projects
     .findIndex((item) => item.projectName === project);
   const todoIdx = doc.projects[projectIdx].todos
@@ -72,7 +83,7 @@ export const deleteTodo = async (user, project, todo) => {
 };
 
 export const deleteProject = async (user, project) => {
-  const doc = await UserInfo.findOne({ username: user });
+  const doc = await UserInfo.findOne({ userSub: user });
   const projectIdx = doc.projects
     .findIndex((item) => item.projectName === project);
   doc.projects.splice(projectIdx, 1);
@@ -80,7 +91,7 @@ export const deleteProject = async (user, project) => {
 };
 
 export const addProject = async (user, newProject) => {
-  const doc = await UserInfo.findOne({ username: user });
+  const doc = await UserInfo.findOne({ userSub: user });
   const emptyProj = {
     projectName: newProject,
     todos: [],
@@ -94,15 +105,15 @@ export const addTodo = async (user, project, newTodo) => {
     text: newTodo,
     completed: false,
   };
-  const doc = await UserInfo.findOne({ username: user });
+  const doc = await UserInfo.findOne({ userSub: user });
   const projectIdx = doc.projects
     .findIndex((item) => item.projectName === project);
   doc.projects[projectIdx].todos.push(todoObj);
   await doc.save();
 };
 
-export const toggleTodoCompletion = async (user, project, todo) => {
-  const doc = await UserInfo.findOne({ username: user });
+export const toggleTodoCompletion = async (userSub, project, todo) => {
+  const doc = await UserInfo.findOne({ userSub });
   const projectIdx = doc.projects
     .findIndex((item) => item.projectName === project);
   const todoIdx = doc.projects[projectIdx].todos
@@ -112,15 +123,9 @@ export const toggleTodoCompletion = async (user, project, todo) => {
   await doc.save();
 };
 
-export const validateLoginInfo = async (userName, passWord) => {
-  const validation = await UserInfo.find({ username: userName, password: passWord });
-  return validation.length > 0;
-};
-
 // ==== example data for testing database functions ====
 // const exData = {
 //   username: 'jon doe',
-//   password: '1234',
 //   projects: [{
 //     projectName: 'app1',
 //     todos: [
@@ -149,7 +154,6 @@ export const validateLoginInfo = async (userName, passWord) => {
 
 // const exAccountCreation = {
 //   username: 'jane doe',
-//   password: '1234',
 //   projects: [],
 // };
 

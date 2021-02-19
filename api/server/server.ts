@@ -21,37 +21,38 @@ app.get('/api/projects/get/:username', (req, res) => {
     });
 });
 
-app.get('/api/projects/validate', (req, res) => {
-  const { userName, passWord } = req.query;
-  db.validateLoginInfo(userName, passWord)
-    .then((response) => {
-      res.send(response); // boolean
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-});
-
+// ==========
 app.post('/api/projects/init', (req, res) => {
-  const { username, password } = req.body.params;
-  console.log(req.body);
+  const { userSub } = req.body;
+  if (!userSub) return res.sendStatus(400);
+
   const data = {
-    username,
-    password,
+    userSub,
     projects: [],
   };
-  db.initUserdata(data)
-    .then(() => {
-      res.sendStatus(201);
+
+  db.checkIfUserExists(userSub) // force break
+    .then((exists) => {
+      if (!exists) {
+        db.initUserdata(data)
+          .then(() => {
+            res.sendStatus(201);
+          })
+          .catch((err) => {
+            console.error('error initializing user in db', err);
+          });
+      } else {
+        res.sendStatus(200);
+      }
     })
-    .catch((err) => {
-      console.error('error initializing user in db', err);
-    });
+    .catch((err) => console.error(err));
 });
+// ==========
 
 app.delete('/api/projects/delete', (req, res) => {
   const { type, username, projectName, todo } = req.query;
-  if (type === 'todo') { // just deleting a todo from a project
+  if (type === 'todo') {
+    // just deleting a todo from a project
     db.deleteTodo(username, projectName, todo)
       .then(() => {
         console.log('database todo deletion sucess'); // jon doe
@@ -61,7 +62,8 @@ app.delete('/api/projects/delete', (req, res) => {
         console.error(err);
         res.sendStatus(400);
       });
-  } else if (type === 'project') { // deleting whole project
+  } else if (type === 'project') {
+    // deleting whole project
     db.deleteProject(username, projectName)
       .then(() => {
         console.log('database project deletion success');
