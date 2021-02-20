@@ -1,34 +1,27 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
-import {
-  View,
-  ScrollView,
-  Text,
-  Button,
-  StyleSheet,
-  TouchableOpacity,
-  Modal,
-} from 'react-native';
-
+import { View, ScrollView, Text, Button, StyleSheet, TouchableOpacity, Modal } from 'react-native';
+import { useSelector } from 'react-redux';
+import { RootState } from '../reducers/rootReducer'; // type
 import { StackParamList } from './ProjectsNavStack';
 
 interface ProjectsScreenProps {
   // all good here
+  // https://reactnavigation.org/docs/typescript/ & ben a
   navigation: StackNavigationProp<StackParamList, 'Projects'>;
 }
-// https://reactnavigation.org/docs/typescript/ & b a
 
-export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({
-  navigation,
-}) => {
+export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) => {
+
+  const selector = (state: RootState) => state.userData;
+  const userData = useSelector(selector);
+
   return (
     <ScrollView>
+      {console.log('userData', userData)}
       <View style={styles.centerView}>
-        <Text>this is your project data</Text>
-        <Button
-          title="navigate to todos"
-          onPress={() => navigation.navigate('Todos')}
-        />
+        <Text>{JSON.stringify(userData)}</Text>
+        <Button title="navigate to todos" onPress={() => navigation.navigate('Todos')} />
       </View>
     </ScrollView>
   );

@@ -3,7 +3,6 @@ import { JwtPayload } from 'jwt-decode';
 
 // thunk function
 export const storeUser = (jwt: JwtPayload | null) => {
-  console.log(jwt);
   // called from _onLogin util
   return async (dispatch) => {
     // add user to db if not exist
