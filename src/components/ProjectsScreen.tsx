@@ -13,6 +13,8 @@ import {
 import { useSelector } from 'react-redux';
 import { RootState } from '../reducers/rootReducer'; // type
 import { StackParamList } from './ProjectsNavStack';
+import { useDispatch } from 'react-redux';
+import { addProjectAction, deleteProjectAction } from '../actions/projectActions';
 
 interface ProjectsScreenProps {
   // all good here
@@ -23,9 +25,20 @@ interface ProjectsScreenProps {
 export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) => {
   const [modalView, setModalView] = useState(false);
   const [input, setInput] = useState('');
+  const dispatch = useDispatch();
+
   const selector = (state: RootState) => state.userData;
   const userProjectsData = useSelector(selector);
-  console.log(userProjectsData);
+  // if i have trouble with rerender, might want to just pass the id via params and then
+  // find the correct todo after searching throuch state from useSelector()
+
+  const handleProjectAddition = function (projectName) {
+    dispatch(addProjectAction(projectName));
+  };
+
+  const handleProjectDeletion = function (projectName) {
+    dispatch(deleteProjectAction(projectName));
+  };
 
   return (
     <ScrollView>
@@ -67,7 +80,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
               title="submit"
               onPress={() => {
                 setModalView(false);
-                handleProjectAddition(text);
+                handleProjectAddition(input.trim());
               }}
             />
           </TouchableOpacity>

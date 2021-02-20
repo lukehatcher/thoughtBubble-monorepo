@@ -9,7 +9,7 @@ import {
   Modal,
   TextInput,
 } from 'react-native';
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp } from '@react-navigation/native'; // type
 import { StackParamList } from './ProjectsNavStack';
 
 interface TodosScreenProps {
@@ -20,6 +20,8 @@ export const TodosScreen: React.FC<TodosScreenProps> = ({ route }) => {
   const [modalView, setModalView] = useState(false);
   const [input, setInput] = useState('');
   const todos = route.params.projectTodos.todos;
+  // if i have trouble with rerender, might want to just pass the id via params and then
+  // find the correct todo after searching throuch state from useSelector()
 
   return (
     <ScrollView>
