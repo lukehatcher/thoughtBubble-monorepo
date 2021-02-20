@@ -45,7 +45,8 @@ const styles = StyleSheet.create({
   },
 });
 
-// =============================================
+// ================== pre app render ========================
+// should move this code to a seperate file later
 
 checkForIdToken().then((res) => {
   // this function updates the store to match my asyncstorage before rendering app

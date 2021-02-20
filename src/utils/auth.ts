@@ -19,7 +19,7 @@ export const _onLogIn = function () {
       const decodedJwt = jwtDecode<JwtPayload>(credentials.idToken);
       await persistidToken(decodedJwt); // update async storage
       store.dispatch(changeLoginStatus(true));
-      store.dispatch(storeUser(decodedJwt));
+      store.dispatch(storeUser(decodedJwt)); // also adds user to db if needed
     })
     .catch((err) => console.error(err, 'error logging into auth0'));
 };
