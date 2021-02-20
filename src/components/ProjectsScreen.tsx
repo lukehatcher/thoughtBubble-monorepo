@@ -1,6 +1,15 @@
 import { StackNavigationProp } from '@react-navigation/stack';
-import React from 'react';
-import { View, ScrollView, Text, Button, StyleSheet, TouchableOpacity, Modal } from 'react-native';
+import React, { useState } from 'react';
+import {
+  View,
+  ScrollView,
+  Text,
+  Button,
+  StyleSheet,
+  TouchableOpacity,
+  Modal,
+  TextInput,
+} from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../reducers/rootReducer'; // type
 import { StackParamList } from './ProjectsNavStack';
@@ -12,23 +21,89 @@ interface ProjectsScreenProps {
 }
 
 export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) => {
-
+  const [modalView, setModalView] = useState(false);
+  const [input, setInput] = useState('');
   const selector = (state: RootState) => state.userData;
-  const userData = useSelector(selector);
+  const userProjectsData = useSelector(selector);
+  console.log(userProjectsData);
 
   return (
     <ScrollView>
-      {console.log('userData', userData)}
-      <View style={styles.centerView}>
-        <Text>{JSON.stringify(userData)}</Text>
-        <Button title="navigate to todos" onPress={() => navigation.navigate('Todos')} />
-      </View>
+      <ScrollView>
+        {userProjectsData.map((project) => (
+          <TouchableOpacity
+            key={Math.random()}
+            style={styles.view}
+            onPress={() => navigation.navigate('Todos', { projectTodos: project })} // pass project todos to todo view
+          >
+            <Text style={styles.text}>{project.projectName}</Text>
+            <Button
+              title="🗑"
+              onPress={() => {
+                handleProjectDeletion(project.projectName);
+              }}
+            />
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+      <TouchableOpacity
+        style={styles.plusButton}
+        onPress={() => {
+          setModalView(true);
+        }}
+      >
+        <Text>+</Text>
+        {/* <Ionicon name="add-circle" size={34} /> */}
+      </TouchableOpacity>
+      <Modal style={styles.modal} animationType="slide" visible={modalView}>
+        <View style={styles.modal}>
+          <TextInput
+            onChangeText={(text) => setInput(text)}
+            placeholder="add a new project"
+            multiline
+          />
+          <TouchableOpacity>
+            <Button
+              title="submit"
+              onPress={() => {
+                setModalView(false);
+                handleProjectAddition(text);
+              }}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Button
+              title="cancel"
+              onPress={() => {
+                setModalView(false);
+              }}
+            />
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  centerView: {
+  view: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderBottomColor: 'gray',
+    borderBottomWidth: 1,
+  },
+  text: {
+    fontSize: 20,
+    flex: 1,
+    padding: 15,
+  },
+  plusButton: {
+    alignItems: 'center',
+    padding: 15,
+  },
+  modal: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
