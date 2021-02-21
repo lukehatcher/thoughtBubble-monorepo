@@ -16,6 +16,7 @@ import { StackParamList } from './ProjectsNavStack';
 import { useDispatch } from 'react-redux';
 import { addProjectAction, deleteProjectAction } from '../actions/projectActions';
 import Ionicon from 'react-native-vector-icons/Ionicons';
+import { SwipeListView } from 'react-native-swipe-list-view';
 
 interface ProjectsScreenProps {
   // all good here
