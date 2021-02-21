@@ -15,6 +15,7 @@ import { RootState } from '../reducers/rootReducer'; // type
 import { StackParamList } from './ProjectsNavStack';
 import { useDispatch } from 'react-redux';
 import { addProjectAction, deleteProjectAction } from '../actions/projectActions';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 
 interface ProjectsScreenProps {
   // all good here
@@ -65,8 +66,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
           setModalView(true);
         }}
       >
-        <Text>+</Text>
-        {/* <Ionicon name="add-circle" size={34} /> */}
+        <Ionicon name="add-circle" size={34} />
       </TouchableOpacity>
       <Modal style={styles.modal} animationType="slide" visible={modalView}>
         <View style={styles.modal}>
