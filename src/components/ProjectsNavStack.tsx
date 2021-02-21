@@ -6,7 +6,9 @@ import { TodosScreen } from './TodosScreen';
 export type StackParamList = {
   // all good here
   Projects: undefined;
-  Todos: undefined;
+  Todos: {
+    projectName: string // should be id
+    };
 };
 
 const ProjectStack = createStackNavigator<StackParamList>();

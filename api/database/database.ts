@@ -63,9 +63,9 @@ export const checkIfUserExists = async (userSub) => {
   }
 }
 
-export const getUserData = async (user) => {
+export const getUserData = async (userSub) => {
   try {
-    const result = await UserInfo.findOne({ userSub: user });
+    const result = await UserInfo.findOne({ userSub });
     return result;
   } catch (err) {
     console.error(err);

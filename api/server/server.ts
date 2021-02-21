@@ -8,10 +8,9 @@ const app = express();
 app.use(morgan('dev'));
 app.use(express.json());
 
-app.get('/api/projects/get/:username', (req, res) => {
-  const { username } = req.params;
-
-  db.getUserData(username)
+app.get('/api/projects/fetch', (req, res) => {
+  const { userSub } = req.query;
+  db.getUserData(userSub)
     .then((data) => {
       res.send(data);
     })
@@ -30,6 +29,28 @@ app.post('/api/projects/init', (req, res) => {
     userSub,
     projects: [],
   };
+
+  // const data = {
+  //   userSub,
+  //   projects: [
+  //     {
+  //       projectName: 'app1',
+  //       todos: [
+  //         { text: 'build', completed: false },
+  //         { text: 'edit', completed: false },
+  //         { text: 'compile', completed: true },
+  //       ],
+  //     },
+  //     {
+  //       projectName: 'app12',
+  //       todos: [
+  //         { text: 'do the thing', completed: false },
+  //         { text: 'do more', completed: false },
+  //         { text: 'get it', completed: true },
+  //       ],
+  //     },
+  //   ],
+  // };
 
   db.checkIfUserExists(userSub) // force break
     .then((exists) => {

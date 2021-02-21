@@ -15,6 +15,7 @@ import { _onLogIn } from './src/utils/auth';
 import { checkForIdToken } from './src/utils/asyncStorage';
 import { changeLoginStatus } from './src/actions/loginStatusAction';
 import { storeUser } from './src/actions/storeUserAction';
+import { fetchDataAction } from './src/actions/fetchDataAction';
 import { RootState } from './src/reducers/rootReducer'; // type
 import store from './src/store';
 
@@ -48,11 +49,12 @@ const styles = StyleSheet.create({
 // ================== pre app render ========================
 // should move this code to a seperate file later
 
-checkForIdToken().then((res) => {
+checkForIdToken().then((res) => { // res is the 
   // this function updates the store to match my asyncstorage before rendering app
   const status = res !== null;
   store.dispatch(changeLoginStatus(status)); // store login status
   store.dispatch(storeUser(res)); // store users jwt if theres one in asyncstorage
+  store.dispatch(fetchDataAction(res.sub)); // store all data
 });
 
 // wrap app with redux provider
