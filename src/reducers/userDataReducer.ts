@@ -49,6 +49,22 @@ export const UserDataReducer = (state = initialState, action): userData[] => {
           };
         }
       });
+    case 'todoStatusChange':
+      return state.map((item) => {
+        if (item.projectName !== payload.projectName) {
+          return { ...item };
+        } else {
+          return {
+            ...item,
+            todos: item.todos.map((todo) => {
+              if (todo.text === payload.todo) {
+                todo.completed = !todo.completed;
+              }
+              return todo;
+            }),
+          };
+        }
+      });
     default:
       return state;
   }

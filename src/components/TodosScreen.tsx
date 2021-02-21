@@ -12,7 +12,7 @@ import {
 import { RouteProp } from '@react-navigation/native'; // type
 import { StackParamList } from './ProjectsNavStack';
 import { useDispatch, useSelector } from 'react-redux';
-import { addProjectAction, deleteProjectAction } from '../actions/todoActions';
+import { addTodoAction, deleteTodoAction, todoStatusChangeAction } from '../actions/todoActions';
 import { RootState } from '../reducers/rootReducer'; // type
 
 interface TodosScreenProps {
@@ -27,14 +27,18 @@ export const TodosScreen: React.FC<TodosScreenProps> = ({ route }) => {
 
   const selector = (state: RootState) =>
     state.userData.find((i) => i.projectName === projectName).todos;
-  const todos = useSelector(selector);
+  const todos = useSelector(selector); // retrive which project's todos we're on
 
-  const handleTodoAddition = function (todo: string) {
-    dispatch(addProjectAction(projectName, todo));
+  const handleTodoAddition = (todo: string) => {
+    dispatch(addTodoAction(projectName, todo));
   };
 
-  const handleTodoDelete = function (todo: string) {
-    dispatch(deleteProjectAction(projectName, todo));
+  const handleTodoDelete = (todo: string) => {
+    dispatch(deleteTodoAction(projectName, todo));
+  };
+
+  const handleTodoStatusChange = (todo: string) => {
+    dispatch(todoStatusChangeAction(projectName, todo));
   };
 
   return (
@@ -53,7 +57,7 @@ export const TodosScreen: React.FC<TodosScreenProps> = ({ route }) => {
             <Button
               title="✅"
               onPress={() => {
-                handleTodoCompletion(item.text);
+                handleTodoStatusChange(item.text);
               }}
             />
           </TouchableOpacity>

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const addProjectAction = (projectName: string, todo: string) => {
+export const addTodoAction = (projectName: string, todo: string) => {
   return async (dispatch, getState) => {
     const userSub = getState().storedUser.sub;
     try {
@@ -16,12 +16,12 @@ export const addProjectAction = (projectName: string, todo: string) => {
           dispatch({ type: 'addTodo', payload: { projectName, todo } });
         });
     } catch (err) {
-      console.error('todoActions.ts: ', err);
+      console.error('addProjectAction @todoActions.ts: ', err);
     }
   };
 };
 
-export const deleteProjectAction = (projectName: string, todo: string) => {
+export const deleteTodoAction = (projectName: string, todo: string) => {
   return async (dispatch, getState) => {
     const userSub = getState().storedUser.sub;
     try {
@@ -38,7 +38,27 @@ export const deleteProjectAction = (projectName: string, todo: string) => {
           dispatch({ type: 'deleteTodo', payload: { projectName, todo } });
         });
     } catch (err) {
-      console.error('todoActions.ts: ', err);
+      console.error('deleteProjectAction @todoActions.ts: ', err);
+    }
+  };
+};
+
+export const todoStatusChangeAction = (projectName: string, todo: string) => {
+  return async (dispatch, getState) => {
+    const userSub = getState().storedUser.sub;
+    try {
+      axios
+        .put('http://localhost:3001/api/projects/put', {
+          type: 'todo',
+          username: userSub,
+          projectName,
+          todo,
+        })
+        .then((res) => {
+          dispatch({ type: 'todoStatusChange', payload: { projectName, todo } });
+        });
+    } catch (err) {
+      console.error('todoStatusChangeAction @todoActions.ts: ', err);
     }
   };
 };
