@@ -14,6 +14,7 @@ import { StackParamList } from './ProjectsNavStack';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTodoAction, deleteTodoAction, todoStatusChangeAction } from '../actions/todoActions';
 import { RootState } from '../reducers/rootReducer'; // type
+import Ionicon from 'react-native-vector-icons/Ionicons';
 
 interface TodosScreenProps {
   route: RouteProp<StackParamList, 'Todos'>;
@@ -69,8 +70,7 @@ export const TodosScreen: React.FC<TodosScreenProps> = ({ route }) => {
           setModalView(true); // pass param
         }}
       >
-        <Text>+</Text>
-        {/* <Ionicon name="add-circle" size={34} /> */}
+        <Ionicon name="add-circle" size={34} />
       </TouchableOpacity>
       {/* ============ modal ============ */}
       <Modal style={styles.modal} animationType="slide" visible={modalView}>
