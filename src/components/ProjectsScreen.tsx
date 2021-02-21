@@ -47,7 +47,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
           <TouchableOpacity
             key={Math.random()}
             style={styles.view}
-            onPress={() => navigation.navigate('Todos', { projectTodos: project })} // pass project todos to todo view
+            onPress={() => navigation.navigate('Todos', { projectName: project.projectName })} // pass project todos to todo view
           >
             <Text style={styles.text}>{project.projectName}</Text>
             <Button

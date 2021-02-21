@@ -7,12 +7,8 @@ export type StackParamList = {
   // all good here
   Projects: undefined;
   Todos: {
-    projectTodos: {
-      _id: string;
-      projectname: string;
-      todos: any[]
+    projectName: string // should be id
     };
-  };
 };
 
 const ProjectStack = createStackNavigator<StackParamList>();

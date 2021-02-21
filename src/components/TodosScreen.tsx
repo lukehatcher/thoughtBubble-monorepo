@@ -11,6 +11,9 @@ import {
 } from 'react-native';
 import { RouteProp } from '@react-navigation/native'; // type
 import { StackParamList } from './ProjectsNavStack';
+import { useDispatch, useSelector } from 'react-redux';
+import { addProjectAction, deleteProjectAction } from '../actions/todoActions';
+import { RootState } from '../reducers/rootReducer'; // type
 
 interface TodosScreenProps {
   route: RouteProp<StackParamList, 'Todos'>;
@@ -19,9 +22,20 @@ interface TodosScreenProps {
 export const TodosScreen: React.FC<TodosScreenProps> = ({ route }) => {
   const [modalView, setModalView] = useState(false);
   const [input, setInput] = useState('');
-  const todos = route.params.projectTodos.todos;
-  // if i have trouble with rerender, might want to just pass the id via params and then
-  // find the correct todo after searching throuch state from useSelector()
+  const dispatch = useDispatch();
+  const { projectName } = route.params; // should be id being passed D:
+
+  const selector = (state: RootState) =>
+    state.userData.find((i) => i.projectName === projectName).todos;
+  const todos = useSelector(selector);
+
+  const handleTodoAddition = function (todo: string) {
+    dispatch(addProjectAction(projectName, todo));
+  };
+
+  const handleTodoDelete = function (todo: string) {
+    dispatch(deleteProjectAction(projectName, todo));
+  };
 
   return (
     <ScrollView>
@@ -66,8 +80,8 @@ export const TodosScreen: React.FC<TodosScreenProps> = ({ route }) => {
             <Button
               title="submit"
               onPress={() => {
-                setModalVisible(false);
-                handleTodoAddition(text);
+                setModalView(false);
+                handleTodoAddition(input);
               }}
             />
           </TouchableOpacity>
