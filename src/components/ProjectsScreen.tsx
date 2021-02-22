@@ -19,7 +19,6 @@ import { useDispatch } from 'react-redux';
 import { addProjectAction, deleteProjectAction } from '../actions/projectActions';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import { SwipeListView } from 'react-native-swipe-list-view';
-import RNGestureHandlerButton from 'react-native-gesture-handler/dist/src/components/GestureHandlerButton';
 
 interface ProjectsScreenProps {
   // all good here
@@ -34,10 +33,6 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
 
   const selector = (state: RootState) => state.userData;
   let userProjectsData = useSelector(selector);
-  userProjectsData = userProjectsData.map((i) => {
-    i.key = i._id; // https://github.com/jemise111/react-native-swipe-list-view#usage
-    return i;
-  });
 
   const handleProjectAddition = function (projectName: string) {
     dispatch(addProjectAction(projectName));
@@ -57,7 +52,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
     <TouchableHighlight
       onPress={() => navigation.navigate('Todos', { projectName: data.item.projectName })}
       style={styles.rowFront}
-      underlayColor={'#DDDDDD'} // on press color
+      underlayColor={'#DDD'} // on press color
     >
       <Text style={styles.text}>{data.item.projectName}</Text>
     </TouchableHighlight>
@@ -69,13 +64,13 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
         style={[styles.backRightBtn, styles.backRightBtnLeft]}
         onPress={() => closeRow(rowMap, data.item.key)}
       >
-        <Text style={styles.backTextWhite}>Close</Text>
+        <Ionicon name="close-circle-outline" size={25} color="white" />
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnRight]}
         onPress={() => handleProjectDeletion(data.item.projectName)}
       >
-        <Text style={styles.backTextWhite}>Delete</Text>
+        <Ionicon name="trash-outline" size={25} color="white" />
       </TouchableOpacity>
     </View>
   );
@@ -93,14 +88,12 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
       {/* ========================================== */}
       <View style={styles.container}>
         <SwipeListView
-          data={userProjectsData}
+          data={userProjectsData.map((i) => ({ ...i, key: i._id.toString() }))} // swipeviewlist api requires key prop
           renderItem={renderItem}
           renderHiddenItem={renderHiddenItem}
           disableRightSwipe
           closeOnScroll
-          // stopRightSwipe={-170}
           rightOpenValue={-150}
-          previewRowKey={'0'}
           previewOpenValue={-40}
         />
         <TouchableOpacity
@@ -161,9 +154,6 @@ const styles = StyleSheet.create({
   }, // new============= below
   container: {
     flex: 1,
-  },
-  backTextWhite: {
-    color: '#FFF',
   },
   rowFront: {
     alignItems: 'center',
