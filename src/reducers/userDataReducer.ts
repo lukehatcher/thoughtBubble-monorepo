@@ -5,6 +5,7 @@ interface userData {
   _id: string;
   projectName: string;
   todos: any[];
+  key?: string; // https://github.com/jemise111/react-native-swipe-list-view#usage
 }
 
 export const UserDataReducer = (state = initialState, action): userData[] => {

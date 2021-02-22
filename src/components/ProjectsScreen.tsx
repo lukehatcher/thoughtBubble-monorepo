@@ -9,6 +9,8 @@ import {
   TouchableOpacity,
   Modal,
   TextInput,
+  TouchableHighlight,
+  LogBox,
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../reducers/rootReducer'; // type
@@ -16,6 +18,8 @@ import { StackParamList } from './ProjectsNavStack';
 import { useDispatch } from 'react-redux';
 import { addProjectAction, deleteProjectAction } from '../actions/projectActions';
 import Ionicon from 'react-native-vector-icons/Ionicons';
+import { SwipeListView } from 'react-native-swipe-list-view';
+import RNGestureHandlerButton from 'react-native-gesture-handler/dist/src/components/GestureHandlerButton';
 
 interface ProjectsScreenProps {
   // all good here
@@ -29,45 +33,86 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
   const dispatch = useDispatch();
 
   const selector = (state: RootState) => state.userData;
-  const userProjectsData = useSelector(selector);
-  // if i have trouble with rerender, might want to just pass the id via params and then
-  // find the correct todo after searching throuch state from useSelector()
+  let userProjectsData = useSelector(selector);
+  userProjectsData = userProjectsData.map((i) => {
+    i.key = i._id; // https://github.com/jemise111/react-native-swipe-list-view#usage
+    return i;
+  });
 
-  const handleProjectAddition = function (projectName) {
+  const handleProjectAddition = function (projectName: string) {
     dispatch(addProjectAction(projectName));
   };
 
-  const handleProjectDeletion = function (projectName) {
+  const handleProjectDeletion = function (projectName: string) {
     dispatch(deleteProjectAction(projectName));
   };
 
+  const closeRow = (rowMap, rowKey) => {
+    if (rowMap[rowKey]) {
+      rowMap[rowKey].closeRow();
+    }
+  };
+
+  const renderItem = (data) => (
+    <TouchableHighlight
+      onPress={() => navigation.navigate('Todos', { projectName: data.item.projectName })}
+      style={styles.rowFront}
+      underlayColor={'#DDDDDD'} // on press color
+    >
+      <Text style={styles.text}>{data.item.projectName}</Text>
+    </TouchableHighlight>
+  );
+
+  const renderHiddenItem = (data, rowMap) => (
+    <View style={styles.rowFront}>
+      <TouchableOpacity
+        style={[styles.backRightBtn, styles.backRightBtnLeft]}
+        onPress={() => closeRow(rowMap, data.item.key)}
+      >
+        <Text style={styles.backTextWhite}>Close</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.backRightBtn, styles.backRightBtnRight]}
+        onPress={() => handleProjectDeletion(data.item.projectName)}
+      >
+        <Text style={styles.backTextWhite}>Delete</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  // 1.) ignore warning since im using a flatlist (SwipeListview) in a scrollview
+  // inorder to fix my + button on the bottom
+  // 2.) https://github.com/jemise111/react-native-swipe-list-view/issues/388
+  LogBox.ignoreLogs([
+    'VirtualizedLists should never be nested',
+    "Sending 'onAnimatedValueUpdate' with no listeners registered",
+  ]);
+
   return (
     <ScrollView>
-      <ScrollView>
-        {userProjectsData.map((project) => (
-          <TouchableOpacity
-            key={Math.random()}
-            style={styles.view}
-            onPress={() => navigation.navigate('Todos', { projectName: project.projectName })} // pass project todos to todo view
-          >
-            <Text style={styles.text}>{project.projectName}</Text>
-            <Button
-              title="🗑"
-              onPress={() => {
-                handleProjectDeletion(project.projectName);
-              }}
-            />
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-      <TouchableOpacity
-        style={styles.plusButton}
-        onPress={() => {
-          setModalView(true);
-        }}
-      >
-        <Ionicon name="add-circle" size={34} />
-      </TouchableOpacity>
+      {/* ========================================== */}
+      <View style={styles.container}>
+        <SwipeListView
+          data={userProjectsData}
+          renderItem={renderItem}
+          renderHiddenItem={renderHiddenItem}
+          disableRightSwipe
+          closeOnScroll
+          // stopRightSwipe={-170}
+          rightOpenValue={-150}
+          previewRowKey={'0'}
+          previewOpenValue={-40}
+        />
+        <TouchableOpacity
+          style={styles.plusButton}
+          onPress={() => {
+            setModalView(true);
+          }}
+        >
+          <Ionicon name="add-circle" size={34} />
+        </TouchableOpacity>
+      </View>
+      {/* ===================make modal component======================= */}
       <Modal style={styles.modal} animationType="slide" visible={modalView}>
         <View style={styles.modal}>
           <TextInput
@@ -99,14 +144,6 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
 };
 
 const styles = StyleSheet.create({
-  view: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderBottomColor: 'gray',
-    borderBottomWidth: 1,
-  },
   text: {
     fontSize: 20,
     flex: 1,
@@ -115,10 +152,49 @@ const styles = StyleSheet.create({
   plusButton: {
     alignItems: 'center',
     padding: 15,
+    backgroundColor: '#f2f2f2',
   },
   modal: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  }, // new============= below
+  container: {
+    flex: 1,
+  },
+  backTextWhite: {
+    color: '#FFF',
+  },
+  rowFront: {
+    alignItems: 'center',
+    backgroundColor: '#f2f2f2',
+    borderBottomColor: 'grey',
+    borderBottomWidth: 1,
+    justifyContent: 'center',
+    height: 50,
+  },
+  rowBack: {
+    alignItems: 'center',
+    backgroundColor: '#DDD',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingLeft: 15,
+  },
+  backRightBtn: {
+    alignItems: 'center',
+    bottom: 0,
+    justifyContent: 'center',
+    position: 'absolute',
+    top: 0,
+    width: 75,
+  },
+  backRightBtnLeft: {
+    backgroundColor: 'rgb(0, 122, 255)', // apple ios colors (light)
+    right: 75,
+  },
+  backRightBtnRight: {
+    backgroundColor: 'rgb(255, 59, 48)', // apple ios colors (light)
+    right: 0,
   },
 });
