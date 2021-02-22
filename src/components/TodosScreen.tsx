@@ -10,6 +10,7 @@ import {
   TextInput,
   TouchableHighlight,
   LogBox,
+  Alert,
 } from 'react-native';
 import { RouteProp } from '@react-navigation/native'; // type
 import { StackParamList } from './ProjectsNavStack';
@@ -34,6 +35,10 @@ export const TodosScreen: React.FC<TodosScreenProps> = ({ route }) => {
   let todos = useSelector(selector); // retrive todos for the project we're on
 
   const handleTodoAddition = (todo: string) => {
+    if (!todo) {
+      Alert.alert('invalid input');
+      return;
+    }
     dispatch(addTodoAction(projectName, todo));
   };
 
@@ -87,6 +92,9 @@ export const TodosScreen: React.FC<TodosScreenProps> = ({ route }) => {
     </View>
   );
 
+  // 1.) ignore warning since im using a flatlist (SwipeListview) in a scrollview
+  // inorder to fix my + button on the bottom
+  // 2.) https://github.com/jemise111/react-native-swipe-list-view/issues/388
   LogBox.ignoreLogs([
     'VirtualizedLists should never be nested',
     "Sending 'onAnimatedValueUpdate' with no listeners registered",
@@ -115,25 +123,27 @@ export const TodosScreen: React.FC<TodosScreenProps> = ({ route }) => {
         </TouchableOpacity>
       </View>
       {/* ============ modal ============ */}
-      <Modal style={styles.modal} animationType="slide" visible={modalView}>
+      <Modal animationType="slide" visible={modalView}>
         <View style={styles.modal}>
           <TextInput
             onChangeText={(text) => setInput(text)}
-            placeholder="add your new todo"
+            placeholder="add a new thought"
             multiline
           />
-          <TouchableOpacity>
+          <TouchableOpacity style={styles.btn1}>
             <Button
               title="submit"
+              color="white"
               onPress={() => {
                 setModalView(false);
-                handleTodoAddition(input);
+                handleTodoAddition(input.trim());
               }}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity style={styles.btn2}>
             <Button
               title="cancel"
+              color="grey"
               onPress={() => {
                 setModalView(false);
               }}
@@ -175,6 +185,45 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  textInput: {
+    borderBottomColor: 'grey',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    width: 250,
+  },
+  btn1: {
+    backgroundColor: 'grey',
+    borderRadius: 15,
+    padding: 6,
+    margin: 10,
+    marginTop: 25,
+    width: 250,
+    // shadow
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  btn2: {
+    borderRadius: 15,
+    borderColor: 'grey',
+    borderWidth: 2,
+    padding: 6,
+    margin: 8,
+    width: 250,
+    // shadow
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  }, // new ================
   container: {
     flex: 1,
   },

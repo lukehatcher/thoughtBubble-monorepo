@@ -11,6 +11,7 @@ import {
   TextInput,
   TouchableHighlight,
   LogBox,
+  Alert,
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../reducers/rootReducer'; // type
@@ -35,6 +36,10 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
   let userProjectsData = useSelector(selector);
 
   const handleProjectAddition = function (projectName: string) {
+    if (!projectName) {
+      Alert.alert('invalid input');
+      return;
+    }
     dispatch(addProjectAction(projectName));
   };
 
@@ -43,22 +48,25 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
   };
 
   const closeRow = (rowMap, rowKey) => {
+    // for slidables
     if (rowMap[rowKey]) {
       rowMap[rowKey].closeRow();
     }
   };
 
   const renderItem = (data) => (
+    // for slidables
     <TouchableHighlight
       onPress={() => navigation.navigate('Todos', { projectName: data.item.projectName })}
       style={styles.rowFront}
-      underlayColor={'#DDD'} // on press color
+      underlayColor={'#DDD'}
     >
       <Text style={styles.text}>{data.item.projectName}</Text>
     </TouchableHighlight>
   );
 
   const renderHiddenItem = (data, rowMap) => (
+    // for slidables
     <View style={styles.rowFront}>
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnLeft]}
@@ -105,26 +113,29 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
           <Ionicon name="add-circle" size={34} />
         </TouchableOpacity>
       </View>
-      {/* ===================make modal component======================= */}
-      <Modal style={styles.modal} animationType="slide" visible={modalView}>
+      {/* =================== modal component ======================= */}
+      <Modal animationType="slide" visible={modalView}>
         <View style={styles.modal}>
           <TextInput
             onChangeText={(text) => setInput(text)}
             placeholder="add a new project"
             multiline
+            style={styles.textInput}
           />
-          <TouchableOpacity>
+          <TouchableOpacity style={styles.btn1}>
             <Button
               title="submit"
+              color="white"
               onPress={() => {
                 setModalView(false);
                 handleProjectAddition(input.trim());
               }}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity style={styles.btn2}>
             <Button
               title="cancel"
+              color="grey"
               onPress={() => {
                 setModalView(false);
               }}
@@ -151,7 +162,46 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  }, // new============= below
+  },
+  textInput: {
+    borderBottomColor: 'grey',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    width: 250,
+  },
+  btn1: {
+    backgroundColor: 'grey',
+    borderRadius: 15,
+    padding: 6,
+    margin: 10,
+    marginTop: 25,
+    width: 250,
+    // shadow
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  btn2: {
+    borderRadius: 15,
+    borderColor: 'grey',
+    borderWidth: 2,
+    padding: 6,
+    margin: 8,
+    width: 250,
+    // shadow
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  }, // new ================
   container: {
     flex: 1,
   },
