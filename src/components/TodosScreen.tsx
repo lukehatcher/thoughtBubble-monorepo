@@ -92,16 +92,11 @@ export const TodosScreen: React.FC<TodosScreenProps> = ({ route }) => {
     </View>
   );
 
-  // 1.) ignore warning since im using a flatlist (SwipeListview) in a scrollview
-  // inorder to fix my + button on the bottom
-  // 2.) https://github.com/jemise111/react-native-swipe-list-view/issues/388
-  LogBox.ignoreLogs([
-    'VirtualizedLists should never be nested',
-    "Sending 'onAnimatedValueUpdate' with no listeners registered",
-  ]);
+  // https://github.com/jemise111/react-native-swipe-list-view/issues/388
+  LogBox.ignoreLogs(["Sending 'onAnimatedValueUpdate' with no listeners registered"]);
 
   return (
-    <ScrollView>
+    <>
       {/* =================== */}
       <View style={styles.container}>
         <SwipeListView
@@ -113,14 +108,6 @@ export const TodosScreen: React.FC<TodosScreenProps> = ({ route }) => {
           rightOpenValue={-150}
           previewOpenValue={-40}
         />
-        <TouchableOpacity
-          style={styles.plusButton}
-          onPress={() => {
-            setModalView(true);
-          }}
-        >
-          <Ionicon name="add-circle" size={34} />
-        </TouchableOpacity>
       </View>
       {/* ============ modal ============ */}
       <Modal animationType="slide" visible={modalView}>
@@ -151,23 +138,33 @@ export const TodosScreen: React.FC<TodosScreenProps> = ({ route }) => {
           </TouchableOpacity>
         </View>
       </Modal>
-    </ScrollView>
+      <TouchableOpacity style={styles.plusBtnContainer} onPress={() => setModalView(true)}>
+        <Ionicon name="add-circle" size={80} style={styles.plusBtn} color="rgb(58, 58, 60)" />
+      </TouchableOpacity>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  view: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderBottomColor: 'gray',
-    borderBottomWidth: 1,
-  },
   text: {
     fontSize: 20,
     flex: 1,
     padding: 15,
+  },
+  plusBtnContainer: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+  },
+  plusBtn: {
+    shadowColor: '#000', // improve shadow
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.48,
+    shadowRadius: 13.0,
+    elevation: 24,
   },
   textCompleted: {
     textDecorationLine: 'line-through',
