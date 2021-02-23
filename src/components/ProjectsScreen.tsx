@@ -83,16 +83,11 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
     </View>
   );
 
-  // 1.) ignore warning since im using a flatlist (SwipeListview) in a scrollview
-  // inorder to fix my + button on the bottom
-  // 2.) https://github.com/jemise111/react-native-swipe-list-view/issues/388
-  LogBox.ignoreLogs([
-    'VirtualizedLists should never be nested',
-    "Sending 'onAnimatedValueUpdate' with no listeners registered",
-  ]);
+  // https://github.com/jemise111/react-native-swipe-list-view/issues/388
+  LogBox.ignoreLogs(["Sending 'onAnimatedValueUpdate' with no listeners registered"]);
 
   return (
-    <ScrollView>
+    <>
       {/* ========================================== */}
       <View style={styles.container}>
         <SwipeListView
@@ -104,14 +99,6 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
           rightOpenValue={-150}
           previewOpenValue={-40}
         />
-        <TouchableOpacity
-          style={styles.plusButton}
-          onPress={() => {
-            setModalView(true);
-          }}
-        >
-          <Ionicon name="add-circle" size={34} />
-        </TouchableOpacity>
       </View>
       {/* =================== modal component ======================= */}
       <Modal animationType="slide" visible={modalView}>
@@ -121,11 +108,13 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
             placeholder="add a new project"
             multiline
             style={styles.textInput}
+            keyboardAppearance="dark"
+            placeholderTextColor="rgb(199, 199, 204)"
           />
           <TouchableOpacity style={styles.btn1}>
             <Button
               title="submit"
-              color="white"
+              color="#121212"
               onPress={() => {
                 setModalView(false);
                 handleProjectAddition(input.trim());
@@ -143,75 +132,81 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
           </TouchableOpacity>
         </View>
       </Modal>
-    </ScrollView>
+      <TouchableOpacity style={styles.plusBtnContainer} onPress={() => setModalView(true)}>
+        <Ionicon name="add-circle" size={80} style={styles.plusBtn} color="#6200EE" />
+        {/* "rgb(58, 58, 60)" */}
+      </TouchableOpacity>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
+  dark: {
+    backgroundColor: 'rgb(44, 44, 46)',
+  },
   text: {
     fontSize: 20,
     flex: 1,
     padding: 15,
+    color: 'rgb(199, 199, 204)',
+    // textAlign: 'left',
   },
-  plusButton: {
-    alignItems: 'center',
-    padding: 15,
-    backgroundColor: '#f2f2f2',
+  plusBtnContainer: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+  },
+  plusBtn: {
+    shadowColor: '#000', // improve shadow
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.48,
+    shadowRadius: 13.0,
+    elevation: 24,
   },
   modal: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#121212',
   },
   textInput: {
-    borderBottomColor: 'grey',
+    borderBottomColor: 'rgb(199, 199, 204)',
     borderBottomWidth: StyleSheet.hairlineWidth,
     width: 250,
+    color: 'rgb(199, 199, 204)',
   },
   btn1: {
-    backgroundColor: 'grey',
+    backgroundColor: '#6A0DAD',
     borderRadius: 15,
     padding: 6,
     margin: 10,
     marginTop: 25,
     width: 250,
-    // shadow
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
   btn2: {
+    // color: '#6A0DAD',
     borderRadius: 15,
-    borderColor: 'grey',
+    borderColor: '#6A0DAD',
     borderWidth: 2,
     padding: 6,
     margin: 8,
     width: 250,
-    // shadow
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
   }, // new ================
   container: {
     flex: 1,
+    backgroundColor: '#121212',
   },
   rowFront: {
+    backgroundColor: '#303030',
     alignItems: 'center',
-    backgroundColor: '#f2f2f2',
     borderBottomColor: 'grey',
     borderBottomWidth: 1,
     justifyContent: 'center',
     height: 50,
+    marginTop: 10,
   },
   rowBack: {
     alignItems: 'center',

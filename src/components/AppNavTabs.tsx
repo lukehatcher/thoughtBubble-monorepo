@@ -22,18 +22,25 @@ interface AppNavTabsProps {}
 export const AppNavTabs: React.FC<AppNavTabsProps> = () => {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
+      <Tab.Navigator
+        initialRouteName="Projects"
+        tabBarOptions={{
+          activeTintColor: '#6200EE', // purple
+          inactiveTintColor: 'rgb(199, 199, 204)', // ios grey
+          showLabel: false,
+          style: {
+            backgroundColor: '#212121', // ios grey
+          },
+        }}
+      >
         <Tab.Screen
           name="Home"
           component={HomeScreen}
-          // ===== this would go in the tabsparamlist type
-          // initialparams...
-          // =====
           options={{
             title: 'Home',
             tabBarIcon: (
               { color, size }, // destruc. default options
-            ) => <Ionicon name="home" size={size} color={color} />,
+            ) => <Ionicon name="home" size={30} color={color} />,
           }}
         />
         <Tab.Screen
@@ -43,7 +50,7 @@ export const AppNavTabs: React.FC<AppNavTabsProps> = () => {
             title: 'Projects',
             tabBarIcon: (
               { color, size }, // destruc. default options
-            ) => <Ionicon name="list" size={size} color={color} />,
+            ) => <Ionicon name="list" size={30} color={color} />,
           }}
         />
         <Tab.Screen
@@ -53,7 +60,7 @@ export const AppNavTabs: React.FC<AppNavTabsProps> = () => {
             title: 'Stats',
             tabBarIcon: (
               { color, size }, // destruc. default options
-            ) => <Ionicon name="analytics" size={size} color={color} />,
+            ) => <Ionicon name="analytics" size={30} color={color} />,
           }}
         />
       </Tab.Navigator>

@@ -6,11 +6,9 @@ import { RootState } from '../reducers/rootReducer'; // type
 interface StatsScreenProps {}
 
 export const StatsScreen: React.FC<StatsScreenProps> = () => {
-  const idToken = useSelector((state: RootState) => state.storedUser);
   // working
   return (
     <View style={styles.centerView}>
-      {console.log(idToken)}
       <Text>stats/info screen</Text>
     </View>
   );
@@ -18,6 +16,7 @@ export const StatsScreen: React.FC<StatsScreenProps> = () => {
 
 const styles = StyleSheet.create({
   centerView: {
+    backgroundColor: '#121212',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',

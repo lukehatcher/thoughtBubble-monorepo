@@ -92,16 +92,11 @@ export const TodosScreen: React.FC<TodosScreenProps> = ({ route }) => {
     </View>
   );
 
-  // 1.) ignore warning since im using a flatlist (SwipeListview) in a scrollview
-  // inorder to fix my + button on the bottom
-  // 2.) https://github.com/jemise111/react-native-swipe-list-view/issues/388
-  LogBox.ignoreLogs([
-    'VirtualizedLists should never be nested',
-    "Sending 'onAnimatedValueUpdate' with no listeners registered",
-  ]);
+  // https://github.com/jemise111/react-native-swipe-list-view/issues/388
+  LogBox.ignoreLogs(["Sending 'onAnimatedValueUpdate' with no listeners registered"]);
 
   return (
-    <ScrollView>
+    <>
       {/* =================== */}
       <View style={styles.container}>
         <SwipeListView
@@ -113,14 +108,6 @@ export const TodosScreen: React.FC<TodosScreenProps> = ({ route }) => {
           rightOpenValue={-150}
           previewOpenValue={-40}
         />
-        <TouchableOpacity
-          style={styles.plusButton}
-          onPress={() => {
-            setModalView(true);
-          }}
-        >
-          <Ionicon name="add-circle" size={34} />
-        </TouchableOpacity>
       </View>
       {/* ============ modal ============ */}
       <Modal animationType="slide" visible={modalView}>
@@ -129,11 +116,14 @@ export const TodosScreen: React.FC<TodosScreenProps> = ({ route }) => {
             onChangeText={(text) => setInput(text)}
             placeholder="add a new thought"
             multiline
+            style={styles.textInput}
+            keyboardAppearance="dark"
+            placeholderTextColor="rgb(199, 199, 204)"
           />
           <TouchableOpacity style={styles.btn1}>
             <Button
               title="submit"
-              color="white"
+              color="#121212"
               onPress={() => {
                 setModalView(false);
                 handleTodoAddition(input.trim());
@@ -151,23 +141,19 @@ export const TodosScreen: React.FC<TodosScreenProps> = ({ route }) => {
           </TouchableOpacity>
         </View>
       </Modal>
-    </ScrollView>
+      <TouchableOpacity style={styles.plusBtnContainer} onPress={() => setModalView(true)}>
+        <Ionicon name="add-circle" size={80} style={styles.plusBtn} color="#6200EE" />
+      </TouchableOpacity>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  view: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderBottomColor: 'gray',
-    borderBottomWidth: 1,
-  },
   text: {
     fontSize: 20,
     flex: 1,
     padding: 15,
+    color: 'rgb(199, 199, 204)',
   },
   textCompleted: {
     textDecorationLine: 'line-through',
@@ -175,6 +161,21 @@ const styles = StyleSheet.create({
     fontSize: 20,
     flex: 1,
     padding: 15,
+  },
+  plusBtnContainer: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+  },
+  plusBtn: {
+    shadowColor: '#000', // improve shadow
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.48,
+    shadowRadius: 13.0,
+    elevation: 24,
   },
   plusButton: {
     alignItems: 'center',
@@ -184,56 +185,49 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#121212',
   },
   textInput: {
-    borderBottomColor: 'grey',
+    borderBottomColor: 'rgb(199, 199, 204)',
     borderBottomWidth: StyleSheet.hairlineWidth,
     width: 250,
+    color: 'rgb(199, 199, 204)',
   },
   btn1: {
-    backgroundColor: 'grey',
+    backgroundColor: '#6A0DAD',
     borderRadius: 15,
     padding: 6,
     margin: 10,
     marginTop: 25,
     width: 250,
-    // shadow
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
   btn2: {
     borderRadius: 15,
-    borderColor: 'grey',
+    borderColor: '#6A0DAD',
     borderWidth: 2,
     padding: 6,
     margin: 8,
     width: 250,
-    // shadow
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
   }, // new ================
   container: {
     flex: 1,
+    backgroundColor: '#121212',
   },
+  // rgb(142, 142, 147)
+  // rgb(99, 99, 102) // top/bottom
+  // rgb(72, 72, 74) // current
+  // rgb(58, 58, 60)
+  // rgb(44, 44, 46) // background
+  // rgb(28, 28, 30)
   rowFront: {
+    backgroundColor: '#303030',
     alignItems: 'center',
-    backgroundColor: '#f2f2f2',
     borderBottomColor: 'grey',
     borderBottomWidth: 1,
     justifyContent: 'center',
     height: 50,
+    marginTop: 10,
+    // borderRadius: 10,
   },
   rowBack: {
     alignItems: 'center',
