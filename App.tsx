@@ -13,8 +13,7 @@ import { Provider } from 'react-redux';
 import { AppNavTabs } from './src/components/AppNavTabs';
 import { _onLogIn } from './src/utils/auth';
 import { checkForIdToken } from './src/utils/asyncStorage';
-import { changeLoginStatus } from './src/actions/loginStatusAction';
-import { storeUser } from './src/actions/storeUserAction';
+import { storeUserAction } from './src/actions/storeUserAction';
 import { fetchDataAction } from './src/actions/fetchDataAction';
 import { RootState } from './src/reducers/rootReducer'; // type
 import store from './src/store';
@@ -22,10 +21,10 @@ import store from './src/store';
 interface AppProps {}
 
 const App: React.FC<AppProps> = () => {
-  const selectStatus = (state: RootState) => state.loginStatus;
-  const loginStatus = useSelector(selectStatus);
+  const selector = (state: RootState) => state.storedUser;
+  const loginStatus = useSelector(selector);
 
-  if (loginStatus) {
+  if (loginStatus !== null) {
     return <AppNavTabs />;
   }
   return (
@@ -49,12 +48,15 @@ const styles = StyleSheet.create({
 // ================== pre app render ========================
 // should move this code to a seperate file later
 
-checkForIdToken().then((res) => { // res is the 
+checkForIdToken().then(async (res) => {
   // this function updates the store to match my asyncstorage before rendering app
+  // this is ONLY EXECUTED when the app is first clicked on and loaded
   const status = res !== null;
-  store.dispatch(changeLoginStatus(status)); // store login status
-  store.dispatch(storeUser(res)); // store users jwt if theres one in asyncstorage
-  store.dispatch(fetchDataAction(res.sub)); // store all data
+  console.log('resononse from checkforidToken: ', res);
+  await store.dispatch(storeUserAction(res)); // store users jwt if theres one in asyncstorage
+  if (status) {
+    await store.dispatch(fetchDataAction(res.sub)); // store all data
+  }
 });
 
 // wrap app with redux provider
