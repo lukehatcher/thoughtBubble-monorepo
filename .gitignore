@@ -60,3 +60,6 @@ buck-out/
 
 # enviroment
 .env
+
+# my notes
+color.txt

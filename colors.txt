@@ -1,0 +1,9 @@
+// purple 
+primary: #6200EE
+primary variant: #3700B3
+
+// main background
+#121212
+
+// bottom tabs and top stack
+#212121

@@ -6,12 +6,12 @@
  * @flow strict-local
  */
 
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, ActivityIndicator, Button } from 'react-native';
+import React from 'react';
+import { ActivityIndicator, StatusBar } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Provider } from 'react-redux';
 import { AppNavTabs } from './src/components/AppNavTabs';
-import { _onLogIn } from './src/utils/auth';
+import { LoginScreen } from './src/components/LoginScreen';
 import { checkForIdToken } from './src/utils/asyncStorage';
 import { storeUserAction } from './src/actions/storeUserAction';
 import { fetchDataAction } from './src/actions/fetchDataAction';
@@ -25,25 +25,20 @@ const App: React.FC<AppProps> = () => {
   const loginStatus = useSelector(selector);
 
   if (loginStatus !== null) {
-    return <AppNavTabs />;
+    return (
+      <>
+        <StatusBar barStyle="light-content" />
+        <AppNavTabs />
+      </>
+    );
   }
   return (
     <>
-      <View style={styles.view}>
-        <Text>welcome to thoughtBubble</Text>
-        <Button title="login" onPress={() => _onLogIn()} />
-      </View>
+      <StatusBar barStyle="light-content" />
+      <LoginScreen />
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  view: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 // ================== pre app render ========================
 // should move this code to a seperate file later
@@ -60,9 +55,8 @@ checkForIdToken().then(async (res) => {
 });
 
 // wrap app with redux provider
-const ReduxApp = () => (
+export const ReduxApp = () => (
   <Provider store={store}>
     <App />
   </Provider>
 );
-export default ReduxApp;
