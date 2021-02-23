@@ -53,10 +53,8 @@ checkForIdToken().then((res) => { // res is the
   // this function updates the store to match my asyncstorage before rendering app
   const status = res !== null;
   store.dispatch(changeLoginStatus(status)); // store login status
-  if (status) {
-    store.dispatch(storeUser(res)); // store users jwt if theres one in asyncstorage
-    store.dispatch(fetchDataAction(res.sub)); // store all data
-  }
+  store.dispatch(storeUser(res)); // store users jwt if theres one in asyncstorage
+  store.dispatch(fetchDataAction(res.sub)); // store all data
 });
 
 // wrap app with redux provider
