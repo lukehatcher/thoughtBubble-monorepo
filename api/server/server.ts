@@ -2,7 +2,7 @@ import * as express from 'express';
 import * as morgan from 'morgan';
 import * as db from '../database/database';
 
-const PORT = 3001 || process.env.PORT;
+const PORT = process.env.PORT;
 const app = express();
 
 app.use(morgan('dev'));

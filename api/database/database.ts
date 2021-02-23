@@ -1,7 +1,9 @@
 import * as mongoose from 'mongoose';
 // import mongoose = require("mongoose");
+// 'mongodb://localhost/nativetest'
 
-mongoose.connect('mongodb://localhost/nativetest', { useNewUrlParser: true, useUnifiedTopology: true })
+
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .catch((err) => {
     console.log(err);
   });
