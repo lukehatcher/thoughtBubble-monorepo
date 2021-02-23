@@ -108,11 +108,13 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
             placeholder="add a new project"
             multiline
             style={styles.textInput}
+            keyboardAppearance="dark"
+            placeholderTextColor="rgb(199, 199, 204)"
           />
           <TouchableOpacity style={styles.btn1}>
             <Button
               title="submit"
-              color="white"
+              color="#121212"
               onPress={() => {
                 setModalView(false);
                 handleProjectAddition(input.trim());
@@ -131,17 +133,23 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
         </View>
       </Modal>
       <TouchableOpacity style={styles.plusBtnContainer} onPress={() => setModalView(true)}>
-        <Ionicon name="add-circle" size={80} style={styles.plusBtn} color="rgb(58, 58, 60)" />
+        <Ionicon name="add-circle" size={80} style={styles.plusBtn} color="#6200EE" />
+        {/* "rgb(58, 58, 60)" */}
       </TouchableOpacity>
     </>
   );
 };
 
 const styles = StyleSheet.create({
+  dark: {
+    backgroundColor: 'rgb(44, 44, 46)',
+  },
   text: {
     fontSize: 20,
     flex: 1,
     padding: 15,
+    color: 'rgb(199, 199, 204)',
+    // textAlign: 'left',
   },
   plusBtnContainer: {
     position: 'absolute',
@@ -162,56 +170,43 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#121212',
   },
   textInput: {
-    borderBottomColor: 'grey',
+    borderBottomColor: 'rgb(199, 199, 204)',
     borderBottomWidth: StyleSheet.hairlineWidth,
     width: 250,
+    color: 'rgb(199, 199, 204)',
   },
   btn1: {
-    backgroundColor: 'grey',
+    backgroundColor: '#6A0DAD',
     borderRadius: 15,
     padding: 6,
     margin: 10,
     marginTop: 25,
     width: 250,
-    // shadow
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
   btn2: {
+    // color: '#6A0DAD',
     borderRadius: 15,
-    borderColor: 'grey',
+    borderColor: '#6A0DAD',
     borderWidth: 2,
     padding: 6,
     margin: 8,
     width: 250,
-    // shadow
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
   }, // new ================
   container: {
     flex: 1,
+    backgroundColor: '#121212',
   },
   rowFront: {
+    backgroundColor: '#303030',
     alignItems: 'center',
-    backgroundColor: '#f2f2f2',
     borderBottomColor: 'grey',
     borderBottomWidth: 1,
     justifyContent: 'center',
     height: 50,
+    marginTop: 10,
   },
   rowBack: {
     alignItems: 'center',

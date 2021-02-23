@@ -12,6 +12,7 @@ export const storeUser = (jwt: JwtPayload | null) => {
         .post('http://localhost:3001/api/projects/init', {
           userSub: jwt.sub,
         })
+        // .then(() => {dispatch({ type: 'storeUser/set', payload: jwt })})
         .catch((err) => console.error('error adding user/checking if user exists in db', err));
     }
     // set current user to redux store
