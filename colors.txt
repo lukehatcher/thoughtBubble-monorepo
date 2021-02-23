@@ -6,4 +6,4 @@ primary variant: #3700B3
 #121212
 
 // bottom tabs and top stack
-#23
+#212121

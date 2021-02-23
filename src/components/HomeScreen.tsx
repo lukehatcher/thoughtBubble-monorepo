@@ -1,4 +1,3 @@
-import { relative } from 'path';
 import React from 'react';
 import {
   View,
@@ -8,6 +7,7 @@ import {
   StyleSheet,
   Button,
   TouchableOpacity,
+  StatusBar,
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../reducers/rootReducer';
