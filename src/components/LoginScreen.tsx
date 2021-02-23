@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Button, StatusBar, StyleSheet, TouchableHighlight } from 'react-native';
+import { View, Text, Button, StyleSheet, TouchableHighlight } from 'react-native';
 import { _onLogIn } from '../utils/auth';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -8,7 +8,6 @@ interface LoginScreenProps {}
 export const LoginScreen: React.FC<LoginScreenProps> = () => {
   return (
     <>
-      <StatusBar barStyle="light-content" />
       <View style={styles.container}>
         <MaterialCommunityIcons name="thought-bubble" size={90} color="#6200EE" />
         <Text style={styles.logoText}>thoughtBubble</Text>

@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { ActivityIndicator, StatusBar } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Provider } from 'react-redux';
@@ -32,7 +32,12 @@ const App: React.FC<AppProps> = () => {
       </>
     );
   }
-  return <LoginScreen />
+  return (
+    <>
+      <StatusBar barStyle="light-content" />
+      <LoginScreen />
+    </>
+  );
 };
 
 // ================== pre app render ========================
@@ -50,9 +55,8 @@ checkForIdToken().then(async (res) => {
 });
 
 // wrap app with redux provider
-const ReduxApp = () => (
+export const ReduxApp = () => (
   <Provider store={store}>
     <App />
   </Provider>
 );
-export default ReduxApp;
