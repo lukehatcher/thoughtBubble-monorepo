@@ -114,16 +114,16 @@ export const TodosScreen: React.FC<TodosScreenProps> = ({ route }) => {
         <View style={styles.modal}>
           <TextInput
             onChangeText={(text) => setInput(text)}
-            placeholder="add a new thought"
+            placeholder="add a new thought..."
             multiline
             style={styles.textInput}
             keyboardAppearance="dark"
-            placeholderTextColor="rgb(199, 199, 204)"
+            placeholderTextColor="white"
           />
           <TouchableOpacity style={styles.btn1}>
             <Button
               title="submit"
-              color="#121212"
+              color="black"
               onPress={() => {
                 setModalView(false);
                 handleTodoAddition(input.trim());
@@ -133,7 +133,7 @@ export const TodosScreen: React.FC<TodosScreenProps> = ({ route }) => {
           <TouchableOpacity style={styles.btn2}>
             <Button
               title="cancel"
-              color="grey"
+              color="white"
               onPress={() => {
                 setModalView(false);
               }}
@@ -188,13 +188,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#121212',
   },
   textInput: {
-    borderBottomColor: 'rgb(199, 199, 204)',
+    borderBottomColor: 'white',
     borderBottomWidth: StyleSheet.hairlineWidth,
     width: 250,
-    color: 'rgb(199, 199, 204)',
+    color: 'white',
   },
   btn1: {
-    backgroundColor: '#6A0DAD',
+    backgroundColor: '#6200EE',
     borderRadius: 15,
     padding: 6,
     margin: 10,
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
   },
   btn2: {
     borderRadius: 15,
-    borderColor: '#6A0DAD',
+    borderColor: '#6200EE',
     borderWidth: 2,
     padding: 6,
     margin: 8,

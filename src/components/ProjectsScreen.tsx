@@ -105,7 +105,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
         <View style={styles.modal}>
           <TextInput
             onChangeText={(text) => setInput(text)}
-            placeholder="add a new project"
+            placeholder="add a new project..."
             multiline
             style={styles.textInput}
             keyboardAppearance="dark"
@@ -114,7 +114,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
           <TouchableOpacity style={styles.btn1}>
             <Button
               title="submit"
-              color="#121212"
+              color="black"
               onPress={() => {
                 setModalView(false);
                 handleProjectAddition(input.trim());
@@ -124,7 +124,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
           <TouchableOpacity style={styles.btn2}>
             <Button
               title="cancel"
-              color="grey"
+              color="white"
               onPress={() => {
                 setModalView(false);
               }}
@@ -134,7 +134,6 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
       </Modal>
       <TouchableOpacity style={styles.plusBtnContainer} onPress={() => setModalView(true)}>
         <Ionicon name="add-circle" size={80} style={styles.plusBtn} color="#6200EE" />
-        {/* "rgb(58, 58, 60)" */}
       </TouchableOpacity>
     </>
   );
@@ -173,13 +172,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#121212',
   },
   textInput: {
-    borderBottomColor: 'rgb(199, 199, 204)',
+    borderBottomColor: 'white',
     borderBottomWidth: StyleSheet.hairlineWidth,
     width: 250,
-    color: 'rgb(199, 199, 204)',
+    color: 'white',
   },
   btn1: {
-    backgroundColor: '#6A0DAD',
+    backgroundColor: '#6200EE',
     borderRadius: 15,
     padding: 6,
     margin: 10,
@@ -189,7 +188,7 @@ const styles = StyleSheet.create({
   btn2: {
     // color: '#6A0DAD',
     borderRadius: 15,
-    borderColor: '#6A0DAD',
+    borderColor: '#6200EE',
     borderWidth: 2,
     padding: 6,
     margin: 8,
