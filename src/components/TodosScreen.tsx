@@ -60,7 +60,7 @@ export const TodosScreen: React.FC<TodosScreenProps> = ({ route }) => {
   const renderItem = (data) => (
     <TouchableHighlight
       style={styles.rowFront}
-      underlayColor={'#DDD'} // on press color
+      underlayColor={'grey'} // on press color
     >
       {/* <Text style={styles.text}>{data.item.text}</Text> */}
       <Text style={data.item.completed ? styles.textCompleted : styles.text}>{data.item.text}</Text>
@@ -68,7 +68,7 @@ export const TodosScreen: React.FC<TodosScreenProps> = ({ route }) => {
   );
 
   const renderHiddenItem = (data, rowMap) => (
-    <View style={styles.rowFront}>
+    <View style={styles.rowFront2}>
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnLeft]}
         onPress={() => closeRow(rowMap, data.item.key)}
@@ -213,21 +213,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#121212',
   },
-  // rgb(142, 142, 147)
-  // rgb(99, 99, 102) // top/bottom
-  // rgb(72, 72, 74) // current
-  // rgb(58, 58, 60)
-  // rgb(44, 44, 46) // background
-  // rgb(28, 28, 30)
   rowFront: {
     backgroundColor: '#303030',
     alignItems: 'center',
-    borderBottomColor: 'grey',
-    borderBottomWidth: 1,
     justifyContent: 'center',
     height: 50,
-    marginTop: 10,
-    // borderRadius: 10,
+    marginTop: 15,
+    marginHorizontal: 10,
+    borderRadius: 10,
+    // shadow
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.7,
+    shadowRadius: 5.46,
+    elevation: 9,
   },
   rowBack: {
     alignItems: 'center',
@@ -256,5 +258,25 @@ const styles = StyleSheet.create({
   backRightBtnRight: {
     backgroundColor: 'rgb(255, 59, 48)', // apple ios colors (light)
     right: 0,
+    borderBottomRightRadius: 10,
+    borderTopRightRadius: 10,
+  },
+  rowFront2: {
+    backgroundColor: 'rgb(0, 122, 255)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 50,
+    marginTop: 15,
+    marginHorizontal: 10,
+    borderRadius: 10,
+    // shadow
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.7,
+    shadowRadius: 5.46,
+    elevation: 9,
   },
 });

@@ -31,6 +31,7 @@ export const _onLogOut = function () {
       Alert.alert('Logged out!');
       await clearAsyncStorage();
       await store.dispatch(storeUserAction(null));
+      await store.dispatch({ type: 'USER_LOGOUT', payload: null });
     })
     .catch((err) => console.error('Log out cancelled', err));
 };

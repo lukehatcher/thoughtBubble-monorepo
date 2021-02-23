@@ -59,7 +59,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
     <TouchableHighlight
       onPress={() => navigation.navigate('Todos', { projectName: data.item.projectName })}
       style={styles.rowFront}
-      underlayColor={'#DDD'}
+      underlayColor={'grey'}
     >
       <Text style={styles.text}>{data.item.projectName}</Text>
     </TouchableHighlight>
@@ -67,7 +67,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
 
   const renderHiddenItem = (data, rowMap) => (
     // for slidables
-    <View style={styles.rowFront}>
+    <View style={styles.rowFront2}>
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnLeft]}
         onPress={() => closeRow(rowMap, data.item.key)}
@@ -201,11 +201,20 @@ const styles = StyleSheet.create({
   rowFront: {
     backgroundColor: '#303030',
     alignItems: 'center',
-    borderBottomColor: 'grey',
-    borderBottomWidth: 1,
     justifyContent: 'center',
     height: 50,
-    marginTop: 10,
+    marginTop: 15,
+    marginHorizontal: 10,
+    borderRadius: 10,
+    // shadow
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.7,
+    shadowRadius: 5.46,
+    elevation: 9,
   },
   rowBack: {
     alignItems: 'center',
@@ -222,6 +231,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     width: 75,
+    // ====
+    // backgroundColor: 'rgb(0, 122, 255)',
   },
   backRightBtnLeft: {
     backgroundColor: 'rgb(0, 122, 255)', // apple ios colors (light)
@@ -230,5 +241,25 @@ const styles = StyleSheet.create({
   backRightBtnRight: {
     backgroundColor: 'rgb(255, 59, 48)', // apple ios colors (light)
     right: 0,
+    borderBottomRightRadius: 10,
+    borderTopRightRadius: 10,
+  },
+  rowFront2: {
+    backgroundColor: 'rgb(0, 122, 255)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 50,
+    marginTop: 15,
+    marginHorizontal: 10,
+    borderRadius: 10,
+    // shadow
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.7,
+    shadowRadius: 5.46,
+    elevation: 9,
   },
 });
