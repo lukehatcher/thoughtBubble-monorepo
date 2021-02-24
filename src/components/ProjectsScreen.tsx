@@ -36,6 +36,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
   let userProjectsData = useSelector(selector);
 
   const handleProjectAddition = function (projectName: string) {
+    setInput('');
     if (!projectName) {
       Alert.alert('invalid input');
       return;

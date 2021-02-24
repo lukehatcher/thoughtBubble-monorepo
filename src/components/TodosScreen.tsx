@@ -35,6 +35,7 @@ export const TodosScreen: React.FC<TodosScreenProps> = ({ route }) => {
   let todos = useSelector(selector); // retrive todos for the project we're on
 
   const handleTodoAddition = (todo: string) => {
+    setInput('');
     if (!todo) {
       Alert.alert('invalid input');
       return;
