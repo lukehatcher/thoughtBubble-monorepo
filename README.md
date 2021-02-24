@@ -1,4 +1,5 @@
 <div align="center"><img src="./logoLight.png" width="35%" height="35%"></img></div>
+
 # thoughtBubble (VSCode extension)
 
 *bubble your thoughts together by syncing them between your phone and code editor*
@@ -15,7 +16,7 @@ add highlighted code/text to project
 
 ## Requirements
 
-Need the [thoughtBubble](https://github.com/lukehatcher/thoughtBubble) API up and running.
+Need the [thoughtBubble](https://github.com/lukehatcher/thoughtBubble) API up and running before cloning the extension.
 
 ```
 git clone https://github.com/lukehatcher/thoughtBubble-vscode-extension.git && cd thoughtBubble-vscode-extension
