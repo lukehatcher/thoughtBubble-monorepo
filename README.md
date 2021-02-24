@@ -1,6 +1,6 @@
 <div align="center"><img src="./logoLight.png" width="35%" height="35%"></img></div>
 
-# ThoughtBubble
+# thoughtBubble
 *bubble your thoughts together by syncing them between your phone and code editor*
 
 ## demo
