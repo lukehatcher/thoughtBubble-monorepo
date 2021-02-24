@@ -1,4 +1,4 @@
-<div align="center"><img src="./logo.png" width="35%" height="35%"></img></div>
+<div align="center"><img src="./logoLight.png" width="35%" height="35%"></img></div>
 
 # ThoughtBubble
 *bubble your thoughts together by syncing them between your phone and code editor*
