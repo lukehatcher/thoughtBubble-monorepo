@@ -21,7 +21,7 @@ export const _onLogIn = function () {
       await store.dispatch(storeUserAction(decodedJwt));
       await store.dispatch(fetchDataAction(decodedJwt.sub)); // also adds user to db if needed
     })
-    .catch((err) => console.error(err, 'error logging into auth0'));
+    .catch((err) => console.log('auth.ts: login canceled/error logging into auth0', err));
 };
 
 export const _onLogOut = function () {
@@ -33,5 +33,5 @@ export const _onLogOut = function () {
       await store.dispatch(storeUserAction(null));
       await store.dispatch({ type: 'USER_LOGOUT', payload: null });
     })
-    .catch((err) => console.error('Log out cancelled', err));
+    .catch((err) => console.log('auth.ts: log out cancelled/error logging out w auth0', err));
 };
