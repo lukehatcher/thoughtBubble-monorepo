@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { JwtPayload } from 'jwt-decode'; // type
 
-export async function persistidToken(jwt: JwtPayload) {
+export async function persistidToken(jwt: JwtPayload): Promise<void> {
   try {
     await AsyncStorage.setItem('idToken', JSON.stringify(jwt));
   } catch (err) {
@@ -21,7 +21,7 @@ export async function checkForIdToken(): Promise<JwtPayload | null> {
   }
 }
 
-export async function clearAsyncStorage() {
+export async function clearAsyncStorage(): Promise<void> {
   try {
     await AsyncStorage.clear();
   } catch (err) {

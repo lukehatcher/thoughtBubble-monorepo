@@ -11,7 +11,7 @@ const auth0 = new Auth0({
   clientId: '4fzla6jGCLomMZwbRtHNg3c970TrydDs',
 });
 
-export const _onLogIn = function () {
+export const _onLogIn = function (): void {
   auth0.webAuth
     .authorize({ scope: 'openid profile email', prompt: 'login' })
     .then(async (credentials) => {
@@ -24,7 +24,7 @@ export const _onLogIn = function () {
     .catch((err) => console.log('auth.ts: login canceled/error logging into auth0', err));
 };
 
-export const _onLogOut = function () {
+export const _onLogOut = function (): void {
   auth0.webAuth
     .clearSession()
     .then(async () => {
