@@ -5,7 +5,7 @@ import * as mongoose from 'mongoose';
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .catch((err) => {
-    console.log(err);
+    console.error(err);
   });
 
 const db = mongoose.connection;
@@ -15,7 +15,7 @@ db.on('connected', () => {
 });
 
 db.on('error', (err) => {
-  console.log(err);
+  console.error(err);
 });
 
 const userInfoSchema = new mongoose.Schema({

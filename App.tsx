@@ -47,7 +47,6 @@ checkForIdToken().then(async (res) => {
   // this function updates the store to match my asyncstorage before rendering app
   // this is ONLY EXECUTED when the app is first clicked on and loaded
   const status = res !== null;
-  console.log('resononse from checkforidToken: ', res);
   await store.dispatch(storeUserAction(res)); // store users jwt if theres one in asyncstorage
   if (status) {
     await store.dispatch(fetchDataAction(res.sub)); // store all data

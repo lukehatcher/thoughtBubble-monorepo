@@ -14,7 +14,6 @@ export const addProjectAction = (projectName: string) => {
           todo: null,
         })
         .then((res) => {
-          // console.log(res);
           dispatch({ type: 'addProject', payload: projectName });
         });
     } catch (err) {

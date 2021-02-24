@@ -12,7 +12,6 @@ export const addTodoAction = (projectName: string, todo: string) => {
           todo,
         })
         .then((res) => {
-          // console.log(res);
           dispatch({ type: 'addTodo', payload: { projectName, todo } });
         });
     } catch (err) {
