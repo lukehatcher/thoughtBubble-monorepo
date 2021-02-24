@@ -7,7 +7,7 @@
 <div align="center"><a href="https://www.youtube.com/watch?v=Cnm7NbBWU6c" target="_blank"><img src="./demoScreenshot.png" height="600" width="auto"></a></div>
 
 ## background & tech stack
-ThoughtBubble (mobile) is an React Native/Redux/TypeScript application. It pairs with the [ThoughtBubble (VSCode extension)](https://github.com/lukehatcher/vscode-todo-extension) in order to sync and display your thoughts on both the mobile and desktop applications. The API is built using Node.js/Express.js/MongoDB and safely typed with TypeScript <3.
+ThoughtBubble (mobile) is an React Native/Redux/TypeScript application. It pairs with the [ThoughtBubble (VSCode extension)](https://github.com/lukehatcher/thoughtBubble-vscode-extension) in order to sync and display your thoughts on both the mobile and desktop applications. The API is built using Node.js/Express.js/MongoDB and safely typed with TypeScript <3.
 
 ## inspiration
 Away from your computer and thinking about that one pesky bug or a new feature? Put a note in the thoughtBubble app and have it waiting for you directly in your code editor when you return to your computer.
