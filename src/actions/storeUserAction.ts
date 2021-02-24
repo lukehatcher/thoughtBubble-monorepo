@@ -1,7 +1,6 @@
 import axios from 'axios';
-import { JwtPayload } from 'jwt-decode';
+import { JwtPayload } from 'jwt-decode'; // type
 
-// thunk function
 export const storeUserAction = (jwt: JwtPayload | null) => {
   // called from _onLogin util
   return async (dispatch) => {

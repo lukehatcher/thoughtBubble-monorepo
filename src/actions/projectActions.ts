@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-// const userSub = store.getState().storedUser.sub;
-
 export const addProjectAction = (projectName: string) => {
   return async (dispatch, getState) => {
     const userSub = getState().storedUser.sub;
