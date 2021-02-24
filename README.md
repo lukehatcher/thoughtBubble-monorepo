@@ -4,7 +4,7 @@
 *bubble your thoughts together by syncing them between your phone and code editor*
 
 ## demo
-<a href="https://www.youtube.com/watch?v=Cnm7NbBWU6c" target="_blank"><img src="./demoScreenshot.png"></a>
+<a href="https://www.youtube.com/watch?v=Cnm7NbBWU6c" target="_blank"><img src="./demoScreenshot.png" height="200" width="auto"></a>
 
 ## background & tech stack
 ThoughtBubble (mobile) is an React Native/Redux/TypeScript application. It pairs with the [ThoughtBubble (VSCode extension)](https://github.com/lukehatcher/vscode-todo-extension) in order to sync and display your thoughts on both the mobile and desktop applications. The API is built using Node.js/Express.js/MongoDB and safely typed with TypeScript <3.
