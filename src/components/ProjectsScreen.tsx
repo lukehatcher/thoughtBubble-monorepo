@@ -1,4 +1,3 @@
-import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useState } from 'react';
 import {
   View,
@@ -13,16 +12,15 @@ import {
   LogBox,
   Alert,
 } from 'react-native';
-import { useSelector } from 'react-redux';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { SwipeListView } from 'react-native-swipe-list-view';
+import { useSelector, useDispatch } from 'react-redux';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 import { RootState } from '../reducers/rootReducer'; // type
 import { StackParamList } from './ProjectsNavStack';
-import { useDispatch } from 'react-redux';
 import { addProjectAction, deleteProjectAction } from '../actions/projectActions';
-import Ionicon from 'react-native-vector-icons/Ionicons';
-import { SwipeListView } from 'react-native-swipe-list-view';
 
 interface ProjectsScreenProps {
-  // all good here
   // https://reactnavigation.org/docs/typescript/ & ben a
   navigation: StackNavigationProp<StackParamList, 'Projects'>;
 }
@@ -89,7 +87,6 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
 
   return (
     <>
-      {/* ========================================== */}
       <View style={styles.container}>
         <SwipeListView
           data={userProjectsData.map((i) => ({ ...i, key: i._id.toString() }))} // swipeviewlist api requires key prop
@@ -101,7 +98,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
           previewOpenValue={-40}
         />
       </View>
-      {/* =================== modal component ======================= */}
+      {/* ======= modal ======= */}
       <Modal animationType="slide" visible={modalView}>
         <View style={styles.modal}>
           <TextInput

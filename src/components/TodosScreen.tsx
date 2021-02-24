@@ -12,13 +12,13 @@ import {
   LogBox,
   Alert,
 } from 'react-native';
-import { RouteProp } from '@react-navigation/native'; // type
-import { StackParamList } from './ProjectsNavStack';
 import { useDispatch, useSelector } from 'react-redux';
-import { addTodoAction, deleteTodoAction, todoStatusChangeAction } from '../actions/todoActions';
-import { RootState } from '../reducers/rootReducer'; // type
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import { SwipeListView } from 'react-native-swipe-list-view';
+import { RouteProp } from '@react-navigation/native'; // type
+import { StackParamList } from './ProjectsNavStack'; // type
+import { RootState } from '../reducers/rootReducer'; // type
+import { addTodoAction, deleteTodoAction, todoStatusChangeAction } from '../actions/todoActions';
 
 interface TodosScreenProps {
   route: RouteProp<StackParamList, 'Todos'>;
@@ -52,23 +52,21 @@ export const TodosScreen: React.FC<TodosScreenProps> = ({ route }) => {
   };
 
   const closeRow = (rowMap, rowKey) => {
-    // repeated via proj
+    // for slidables
     if (rowMap[rowKey]) {
       rowMap[rowKey].closeRow();
     }
   };
 
   const renderItem = (data) => (
-    <TouchableHighlight
-      style={styles.rowFront}
-      underlayColor={'grey'} // on press color
-    >
-      {/* <Text style={styles.text}>{data.item.text}</Text> */}
+    // for slidables
+    <TouchableHighlight style={styles.rowFront} underlayColor={'grey'}>
       <Text style={data.item.completed ? styles.textCompleted : styles.text}>{data.item.text}</Text>
     </TouchableHighlight>
   );
 
   const renderHiddenItem = (data, rowMap) => (
+    // for slidables
     <View style={styles.rowFront2}>
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnLeft]}
@@ -98,7 +96,6 @@ export const TodosScreen: React.FC<TodosScreenProps> = ({ route }) => {
 
   return (
     <>
-      {/* =================== */}
       <View style={styles.container}>
         <SwipeListView
           data={todos.map((i) => ({ ...i, key: i._id.toString() }))} // swipeviewlist api requires key prop
@@ -110,7 +107,7 @@ export const TodosScreen: React.FC<TodosScreenProps> = ({ route }) => {
           previewOpenValue={-40}
         />
       </View>
-      {/* ============ modal ============ */}
+      {/* ======= modal ======= */}
       <Modal animationType="slide" visible={modalView}>
         <View style={styles.modal}>
           <TextInput
@@ -169,7 +166,7 @@ const styles = StyleSheet.create({
     right: 20,
   },
   plusBtn: {
-    shadowColor: '#000', // improve shadow
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 12,
@@ -209,7 +206,7 @@ const styles = StyleSheet.create({
     padding: 6,
     margin: 8,
     width: 250,
-  }, // new ================
+  }, // === SwipeListView styles ===
   container: {
     flex: 1,
     backgroundColor: '#121212',
@@ -249,7 +246,7 @@ const styles = StyleSheet.create({
     width: 50,
   },
   backRightBtnLeft: {
-    backgroundColor: 'rgb(0, 122, 255)', // apple ios colors (light)
+    backgroundColor: 'rgb(0, 122, 255)', // ios light blue
     right: 100,
   },
   backRightBtnMid: {
@@ -257,7 +254,7 @@ const styles = StyleSheet.create({
     right: 50,
   },
   backRightBtnRight: {
-    backgroundColor: 'rgb(255, 59, 48)', // apple ios colors (light)
+    backgroundColor: 'rgb(255, 59, 48)', // ios light red
     right: 0,
     borderBottomRightRadius: 10,
     borderTopRightRadius: 10,
