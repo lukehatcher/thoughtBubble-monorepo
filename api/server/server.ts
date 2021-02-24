@@ -1,6 +1,7 @@
 import * as express from 'express';
+import { Request, Response } from 'express';
 import * as morgan from 'morgan';
-import * as db from '../database/database';
+import * as db from '../database/queries';
 
 const PORT = process.env.PORT;
 const app = express();
@@ -8,7 +9,7 @@ const app = express();
 app.use(morgan('dev'));
 app.use(express.json());
 
-app.get('/api/projects/fetch', (req, res) => {
+app.get('/api/projects/fetch', (req: Request, res: Response) => {
   const { userSub } = req.query;
   db.getUserData(userSub)
     .then((data) => {
@@ -20,7 +21,6 @@ app.get('/api/projects/fetch', (req, res) => {
     });
 });
 
-// ==========
 app.post('/api/projects/init', (req, res) => {
   const { userSub } = req.body;
   if (!userSub) return res.sendStatus(400);
@@ -30,29 +30,7 @@ app.post('/api/projects/init', (req, res) => {
     projects: [],
   };
 
-  // const data = {
-  //   userSub,
-  //   projects: [
-  //     {
-  //       projectName: 'app1',
-  //       todos: [
-  //         { text: 'build', completed: false },
-  //         { text: 'edit', completed: false },
-  //         { text: 'compile', completed: true },
-  //       ],
-  //     },
-  //     {
-  //       projectName: 'app12',
-  //       todos: [
-  //         { text: 'do the thing', completed: false },
-  //         { text: 'do more', completed: false },
-  //         { text: 'get it', completed: true },
-  //       ],
-  //     },
-  //   ],
-  // };
-
-  db.checkIfUserExists(userSub) // force break
+  db.checkIfUserExists(userSub)
     .then((exists) => {
       if (!exists) {
         db.initUserdata(data)
@@ -68,7 +46,6 @@ app.post('/api/projects/init', (req, res) => {
     })
     .catch((err) => console.error(err));
 });
-// ==========
 
 app.delete('/api/projects/delete', (req, res) => {
   const { type, username, projectName, todo } = req.query;
@@ -76,7 +53,7 @@ app.delete('/api/projects/delete', (req, res) => {
     // just deleting a todo from a project
     db.deleteTodo(username, projectName, todo)
       .then(() => {
-        console.log('database todo deletion success'); // jon doe
+        console.log('database todo deletion success');
         res.sendStatus(200);
       })
       .catch((err) => {
