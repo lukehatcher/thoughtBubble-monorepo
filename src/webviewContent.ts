@@ -12,7 +12,7 @@ export function getWebviewContent(scriptsURI: any, stylesURI: any, stylesResetUr
       <title>this is a title</title>
     </head>
     <body>
-      <h1>Let's get to work!</h1>
+      <h1>thoughtBubble</h1>
       <div id="form-container">
         <form id="project-form">
           <input id="project-input" type="text" placeholder="new project">
