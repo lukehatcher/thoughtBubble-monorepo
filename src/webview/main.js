@@ -6,7 +6,8 @@
 (function () {
   const vscode = acquireVsCodeApi();
   // const oldState = vscode.getState();
-  const PLACE_HOLDER = 'github|52586655';
+
+  const PLACE_HOLDER = 'fill me in';
 
   const listContainer = document.getElementById('list-container');
   const dropdown = document.getElementById('project-dropdown');

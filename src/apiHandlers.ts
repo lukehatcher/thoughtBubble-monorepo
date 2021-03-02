@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const PLACE_HOLDER = 'github|52586655';
+const PLACE_HOLDER = 'fill me in';
 
 export function fetchData(panel: any) {
   axios.get(`http://localhost:3001/api/projects/fetch`, {
