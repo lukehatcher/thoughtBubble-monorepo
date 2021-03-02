@@ -13,7 +13,7 @@ import {
   handleTodoCompletionToggle,
 } from './apiHandlers';
 
-const PLACE_HOLDER = 'jon doe';
+const PLACE_HOLDER = 'github|52586655';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed

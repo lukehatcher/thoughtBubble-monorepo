@@ -1,8 +1,13 @@
 import axios from 'axios';
-const PLACE_HOLDER = 'jon doe';
+
+const PLACE_HOLDER = 'github|52586655';
 
 export function fetchData(panel: any) {
-  axios.get(`http://localhost:3001/api/projects/get/${PLACE_HOLDER}`)
+  axios.get(`http://localhost:3001/api/projects/fetch`, {
+    params: {
+      userSub: PLACE_HOLDER,
+    }
+  })
     .then(async (response) => {
       const userData = response.data;
       panel.webview.postMessage({ command: 'sendingData', responseData: userData }); // whole obj = event.data;
@@ -14,7 +19,11 @@ export function fetchData(panel: any) {
 
 export async function fetchUserProjectNames() : Promise<any>{
   let usersProjects;
-  await axios.get(`http://localhost:3001/api/projects/get/${PLACE_HOLDER}`)
+  await axios.get(`http://localhost:3001/api/projects/get/fetch`, {
+    params: {
+      userSub: PLACE_HOLDER,
+    }
+  })
     .then((response) => {
       // create & return an array of just the names of a user's projects
       const usersProjectsData = response.data.projects;
