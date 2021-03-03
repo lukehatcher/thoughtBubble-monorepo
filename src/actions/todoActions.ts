@@ -14,8 +14,8 @@ export const addTodoAction = (projectId: string, todo: string) => {
           todo,
         })
         .then((res) => {
-          const newId = res.data;
-          dispatch({ type: 'addTodo', payload: { projectId, todo, _id: newId } });
+          const newTodoId = res.data;
+          dispatch({ type: 'addTodo', payload: { projectId, todo, _id: newTodoId } });
         });
     } catch (err) {
       console.error('addProjectAction @todoActions.ts: ', err);
@@ -37,7 +37,7 @@ export const deleteTodoAction = (projectId: string, todoId: string) => {
           },
         })
         .then((res) => {
-          dispatch({ type: 'deleteTodo', payload: { projectId, todoId } });
+          dispatch({ type: 'deleteTodo', payload: { projectId, _id: todoId } });
         });
     } catch (err) {
       console.error('deleteProjectAction @todoActions.ts: ', err);

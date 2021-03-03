@@ -58,7 +58,6 @@ app.delete('/api/projects/delete', (req, res) => {
     db.deleteTodo(userSub, projectId, todoId)
       .then(() => {
         console.log('database todo deletion success');
-        console.log(res); // need to send back creation
         res.sendStatus(200);
       })
       .catch((err) => {

@@ -43,24 +43,24 @@ export const UserDataReducer = (state = initialState, action): userData[] => {
       });
     case 'deleteTodo':
       return state.map((item) => {
-        if (item.projectName !== payload.projectName) {
+        if (item._id !== payload.projectId) {
           return { ...item };
         } else {
           return {
             ...item,
-            todos: item.todos.filter((todo) => todo.text !== payload.todo),
+            todos: item.todos.filter((todo) => todo._id !== payload._id),
           };
         }
       });
     case 'todoStatusChange':
       return state.map((item) => {
-        if (item.projectName !== payload.projectName) {
+        if (item._id !== payload.projectId) {
           return { ...item };
         } else {
           return {
             ...item,
             todos: item.todos.map((todo) => {
-              if (todo.text === payload.todo) {
+              if (todo.text === payload.todo) { // ?
                 todo.completed = !todo.completed;
               }
               return todo;
