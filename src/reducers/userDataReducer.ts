@@ -12,18 +12,20 @@ export const UserDataReducer = (state = initialState, action): userData[] => {
   const { type, payload } = action; // need to add destructuring in other files
   switch (type) {
     case 'fetchData':
+      console.log(payload, 'payload');
       return payload.projects;
-    case 'addProject':
+    case 'addProject': // id
       return [
         ...state,
         {
-          _id: Math.random(), // should match db id!!!!!!!
-          projectName: payload,
+          _id: payload._id, // from db
+          projectName: payload.projectName,
           todos: [],
         },
       ];
     case 'deleteProject':
-      return state.filter((i) => i.projectName !== payload);
+      console.log('filter about to run');
+      return state.filter((projects) => projects._id !== payload);
     case 'addTodo':
       // looks complicated cause we need to copy each level!
       return state.map((item) => {

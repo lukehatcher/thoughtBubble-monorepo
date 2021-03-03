@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+// id
 export const addProjectAction = (projectName: string) => {
   return async (dispatch, getState) => {
     const userSub = getState().storedUser.sub;
@@ -7,12 +7,13 @@ export const addProjectAction = (projectName: string) => {
       axios
         .post('http://localhost:3001/api/projects/post', {
           type: 'project',
-          username: userSub,
+          userSub,
           projectName,
           todo: null,
         })
         .then((res) => {
-          dispatch({ type: 'addProject', payload: projectName });
+          // res.data = uuid
+          dispatch({ type: 'addProject', payload: { projectName, _id: res.data } });
         });
     } catch (err) {
       console.error('projectActions.ts: ', err);
@@ -20,7 +21,7 @@ export const addProjectAction = (projectName: string) => {
   };
 };
 
-export const deleteProjectAction = (projectName: string) => {
+export const deleteProjectAction = (projectId: string) => {
   return async (dispatch, getState) => {
     const userSub = getState().storedUser.sub;
     try {
@@ -28,13 +29,13 @@ export const deleteProjectAction = (projectName: string) => {
         .delete('http://localhost:3001/api/projects/delete', {
           params: {
             type: 'project',
-            username: userSub,
-            projectName,
+            userSub,
+            projectId,
             todo: null,
           },
         })
         .then((res) => {
-          dispatch({ type: 'deleteProject', payload: projectName });
+          dispatch({ type: 'deleteProject', payload: projectId });
         });
     } catch (err) {
       console.error('projectActions.ts: ', err);

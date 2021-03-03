@@ -2,6 +2,7 @@ import * as express from 'express';
 import { Request, Response } from 'express';
 import * as morgan from 'morgan';
 import * as db from '../database/queries';
+import { v4 as uuidv4 } from 'uuid';
 
 const PORT = process.env.PORT;
 const app = express();
@@ -25,7 +26,9 @@ app.post('/api/projects/init', (req, res) => {
   const { userSub } = req.body;
   if (!userSub) return res.sendStatus(400);
 
+  // this object creating should be in queries.ts
   const data = {
+    _id: uuidv4(),
     userSub,
     projects: [],
   };
@@ -35,7 +38,8 @@ app.post('/api/projects/init', (req, res) => {
       if (!exists) {
         db.initUserdata(data)
           .then(() => {
-            res.sendStatus(201);
+            console.log('checking for user');
+            res.status(201).send(data); // fix error
           })
           .catch((err) => {
             console.error('error initializing user in db', err);
@@ -48,12 +52,13 @@ app.post('/api/projects/init', (req, res) => {
 });
 
 app.delete('/api/projects/delete', (req, res) => {
-  const { type, username, projectName, todo } = req.query;
+  const { type, userSub, projectId, todoId } = req.query;
   if (type === 'todo') {
     // just deleting a todo from a project
-    db.deleteTodo(username, projectName, todo)
+    db.deleteTodo(userSub, projectId, todoId)
       .then(() => {
         console.log('database todo deletion success');
+        console.log(res); // need to send back creation
         res.sendStatus(200);
       })
       .catch((err) => {
@@ -62,7 +67,7 @@ app.delete('/api/projects/delete', (req, res) => {
       });
   } else if (type === 'project') {
     // deleting whole project
-    db.deleteProject(username, projectName)
+    db.deleteProject(userSub, projectId)
       .then(() => {
         console.log('database project deletion success');
         res.sendStatus(200);
@@ -73,11 +78,11 @@ app.delete('/api/projects/delete', (req, res) => {
       });
   }
 });
-
+// id
 app.post('/api/projects/post', (req, res) => {
-  const { type, username, projectName, todo } = req.body;
+  const { type, userSub, projectName, todoId } = req.body;
   if (type === 'todo') {
-    db.addTodo(username, projectName, todo)
+    db.addTodo(userSub, projectName, todoId) // need id here
       .then(() => {
         res.sendStatus(201);
       })
@@ -86,9 +91,9 @@ app.post('/api/projects/post', (req, res) => {
         res.sendStatus(400);
       });
   } else if (type === 'project') {
-    db.addProject(username, projectName)
-      .then(() => {
-        res.sendStatus(201);
+    db.addProject(userSub, projectName)
+      .then((id) => {
+        res.status(201).send(id);
       })
       .catch((err) => {
         console.error('error posting todo to db', err);

@@ -1,18 +1,19 @@
 import axios from 'axios';
+// id
 
-export const addTodoAction = (projectName: string, todo: string) => {
+export const addTodoAction = (projectId: string, todoId: string) => {
   return async (dispatch, getState) => {
     const userSub = getState().storedUser.sub;
     try {
       axios
         .post('http://localhost:3001/api/projects/post', {
           type: 'todo',
-          username: userSub,
-          projectName,
-          todo,
+          userSub,
+          projectId,
+          todoId,
         })
         .then((res) => {
-          dispatch({ type: 'addTodo', payload: { projectName, todo } });
+          dispatch({ type: 'addTodo', payload: { projectId, todoId } });
         });
     } catch (err) {
       console.error('addProjectAction @todoActions.ts: ', err);
@@ -20,7 +21,7 @@ export const addTodoAction = (projectName: string, todo: string) => {
   };
 };
 
-export const deleteTodoAction = (projectName: string, todo: string) => {
+export const deleteTodoAction = (projectId: string, todoId: string) => {
   return async (dispatch, getState) => {
     const userSub = getState().storedUser.sub;
     try {
@@ -28,13 +29,13 @@ export const deleteTodoAction = (projectName: string, todo: string) => {
         .delete('http://localhost:3001/api/projects/delete', {
           params: {
             type: 'todo',
-            username: userSub,
-            projectName,
-            todo,
+            userSub,
+            projectId,
+            todoId,
           },
         })
         .then((res) => {
-          dispatch({ type: 'deleteTodo', payload: { projectName, todo } });
+          dispatch({ type: 'deleteTodo', payload: { projectId, todoId } });
         });
     } catch (err) {
       console.error('deleteProjectAction @todoActions.ts: ', err);
@@ -42,19 +43,19 @@ export const deleteTodoAction = (projectName: string, todo: string) => {
   };
 };
 
-export const todoStatusChangeAction = (projectName: string, todo: string) => {
+export const todoStatusChangeAction = (projectId: string, todoId: string) => {
   return async (dispatch, getState) => {
     const userSub = getState().storedUser.sub;
     try {
       axios
         .put('http://localhost:3001/api/projects/put', {
           type: 'todo',
-          username: userSub,
-          projectName,
-          todo,
+          userSub,
+          projectId,
+          todoId,
         })
         .then((res) => {
-          dispatch({ type: 'todoStatusChange', payload: { projectName, todo } });
+          dispatch({ type: 'todoStatusChange', payload: { projectId, todoId } });
         });
     } catch (err) {
       console.error('todoStatusChangeAction @todoActions.ts: ', err);
