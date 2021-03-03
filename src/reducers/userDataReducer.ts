@@ -29,14 +29,14 @@ export const UserDataReducer = (state = initialState, action): userData[] => {
     case 'addTodo':
       // looks complicated cause we need to copy each level!
       return state.map((item) => {
-        if (item.projectName !== payload.projectName) {
+        if (item._id !== payload.projectId) {
           return { ...item };
         } else {
           return {
             ...item,
             todos: [
               ...item.todos,
-              { _id: Math.random(), text: payload.todo, completed: false }, // wrong id
+              { _id: payload._id, text: payload.todo, completed: false }, // id
             ],
           };
         }

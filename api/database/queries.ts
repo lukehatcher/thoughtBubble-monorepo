@@ -50,7 +50,7 @@ export const deleteTodo = async (userSub, projectId, todoId): Promise<void> => {
 // id
 export const addTodo = async (
   userSub: string,
-  project: string,
+  projectId: string,
   newTodo: string,
 ): Promise<string> => {
   const newId = uuidv4();
@@ -60,7 +60,7 @@ export const addTodo = async (
     completed: false,
   };
   const doc = await UserInfo.findOne({ userSub });
-  const projectIdx = doc.projects.findIndex((item) => item.projectName === project);
+  const projectIdx = doc.projects.findIndex((item) => item._id === projectId);
   doc.projects[projectIdx].todos.push(todoObj);
   await doc.save();
   return newId;

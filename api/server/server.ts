@@ -80,11 +80,11 @@ app.delete('/api/projects/delete', (req, res) => {
 });
 // id
 app.post('/api/projects/post', (req, res) => {
-  const { type, userSub, projectName, todoId } = req.body;
+  const { type, userSub, projectName, projectId, todo } = req.body;
   if (type === 'todo') {
-    db.addTodo(userSub, projectName, todoId) // need id here
-      .then(() => {
-        res.sendStatus(201);
+    db.addTodo(userSub, projectId, todo) // need id here
+      .then((newId) => {
+        res.status(201).send(newId);
       })
       .catch((err) => {
         console.error('error posting todo to db', err);
@@ -92,8 +92,8 @@ app.post('/api/projects/post', (req, res) => {
       });
   } else if (type === 'project') {
     db.addProject(userSub, projectName)
-      .then((id) => {
-        res.status(201).send(id);
+      .then((newId) => {
+        res.status(201).send(newId);
       })
       .catch((err) => {
         console.error('error posting todo to db', err);

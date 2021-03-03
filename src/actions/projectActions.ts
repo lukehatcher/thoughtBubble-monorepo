@@ -9,11 +9,12 @@ export const addProjectAction = (projectName: string) => {
           type: 'project',
           userSub,
           projectName,
+          projectId: null,
           todo: null,
         })
         .then((res) => {
-          // res.data = uuid
-          dispatch({ type: 'addProject', payload: { projectName, _id: res.data } });
+          const newId = res.data;
+          dispatch({ type: 'addProject', payload: { projectName, _id: newId } });
         });
     } catch (err) {
       console.error('projectActions.ts: ', err);

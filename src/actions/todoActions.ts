@@ -1,7 +1,7 @@
 import axios from 'axios';
 // id
 
-export const addTodoAction = (projectId: string, todoId: string) => {
+export const addTodoAction = (projectId: string, todo: string) => {
   return async (dispatch, getState) => {
     const userSub = getState().storedUser.sub;
     try {
@@ -9,11 +9,13 @@ export const addTodoAction = (projectId: string, todoId: string) => {
         .post('http://localhost:3001/api/projects/post', {
           type: 'todo',
           userSub,
+          projectName: null,
           projectId,
-          todoId,
+          todo,
         })
         .then((res) => {
-          dispatch({ type: 'addTodo', payload: { projectId, todoId } });
+          const newId = res.data;
+          dispatch({ type: 'addTodo', payload: { projectId, todo, _id: newId } });
         });
     } catch (err) {
       console.error('addProjectAction @todoActions.ts: ', err);
