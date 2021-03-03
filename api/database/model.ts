@@ -8,7 +8,7 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTop
 const db = mongoose.connection;
 
 db.on('connected', () => {
-  console.log('connected to MongoDB');
+  console.log('✅ connected to MongoDB');
 });
 
 db.on('error', (err) => {
