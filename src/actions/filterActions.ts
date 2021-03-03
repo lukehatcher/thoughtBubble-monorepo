@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const filterByCompletedAction = (projectId: string) => {
+export const filtertThoughtsAction = (projectId: string, filterType: string) => {
   return async (dispatch, getState) => {
     const userSub = getState().storedUser.sub;
     try {
@@ -9,7 +9,7 @@ export const filterByCompletedAction = (projectId: string) => {
           userSub,
         },
       });
-      dispatch({ type: 'filterData/completed', payload: { data: response.data, projectId } });
+      dispatch({ type: `filterData/${filterType}`, payload: { data: response.data, projectId } });
     } catch (err) {
       console.error('fetchDataAction.ts: ', err);
     }

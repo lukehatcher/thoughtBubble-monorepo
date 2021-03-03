@@ -20,7 +20,7 @@ import { StackParamList } from './ProjectsNavStack'; // type
 import { RootState } from '../reducers/rootReducer'; // type
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { addTodoAction, deleteTodoAction, todoStatusChangeAction } from '../actions/todoActions';
-import { filterByCompletedAction } from '../actions/filterActions';
+import { filtertThoughtsAction } from '../actions/filterActions';
 
 interface TodosScreenProps {
   route: RouteProp<StackParamList, 'Thoughts'>;
@@ -65,8 +65,8 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
     dispatch(todoStatusChangeAction(projectId, todoId));
   };
 
-  const filterbyCompleted = () => {
-    dispatch(filterByCompletedAction(projectId));
+  const handleThoughtFilter = (typeOfFilter: string) => {
+    dispatch(filtertThoughtsAction(projectId, typeOfFilter));
   };
 
   const closeRow = (rowMap, rowKey) => {
@@ -170,10 +170,18 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
         <View style={styles.modal}>
           <Text style={styles.sortText}>filter by status</Text>
           <TouchableOpacity style={styles.btn2}>
-            <Button color="white" title="completed" onPress={() => filterbyCompleted()} />
+            <Button
+              color="white"
+              title="completed"
+              onPress={() => handleThoughtFilter('completed')}
+            />
           </TouchableOpacity>
           <TouchableOpacity style={styles.btn2}>
-            <Button color="white" title="in progress" onPress={() => {}} />
+            <Button
+              color="white"
+              title="in progress"
+              onPress={() => handleThoughtFilter('incomplete')}
+            />
           </TouchableOpacity>
           <TouchableOpacity style={styles.btn2}>
             <Button color="white" title="view all" onPress={() => {}} />
