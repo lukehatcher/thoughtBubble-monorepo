@@ -1,6 +1,5 @@
 import { UserInfo, UserDoc } from './model'; // model and type
 import { v4 as uuidv4 } from 'uuid';
-// uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 
 export const initUserdata = async (userSub: string, projects: any[]): Promise<any> => {
   const newData = {
@@ -23,7 +22,7 @@ export const getUserData = async (userSub): Promise<UserDoc> => {
   const result = await UserInfo.findOne({ userSub });
   return result;
 };
-// id
+
 export const deleteProject = async (userSub, projectId): Promise<void> => {
   // missing param types, see server error
   const doc = await UserInfo.findOne({ userSub });
@@ -44,7 +43,7 @@ export const addProject = async (userSub: string, newProject: string): Promise<s
   await doc.save();
   return newId;
 };
-// id
+
 export const deleteTodo = async (userSub, projectId, todoId): Promise<void> => {
   // missing param types, see server error
   const doc = await UserInfo.findOne({ userSub });
@@ -53,7 +52,7 @@ export const deleteTodo = async (userSub, projectId, todoId): Promise<void> => {
   doc.projects[projectIdx].todos.splice(todoIdx, 1);
   await doc.save();
 };
-// id
+
 export const addTodo = async (
   userSub: string,
   projectId: string,
@@ -71,7 +70,7 @@ export const addTodo = async (
   await doc.save();
   return newId;
 };
-// id
+
 export const toggleTodoCompletion = async (
   userSub: string,
   projectId: string,
