@@ -1,3 +1,5 @@
+import { InteractionManager } from "react-native";
+
 const initialState = []; // array of objs, where each obj has todos arry of objs
 // https://stackoverflow.com/questions/6854431/how-do-i-get-the-objectid-after-i-save-an-object-in-mongoose/47002504
 
@@ -30,7 +32,7 @@ export const UserDataReducer = (state = initialState, action): userData[] => {
       // looks complicated cause we need to copy each level
       return state.map((item) => {
         if (item._id !== payload.projectId) {
-          return { ...item };
+          return item;
         } else {
           return {
             ...item,
@@ -44,7 +46,7 @@ export const UserDataReducer = (state = initialState, action): userData[] => {
     case 'deleteTodo':
       return state.map((item) => {
         if (item._id !== payload.projectId) {
-          return { ...item };
+          return item;
         } else {
           return {
             ...item,
@@ -56,7 +58,7 @@ export const UserDataReducer = (state = initialState, action): userData[] => {
       console.log('toggle time');
       return state.map((item) => {
         if (item._id !== payload.projectId) {
-          return { ...item };
+          return item;
         } else {
           return {
             ...item,
@@ -67,6 +69,17 @@ export const UserDataReducer = (state = initialState, action): userData[] => {
               return todo;
             }),
           };
+        }
+      });
+    case 'filterData/completed':
+      return payload.data.projects.map((project) => {
+        if (project._id === payload.projectId) {
+          return {
+            ...project,
+            todos: project.todos.filter((todo) => todo.completed),
+          };
+        } else {
+          return project;
         }
       });
     default:

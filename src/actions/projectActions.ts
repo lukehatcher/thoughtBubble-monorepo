@@ -1,5 +1,5 @@
 import axios from 'axios';
-// id
+
 export const addProjectAction = (projectName: string) => {
   return async (dispatch, getState) => {
     const userSub = getState().storedUser.sub;
