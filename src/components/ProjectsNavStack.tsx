@@ -1,12 +1,12 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { ProjectsScreen } from './ProjectsScreen';
-import { TodosScreen } from './TodosScreen';
+import { ThoughtsScreen } from './ThoughtsScreen';
 
 export type StackParamList = {
   // all good here
   Projects: undefined;
-  Todos: {
+  Thoughts: {
     projectName: string; // should be id
   };
 };
@@ -26,7 +26,7 @@ export const ProjectsNavStack: React.FC<ProjectsNavStackProps> = () => {
       }}
     >
       <ProjectStack.Screen name="Projects" component={ProjectsScreen} />
-      <ProjectStack.Screen name="Todos" component={TodosScreen} />
+      <ProjectStack.Screen name="Thoughts" component={ThoughtsScreen} />
     </ProjectStack.Navigator>
   );
 };

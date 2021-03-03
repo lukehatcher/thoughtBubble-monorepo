@@ -21,10 +21,10 @@ import { RootState } from '../reducers/rootReducer'; // type
 import { addTodoAction, deleteTodoAction, todoStatusChangeAction } from '../actions/todoActions';
 
 interface TodosScreenProps {
-  route: RouteProp<StackParamList, 'Todos'>;
+  route: RouteProp<StackParamList, 'Thoughts'>;
 }
 
-export const TodosScreen: React.FC<TodosScreenProps> = ({ route }) => {
+export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route }) => {
   const [modalView, setModalView] = useState(false);
   const [input, setInput] = useState('');
   const dispatch = useDispatch();

@@ -56,7 +56,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
   const renderItem = (data) => (
     // for slidables
     <TouchableHighlight
-      onPress={() => navigation.navigate('Todos', { projectName: data.item.projectName })}
+      onPress={() => navigation.navigate('Thoughts', { projectName: data.item.projectName })}
       style={styles.rowFront}
       underlayColor={'grey'}
     >
