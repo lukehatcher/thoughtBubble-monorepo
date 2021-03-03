@@ -1,7 +1,6 @@
 import * as express from 'express';
 import { Request, Response } from 'express';
 import * as morgan from 'morgan';
-import { v4 as uuidv4 } from 'uuid';
 import * as db from '../database/queries';
 
 const PORT = process.env.PORT;
@@ -26,20 +25,13 @@ app.post('/api/projects/init', (req, res) => {
   const { userSub } = req.body;
   if (!userSub) return res.sendStatus(400);
 
-  // this object creating should be in queries.ts
-  const data = {
-    _id: uuidv4(),
-    userSub,
-    projects: [],
-  };
-
   db.checkIfUserExists(userSub)
     .then((exists) => {
       if (!exists) {
-        db.initUserdata(data)
-          .then(() => {
+        db.initUserdata(userSub, [])
+          .then((newData) => {
             console.log('checking for user');
-            res.status(201).send(data); // check out new user process
+            res.status(201).send(newData); // check out new user process
           })
           .catch((err) => {
             console.error('error initializing user in db', err);
@@ -114,5 +106,5 @@ app.put('/api/projects/put', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`listening on port ${PORT}`);
+  console.log(`✅ listening on port ${PORT}`);
 });

@@ -2,9 +2,15 @@ import { UserInfo, UserDoc } from './model'; // model and type
 import { v4 as uuidv4 } from 'uuid';
 // uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 
-export const initUserdata = async (data): Promise<void> => {
-  const doc = new UserInfo(data);
+export const initUserdata = async (userSub: string, projects: any[]): Promise<any> => {
+  const newData = {
+    _id: uuidv4(),
+    userSub,
+    projects,
+  };
+  const doc = new UserInfo(newData);
   await doc.save();
+  return newData;
 };
 
 export const checkIfUserExists = async (userSub: string): Promise<boolean> => {
