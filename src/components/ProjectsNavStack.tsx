@@ -7,7 +7,7 @@ export type StackParamList = {
   // all good here
   Projects: undefined;
   Thoughts: {
-    projectName: string; // should be id
+    projectId: string; // id
   };
 };
 

@@ -28,27 +28,30 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route }) => {
   const [modalView, setModalView] = useState(false);
   const [input, setInput] = useState('');
   const dispatch = useDispatch();
-  const { projectName } = route.params; // should be id being passed D:
+  const { projectId } = route.params; // should be id being passed D:
 
   const selector = (state: RootState) =>
-    state.userData.find((i) => i.projectName === projectName).todos;
+    state.userData.find((project) => project._id === projectId).todos;
   let todos = useSelector(selector); // retrive todos for the project we're on
 
   const handleTodoAddition = (todo: string) => {
+    // id
     setInput('');
     if (!todo) {
       Alert.alert('invalid input');
       return;
     }
-    dispatch(addTodoAction(projectName, todo));
+    dispatch(addTodoAction(projectId, todo));
   };
 
-  const handleTodoDelete = (todo: string) => {
-    dispatch(deleteTodoAction(projectName, todo));
+  const handleTodoDelete = (todoId: string) => {
+    // id
+    dispatch(deleteTodoAction(projectId, todoId));
   };
 
-  const handleTodoStatusChange = (todo: string) => {
-    dispatch(todoStatusChangeAction(projectName, todo));
+  const handleTodoStatusChange = (todoId: string) => {
+    // id
+    dispatch(todoStatusChangeAction(projectId, todoId));
   };
 
   const closeRow = (rowMap, rowKey) => {
@@ -71,7 +74,7 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route }) => {
       {/* to match height of back view to the dynamic front view height,
       add random view below with same text (but invisable) to get same height */}
       <View>
-        <Text style={styles.hiddenBackText}>{data.item.projectName}</Text>
+        <Text style={styles.hiddenBackText}>{data.item.text}</Text>
       </View>
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnLeft]}
@@ -82,14 +85,14 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route }) => {
 
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnMid]}
-        onPress={() => handleTodoStatusChange(data.item.text)}
+        onPress={() => handleTodoStatusChange(data.item._id)} // id
       >
         <Ionicon name="checkbox-outline" size={25} color="white" />
       </TouchableOpacity>
 
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnRight]}
-        onPress={() => handleTodoDelete(data.item.text)}
+        onPress={() => handleTodoDelete(data.item._id)} // id
       >
         <Ionicon name="trash-outline" size={25} color="white" />
       </TouchableOpacity>
@@ -103,7 +106,7 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route }) => {
     <>
       <View style={styles.container}>
         <SwipeListView
-          data={todos.map((i) => ({ ...i, key: i._id.toString() }))} // swipeviewlist api requires key prop
+          data={todos.map((i) => ({ ...i, key: i._id }))} // swipeviewlist api requires key prop
           renderItem={renderItem}
           renderHiddenItem={renderHiddenItem}
           recalculateHiddenLayout
