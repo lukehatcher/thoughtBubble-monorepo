@@ -67,7 +67,12 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route }) => {
 
   const renderHiddenItem = (data, rowMap) => (
     // for slidables
-    <View style={styles.rowFront2}>
+    <View style={{ ...styles.rowFront, backgroundColor: 'rgb(0, 122, 255)' }}>
+      {/* to match height of back view to the dynamic front view height,
+      add random view below with same text (but invisable) to get same height */}
+      <View>
+        <Text style={styles.hiddenBackText}>{data.item.projectName}</Text>
+      </View>
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnLeft]}
         onPress={() => closeRow(rowMap, data.item.key)}
@@ -101,8 +106,11 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route }) => {
           data={todos.map((i) => ({ ...i, key: i._id.toString() }))} // swipeviewlist api requires key prop
           renderItem={renderItem}
           renderHiddenItem={renderHiddenItem}
+          recalculateHiddenLayout
           disableRightSwipe
           closeOnScroll
+          closeOnRowBeginSwipe
+          closeOnRowPress
           rightOpenValue={-150}
           previewOpenValue={-40}
         />
@@ -213,9 +221,10 @@ const styles = StyleSheet.create({
   },
   rowFront: {
     backgroundColor: '#303030',
+    flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 50,
+    height: 'auto',
     marginTop: 15,
     marginHorizontal: 10,
     borderRadius: 10,
@@ -259,22 +268,10 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 10,
     borderTopRightRadius: 10,
   },
-  rowFront2: {
-    backgroundColor: 'rgb(0, 122, 255)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 50,
-    marginTop: 15,
-    marginHorizontal: 10,
-    borderRadius: 10,
-    // shadow
-    shadowColor: 'black',
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.7,
-    shadowRadius: 5.46,
-    elevation: 9,
+  hiddenBackText: {
+    fontSize: 20,
+    flex: 1,
+    padding: 15,
+    color: 'rgba(0, 0, 0, 0)',
   },
 });

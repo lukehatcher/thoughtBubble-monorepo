@@ -98,9 +98,11 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
           data={userProjectsData.map((i) => ({ ...i, key: i._id.toString() }))} // swipeviewlist api requires key prop
           renderItem={renderItem}
           renderHiddenItem={renderHiddenItem}
+          recalculateHiddenLayout
           disableRightSwipe
           closeOnScroll
-          recalculateHiddenLayout={true}
+          closeOnRowBeginSwipe
+          closeOnRowPress
           rightOpenValue={-150}
           previewOpenValue={-40}
         />
@@ -210,6 +212,7 @@ const styles = StyleSheet.create({
     height: 'auto', // !!!!!!!!!
     marginTop: 15,
     marginHorizontal: 10,
+    flexWrap: 'wrap',
     borderRadius: 10,
     // shadow
     shadowColor: 'black',
@@ -220,7 +223,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.7,
     shadowRadius: 5.46,
     elevation: 9,
-    flexWrap: 'wrap',
   },
   rowBack: {
     alignItems: 'center',
