@@ -18,7 +18,7 @@ export const UserDataReducer = (state = initialState, action): userData[] => {
       return [
         ...state,
         {
-          _id: payload._id, // from db
+          _id: payload._id,
           projectName: payload.projectName,
           todos: [],
         },
@@ -27,7 +27,7 @@ export const UserDataReducer = (state = initialState, action): userData[] => {
       console.log('filter about to run');
       return state.filter((projects) => projects._id !== payload);
     case 'addTodo':
-      // looks complicated cause we need to copy each level!
+      // looks complicated cause we need to copy each level
       return state.map((item) => {
         if (item._id !== payload.projectId) {
           return { ...item };
@@ -36,7 +36,7 @@ export const UserDataReducer = (state = initialState, action): userData[] => {
             ...item,
             todos: [
               ...item.todos,
-              { _id: payload._id, text: payload.todo, completed: false }, // id
+              { _id: payload._id, text: payload.todo, completed: false }, //
             ],
           };
         }
@@ -53,6 +53,7 @@ export const UserDataReducer = (state = initialState, action): userData[] => {
         }
       });
     case 'todoStatusChange':
+      console.log('toggle time');
       return state.map((item) => {
         if (item._id !== payload.projectId) {
           return { ...item };
@@ -60,7 +61,7 @@ export const UserDataReducer = (state = initialState, action): userData[] => {
           return {
             ...item,
             todos: item.todos.map((todo) => {
-              if (todo.text === payload.todo) { // ?
+              if (todo._id === payload._id) {
                 todo.completed = !todo.completed;
               }
               return todo;

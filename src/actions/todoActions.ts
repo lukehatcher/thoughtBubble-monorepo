@@ -1,5 +1,4 @@
 import axios from 'axios';
-// id
 
 export const addTodoAction = (projectId: string, todo: string) => {
   return async (dispatch, getState) => {
@@ -57,7 +56,7 @@ export const todoStatusChangeAction = (projectId: string, todoId: string) => {
           todoId,
         })
         .then((res) => {
-          dispatch({ type: 'todoStatusChange', payload: { projectId, todoId } });
+          dispatch({ type: 'todoStatusChange', payload: { projectId, _id: todoId } });
         });
     } catch (err) {
       console.error('todoStatusChangeAction @todoActions.ts: ', err);

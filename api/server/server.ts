@@ -1,8 +1,8 @@
 import * as express from 'express';
 import { Request, Response } from 'express';
 import * as morgan from 'morgan';
-import * as db from '../database/queries';
 import { v4 as uuidv4 } from 'uuid';
+import * as db from '../database/queries';
 
 const PORT = process.env.PORT;
 const app = express();
@@ -39,7 +39,7 @@ app.post('/api/projects/init', (req, res) => {
         db.initUserdata(data)
           .then(() => {
             console.log('checking for user');
-            res.status(201).send(data); // fix error
+            res.status(201).send(data); // check out new user process
           })
           .catch((err) => {
             console.error('error initializing user in db', err);
@@ -54,7 +54,6 @@ app.post('/api/projects/init', (req, res) => {
 app.delete('/api/projects/delete', (req, res) => {
   const { type, userSub, projectId, todoId } = req.query;
   if (type === 'todo') {
-    // just deleting a todo from a project
     db.deleteTodo(userSub, projectId, todoId)
       .then(() => {
         console.log('database todo deletion success');
@@ -65,7 +64,6 @@ app.delete('/api/projects/delete', (req, res) => {
         res.sendStatus(400);
       });
   } else if (type === 'project') {
-    // deleting whole project
     db.deleteProject(userSub, projectId)
       .then(() => {
         console.log('database project deletion success');
@@ -77,11 +75,11 @@ app.delete('/api/projects/delete', (req, res) => {
       });
   }
 });
-// id
+
 app.post('/api/projects/post', (req, res) => {
   const { type, userSub, projectName, projectId, todo } = req.body;
   if (type === 'todo') {
-    db.addTodo(userSub, projectId, todo) // need id here
+    db.addTodo(userSub, projectId, todo)
       .then((newId) => {
         res.status(201).send(newId);
       })
@@ -102,9 +100,9 @@ app.post('/api/projects/post', (req, res) => {
 });
 
 app.put('/api/projects/put', (req, res) => {
-  const { type, username, projectName, todo } = req.body;
+  const { type, userSub, projectId, todoId } = req.body;
   if (type === 'todo') {
-    db.toggleTodoCompletion(username, projectName, todo)
+    db.toggleTodoCompletion(userSub, projectId, todoId)
       .then(() => {
         res.sendStatus(201);
       })
