@@ -21,6 +21,7 @@ import { RootState } from '../reducers/rootReducer'; // type
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { addTodoAction, deleteTodoAction, todoStatusChangeAction } from '../actions/todoActions';
 import { filtertThoughtsAction } from '../actions/filterActions';
+import { fetchDataAction } from '../actions/fetchDataAction';
 
 interface TodosScreenProps {
   route: RouteProp<StackParamList, 'Thoughts'>;
@@ -33,9 +34,12 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
   const [input, setInput] = useState('');
   const dispatch = useDispatch();
   const { projectId } = route.params;
-  const selector = (state: RootState) =>
-    state.userData.find((project) => project._id === projectId).todos;
-  let todos = useSelector(selector); // retrive todos for the project we're on
+  const thoughtsSelector = (state: RootState) =>
+    state.userData.find((proj) => proj._id === projectId).todos;
+  let todos = useSelector(thoughtsSelector); // retrive todos for the project we're on
+
+  const userSelector = (state: RootState) => state.storedUser.sub;
+  const userSub = useSelector(userSelector);
 
   useLayoutEffect(() => {
     // add the sort botton to the header
@@ -66,6 +70,7 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
   };
 
   const handleThoughtFilter = (typeOfFilter: string) => {
+    if (typeOfFilter === 'all') dispatch(fetchDataAction(userSub));
     dispatch(filtertThoughtsAction(projectId, typeOfFilter));
   };
 
@@ -184,7 +189,7 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
             />
           </TouchableOpacity>
           <TouchableOpacity style={styles.btn2}>
-            <Button color="white" title="view all" onPress={() => {}} />
+            <Button color="white" title="view all" onPress={() => handleThoughtFilter('all')} />
           </TouchableOpacity>
           <Text style={styles.sortText}>filter by color</Text>
           <Button color="red" title="close" onPress={() => setSortModalView(false)} />
