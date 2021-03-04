@@ -12,7 +12,8 @@ export const storeUserAction = (jwt: JwtPayload | null) => {
           userSub: jwt.sub,
         })
         .then(() => {
-          dispatch({ type: 'storeUser/set', payload: jwt }); // =====moved this here
+          dispatch({ type: 'storeUser/set', payload: jwt });
+          console.log('user data should be posted now');
         })
         .catch((err) => console.error('error adding user/checking if user exists in db', err));
     } else {

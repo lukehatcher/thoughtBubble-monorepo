@@ -1,3 +1,4 @@
+// id
 import React, { useState } from 'react';
 import {
   View,
@@ -34,6 +35,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
   let userProjectsData = useSelector(selector);
 
   const handleProjectAddition = function (projectName: string) {
+    // id
     setInput('');
     if (!projectName) {
       Alert.alert('invalid input');
@@ -42,8 +44,9 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
     dispatch(addProjectAction(projectName));
   };
 
-  const handleProjectDeletion = function (projectName: string) {
-    dispatch(deleteProjectAction(projectName));
+  const handleProjectDeletion = function (projectId: string) {
+    // id
+    dispatch(deleteProjectAction(projectId));
   };
 
   const closeRow = (rowMap, rowKey) => {
@@ -56,7 +59,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
   const renderItem = (data) => (
     // for slidables
     <TouchableHighlight
-      onPress={() => navigation.navigate('Thoughts', { projectName: data.item.projectName })}
+      onPress={() => navigation.navigate('Thoughts', { projectId: data.item._id })}
       style={styles.rowFront}
       underlayColor={'grey'}
     >
@@ -81,7 +84,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnRight]}
-        onPress={() => handleProjectDeletion(data.item.projectName)}
+        onPress={() => handleProjectDeletion(data.item._id)} // id
       >
         <Ionicon name="trash-outline" size={25} color="white" />
       </TouchableOpacity>
@@ -95,7 +98,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
     <>
       <View style={styles.container}>
         <SwipeListView
-          data={userProjectsData.map((i) => ({ ...i, key: i._id.toString() }))} // swipeviewlist api requires key prop
+          data={userProjectsData.map((i) => ({ ...i, key: i._id }))} // swipeviewlist api requires key prop
           renderItem={renderItem}
           renderHiddenItem={renderHiddenItem}
           recalculateHiddenLayout

@@ -1,3 +1,5 @@
+import { InteractionManager } from 'react-native';
+
 const initialState = []; // array of objs, where each obj has todos arry of objs
 // https://stackoverflow.com/questions/6854431/how-do-i-get-the-objectid-after-i-save-an-object-in-mongoose/47002504
 
@@ -12,58 +14,83 @@ export const UserDataReducer = (state = initialState, action): userData[] => {
   const { type, payload } = action; // need to add destructuring in other files
   switch (type) {
     case 'fetchData':
+      console.log(payload, 'payload');
       return payload.projects;
-    case 'addProject':
+    case 'addProject': // id
       return [
         ...state,
         {
-          _id: Math.random(), // should match db id!!!!!!!
-          projectName: payload,
+          _id: payload._id,
+          projectName: payload.projectName,
           todos: [],
         },
       ];
     case 'deleteProject':
-      return state.filter((i) => i.projectName !== payload);
+      console.log('filter about to run');
+      return state.filter((projects) => projects._id !== payload);
     case 'addTodo':
-      // looks complicated cause we need to copy each level!
+      // looks complicated cause we need to copy each level
       return state.map((item) => {
-        if (item.projectName !== payload.projectName) {
-          return { ...item };
+        if (item._id !== payload.projectId) {
+          return item;
         } else {
           return {
             ...item,
             todos: [
               ...item.todos,
-              { _id: Math.random(), text: payload.todo, completed: false }, // wrong id
+              { _id: payload._id, text: payload.todo, completed: false }, //
             ],
           };
         }
       });
     case 'deleteTodo':
       return state.map((item) => {
-        if (item.projectName !== payload.projectName) {
-          return { ...item };
+        if (item._id !== payload.projectId) {
+          return item;
         } else {
           return {
             ...item,
-            todos: item.todos.filter((todo) => todo.text !== payload.todo),
+            todos: item.todos.filter((todo) => todo._id !== payload._id),
           };
         }
       });
     case 'todoStatusChange':
+      console.log('toggle time');
       return state.map((item) => {
-        if (item.projectName !== payload.projectName) {
-          return { ...item };
+        if (item._id !== payload.projectId) {
+          return item;
         } else {
           return {
             ...item,
             todos: item.todos.map((todo) => {
-              if (todo.text === payload.todo) {
+              if (todo._id === payload._id) {
                 todo.completed = !todo.completed;
               }
               return todo;
             }),
           };
+        }
+      });
+    case 'filterData/completed':
+      return payload.data.projects.map((project) => {
+        if (project._id === payload.projectId) {
+          return {
+            ...project,
+            todos: project.todos.filter((todo) => todo.completed),
+          };
+        } else {
+          return project;
+        }
+      });
+    case 'filterData/incomplete':
+      return payload.data.projects.map((project) => {
+        if (project._id === payload.projectId) {
+          return {
+            ...project,
+            todos: project.todos.filter((todo) => !todo.completed),
+          };
+        } else {
+          return project;
         }
       });
     default:

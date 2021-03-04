@@ -1,7 +1,4 @@
 import * as mongoose from 'mongoose';
-// import mongoose = require("mongoose");
-// 'mongodb://localhost/nativetest'
-
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .catch((err) => {
@@ -11,7 +8,7 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTop
 const db = mongoose.connection;
 
 db.on('connected', () => {
-  console.log('connected to MongoDB');
+  console.log('✅ connected to MongoDB');
 });
 
 db.on('error', (err) => {
@@ -19,10 +16,13 @@ db.on('error', (err) => {
 });
 
 const userInfoSchema = new mongoose.Schema({
+  _id: String,
   userSub: String,
   projects: [{
+    _id: String,
     projectName: String,
     todos: [{
+      _id: String,
       text: String,
       completed: Boolean,
     }],
@@ -31,10 +31,13 @@ const userInfoSchema = new mongoose.Schema({
 
 // https://stackoverflow.com/questions/42275358/mongoose-property-x-does-not-exist-on-type-document
 export interface UserDoc extends mongoose.Document {
+  _id: String,
   userSub: String,
   projects: [{
+    _id: String,
     projectName: String,
     todos: [{
+      _id: String,
       text: String,
       completed: Boolean,
     }] | any[],

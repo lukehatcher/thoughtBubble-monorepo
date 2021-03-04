@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import {
   View,
-  ScrollView,
   Text,
   Button,
   StyleSheet,
@@ -16,23 +15,42 @@ import { useDispatch, useSelector } from 'react-redux';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { RouteProp } from '@react-navigation/native'; // type
+import { StackNavigationProp } from '@react-navigation/stack'; // type
 import { StackParamList } from './ProjectsNavStack'; // type
 import { RootState } from '../reducers/rootReducer'; // type
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { addTodoAction, deleteTodoAction, todoStatusChangeAction } from '../actions/todoActions';
+import { filtertThoughtsAction } from '../actions/filterActions';
+import { fetchDataAction } from '../actions/fetchDataAction';
 
 interface TodosScreenProps {
   route: RouteProp<StackParamList, 'Thoughts'>;
+  navigation: StackNavigationProp<StackParamList, 'Projects'>;
 }
 
-export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route }) => {
+export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }) => {
   const [modalView, setModalView] = useState(false);
+  const [sortModalView, setSortModalView] = useState(false);
   const [input, setInput] = useState('');
   const dispatch = useDispatch();
-  const { projectName } = route.params; // should be id being passed D:
+  const { projectId } = route.params;
+  const thoughtsSelector = (state: RootState) =>
+    state.userData.find((proj) => proj._id === projectId).todos;
+  let todos = useSelector(thoughtsSelector); // retrive todos for the project we're on
 
-  const selector = (state: RootState) =>
-    state.userData.find((i) => i.projectName === projectName).todos;
-  let todos = useSelector(selector); // retrive todos for the project we're on
+  const userSelector = (state: RootState) => state.storedUser.sub;
+  const userSub = useSelector(userSelector);
+
+  useLayoutEffect(() => {
+    // add the sort botton to the header
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity style={styles.sortIcon} onPress={() => setSortModalView(true)}>
+          <MaterialCommunityIcons name="sort-variant" size={40} color="rgb(199, 199, 204)" />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
 
   const handleTodoAddition = (todo: string) => {
     setInput('');
@@ -40,15 +58,20 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route }) => {
       Alert.alert('invalid input');
       return;
     }
-    dispatch(addTodoAction(projectName, todo));
+    dispatch(addTodoAction(projectId, todo));
   };
 
-  const handleTodoDelete = (todo: string) => {
-    dispatch(deleteTodoAction(projectName, todo));
+  const handleTodoDelete = (todoId: string) => {
+    dispatch(deleteTodoAction(projectId, todoId));
   };
 
-  const handleTodoStatusChange = (todo: string) => {
-    dispatch(todoStatusChangeAction(projectName, todo));
+  const handleTodoStatusChange = (todoId: string) => {
+    dispatch(todoStatusChangeAction(projectId, todoId));
+  };
+
+  const handleThoughtFilter = (typeOfFilter: string) => {
+    if (typeOfFilter === 'all') dispatch(fetchDataAction(userSub));
+    dispatch(filtertThoughtsAction(projectId, typeOfFilter));
   };
 
   const closeRow = (rowMap, rowKey) => {
@@ -71,7 +94,7 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route }) => {
       {/* to match height of back view to the dynamic front view height,
       add random view below with same text (but invisable) to get same height */}
       <View>
-        <Text style={styles.hiddenBackText}>{data.item.projectName}</Text>
+        <Text style={styles.hiddenBackText}>{data.item.text}</Text>
       </View>
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnLeft]}
@@ -82,14 +105,14 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route }) => {
 
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnMid]}
-        onPress={() => handleTodoStatusChange(data.item.text)}
+        onPress={() => handleTodoStatusChange(data.item._id)}
       >
         <Ionicon name="checkbox-outline" size={25} color="white" />
       </TouchableOpacity>
 
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnRight]}
-        onPress={() => handleTodoDelete(data.item.text)}
+        onPress={() => handleTodoDelete(data.item._id)}
       >
         <Ionicon name="trash-outline" size={25} color="white" />
       </TouchableOpacity>
@@ -103,7 +126,7 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route }) => {
     <>
       <View style={styles.container}>
         <SwipeListView
-          data={todos.map((i) => ({ ...i, key: i._id.toString() }))} // swipeviewlist api requires key prop
+          data={todos.map((i) => ({ ...i, key: i._id }))} // swipeviewlist api requires key prop
           renderItem={renderItem}
           renderHiddenItem={renderHiddenItem}
           recalculateHiddenLayout
@@ -115,7 +138,7 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route }) => {
           previewOpenValue={-40}
         />
       </View>
-      {/* ======= modal ======= */}
+      {/* ======= + modal ======= */}
       <Modal animationType="slide" visible={modalView}>
         <View style={styles.modal}>
           <TextInput
@@ -145,6 +168,31 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route }) => {
               }}
             />
           </TouchableOpacity>
+        </View>
+      </Modal>
+      {/* ======= sort modal ======= */}
+      <Modal animationType="fade" presentationStyle="overFullScreen" visible={sortModalView}>
+        <View style={styles.modal}>
+          <Text style={styles.sortText}>filter by status</Text>
+          <TouchableOpacity style={styles.btn2}>
+            <Button
+              color="white"
+              title="completed"
+              onPress={() => handleThoughtFilter('completed')}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.btn2}>
+            <Button
+              color="white"
+              title="in progress"
+              onPress={() => handleThoughtFilter('incomplete')}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.btn2}>
+            <Button color="white" title="view all" onPress={() => handleThoughtFilter('all')} />
+          </TouchableOpacity>
+          <Text style={styles.sortText}>filter by color</Text>
+          <Button color="red" title="close" onPress={() => setSortModalView(false)} />
         </View>
       </Modal>
       <TouchableOpacity style={styles.plusBtnContainer} onPress={() => setModalView(true)}>
@@ -274,4 +322,14 @@ const styles = StyleSheet.create({
     padding: 15,
     color: 'rgba(0, 0, 0, 0)',
   },
+  sortIcon: {
+    marginRight: 30,
+    marginBottom: 2,
+  },
+  sortText: {
+    color: 'white',
+  },
+  // sortBtns: {
+  //   backgroundColor
+  // }
 });

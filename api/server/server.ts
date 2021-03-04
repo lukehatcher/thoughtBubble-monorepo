@@ -25,17 +25,13 @@ app.post('/api/projects/init', (req, res) => {
   const { userSub } = req.body;
   if (!userSub) return res.sendStatus(400);
 
-  const data = {
-    userSub,
-    projects: [],
-  };
-
   db.checkIfUserExists(userSub)
     .then((exists) => {
       if (!exists) {
-        db.initUserdata(data)
-          .then(() => {
-            res.sendStatus(201);
+        db.initUserdata(userSub, [])
+          .then((newData) => {
+            console.log('checking for user');
+            res.status(201).send(newData); // check out new user process
           })
           .catch((err) => {
             console.error('error initializing user in db', err);
@@ -48,10 +44,9 @@ app.post('/api/projects/init', (req, res) => {
 });
 
 app.delete('/api/projects/delete', (req, res) => {
-  const { type, username, projectName, todo } = req.query;
+  const { type, userSub, projectId, todoId } = req.query;
   if (type === 'todo') {
-    // just deleting a todo from a project
-    db.deleteTodo(username, projectName, todo)
+    db.deleteTodo(userSub, projectId, todoId)
       .then(() => {
         console.log('database todo deletion success');
         res.sendStatus(200);
@@ -61,8 +56,7 @@ app.delete('/api/projects/delete', (req, res) => {
         res.sendStatus(400);
       });
   } else if (type === 'project') {
-    // deleting whole project
-    db.deleteProject(username, projectName)
+    db.deleteProject(userSub, projectId)
       .then(() => {
         console.log('database project deletion success');
         res.sendStatus(200);
@@ -75,20 +69,20 @@ app.delete('/api/projects/delete', (req, res) => {
 });
 
 app.post('/api/projects/post', (req, res) => {
-  const { type, username, projectName, todo } = req.body;
+  const { type, userSub, projectName, projectId, todo } = req.body;
   if (type === 'todo') {
-    db.addTodo(username, projectName, todo)
-      .then(() => {
-        res.sendStatus(201);
+    db.addTodo(userSub, projectId, todo)
+      .then((newId) => {
+        res.status(201).send(newId);
       })
       .catch((err) => {
         console.error('error posting todo to db', err);
         res.sendStatus(400);
       });
   } else if (type === 'project') {
-    db.addProject(username, projectName)
-      .then(() => {
-        res.sendStatus(201);
+    db.addProject(userSub, projectName)
+      .then((newId) => {
+        res.status(201).send(newId);
       })
       .catch((err) => {
         console.error('error posting todo to db', err);
@@ -98,9 +92,9 @@ app.post('/api/projects/post', (req, res) => {
 });
 
 app.put('/api/projects/put', (req, res) => {
-  const { type, username, projectName, todo } = req.body;
+  const { type, userSub, projectId, todoId } = req.body;
   if (type === 'todo') {
-    db.toggleTodoCompletion(username, projectName, todo)
+    db.toggleTodoCompletion(userSub, projectId, todoId)
       .then(() => {
         res.sendStatus(201);
       })
@@ -112,5 +106,5 @@ app.put('/api/projects/put', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`listening on port ${PORT}`);
+  console.log(`✅ listening on port ${PORT}`);
 });
