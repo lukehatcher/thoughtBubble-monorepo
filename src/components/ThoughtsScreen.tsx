@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import { SwipeListView } from 'react-native-swipe-list-view';
+import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view';
 import { RouteProp } from '@react-navigation/native'; // type
 import { StackNavigationProp } from '@react-navigation/stack'; // type
 import { StackParamList } from './ProjectsNavStack'; // type
@@ -23,6 +23,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { addTodoAction, deleteTodoAction, todoStatusChangeAction } from '../actions/todoActions';
 import { filtertThoughtsAction } from '../actions/filterActions';
 import { fetchDataAction } from '../actions/fetchDataAction';
+import { MoreModal } from './MoreModal';
 
 interface TodosScreenProps {
   route: RouteProp<StackParamList, 'Thoughts'>;
@@ -32,6 +33,8 @@ interface TodosScreenProps {
 export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }) => {
   const [modalView, setModalView] = useState(false);
   const [sortModalView, setSortModalView] = useState(false);
+  const [moreModalView, setMoreModalView] = useState(false);
+  const [focusedId, setFocusedId] = useState('');
   const [input, setInput] = useState('');
   const dispatch = useDispatch();
   const { projectId } = route.params;
@@ -82,20 +85,6 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
     }
   };
 
-  const renderItem = (data) => (
-    // for slidables
-    <TouchableHighlight style={styles.rowFront} underlayColor={'grey'}>
-      <>
-        <Text style={data.item.completed ? styles.textCompleted : styles.text}>
-          {data.item.text}
-        </Text>
-        <TouchableOpacity style={styles.moreBtn} onPress={() => console.log('more')}>
-          <MaterialIcons name="more-vert" size={35} color="rgb(199, 199, 204)" />
-        </TouchableOpacity>
-      </>
-    </TouchableHighlight>
-  );
-
   const renderHiddenItem = (data, rowMap) => (
     // for slidables
     <View style={{ ...styles.rowFront, backgroundColor: 'rgb(0, 122, 255)' }}>
@@ -127,6 +116,35 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
     </View>
   );
 
+  const modalThings = (thoughtId: string) => {
+    setFocusedId(thoughtId); // working
+    setMoreModalView(true);
+    // show a modal with id
+  };
+
+  const renderItem = (data) => (
+    // for slidables
+    <TouchableHighlight style={styles.rowFront} underlayColor={'grey'}>
+      <>
+        <Text style={data.item.completed ? styles.textCompleted : styles.text}>
+          {data.item.text}
+        </Text>
+        <TouchableOpacity style={styles.moreBtn} onPress={() => modalThings(data.item.key)}>
+          <MaterialIcons name="more-vert" size={35} color="rgb(199, 199, 204)" />
+        </TouchableOpacity>
+        {/* <Modal visible={moreModalView} animationType="fade">
+          {console.log(data.item.key)}
+          <MoreModal thoughtId={data.item.key} setMoreModalView={setMoreModalView} />
+          <View style={styles.center}>
+            <Text>{data.item.key}</Text>
+            <Button onPress={() => setMoreModalView(false)} title="close" />
+            <Button onPress={() => console.log('what the fuck')} title="test" />
+          </View>
+        </Modal> */}
+      </>
+    </TouchableHighlight>
+  );
+
   // https://github.com/jemise111/react-native-swipe-list-view/issues/388
   LogBox.ignoreLogs(["Sending 'onAnimatedValueUpdate' with no listeners registered"]);
 
@@ -146,6 +164,15 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
           previewOpenValue={-40}
         />
       </View>
+      {moreModalView ? (
+        <MoreModal
+          thoughtId={focusedId}
+          setMoreModalView={setMoreModalView}
+          moreModalView={moreModalView}
+        />
+      ) : (
+        <></>
+      )}
       {/* ======= + modal ======= */}
       <Modal animationType="slide" visible={modalView}>
         <View style={styles.modal}>
@@ -211,6 +238,11 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
 };
 
 const styles = StyleSheet.create({
+  center: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   moreBtn: {
     position: 'absolute',
     right: 0,
