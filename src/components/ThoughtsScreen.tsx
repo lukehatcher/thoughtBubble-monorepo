@@ -116,10 +116,9 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
     </View>
   );
 
-  const modalThings = (thoughtId: string) => {
+  const renderModal = (thoughtId: string) => {
     setFocusedId(thoughtId); // working
     setMoreModalView(true);
-    // show a modal with id
   };
 
   const renderItem = (data) => (
@@ -129,18 +128,9 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
         <Text style={data.item.completed ? styles.textCompleted : styles.text}>
           {data.item.text}
         </Text>
-        <TouchableOpacity style={styles.moreBtn} onPress={() => modalThings(data.item.key)}>
+        <TouchableOpacity style={styles.moreBtn} onPress={() => renderModal(data.item.key)}>
           <MaterialIcons name="more-vert" size={35} color="rgb(199, 199, 204)" />
         </TouchableOpacity>
-        {/* <Modal visible={moreModalView} animationType="fade">
-          {console.log(data.item.key)}
-          <MoreModal thoughtId={data.item.key} setMoreModalView={setMoreModalView} />
-          <View style={styles.center}>
-            <Text>{data.item.key}</Text>
-            <Button onPress={() => setMoreModalView(false)} title="close" />
-            <Button onPress={() => console.log('what the fuck')} title="test" />
-          </View>
-        </Modal> */}
       </>
     </TouchableHighlight>
   );
@@ -166,9 +156,10 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
       </View>
       {moreModalView ? (
         <MoreModal
-          thoughtId={focusedId}
-          setMoreModalView={setMoreModalView}
           moreModalView={moreModalView}
+          setMoreModalView={setMoreModalView}
+          projectId={projectId}
+          thoughtId={focusedId}
         />
       ) : (
         <></>
@@ -206,7 +197,7 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
         </View>
       </Modal>
       {/* ======= sort modal ======= */}
-      <Modal animationType="fade" presentationStyle="overFullScreen" visible={sortModalView}>
+      <Modal animationType="fade" visible={sortModalView}>
         <View style={styles.modal}>
           <Text style={styles.sortText}>filter by status</Text>
           <TouchableOpacity style={styles.btn2}>
@@ -253,14 +244,11 @@ const styles = StyleSheet.create({
     padding: 15,
     paddingEnd: 35,
     color: 'rgb(199, 199, 204)',
-    // marginRight: 20,
-    // backgroundColor: 'red',
   },
   textCompleted: {
     textDecorationLine: 'line-through',
     padding: 15,
     paddingEnd: 35,
-    // backgroundColor: 'red',
     color: 'grey',
     fontSize: 20,
     flex: 1,

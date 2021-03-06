@@ -55,7 +55,6 @@ export const UserDataReducer = (state = initialState, action): userData[] => {
         }
       });
     case 'todoStatusChange':
-      console.log('toggle time');
       return state.map((item) => {
         if (item._id !== payload.projectId) {
           return item;
@@ -65,6 +64,22 @@ export const UserDataReducer = (state = initialState, action): userData[] => {
             todos: item.todos.map((todo) => {
               if (todo._id === payload._id) {
                 todo.completed = !todo.completed;
+              }
+              return todo;
+            }),
+          };
+        }
+      });
+    case 'editTodo':
+      return state.map((item) => {
+        if (item._id !== payload.projectId) {
+          return item;
+        } else {
+          return {
+            ...item,
+            todos: item.todos.map((todo) => {
+              if (todo._id === payload._id) {
+                todo.text = payload.newThought;
               }
               return todo;
             }),
