@@ -20,6 +20,10 @@ export const MoreModal: React.FC<MoreModalProps> = ({
   const dispatch = useDispatch();
 
   const handleThoughtEdit = (newThought: string, id: string) => {
+    if (!newThought) {
+      setMoreModalView(false);
+      return;
+    }
     dispatch(editThoughtAction(newThought, projectId, id));
     setMoreModalView(false);
   };
@@ -31,7 +35,7 @@ export const MoreModal: React.FC<MoreModalProps> = ({
           {/* <Text style={styles.text}>Edit thought: {thoughtId}</Text> */}
           <TextInput
             onChangeText={(text) => {
-              setInput(text);
+              setInput(text.trim());
             }}
             placeholder="edit your thought..."
             multiline
@@ -41,6 +45,7 @@ export const MoreModal: React.FC<MoreModalProps> = ({
           />
           <Button onPress={() => handleThoughtEdit(input, thoughtId)} title="submit" color="white"/>
           <Button onPress={() => setMoreModalView(false)} title="cancel" color="white" />
+          <Text>add a color tag (coming soon)</Text>
         </View>
       </View>
     </Modal>
