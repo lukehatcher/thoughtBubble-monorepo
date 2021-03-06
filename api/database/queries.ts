@@ -83,3 +83,17 @@ export const toggleTodoCompletion = async (
   doc.projects[projectIdx].todos[todoIdx].completed = !oldState;
   await doc.save();
 };
+
+export const editTodo = async (
+  userSub: string,
+  projectId: string,
+  todoId: string,
+  newThought: string,
+): Promise<void> => {
+  const doc = await UserInfo.findOne({ userSub });
+  const projectIdx = doc.projects.findIndex((item) => item._id === projectId);
+  const todoIdx = doc.projects[projectIdx].todos.findIndex((item) => item._id === todoId);
+  const oldState = doc.projects[projectIdx].todos[todoIdx].completed;
+  doc.projects[projectIdx].todos[todoIdx].text = newThought;
+  await doc.save();
+};

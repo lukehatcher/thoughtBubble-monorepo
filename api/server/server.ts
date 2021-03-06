@@ -92,9 +92,19 @@ app.post('/api/projects/post', (req, res) => {
 });
 
 app.put('/api/projects/put', (req, res) => {
-  const { type, userSub, projectId, todoId } = req.body;
-  if (type === 'todo') {
+  // add switch case or make seperate routes
+  const { type, userSub, projectId, todoId, newThought } = req.body;
+  if (type === 'todo/toggle') {
     db.toggleTodoCompletion(userSub, projectId, todoId)
+      .then(() => {
+        res.sendStatus(201);
+      })
+      .catch((err) => {
+        console.error('error updating todo completion bool', err);
+        res.sendStatus(400);
+      });
+  } else if (type === 'todo/edit') {
+    db.editTodo(userSub, projectId, todoId, newThought)
       .then(() => {
         res.sendStatus(201);
       })

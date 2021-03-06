@@ -50,16 +50,38 @@ export const todoStatusChangeAction = (projectId: string, todoId: string) => {
     try {
       axios
         .put('http://localhost:3001/api/projects/put', {
-          type: 'todo',
+          type: 'todo/toggle',
           userSub,
           projectId,
           todoId,
+          newThought: null,
         })
         .then((res) => {
           dispatch({ type: 'todoStatusChange', payload: { projectId, _id: todoId } });
         });
     } catch (err) {
       console.error('todoStatusChangeAction @todoActions.ts: ', err);
+    }
+  };
+};
+
+export const editThoughtAction = (newThought: string, projectId: string, todoId: string) => {
+  return async (dispatch, getState) => {
+    const userSub = getState().storedUser.sub;
+    try {
+      axios
+        .put('http://localhost:3001/api/projects/put', {
+          type: 'todo/edit',
+          userSub,
+          projectId,
+          todoId,
+          newThought,
+        })
+        .then((res) => {
+          dispatch({ type: 'editTodo', payload: { projectId, _id: todoId, newThought } });
+        });
+    } catch (err) {
+      console.error('editThought @todoActions.ts: ', err);
     }
   };
 };

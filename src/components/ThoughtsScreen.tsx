@@ -13,15 +13,17 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import { SwipeListView } from 'react-native-swipe-list-view';
+import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view';
 import { RouteProp } from '@react-navigation/native'; // type
 import { StackNavigationProp } from '@react-navigation/stack'; // type
 import { StackParamList } from './ProjectsNavStack'; // type
 import { RootState } from '../reducers/rootReducer'; // type
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { addTodoAction, deleteTodoAction, todoStatusChangeAction } from '../actions/todoActions';
 import { filtertThoughtsAction } from '../actions/filterActions';
 import { fetchDataAction } from '../actions/fetchDataAction';
+import { MoreModal } from './MoreModal';
 
 interface TodosScreenProps {
   route: RouteProp<StackParamList, 'Thoughts'>;
@@ -31,6 +33,8 @@ interface TodosScreenProps {
 export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }) => {
   const [modalView, setModalView] = useState(false);
   const [sortModalView, setSortModalView] = useState(false);
+  const [moreModalView, setMoreModalView] = useState(false);
+  const [focusedId, setFocusedId] = useState('');
   const [input, setInput] = useState('');
   const dispatch = useDispatch();
   const { projectId } = route.params;
@@ -42,7 +46,7 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
   const userSub = useSelector(userSelector);
 
   useLayoutEffect(() => {
-    // add the sort botton to the header
+    // adds the sort button to the stack header
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity style={styles.sortIcon} onPress={() => setSortModalView(true)}>
@@ -81,13 +85,6 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
     }
   };
 
-  const renderItem = (data) => (
-    // for slidables
-    <TouchableHighlight style={styles.rowFront} underlayColor={'grey'}>
-      <Text style={data.item.completed ? styles.textCompleted : styles.text}>{data.item.text}</Text>
-    </TouchableHighlight>
-  );
-
   const renderHiddenItem = (data, rowMap) => (
     // for slidables
     <View style={{ ...styles.rowFront, backgroundColor: 'rgb(0, 122, 255)' }}>
@@ -119,6 +116,25 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
     </View>
   );
 
+  const renderModal = (thoughtId: string) => {
+    setFocusedId(thoughtId); // working
+    setMoreModalView(true);
+  };
+
+  const renderItem = (data) => (
+    // for slidables
+    <TouchableHighlight style={styles.rowFront} underlayColor={'grey'}>
+      <>
+        <Text style={data.item.completed ? styles.textCompleted : styles.text}>
+          {data.item.text}
+        </Text>
+        <TouchableOpacity style={styles.moreBtn} onPress={() => renderModal(data.item.key)}>
+          <MaterialIcons name="more-vert" size={35} color="rgb(199, 199, 204)" />
+        </TouchableOpacity>
+      </>
+    </TouchableHighlight>
+  );
+
   // https://github.com/jemise111/react-native-swipe-list-view/issues/388
   LogBox.ignoreLogs(["Sending 'onAnimatedValueUpdate' with no listeners registered"]);
 
@@ -138,6 +154,16 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
           previewOpenValue={-40}
         />
       </View>
+      {moreModalView ? (
+        <MoreModal
+          moreModalView={moreModalView}
+          setMoreModalView={setMoreModalView}
+          projectId={projectId}
+          thoughtId={focusedId}
+        />
+      ) : (
+        <></>
+      )}
       {/* ======= + modal ======= */}
       <Modal animationType="slide" visible={modalView}>
         <View style={styles.modal}>
@@ -171,7 +197,7 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
         </View>
       </Modal>
       {/* ======= sort modal ======= */}
-      <Modal animationType="fade" presentationStyle="overFullScreen" visible={sortModalView}>
+      <Modal animationType="fade" visible={sortModalView}>
         <View style={styles.modal}>
           <Text style={styles.sortText}>filter by status</Text>
           <TouchableOpacity style={styles.btn2}>
@@ -203,18 +229,29 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
 };
 
 const styles = StyleSheet.create({
+  center: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  moreBtn: {
+    position: 'absolute',
+    right: 0,
+  },
   text: {
     fontSize: 20,
     flex: 1,
     padding: 15,
+    paddingEnd: 35,
     color: 'rgb(199, 199, 204)',
   },
   textCompleted: {
     textDecorationLine: 'line-through',
+    padding: 15,
+    paddingEnd: 35,
     color: 'grey',
     fontSize: 20,
     flex: 1,
-    padding: 15,
   },
   plusBtnContainer: {
     position: 'absolute',
@@ -230,10 +267,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.48,
     shadowRadius: 13.0,
     elevation: 24,
-  },
-  plusButton: {
-    alignItems: 'center',
-    padding: 15,
   },
   modal: {
     flex: 1,
