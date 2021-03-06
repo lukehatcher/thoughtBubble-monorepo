@@ -19,6 +19,7 @@ import { StackNavigationProp } from '@react-navigation/stack'; // type
 import { StackParamList } from './ProjectsNavStack'; // type
 import { RootState } from '../reducers/rootReducer'; // type
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { addTodoAction, deleteTodoAction, todoStatusChangeAction } from '../actions/todoActions';
 import { filtertThoughtsAction } from '../actions/filterActions';
 import { fetchDataAction } from '../actions/fetchDataAction';
@@ -42,7 +43,7 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
   const userSub = useSelector(userSelector);
 
   useLayoutEffect(() => {
-    // add the sort botton to the header
+    // adds the sort button to the stack header
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity style={styles.sortIcon} onPress={() => setSortModalView(true)}>
@@ -84,7 +85,10 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
   const renderItem = (data) => (
     // for slidables
     <TouchableHighlight style={styles.rowFront} underlayColor={'grey'}>
-      <Text style={data.item.completed ? styles.textCompleted : styles.text}>{data.item.text}</Text>
+      <>
+        <Text style={data.item.completed ? styles.textCompleted : styles.text}>{data.item.text}</Text>
+        <MaterialIcons style={styles.moreBtn} name="more-vert" size={35} color="rgb(199, 199, 204)" />
+      </>
     </TouchableHighlight>
   );
 
@@ -203,18 +207,27 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
 };
 
 const styles = StyleSheet.create({
+  moreBtn: {
+    position: 'absolute',
+    right: 0,
+  },
   text: {
     fontSize: 20,
     flex: 1,
     padding: 15,
+    paddingEnd: 35,
     color: 'rgb(199, 199, 204)',
+    // marginRight: 20,
+    // backgroundColor: 'red',
   },
   textCompleted: {
     textDecorationLine: 'line-through',
+    padding: 15,
+    paddingEnd: 35,
+    // backgroundColor: 'red',
     color: 'grey',
     fontSize: 20,
     flex: 1,
-    padding: 15,
   },
   plusBtnContainer: {
     position: 'absolute',
