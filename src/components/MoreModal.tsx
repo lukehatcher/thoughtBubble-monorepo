@@ -21,24 +21,27 @@ export const MoreModal: React.FC<MoreModalProps> = ({
 
   const handleThoughtEdit = (newThought: string, id: string) => {
     dispatch(editThoughtAction(newThought, projectId, id));
+    setMoreModalView(false);
   };
 
   return (
-    <Modal visible={moreModalView} animationType="fade">
+    <Modal visible={moreModalView} animationType="fade" transparent>
       <View style={styles.modal}>
-        <Text>Edit thought: {thoughtId}</Text>
-        <TextInput
-          onChangeText={(text) => {
-            setInput(text);
-          }}
-          placeholder="edit your thought..."
-          multiline
-          keyboardAppearance="dark"
-          placeholderTextColor="white"
-          style={styles.textInput}
-        />
-        <Button onPress={() => handleThoughtEdit(input, thoughtId)} title="submit" />
-        <Button onPress={() => setMoreModalView(false)} title="close" />
+        <View style={styles.innerView}>
+          {/* <Text style={styles.text}>Edit thought: {thoughtId}</Text> */}
+          <TextInput
+            onChangeText={(text) => {
+              setInput(text);
+            }}
+            placeholder="edit your thought..."
+            multiline
+            keyboardAppearance="dark"
+            placeholderTextColor="white"
+            style={styles.textInput}
+          />
+          <Button onPress={() => handleThoughtEdit(input, thoughtId)} title="submit" color="white"/>
+          <Button onPress={() => setMoreModalView(false)} title="cancel" color="white" />
+        </View>
       </View>
     </Modal>
   );
@@ -49,12 +52,22 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#121212',
+    // backgroundColor: '#121212',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   textInput: {
     borderBottomColor: 'white',
     borderBottomWidth: StyleSheet.hairlineWidth,
     width: 250,
     color: 'white',
+  },
+  text: {
+    color: 'white',
+  },
+  innerView: {
+    backgroundColor: '#303030',
+    padding: 40,
+    // height: 200,
+    borderRadius: 15,
   },
 });

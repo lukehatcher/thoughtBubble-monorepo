@@ -54,6 +54,7 @@ export const todoStatusChangeAction = (projectId: string, todoId: string) => {
           userSub,
           projectId,
           todoId,
+          newThought: null,
         })
         .then((res) => {
           dispatch({ type: 'todoStatusChange', payload: { projectId, _id: todoId } });

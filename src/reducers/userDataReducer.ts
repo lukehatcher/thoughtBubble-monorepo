@@ -1,5 +1,3 @@
-import { InteractionManager } from 'react-native';
-
 const initialState = []; // array of objs, where each obj has todos arry of objs
 // https://stackoverflow.com/questions/6854431/how-do-i-get-the-objectid-after-i-save-an-object-in-mongoose/47002504
 
