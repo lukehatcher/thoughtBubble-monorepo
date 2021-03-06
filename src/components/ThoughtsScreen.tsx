@@ -86,8 +86,12 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
     // for slidables
     <TouchableHighlight style={styles.rowFront} underlayColor={'grey'}>
       <>
-        <Text style={data.item.completed ? styles.textCompleted : styles.text}>{data.item.text}</Text>
-        <MaterialIcons style={styles.moreBtn} name="more-vert" size={35} color="rgb(199, 199, 204)" />
+        <Text style={data.item.completed ? styles.textCompleted : styles.text}>
+          {data.item.text}
+        </Text>
+        <TouchableOpacity style={styles.moreBtn} onPress={() => console.log('more')}>
+          <MaterialIcons name="more-vert" size={35} color="rgb(199, 199, 204)" />
+        </TouchableOpacity>
       </>
     </TouchableHighlight>
   );
@@ -243,10 +247,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.48,
     shadowRadius: 13.0,
     elevation: 24,
-  },
-  plusButton: {
-    alignItems: 'center',
-    padding: 15,
   },
   modal: {
     flex: 1,
