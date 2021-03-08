@@ -18,7 +18,7 @@
 		"type": "git",
 		"url": "https://github.com/microsoft/vscode-extension-samples.git"
 	},
-	"main": "./out/extension.js",
+	"main": "./dist/extension.js",
 	"contributes": {
 		"commands": [
 			{
@@ -37,7 +37,8 @@
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
 		"lint": "eslint . --ext .ts,.tsx",
-		"watch": "tsc -w -p ./"
+		"watch": "tsc -w -p ./",
+		"view-bundle": "webpack --config view.webpack.config.js --mode development"
 	},
 	"dependencies": {
 		"css-loader": "^5.1.1",

@@ -119,7 +119,8 @@ class CatCodingPanel {
     }
     _getHtmlForWebview(webview, catGifPath) {
         // Local path to main script run in the webview
-        const scriptPathOnDisk = vscode.Uri.joinPath(this._extensionUri, 'media', 'main.js');
+        // const scriptPathOnDisk = vscode.Uri.joinPath(this._extensionUri, 'media', 'main.js');
+        const scriptPathOnDisk = vscode.Uri.joinPath(this._extensionUri, 'media', 'react.js');
         // And the uri we use to load this script in the webview
         const scriptUri = webview.asWebviewUri(scriptPathOnDisk);
         // Local path to css styles
@@ -145,6 +146,8 @@ class CatCodingPanel {
 				<title>Cat Coding</title>
 			</head>
 			<body>
+				<div id="root"></div>
+				<h1>ts-react into vscode*&^%</h1>
 				<img src="${catGifPath}" width="300" />
 				<h1 id="lines-of-code-counter">0</h1>
 				<script nonce="${nonce}" src="${scriptUri}"></script>
