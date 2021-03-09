@@ -93,7 +93,6 @@ export const editTodo = async (
   const doc = await UserInfo.findOne({ userSub });
   const projectIdx = doc.projects.findIndex((item) => item._id === projectId);
   const todoIdx = doc.projects[projectIdx].todos.findIndex((item) => item._id === todoId);
-  const oldState = doc.projects[projectIdx].todos[todoIdx].completed;
   doc.projects[projectIdx].todos[todoIdx].text = newThought;
   await doc.save();
 };

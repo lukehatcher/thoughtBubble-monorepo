@@ -63,3 +63,7 @@ buck-out/
 
 # my notes
 colors.txt
+
+# my old API (used for dev of old VSCode extension)
+api/server/serverOLD.js
+api/database/databaseOLD.js
