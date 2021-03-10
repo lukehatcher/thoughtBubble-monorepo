@@ -1,11 +1,99 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./src/MainPanel.ts":
+/*!**************************!*\
+  !*** ./src/MainPanel.ts ***!
+  \**************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.test = void 0;
+function test() {
+    console.log('hello from things');
+}
+exports.test = test;
+
+
+/***/ }),
+
+/***/ "./src/generateNonce.ts":
+/*!******************************!*\
+  !*** ./src/generateNonce.ts ***!
+  \******************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getNonce = void 0;
+function getNonce() {
+    let text = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (let i = 0; i < 32; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+}
+exports.getNonce = getNonce;
+
+
+/***/ }),
+
+/***/ "vscode":
+/*!*************************!*\
+  !*** external "vscode" ***!
+  \*************************/
+/***/ ((module) => {
+
+module.exports = require("vscode");;
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		if(__webpack_module_cache__[moduleId]) {
+/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
+var exports = __webpack_exports__;
+/*!**************************!*\
+  !*** ./src/extension.ts ***!
+  \**************************/
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.activate = void 0;
-const vscode = require("vscode");
-const generateNonce_1 = require("./generateNonce");
+const vscode = __webpack_require__(/*! vscode */ "vscode");
+const generateNonce_1 = __webpack_require__(/*! ./generateNonce */ "./src/generateNonce.ts");
+const MainPanel_1 = __webpack_require__(/*! ./MainPanel */ "./src/MainPanel.ts");
 function activate(context) {
     context.subscriptions.push(vscode.commands.registerCommand('thoughtBubble.start', () => {
         MainPanel.createOrShow(context.extensionUri);
+        MainPanel_1.test();
     }));
     context.subscriptions.push(vscode.commands.registerCommand('thoughtBubble.kill', () => {
         MainPanel.kill();
@@ -116,4 +204,10 @@ class MainPanel {
     }
 }
 MainPanel.viewType = 'thoughtBubble';
+
+})();
+
+module.exports = __webpack_exports__;
+/******/ })()
+;
 //# sourceMappingURL=extension.js.map

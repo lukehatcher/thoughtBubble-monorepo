@@ -31,12 +31,12 @@ export const App: React.FC = () => {
 			});
 			return response;
 		} catch (err) {
-			console.error('@App.tsx', err);
+			console.error('@App.tsx: ', err);
 		}
 	}
 
 	useEffect(() => {
-		console.log('hello from useEffect :)');
+		console.log('hello from useEffect');
 		fetch().then((res) => console.log(res));
 	}, []);
 

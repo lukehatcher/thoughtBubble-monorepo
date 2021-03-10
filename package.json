@@ -36,11 +36,10 @@
 		"vscode:prepublish": "npm run bundle-view && npm run bundle-ext",
 		"compile": "tsc -p ./",
 		"lint": "eslint . --ext .ts,.tsx",
-		"watch-ext": "tsc -w -p ./",
-		"bundle-ext": "tsc -p ./",
+		"watch-ext": "webpack --config webpack.config.js --mode development -w",
+		"bundle-ext": "webpack --config webpack.config.js --mode development",
 		"watch-view": "webpack --config webpack.view.config.js --mode development -w",
-		"bundle-view": "webpack --config webpack.view.config.js --mode development",
-		"fix": "webpack --config webpack.config.js --mode development -w"
+		"bundle-view": "webpack --config webpack.view.config.js --mode development"
 	},
 	"dependencies": {
 		"axios": "^0.21.1",

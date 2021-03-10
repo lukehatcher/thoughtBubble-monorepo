@@ -1,10 +1,12 @@
 import * as vscode from 'vscode';
 import { getNonce } from './generateNonce';
+import { test } from './MainPanel';
 
 export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand('thoughtBubble.start', () => {
 			MainPanel.createOrShow(context.extensionUri);
+			test();
 		})
 	);
 
