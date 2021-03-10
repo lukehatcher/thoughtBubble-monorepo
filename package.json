@@ -10,9 +10,8 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:catCoding.start",
-		"onCommand:catCoding.doRefactor",
-		"onWebviewPanel:catCoding"
+		"onCommand:thoughtBubble.start",
+		"onWebviewPanel:thoughtBubble"
 	],
 	"repository": {
 		"type": "git",
@@ -22,14 +21,9 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "catCoding.start",
-				"title": "view it",
-				"category": "webview"
-			},
-			{
-				"command": "catCoding.doRefactor",
-				"title": "Do some refactoring",
-				"category": "Cat Coding"
+				"command": "thoughtBubble.start",
+				"title": "view thoughts",
+				"category": "thoughtBubble"
 			}
 		]
 	},
