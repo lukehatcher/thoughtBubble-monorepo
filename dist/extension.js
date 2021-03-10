@@ -7,6 +7,9 @@ function activate(context) {
     context.subscriptions.push(vscode.commands.registerCommand('thoughtBubble.start', () => {
         MainPanel.createOrShow(context.extensionUri);
     }));
+    context.subscriptions.push(vscode.commands.registerCommand('thoughtBubble.kill', () => {
+        MainPanel.kill();
+    }));
 }
 exports.activate = activate;
 // ===============================================================================================
@@ -48,6 +51,11 @@ class MainPanel {
             localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'media')]
         });
         MainPanel.currentPanel = new MainPanel(panel, extensionUri);
+    }
+    static kill() {
+        var _a;
+        (_a = MainPanel.currentPanel) === null || _a === void 0 ? void 0 : _a.dispose();
+        MainPanel.currentPanel = undefined;
     }
     static revive(panel, extensionUri) {
         MainPanel.currentPanel = new MainPanel(panel, extensionUri);

@@ -8,6 +8,12 @@ export function activate(context: vscode.ExtensionContext) {
 		})
 	);
 
+	context.subscriptions.push(
+		vscode.commands.registerCommand('thoughtBubble.kill', () => {
+			MainPanel.kill();
+		})
+	);
+
 }
 
 // ===============================================================================================
@@ -27,13 +33,11 @@ class MainPanel {
 		const column = vscode.window.activeTextEditor
 			? vscode.window.activeTextEditor.viewColumn
 			: undefined;
-
 		// If you already have the tab open, show it.
 		if (MainPanel.currentPanel) {
 			MainPanel.currentPanel._panel.reveal(column);
 			return;
 		}
-
 		// Otherwise, create a new panel (aka tab).
 		const panel = vscode.window.createWebviewPanel(
 			MainPanel.viewType, // Identifies the type of the webview. Used internally // ??????
@@ -45,9 +49,13 @@ class MainPanel {
 				localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'media')]
 			}
 		);
-
 		MainPanel.currentPanel = new MainPanel(panel, extensionUri);
 	}
+
+	public static kill() {
+    MainPanel.currentPanel?.dispose();
+    MainPanel.currentPanel = undefined;
+  }
 
 	public static revive(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
 		MainPanel.currentPanel = new MainPanel(panel, extensionUri);
