@@ -33696,6 +33696,37 @@ exports.storeUserAction = storeUserAction;
 /*!************************************!*\
   !*** ./webview/components/App.tsx ***!
   \************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.App = void 0;
+var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+var Test_1 = __webpack_require__(/*! ./Test */ "./webview/components/Test.tsx");
+var LogoutButton_1 = __webpack_require__(/*! ./LogoutButton */ "./webview/components/LogoutButton.tsx");
+var LoginButton_1 = __webpack_require__(/*! ./LoginButton */ "./webview/components/LoginButton.tsx");
+var App = function () {
+    var selector = function (state) { return state.user; };
+    var loginStatus = react_redux_1.useSelector(selector);
+    if (!loginStatus) {
+        return (React.createElement(React.Fragment, null,
+            React.createElement(LoginButton_1.LoginButton, null)));
+    }
+    return (React.createElement(React.Fragment, null,
+        React.createElement(LogoutButton_1.LogoutButton, null),
+        React.createElement(Test_1.Test, null)));
+};
+exports.App = App;
+
+
+/***/ }),
+
+/***/ "./webview/components/LoginButton.tsx":
+/*!********************************************!*\
+  !*** ./webview/components/LoginButton.tsx ***!
+  \********************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -33737,25 +33768,27 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.App = void 0;
+exports.LoginButton = void 0;
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-var Test_1 = __webpack_require__(/*! ./Test */ "./webview/components/Test.tsx");
-var LogoutButton_1 = __webpack_require__(/*! ./LogoutButton */ "./webview/components/LogoutButton.tsx");
-var App = function () {
-    var selector = function (state) { return state.user; };
-    var loginStatus = react_redux_1.useSelector(selector);
-    var handleLogin = function () {
+var LoginButton = function () {
+    var dispatch = react_redux_1.useDispatch();
+    window;
+    var loginUser = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: 
+                    // force the rerender
+                    // dispatch(storeUserAction());
                     // fires message to the extension to launch "thoughtBubble: show thoughts" command
                     return [4 /*yield*/, vscodeGlobal.postMessage({
                             command: 'login',
                             value: null,
                         })];
                     case 1:
+                        // force the rerender
+                        // dispatch(storeUserAction());
                         // fires message to the extension to launch "thoughtBubble: show thoughts" command
                         _a.sent();
                         return [2 /*return*/];
@@ -33763,20 +33796,10 @@ var App = function () {
             });
         });
     };
-    if (!loginStatus) {
-        return (React.createElement("div", null,
-            console.log('App.tsx rendered'),
-            React.createElement("button", { onClick: function () { return handleLogin(); } }, "LOGIN"),
-            React.createElement("h3", null, "open command pallete with CMD+SHIFT+P and login using the \"thoughtBubble: login\" command")));
-    }
-    else if (loginStatus) {
-        return (React.createElement(React.Fragment, null,
-            React.createElement(LogoutButton_1.LogoutButton, null),
-            React.createElement(Test_1.Test, null)));
-    }
-    return (React.createElement("h1", null, "login broken lul"));
+    return (React.createElement("div", null,
+        React.createElement("button", { onClick: function () { return loginUser(); } }, "LOGIN")));
 };
-exports.App = App;
+exports.LoginButton = LoginButton;
 
 
 /***/ }),

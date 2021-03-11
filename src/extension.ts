@@ -21,6 +21,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		const userInfo = await octokit.users.getAuthenticated();
 
 		vscode.window.showInformationMessage(`Logged into thoughtBubble via GitHub as ${userInfo.data.login}`);
+		// send message
 		StateManager.setToken(JSON.stringify(userInfo.data));
 	});
 	context.subscriptions.push(disposable);
@@ -116,7 +117,10 @@ class MainPanel {
 						// this._panel.webview
 						return;
 					case 'login':
-						vscode.commands.executeCommand('thoughtBubble.login');
+						// execute login then post message to webview where redux store is updated
+						vscode.commands.executeCommand('thoughtBubble.login').then(() => {
+							this._panel.webview.postMessage({ command: 'sendingData', userData: StateManager.getToken()});
+						})
 						return;
 				}
 			},

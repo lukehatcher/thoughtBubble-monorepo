@@ -4,37 +4,26 @@ import { useSelector } from 'react-redux';
 import { Test } from './Test';
 import { RootState } from '../reducers/rootReducer';
 import { LogoutButton } from './LogoutButton';
+import { LoginButton } from './LoginButton';
 
 export const App: React.FC = () => {
 	const selector = (state: RootState) => state.user;
   const loginStatus = useSelector(selector);
 
-	const handleLogin = async function() {
-		// fires message to the extension to launch "thoughtBubble: show thoughts" command
-		await vscodeGlobal.postMessage({
-			command: 'login',
-			value: null,
-		});
-	}
 
 	if (!loginStatus) {
 		return (
-			<div>
-				{console.log('App.tsx rendered')}
-				<button onClick={() => handleLogin()}>LOGIN</button>
-				<h3>open command pallete with CMD+SHIFT+P and login using the "thoughtBubble: login" command</h3>
-			</div>
-		)
-	} else if (loginStatus) {
-		return (
 			<>
-				<LogoutButton />
-				<Test />
+				<LoginButton />
 			</>
-		);
-	}
-
+		)
+	} 
 	return (
-		<h1>login broken lul</h1>
+		<>
+			<LogoutButton />
+			<Test />
+		</>
 	);
+
+
 };
