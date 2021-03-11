@@ -1,6 +1,6 @@
 // import axios from 'axios';
 
-// export const storeUserAction = (jwt) => {
+// export const storeUserAction = (userData: string) => {
 //   // called from _onLogin util
 //   return async (dispatch) => {
 //     // add user to db if not exist

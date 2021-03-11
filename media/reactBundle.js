@@ -33717,7 +33717,7 @@ var storeUserReducer = function (state, action) {
     if (state === void 0) { state = initialState; }
     switch (action.type) {
         case 'storeUser/set':
-            return action.payload;
+            return action.payload; // id prop is the one I want
         default:
             return state;
     }
@@ -33870,8 +33870,8 @@ window.addEventListener('message', function (e) {
     var message = e.data; // The json data that the extension sent
     switch (message.command) {
         case 'sendingData':
-            console.log(message.userData, 'wasup'); // TOKEN PASSED IN!!!!
-            // store.dispatch({type: 'storeuser', payload: user})
+            console.log(message.userData);
+            store_1.default.dispatch({ type: 'storeuser', payload: message.userData }); // save it in redux store
             break;
     }
 });
