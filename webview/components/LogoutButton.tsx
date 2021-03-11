@@ -1,10 +1,15 @@
 import * as React from 'react';
+import { storeUserAction } from '../actions/storeUserAction';
+import { useDispatch } from 'react-redux';
 
 export const LogoutButton: React.FC = () => {
-	// const selector = (state: RootState) => state.user;
-  // const loginStatus = useSelector(selector);
+	const dispatch = useDispatch();
 
 	const logoutUser = async function() {
+		// clear redux store (to force rerender)
+		dispatch(storeUserAction(null));
+
+		// clear global store in extension
 		await vscodeGlobal.postMessage({
 			command: 'logout',
 			value: null,
@@ -13,7 +18,7 @@ export const LogoutButton: React.FC = () => {
 
 	return (
 		<div>
-			<button onClick={() => logoutUser()}>logout</button>
+			<button onClick={() => logoutUser()}>LOGOUT</button>
 		</div>
 	);
 };

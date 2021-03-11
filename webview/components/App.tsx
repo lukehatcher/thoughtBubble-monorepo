@@ -20,9 +20,8 @@ export const App: React.FC = () => {
 	if (!loginStatus) {
 		return (
 			<div>
-				{console.log('rendered')}
-				<h1>please log in</h1>
-				<button onClick={() => handleLogin()}>login</button>
+				{console.log('App.tsx rendered')}
+				<button onClick={() => handleLogin()}>LOGIN</button>
 				<h3>open command pallete with CMD+SHIFT+P and login using the "thoughtBubble: login" command</h3>
 			</div>
 		)

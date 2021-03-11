@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const storeUserAction = (userData: string) => {
+export const storeUserAction = (userData: string | null) => {
   // called from _onLogin util
   return async (dispatch) => {
 		dispatch({type: 'storeUser', payload: userData})
