@@ -5,7 +5,7 @@ import { StateManager } from './stateManager';
 
 export async function activate(context: vscode.ExtensionContext) {
 
-	StateManager.globalState = context.globalState; // so i can refrence state anywhere
+	StateManager.globalState = context.globalState; // so i can reference state anywhere
 
 	// ================================================
 	const credentials = new Credentials();
@@ -20,10 +20,8 @@ export async function activate(context: vscode.ExtensionContext) {
 		const octokit = await credentials.getOctokit();
 		const userInfo = await octokit.users.getAuthenticated();
 
-		vscode.window.showInformationMessage(`Logged into GitHub as ${userInfo.data.login}`);
-		vscode.window.showInformationMessage(`data: ${JSON.stringify(userInfo.data)}`);
-		StateManager.setToken(userInfo.data.login)
-		// store userinfos globally
+		vscode.window.showInformationMessage(`Logged into thoughtBubble via GitHub as ${userInfo.data.login}`);
+		StateManager.setToken(JSON.stringify(userInfo.data));
 	});
 	context.subscriptions.push(disposable);
 	// ================================================
@@ -31,8 +29,6 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand('thoughtBubble.start', () => {
 			MainPanel.createOrShow(context.extensionUri);
-			console.log(StateManager.getToken()); // !!!!!!!!!
-			// vscode.window.
 		})
 	);
 
@@ -108,7 +104,7 @@ class MainPanel {
 						vscode.window.showErrorMessage(message.value);
 						return;
 					case 'getUser':
-						const userData = StateManager.getToken() || 'no token';
+						const userData = StateManager.getToken() || '';
 						vscode.window.showInformationMessage(userData); // dont need
 						this._panel.webview.postMessage({ command: 'sendingData', userData }); // whole obj = event.data;
 						// panel.webview.postMessage({ command: 'sendingData', responseData: userData }); // whole obj = event.data;

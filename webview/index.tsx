@@ -4,15 +4,13 @@ import { App } from './components/App';
 import { Provider } from 'react-redux';
 import store from './store';
 
-// make send message to main to get the user info
-
-// vscodeglobal.post
-
+// request user token from extension
 vscodeGlobal.postMessage({
 	command: 'getUser',
 	value: 'null'
 });
 
+// receive the user token from extension
 window.addEventListener('message', (e) => {
 	const message = e.data; // The json data that the extension sent
 	switch (message.command) {
@@ -22,10 +20,6 @@ window.addEventListener('message', (e) => {
 			break;
 	}
 });
-
-// then listen for the response and add it to the store
-
-// store.dispatch({type: 'storeuser', payload: user})
 
 ReactDOM.render(
 	<Provider store={store}>

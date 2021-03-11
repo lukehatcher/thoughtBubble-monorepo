@@ -33648,12 +33648,6 @@ var Test_1 = __webpack_require__(/*! ./Test */ "./webview/components/Test.tsx");
 var App = function () {
     var selector = function (state) { return state.user; };
     var loginStatus = react_redux_1.useSelector(selector);
-    // useEffect(() => {
-    // 	vscodeGlobal.postMessage({
-    // 		command: 'getUser',
-    // 		value: 'login lol'
-    // 	});
-    // }, []);
     if (loginStatus === null) {
         return (React.createElement("div", null,
             console.log('rendered'),
@@ -33866,12 +33860,12 @@ var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/in
 var App_1 = __webpack_require__(/*! ./components/App */ "./webview/components/App.tsx");
 var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 var store_1 = __webpack_require__(/*! ./store */ "./webview/store.ts");
-// make send message to main to get the user info
-// vscodeglobal.post
+// request user token from extension
 vscodeGlobal.postMessage({
     command: 'getUser',
     value: 'null'
 });
+// receive the user token from extension
 window.addEventListener('message', function (e) {
     var message = e.data; // The json data that the extension sent
     switch (message.command) {
@@ -33881,8 +33875,6 @@ window.addEventListener('message', function (e) {
             break;
     }
 });
-// then listen for the response and add it to the store
-// store.dispatch({type: 'storeuser', payload: user})
 ReactDOM.render(React.createElement(react_redux_1.Provider, { store: store_1.default },
     React.createElement(App_1.App, null)), document.getElementById('root'));
 

@@ -8,13 +8,6 @@ export const App: React.FC = () => {
 	const selector = (state: RootState) => state.user;
   const loginStatus = useSelector(selector);
 
-	// useEffect(() => {
-	// 	vscodeGlobal.postMessage({
-	// 		command: 'getUser',
-	// 		value: 'login lol'
-	// 	});
-	// }, []);
-
 	if (loginStatus === null) {
 		return (
 			<div>

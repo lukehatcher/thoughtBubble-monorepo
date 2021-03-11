@@ -5185,7 +5185,7 @@ const generateNonce_1 = __webpack_require__(/*! ./generateNonce */ "./src/genera
 const credentials_1 = __webpack_require__(/*! ./credentials */ "./src/credentials.ts");
 const stateManager_1 = __webpack_require__(/*! ./stateManager */ "./src/stateManager.ts");
 async function activate(context) {
-    stateManager_1.StateManager.globalState = context.globalState; // so i can refrence state anywhere
+    stateManager_1.StateManager.globalState = context.globalState; // so i can reference state anywhere
     // ================================================
     const credentials = new credentials_1.Credentials();
     await credentials.initialize(context);
@@ -5197,17 +5197,13 @@ async function activate(context) {
          */
         const octokit = await credentials.getOctokit();
         const userInfo = await octokit.users.getAuthenticated();
-        vscode.window.showInformationMessage(`Logged into GitHub as ${userInfo.data.login}`);
-        vscode.window.showInformationMessage(`data: ${JSON.stringify(userInfo.data)}`);
-        stateManager_1.StateManager.setToken(userInfo.data.login);
-        // store userinfos globally
+        vscode.window.showInformationMessage(`Logged into thoughtBubble via GitHub as ${userInfo.data.login}`);
+        stateManager_1.StateManager.setToken(JSON.stringify(userInfo.data));
     });
     context.subscriptions.push(disposable);
     // ================================================
     context.subscriptions.push(vscode.commands.registerCommand('thoughtBubble.start', () => {
         MainPanel.createOrShow(context.extensionUri);
-        console.log(stateManager_1.StateManager.getToken()); // !!!!!!!!!
-        // vscode.window.
     }));
     context.subscriptions.push(vscode.commands.registerCommand('thoughtBubble.kill', () => {
         MainPanel.kill();
@@ -5232,7 +5228,7 @@ class MainPanel {
                     vscode.window.showErrorMessage(message.value);
                     return;
                 case 'getUser':
-                    const userData = stateManager_1.StateManager.getToken() || 'no token';
+                    const userData = stateManager_1.StateManager.getToken() || '';
                     vscode.window.showInformationMessage(userData); // dont need
                     this._panel.webview.postMessage({ command: 'sendingData', userData }); // whole obj = event.data;
                     // panel.webview.postMessage({ command: 'sendingData', responseData: userData }); // whole obj = event.data;
