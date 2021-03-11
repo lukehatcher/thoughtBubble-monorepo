@@ -2,7 +2,9 @@ const initialState = null;
 
 export const storeUserReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'storeUser/set':
+    case 'storeUser':
+			// console.log('actino.payload', JSON.parse(action.payload));
+			console.log(action.payload);
       return action.payload; // id prop is the one I want
     default:
       return state;

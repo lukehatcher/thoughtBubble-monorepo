@@ -33648,14 +33648,15 @@ var Test_1 = __webpack_require__(/*! ./Test */ "./webview/components/Test.tsx");
 var App = function () {
     var selector = function (state) { return state.user; };
     var loginStatus = react_redux_1.useSelector(selector);
-    if (loginStatus === null) {
+    if (!loginStatus) {
         return (React.createElement("div", null,
             console.log('rendered'),
             React.createElement("h1", null, "please log in"),
             React.createElement("h3", null, "open command pallete with CMD+SHIFT+P and login using the \"thoughtBubble: login\" command")));
     }
-    else if (loginStatus !== null) {
-        return (React.createElement(Test_1.Test, null));
+    else if (loginStatus) {
+        return (React.createElement(React.Fragment, null,
+            React.createElement(Test_1.Test, null)));
     }
     return (React.createElement("h1", null, "login broken lul"));
 };
@@ -33716,7 +33717,9 @@ var initialState = null;
 var storeUserReducer = function (state, action) {
     if (state === void 0) { state = initialState; }
     switch (action.type) {
-        case 'storeUser/set':
+        case 'storeUser':
+            // console.log('actino.payload', JSON.parse(action.payload));
+            console.log(action.payload);
             return action.payload; // id prop is the one I want
         default:
             return state;
@@ -33860,6 +33863,7 @@ var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/in
 var App_1 = __webpack_require__(/*! ./components/App */ "./webview/components/App.tsx");
 var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 var store_1 = __webpack_require__(/*! ./store */ "./webview/store.ts");
+// import { storeUserAction } from './actions/storeUserAction';
 // request user token from extension
 vscodeGlobal.postMessage({
     command: 'getUser',
@@ -33870,8 +33874,9 @@ window.addEventListener('message', function (e) {
     var message = e.data; // The json data that the extension sent
     switch (message.command) {
         case 'sendingData':
-            console.log(message.userData);
-            store_1.default.dispatch({ type: 'storeuser', payload: message.userData }); // save it in redux store
+            // should check db here first then await...
+            store_1.default.dispatch({ type: 'storeUser', payload: JSON.parse(message.userData) }); // save it in redux store
+            // store.dispatch(storeUserAction(userData)); // throws error
             break;
     }
 });

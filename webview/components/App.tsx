@@ -8,7 +8,7 @@ export const App: React.FC = () => {
 	const selector = (state: RootState) => state.user;
   const loginStatus = useSelector(selector);
 
-	if (loginStatus === null) {
+	if (!loginStatus) {
 		return (
 			<div>
 				{console.log('rendered')}
@@ -16,9 +16,11 @@ export const App: React.FC = () => {
 				<h3>open command pallete with CMD+SHIFT+P and login using the "thoughtBubble: login" command</h3>
 			</div>
 		)
-	} else if (loginStatus !== null) {
+	} else if (loginStatus) {
 		return (
-			<Test />
+			<>
+				<Test />
+			</>
 		);
 	}
 
