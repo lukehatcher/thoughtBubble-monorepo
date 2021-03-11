@@ -11,4 +11,8 @@ export class StateManager {
   static getToken(): string | undefined {
     return this.globalState.get('user');
   }
+
+  static removeToken(): void {
+    this.globalState.update('user', null);
+  }
 }

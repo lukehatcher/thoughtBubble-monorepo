@@ -109,6 +109,15 @@ class MainPanel {
 						this._panel.webview.postMessage({ command: 'sendingData', userData }); // whole obj = event.data;
 						// panel.webview.postMessage({ command: 'sendingData', responseData: userData }); // whole obj = event.data;
 						return;
+					case 'logout':
+						// this._panel.webview.postMessage({ command: 'sendingData', userData: null });
+						// CLEAR SESSION
+						StateManager.removeToken();
+						// this._panel.webview
+						return;
+					case 'login':
+						vscode.commands.executeCommand('thoughtBubble.login');
+						return;
 				}
 			},
 			null,
