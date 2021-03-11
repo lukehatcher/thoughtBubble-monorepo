@@ -8,16 +8,17 @@ export const App: React.FC = () => {
 	const selector = (state: RootState) => state.user;
   const loginStatus = useSelector(selector);
 
-	useEffect(() => {
-		vscodeGlobal.postMessage({
-			command: 'login',
-			value: 'login lol'
-		});
-	}, []);
+	// useEffect(() => {
+	// 	vscodeGlobal.postMessage({
+	// 		command: 'getUser',
+	// 		value: 'login lol'
+	// 	});
+	// }, []);
 
 	if (loginStatus === null) {
 		return (
 			<div>
+				{console.log('rendered')}
 				<h1>please log in</h1>
 				<h3>open command pallete with CMD+SHIFT+P and login using the "thoughtBubble: login" command</h3>
 			</div>

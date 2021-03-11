@@ -8,10 +8,20 @@ import store from './store';
 
 // vscodeglobal.post
 
-// 	vscodeGlobal.postMessage({
-// 		command: 'login',
-// 		value: 'null'
-// 	});
+vscodeGlobal.postMessage({
+	command: 'getUser',
+	value: 'null'
+});
+
+window.addEventListener('message', (e) => {
+	const message = e.data; // The json data that the extension sent
+	switch (message.command) {
+		case 'sendingData':
+			console.log(message.userData, 'wasup'); // TOKEN PASSED IN!!!!
+			// store.dispatch({type: 'storeuser', payload: user})
+			break;
+	}
+});
 
 // then listen for the response and add it to the store
 

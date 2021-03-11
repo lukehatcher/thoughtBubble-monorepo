@@ -11,8 +11,9 @@ const config = {
   output: {
     path: path.resolve(__dirname, 'media'),
     filename: 'reactBundle.js',
+    // devtoolModuleFilenameTemplate: '../[resource-path]'
   },
-  // devtool: 'source-map',
+  devtool: 'source-map', // wont word without
   resolve: {
     extensions: ['.ts', '.tsx', '.js', 'jsx']
   },

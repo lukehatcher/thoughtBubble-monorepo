@@ -1,12 +1,38 @@
 import * as vscode from 'vscode';
 import { getNonce } from './generateNonce';
-import { test } from './MainPanel';
+import { Credentials } from './credentials';
+import { StateManager } from './stateManager';
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
+
+	StateManager.globalState = context.globalState; // so i can refrence state anywhere
+
+	// ================================================
+	const credentials = new Credentials();
+	await credentials.initialize(context);
+
+	const disposable = vscode.commands.registerCommand('thoughtBubble.login', async () => {
+		/**
+		 * Octokit (https://github.com/octokit/rest.js#readme) is a library for making REST API
+		 * calls to GitHub. It provides convenient typings that can be helpful for using the API.
+		 * ...Documentation on GitHub's REST API can be found here: https://docs.github.com/en/rest
+		 */
+		const octokit = await credentials.getOctokit();
+		const userInfo = await octokit.users.getAuthenticated();
+
+		vscode.window.showInformationMessage(`Logged into GitHub as ${userInfo.data.login}`);
+		vscode.window.showInformationMessage(`data: ${JSON.stringify(userInfo.data)}`);
+		StateManager.setToken(userInfo.data.login)
+		// store userinfos globally
+	});
+	context.subscriptions.push(disposable);
+	// ================================================
+	
 	context.subscriptions.push(
 		vscode.commands.registerCommand('thoughtBubble.start', () => {
 			MainPanel.createOrShow(context.extensionUri);
-			test();
+			console.log(StateManager.getToken()); // !!!!!!!!!
+			// vscode.window.
 		})
 	);
 
@@ -79,7 +105,13 @@ class MainPanel {
 			message => {
 				switch (message.command) {
 					case 'alert':
-						vscode.window.showErrorMessage(message.text);
+						vscode.window.showErrorMessage(message.value);
+						return;
+					case 'getUser':
+						const userData = StateManager.getToken() || 'no token';
+						vscode.window.showInformationMessage(userData); // dont need
+						this._panel.webview.postMessage({ command: 'sendingData', userData }); // whole obj = event.data;
+						// panel.webview.postMessage({ command: 'sendingData', responseData: userData }); // whole obj = event.data;
 						return;
 				}
 			},
@@ -109,12 +141,10 @@ class MainPanel {
 
 	private _getHtmlForWebview(webview: vscode.Webview) {
 		// Local path to main script run in the webview
-		const scriptPathOnDisk = vscode.Uri.joinPath(this._extensionUri, 'media', 'main.js');
-		const scriptPathOnDisk2 = vscode.Uri.joinPath(this._extensionUri, 'media', 'main2.js');
+		const scriptPathOnDisk = vscode.Uri.joinPath(this._extensionUri, 'media', 'reactBundle.js');
 
 		// And the uri we use to load this script in the webview
 		const scriptUri = webview.asWebviewUri(scriptPathOnDisk);
-		const scriptUri2 = webview.asWebviewUri(scriptPathOnDisk2);
 
 		// Local path to css styles
 		const styleResetPath = vscode.Uri.joinPath(this._extensionUri, 'media', 'reset.css');
@@ -147,7 +177,6 @@ class MainPanel {
 				<div id="root"></div>
 				<h1>ts-react into vscode :)</h1>
 				<script nonce="${nonce}" src="${scriptUri}"></script>
-				<script nonce="${nonce}" src="${scriptUri2}"></script>
 			</body>
 			</html>`;
 	}
