@@ -33770,26 +33770,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.LoginButton = void 0;
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 var LoginButton = function () {
-    var dispatch = react_redux_1.useDispatch();
-    window;
     var loginUser = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: 
-                    // force the rerender
-                    // dispatch(storeUserAction());
                     // fires message to the extension to launch "thoughtBubble: show thoughts" command
+                    // a response messge is sent back to update the redux store
                     return [4 /*yield*/, vscodeGlobal.postMessage({
                             command: 'login',
                             value: null,
                         })];
                     case 1:
-                        // force the rerender
-                        // dispatch(storeUserAction());
                         // fires message to the extension to launch "thoughtBubble: show thoughts" command
+                        // a response messge is sent back to update the redux store
                         _a.sent();
                         return [2 /*return*/];
                 }
@@ -34085,7 +34080,7 @@ var store_1 = __webpack_require__(/*! ./store */ "./webview/store.ts");
 // request user token from extension
 vscodeGlobal.postMessage({
     command: 'getUser',
-    value: 'null'
+    value: null
 });
 // receive the user token from extension
 window.addEventListener('message', function (e) {

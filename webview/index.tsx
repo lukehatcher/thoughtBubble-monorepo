@@ -8,7 +8,7 @@ import store from './store';
 // request user token from extension
 vscodeGlobal.postMessage({
 	command: 'getUser',
-	value: 'null'
+	value: null
 });
 
 // receive the user token from extension
