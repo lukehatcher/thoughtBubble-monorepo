@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Test } from './Test';
+import { ThoughtList } from './ThoughtList';
 import { RootState } from '../reducers/rootReducer';
 import { LogoutButton } from './LogoutButton';
 import { LoginButton } from './LoginButton';
 
 export const App: React.FC = () => {
-	const selector = (state: RootState) => state.user;
+	const selector = (state: RootState) => state.userData;
   const loginStatus = useSelector(selector);
 
 
@@ -21,7 +21,7 @@ export const App: React.FC = () => {
 	return (
 		<>
 			<LogoutButton />
-			<Test />
+			<ThoughtList />
 		</>
 	);
 

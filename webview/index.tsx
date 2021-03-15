@@ -3,7 +3,9 @@ import * as ReactDOM from 'react-dom';
 import { App } from './components/App';
 import { Provider } from 'react-redux';
 import store from './store';
+import { fetchDataAction } from './actions/fetchDataAction';
 // import { storeUserAction } from './actions/storeUserAction';
+
 
 // request user token from extension
 vscodeGlobal.postMessage({
@@ -17,9 +19,11 @@ window.addEventListener('message', (e) => {
 	switch (message.command) {
 		case 'sendingData':
 			// should check db here first then await...
-			store.dispatch({ type: 'storeUser', payload: JSON.parse(message.userData) }) // save it in redux store
-			// store.dispatch(storeUserAction(userData)); // throws error
-			break;
+			console.log(JSON.parse(message.userData));
+			store.dispatch({ type: 'storeUser', payload: JSON.parse(message.userData) });
+			const userSub = `github|${JSON.parse(message.userData).id}`; // for now 
+			store.dispatch(fetchDataAction(userSub));
+			return;
 	}
 });
 
