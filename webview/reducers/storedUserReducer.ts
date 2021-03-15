@@ -2,11 +2,9 @@ import { GithubIdTokenShape } from "../interfaces/interfaces";
 
 const initialState = null;
 
-export const storeUserReducer = (state = initialState, action): GithubIdTokenShape => {
+export const storeUserReducer = (state = initialState, action): GithubIdTokenShape | null => {
   switch (action.type) {
     case 'storeUser':
-			// console.log('actino.payload', JSON.parse(action.payload));
-			console.log(action.payload);
       return action.payload; // id prop is the one I want
     default:
       return state;

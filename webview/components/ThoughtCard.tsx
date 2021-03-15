@@ -1,12 +1,8 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { ThoughtShape } from '../interfaces/interfaces';
+import { ThoughtCardProps } from '../interfaces/interfaces';
 
-interface thoughtCardProps {
-	thought: ThoughtShape;
-}
-
-export const ThoughtCard: FC<thoughtCardProps> = ({ thought }) => {
+export const ThoughtCard: FC<ThoughtCardProps> = ({ thought }) => {
 	return (
 		<div>
 		 	<div>{thought.text}</div>

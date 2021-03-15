@@ -18,6 +18,16 @@ export interface UserDataShape {
 	projects: ProjectShape[];
 }
 
+export interface ThoughtCardProps {
+	thought: ThoughtShape;
+	key?: string;
+}
+
+export interface ProjectCardProps {
+	project: ProjectShape;
+	key?: string;
+}
+
 export interface GithubIdTokenShape {
 	login: string;
 	id: string;

@@ -35791,6 +35791,47 @@ exports.LogoutButton = LogoutButton;
 
 /***/ }),
 
+/***/ "./webview/components/ProjectCard.tsx":
+/*!********************************************!*\
+  !*** ./webview/components/ProjectCard.tsx ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ProjectCard = void 0;
+var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var ThoughtCard_1 = __webpack_require__(/*! ./ThoughtCard */ "./webview/components/ThoughtCard.tsx");
+var ProjectCard = function (_a) {
+    var project = _a.project;
+    var _b = react_1.useState(''), input = _b[0], setInput = _b[1];
+    var handleNewThought = function (e) {
+        e.preventDefault();
+        console.log(input);
+        setInput('');
+    };
+    return (React.createElement("div", null,
+        React.createElement("h1", { style: styles.h1 }, project.projectName),
+        React.createElement("form", { onSubmit: function (e) { return handleNewThought(e); } },
+            React.createElement("input", { type: "text", placeholder: "add a thought...", onChange: function (e) { return setInput(e.target.value); } }),
+            React.createElement("button", { type: "submit" })),
+        project.todos.map(function (thought) { return (React.createElement(React.Fragment, null,
+            console.log(thought._id),
+            React.createElement(ThoughtCard_1.ThoughtCard, { thought: thought, key: thought._id }))); })));
+};
+exports.ProjectCard = ProjectCard;
+var styles = {
+    h1: {
+        'text-align': 'center',
+        color: '#6200EE',
+    }
+};
+
+
+/***/ }),
+
 /***/ "./webview/components/ProjectList.tsx":
 /*!********************************************!*\
   !*** ./webview/components/ProjectList.tsx ***!
@@ -35803,13 +35844,11 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ProjectList = void 0;
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-var ThoughtCard_1 = __webpack_require__(/*! ./ThoughtCard */ "./webview/components/ThoughtCard.tsx");
+var ProjectCard_1 = __webpack_require__(/*! ./ProjectCard */ "./webview/components/ProjectCard.tsx");
 var ProjectList = function () {
     var projectSelector = function (state) { return state.userData; }; // need to type userdata
     var userProjects = react_redux_1.useSelector(projectSelector);
-    return (React.createElement("div", null, userProjects.map(function (project) { return (React.createElement("div", { key: project._id },
-        React.createElement("h1", null, project.projectName),
-        project.todos.map(function (thought) { return (React.createElement(ThoughtCard_1.ThoughtCard, { thought: thought })); }))); })));
+    return (React.createElement("div", null, userProjects.map(function (project) { return (React.createElement(ProjectCard_1.ProjectCard, { project: project, key: project._id })); })));
 };
 exports.ProjectList = ProjectList;
 
@@ -35881,8 +35920,6 @@ var storeUserReducer = function (state, action) {
     if (state === void 0) { state = initialState; }
     switch (action.type) {
         case 'storeUser':
-            // console.log('actino.payload', JSON.parse(action.payload));
-            console.log(action.payload);
             return action.payload; // id prop is the one I want
         default:
             return state;
@@ -36161,6 +36198,7 @@ window.addEventListener('message', function (e) {
     switch (message.command) {
         case 'sendingData':
             // should check db here first then await...
+            console.log(JSON.parse(message.userData));
             store_1.default.dispatch({ type: 'storeUser', payload: JSON.parse(message.userData) });
             var userSub = "github|" + JSON.parse(message.userData).id; // for now 
             store_1.default.dispatch(fetchDataAction_1.fetchDataAction(userSub));

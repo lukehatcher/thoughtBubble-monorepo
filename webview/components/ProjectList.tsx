@@ -1,7 +1,8 @@
 import * as React from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../reducers/rootReducer';
-import { ThoughtCard } from './ThoughtCard';
+import { ProjectCard } from './ProjectCard';
 
 export const ProjectList = () => {
 	const projectSelector = (state: RootState) => state.userData; // need to type userdata
@@ -9,13 +10,9 @@ export const ProjectList = () => {
 
 	return (
 		<div>
+			{/* not the key here */}
 			{userProjects.map((project) => (
-				<div key={project._id}>
-					<h1>{project.projectName}</h1>
-					{project.todos.map((thought) => (
-						<ThoughtCard thought={thought} />
-					))}
-				</div>
+				<ProjectCard project={project} key={project._id}/>
 			))}
 		</div>
 	);
