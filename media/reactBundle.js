@@ -35613,7 +35613,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.App = void 0;
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-var ThoughtList_1 = __webpack_require__(/*! ./ThoughtList */ "./webview/components/ThoughtList.tsx");
+var ProjectList_1 = __webpack_require__(/*! ./ProjectList */ "./webview/components/ProjectList.tsx");
 var LogoutButton_1 = __webpack_require__(/*! ./LogoutButton */ "./webview/components/LogoutButton.tsx");
 var LoginButton_1 = __webpack_require__(/*! ./LoginButton */ "./webview/components/LoginButton.tsx");
 var App = function () {
@@ -35625,7 +35625,7 @@ var App = function () {
     }
     return (React.createElement(React.Fragment, null,
         React.createElement(LogoutButton_1.LogoutButton, null),
-        React.createElement(ThoughtList_1.ThoughtList, null)));
+        React.createElement(ProjectList_1.ProjectList, null)));
 };
 exports.App = App;
 
@@ -35787,24 +35787,49 @@ exports.LogoutButton = LogoutButton;
 
 /***/ }),
 
-/***/ "./webview/components/ThoughtList.tsx":
+/***/ "./webview/components/ProjectList.tsx":
 /*!********************************************!*\
-  !*** ./webview/components/ThoughtList.tsx ***!
+  !*** ./webview/components/ProjectList.tsx ***!
   \********************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.ThoughtList = void 0;
+exports.ProjectList = void 0;
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-var ThoughtList = function () {
-    var select = function (state) { return state.userData; };
-    var userData = react_redux_1.useSelector(select);
-    return (React.createElement("div", null, JSON.stringify(userData)));
+var ThoughtCard_1 = __webpack_require__(/*! ./ThoughtCard */ "./webview/components/ThoughtCard.tsx");
+var ProjectList = function () {
+    var projectSelector = function (state) { return state.userData; }; // need to type userdata
+    var userProjects = react_redux_1.useSelector(projectSelector);
+    return (React.createElement("div", null, userProjects.map(function (project) { return (React.createElement("div", { key: project._id },
+        React.createElement("h1", null, project.projectName),
+        project.todos.map(function (thought) { return (React.createElement(ThoughtCard_1.ThoughtCard, { thought: thought })); }))); })));
 };
-exports.ThoughtList = ThoughtList;
+exports.ProjectList = ProjectList;
+
+
+/***/ }),
+
+/***/ "./webview/components/ThoughtCard.tsx":
+/*!********************************************!*\
+  !*** ./webview/components/ThoughtCard.tsx ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ThoughtCard = void 0;
+var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var ThoughtCard = function (_a) {
+    var thought = _a.thought;
+    return (React.createElement("div", null,
+        React.createElement("div", null, thought.text),
+        React.createElement("div", null, thought.completed ? 'completes' : 'in progress')));
+};
+exports.ThoughtCard = ThoughtCard;
 
 
 /***/ }),

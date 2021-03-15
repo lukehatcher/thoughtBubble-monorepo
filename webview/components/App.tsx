@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { ThoughtList } from './ThoughtList';
+import { ProjectList } from './ProjectList';
 import { RootState } from '../reducers/rootReducer';
 import { LogoutButton } from './LogoutButton';
 import { LoginButton } from './LoginButton';
@@ -21,7 +21,7 @@ export const App: React.FC = () => {
 	return (
 		<>
 			<LogoutButton />
-			<ThoughtList />
+			<ProjectList />
 		</>
 	);
 

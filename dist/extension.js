@@ -5326,7 +5326,6 @@ class MainPanel {
 			</head>
 			<body>
 				<div id="root"></div>
-				<h1>ts-react into vscode :)</h1>
 				<script nonce="${nonce}" src="${scriptUri}"></script>
 			</body>
 			</html>`;
