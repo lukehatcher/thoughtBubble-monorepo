@@ -1,6 +1,8 @@
+import { GithubIdTokenShape } from "../interfaces/interfaces";
+
 const initialState = null;
 
-export const storeUserReducer = (state = initialState, action) => {
+export const storeUserReducer = (state = initialState, action): GithubIdTokenShape => {
   switch (action.type) {
     case 'storeUser':
 			// console.log('actino.payload', JSON.parse(action.payload));

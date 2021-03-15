@@ -1,13 +1,8 @@
+import { UserDataShape } from "../interfaces/interfaces";
+
 const initialState = []; // array of objs, where each obj has todos arry of objs
 
-interface userData {
-  _id: string;
-  projectName: string;
-  todos: any[];
-  key?: string; // https://github.com/jemise111/react-native-swipe-list-view#usage
-}
-
-export const UserDataReducer = (state = initialState, action): userData[] => {
+export const UserDataReducer = (state = initialState, action): UserDataShape[] => {
   const { type, payload } = action; // need to add destructuring in other files
   switch (type) {
     case 'fetchData':

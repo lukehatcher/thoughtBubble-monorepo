@@ -35587,6 +35587,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.storeUserAction = void 0;
+// NOT IN USE RN
+// NO DB CHECK RN
 var storeUserAction = function (userData) {
     // called from _onLogin util
     return function (dispatch) { return __awaiter(void 0, void 0, void 0, function () {
@@ -36157,7 +36159,6 @@ window.addEventListener('message', function (e) {
     switch (message.command) {
         case 'sendingData':
             // should check db here first then await...
-            console.log(JSON.parse(message.userData));
             store_1.default.dispatch({ type: 'storeUser', payload: JSON.parse(message.userData) });
             var userSub = "github|" + JSON.parse(message.userData).id; // for now 
             store_1.default.dispatch(fetchDataAction_1.fetchDataAction(userSub));

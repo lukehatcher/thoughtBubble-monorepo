@@ -19,7 +19,6 @@ window.addEventListener('message', (e) => {
 	switch (message.command) {
 		case 'sendingData':
 			// should check db here first then await...
-			console.log(JSON.parse(message.userData));
 			store.dispatch({ type: 'storeUser', payload: JSON.parse(message.userData) });
 			const userSub = `github|${JSON.parse(message.userData).id}`; // for now 
 			store.dispatch(fetchDataAction(userSub));

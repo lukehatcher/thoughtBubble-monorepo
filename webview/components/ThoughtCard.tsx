@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { ThoughtType } from '../interfaces/interfaces';
+import { ThoughtShape } from '../interfaces/interfaces';
 
 interface thoughtCardProps {
-	thought: ThoughtType;
+	thought: ThoughtShape;
 }
 
 export const ThoughtCard: FC<thoughtCardProps> = ({ thought }) => {
