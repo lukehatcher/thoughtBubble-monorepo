@@ -1,8 +1,8 @@
-import { UserDataShape } from "../interfaces/interfaces";
+import { ProjectShape } from "../interfaces/interfaces";
 
 const initialState = []; // array of objs, where each obj has todos arry of objs
 
-export const UserDataReducer = (state = initialState, action): UserDataShape[] => {
+export const UserDataReducer = (state = initialState, action): ProjectShape[] => {
   const { type, payload } = action; // need to add destructuring in other files
   switch (type) {
     case 'fetchData':

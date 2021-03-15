@@ -4,10 +4,18 @@ export interface ThoughtShape {
 	completed: boolean;
 }
 
+// shape of data in redux store
+export interface ProjectShape {
+	_id: string;
+	projectName: string;
+	todos: ThoughtShape[];
+}
+
+// data from GET request
 export interface UserDataShape {
 	_id: string;
 	userSub: string;
-	projects: ThoughtShape[];
+	projects: ProjectShape[];
 }
 
 export interface GithubIdTokenShape {
