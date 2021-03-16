@@ -35817,9 +35817,7 @@ var ProjectCard = function (_a) {
         React.createElement("form", { onSubmit: function (e) { return handleNewThought(e); } },
             React.createElement("input", { type: "text", placeholder: "add a thought...", onChange: function (e) { return setInput(e.target.value); } }),
             React.createElement("button", { type: "submit" })),
-        project.todos.map(function (thought) { return (React.createElement(React.Fragment, null,
-            console.log(thought._id),
-            React.createElement(ThoughtCard_1.ThoughtCard, { thought: thought, key: thought._id }))); })));
+        project.todos.map(function (thought) { return (React.createElement(ThoughtCard_1.ThoughtCard, { thought: thought, key: thought._id })); })));
 };
 exports.ProjectCard = ProjectCard;
 var styles = {

@@ -20,12 +20,10 @@ export interface UserDataShape {
 
 export interface ThoughtCardProps {
 	thought: ThoughtShape;
-	key?: string;
 }
 
 export interface ProjectCardProps {
 	project: ProjectShape;
-	key?: string;
 }
 
 export interface GithubIdTokenShape {

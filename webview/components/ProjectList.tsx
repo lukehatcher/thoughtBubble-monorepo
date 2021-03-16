@@ -12,7 +12,7 @@ export const ProjectList = () => {
 		<div>
 			{/* not the key here */}
 			{userProjects.map((project) => (
-				<ProjectCard project={project} key={project._id}/>
+				<ProjectCard project={project} key={project._id} />
 			))}
 		</div>
 	);

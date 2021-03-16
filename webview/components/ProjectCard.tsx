@@ -20,10 +20,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({ project }) => {
 				<button type="submit"></button>
 			</form>
 			{project.todos.map((thought) => (
-				<>
-					{console.log(thought._id)}
-					<ThoughtCard thought={thought} key={thought._id} />
-				</>
+				<ThoughtCard thought={thought} key={thought._id} />
 			))}
 		</div>
 	)
