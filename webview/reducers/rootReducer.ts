@@ -14,4 +14,4 @@ export const rootReducer = (state, action) => {
   return appReducer(state, action);
 };
 
-export type RootState = ReturnType<typeof rootReducer>; // used for useSelector hooks
+export type RootState = ReturnType<typeof rootReducer>;

@@ -5,7 +5,7 @@ const initialState = null;
 export const storeUserReducer = (state = initialState, action): GithubIdTokenShape | null => {
   switch (action.type) {
     case 'storeUser':
-      return action.payload; // id prop is the one I want
+      return action.payload;
     default:
       return state;
   }

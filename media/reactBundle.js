@@ -35918,7 +35918,7 @@ var storeUserReducer = function (state, action) {
     if (state === void 0) { state = initialState; }
     switch (action.type) {
         case 'storeUser':
-            return action.payload; // id prop is the one I want
+            return action.payload;
         default:
             return state;
     }

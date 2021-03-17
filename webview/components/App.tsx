@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { ProjectList } from './ProjectList';
 import { RootState } from '../reducers/rootReducer';
