@@ -7,4 +7,3 @@ declare global {
 		setState: (state: any) => void;
 	}
 }
-// const vscodeGlobal: {postMessage: ({ command: string, value: any}) => void}
