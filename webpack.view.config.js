@@ -1,19 +1,15 @@
-// //@ts-check
-
 'use strict';
 
 const path = require('path');
 
-/**@type {import('webpack').Configuration}*/
 const config = {
 	mode: 'development',
   entry: './webview/index.tsx',
   output: {
     path: path.resolve(__dirname, 'media'),
     filename: 'reactBundle.js',
-    // devtoolModuleFilenameTemplate: '../[resource-path]'
   },
-  devtool: 'source-map', // wont word without
+  devtool: 'source-map', // needed
   resolve: {
     extensions: ['.ts', '.tsx', '.js', 'jsx']
   },
@@ -34,4 +30,5 @@ const config = {
     ]
   }
 };
+
 module.exports = config;
