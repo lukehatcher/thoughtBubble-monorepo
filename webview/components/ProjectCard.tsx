@@ -10,7 +10,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({ project }) => {
 		e.preventDefault();
 		console.log(input);
 		setInput('');
-	}
+	};
 
 	return (
 		<div>
@@ -23,12 +23,12 @@ export const ProjectCard: FC<ProjectCardProps> = ({ project }) => {
 				<ThoughtCard thought={thought} key={thought._id} />
 			))}
 		</div>
-	)
-}
+	);
+};
 
 const styles = {
 	h1: {
 		'text-align': 'center',
 		color: '#6200EE',
 	}
-}
+};

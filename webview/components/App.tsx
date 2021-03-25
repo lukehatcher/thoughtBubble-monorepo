@@ -9,20 +9,17 @@ export const App: React.FC = () => {
 	const selector = (state: RootState) => state.userData;
   const loginStatus = useSelector(selector);
 
-
 	if (!loginStatus) {
 		return (
 			<>
 				<LoginButton />
 			</>
-		)
-	} 
+		);
+	}
 	return (
 		<>
 			<LogoutButton />
 			<ProjectList />
 		</>
 	);
-
-
 };

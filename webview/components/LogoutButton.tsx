@@ -14,7 +14,7 @@ export const LogoutButton: React.FC = () => {
 			command: 'logout',
 			value: null,
 		});
-	}
+	};
 
 	return (
 		<div>

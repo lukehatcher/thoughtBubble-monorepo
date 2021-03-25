@@ -1,4 +1,4 @@
-import { ProjectShape } from "../interfaces/interfaces";
+import { ProjectShape } from '../interfaces/interfaces';
 
 const initialState = []; // array of objs, where each obj has todos arry of objs
 

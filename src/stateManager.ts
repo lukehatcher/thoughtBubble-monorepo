@@ -1,5 +1,5 @@
 
-import * as vscode from "vscode";
+import * as vscode from 'vscode';
 
 export class StateManager {
   static globalState: vscode.Memento;

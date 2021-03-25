@@ -9,7 +9,7 @@ export const LoginButton: React.FC = () => {
 			command: 'login',
 			value: null,
 		});
-	}
+	};
 
 	return (
 		<div>

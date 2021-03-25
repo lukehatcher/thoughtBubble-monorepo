@@ -5,5 +5,5 @@ declare global {
 		postMessage: ({ command: string, value: any}) => void;
 		getState: () => any;
 		setState: (state: any) => void;
-	}
+	};
 }

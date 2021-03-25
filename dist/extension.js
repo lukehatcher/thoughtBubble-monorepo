@@ -5231,12 +5231,13 @@ class MainPanel {
                 case 'alert':
                     vscode.window.showErrorMessage(message.value);
                     return;
-                case 'getUser':
+                case 'getUser': {
                     const userData = stateManager_1.StateManager.getToken() || '';
                     vscode.window.showInformationMessage(userData); // dont need
                     this._panel.webview.postMessage({ command: 'sendingData', userData }); // whole obj = event.data;
                     // panel.webview.postMessage({ command: 'sendingData', responseData: userData }); // whole obj = event.data;
                     return;
+                }
                 case 'logout':
                     // this._panel.webview.postMessage({ command: 'sendingData', userData: null });
                     // CLEAR SESSION

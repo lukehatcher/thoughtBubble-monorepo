@@ -1,4 +1,4 @@
-import { GithubIdTokenShape } from "../interfaces/interfaces";
+import { GithubIdTokenShape } from '../interfaces/interfaces';
 
 const initialState = null;
 

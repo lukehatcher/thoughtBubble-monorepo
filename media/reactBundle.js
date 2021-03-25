@@ -36194,13 +36194,14 @@ vscodeGlobal.postMessage({
 window.addEventListener('message', function (e) {
     var message = e.data; // The json data that the extension sent
     switch (message.command) {
-        case 'sendingData':
+        case 'sendingData': {
             // should check db here first then await...
             console.log(JSON.parse(message.userData));
             store_1.default.dispatch({ type: 'storeUser', payload: JSON.parse(message.userData) });
             var userSub = "github|" + JSON.parse(message.userData).id; // for now 
             store_1.default.dispatch(fetchDataAction_1.fetchDataAction(userSub));
             return;
+        }
     }
 });
 ReactDOM.render(React.createElement(react_redux_1.Provider, { store: store_1.default },
