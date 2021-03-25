@@ -1,25 +1,26 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addProjectAction } from '../actions/projectActions';
+import { addProjectAction, deleteProjectAction } from '../actions/projectActions';
 import { RootState } from '../reducers/rootReducer';
 
-interface ProjectFormProps {}
-
-export const ProjectForm: React.FC<ProjectFormProps> = function () {
+export const ProjectForm: React.FC = function () {
   const [input, setInput] = useState('');
+  const [selection, setSelection] = useState('');
   const dispatch = useDispatch();
   const selector = (state: RootState) => state.userData;
   const userData = useSelector(selector);
 
-  const handleProjectDeletion = function (e) {
-    // dispatch action
-  };
-
   const handleProjectAddition = function (e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    dispatch(addProjectAction(input));
+    if (input) dispatch(addProjectAction(input.trim()));
     setInput('');
+  };
+
+  const handleProjectDeletion = function (e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const projectId = selection;
+    if (projectId) dispatch(deleteProjectAction(projectId));
   };
 
   return (
@@ -36,13 +37,17 @@ export const ProjectForm: React.FC<ProjectFormProps> = function () {
         }}
       >
         <label>delete a project</label>
-        <select>
+        <select onChange={(e) => setSelection(e.target.value)} defaultValue="default">
+          <option value="default" disabled hidden>
+            select project
+          </option>
           {userData.map((proj) => (
             <option value={proj._id} key={proj._id}>
               {proj.projectName}
             </option>
           ))}
         </select>
+        <button type="submit">submit project deletion</button>
       </form>
     </div>
   );

@@ -35586,7 +35586,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.addProjectAction = void 0;
+exports.deleteProjectAction = exports.addProjectAction = void 0;
 var axios_1 = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 var addProjectAction = function (projectName) {
     return function (dispatch, getState) { return __awaiter(void 0, void 0, void 0, function () {
@@ -35602,39 +35602,38 @@ var addProjectAction = function (projectName) {
                 todo: null,
             })
                 .then(function (res) {
-                console.log(res, 'hello from action');
                 var newId = res.data;
                 dispatch({ type: 'addProject', payload: { projectName: projectName, _id: newId } });
             })
-                .catch(function (err) {
-                console.error('@projectActions.ts: ', err);
-            });
+                .catch(function (err) { return console.error('@projectActions.ts: ', err); });
             return [2 /*return*/];
         });
     }); };
 };
 exports.addProjectAction = addProjectAction;
-// export const deleteProjectAction = (projectId: string) => {
-//   return async (dispatch, getState) => {
-//     const userSub = `github|${getState().storedUser.id}`;
-//     try {
-//       axios
-//         .delete('http://localhost:3001/api/projects/delete', {
-//           params: {
-//             type: 'project',
-//             userSub,
-//             projectId,
-//             todo: null,
-//           },
-//         })
-//         .then((res) => {
-//           dispatch({ type: 'deleteProject', payload: projectId });
-//         });
-//     } catch (err) {
-//       console.error('projectActions.ts: ', err);
-//     }
-//   };
-// };
+var deleteProjectAction = function (projectId) {
+    return function (dispatch, getState) { return __awaiter(void 0, void 0, void 0, function () {
+        var userSub;
+        return __generator(this, function (_a) {
+            userSub = "github|" + getState().storedUser.id;
+            axios_1.default
+                .delete('http://localhost:3001/api/projects/delete', {
+                params: {
+                    type: 'project',
+                    userSub: userSub,
+                    projectId: projectId,
+                    todo: null,
+                },
+            })
+                .then(function (res) {
+                dispatch({ type: 'deleteProject', payload: projectId });
+            })
+                .catch(function (err) { return console.error('@projectActions.ts: ', err); });
+            return [2 /*return*/];
+        });
+    }); };
+};
+exports.deleteProjectAction = deleteProjectAction;
 
 
 /***/ }),
@@ -35944,16 +35943,21 @@ var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react
 var projectActions_1 = __webpack_require__(/*! ../actions/projectActions */ "./webview/actions/projectActions.ts");
 var ProjectForm = function () {
     var _a = react_1.useState(''), input = _a[0], setInput = _a[1];
+    var _b = react_1.useState(''), selection = _b[0], setSelection = _b[1];
     var dispatch = react_redux_1.useDispatch();
     var selector = function (state) { return state.userData; };
     var userData = react_redux_1.useSelector(selector);
-    var handleProjectDeletion = function (e) {
-        // dispatch action
-    };
     var handleProjectAddition = function (e) {
         e.preventDefault();
-        dispatch(projectActions_1.addProjectAction(input));
+        if (input)
+            dispatch(projectActions_1.addProjectAction(input.trim()));
         setInput('');
+    };
+    var handleProjectDeletion = function (e) {
+        e.preventDefault();
+        var projectId = selection;
+        if (projectId)
+            dispatch(projectActions_1.deleteProjectAction(projectId));
     };
     return (React.createElement("div", null,
         React.createElement("form", { onSubmit: function (e) { return handleProjectAddition(e); } },
@@ -35964,7 +35968,10 @@ var ProjectForm = function () {
                 handleProjectDeletion(e);
             } },
             React.createElement("label", null, "delete a project"),
-            React.createElement("select", null, userData.map(function (proj) { return (React.createElement("option", { value: proj._id, key: proj._id }, proj.projectName)); })))));
+            React.createElement("select", { onChange: function (e) { return setSelection(e.target.value); }, defaultValue: "default" },
+                React.createElement("option", { value: "default", disabled: true, hidden: true }, "select project"),
+                userData.map(function (proj) { return (React.createElement("option", { value: proj._id, key: proj._id }, proj.projectName)); })),
+            React.createElement("button", { type: "submit" }, "submit project deletion"))));
 };
 exports.ProjectForm = ProjectForm;
 
@@ -36100,9 +36107,8 @@ var UserDataReducer = function (state, action) {
                     todos: [],
                 },
             ]);
-        // case 'deleteProject':
-        //   console.log('filter about to run');
-        //   return state.filter((projects) => projects._id !== payload);
+        case 'deleteProject':
+            return state.filter(function (projects) { return projects._id !== payload; });
         // case 'addTodo':
         //   // looks complicated cause we need to copy each level
         //   return state.map((item) => {
@@ -36113,7 +36119,7 @@ var UserDataReducer = function (state, action) {
         //         ...item,
         //         todos: [
         //           ...item.todos,
-        //           { _id: payload._id, text: payload.todo, completed: false }, //
+        //           { _id: payload._id, text: payload.todo, completed: false }, // force break
         //         ],
         //       };
         //     }

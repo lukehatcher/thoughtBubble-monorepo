@@ -16,9 +16,8 @@ export const UserDataReducer = (state = initialState, action): ProjectShape[] =>
           todos: [],
         },
       ];
-    // case 'deleteProject':
-    //   console.log('filter about to run');
-    //   return state.filter((projects) => projects._id !== payload);
+    case 'deleteProject':
+      return state.filter((projects) => projects._id !== payload);
     // case 'addTodo':
     //   // looks complicated cause we need to copy each level
     //   return state.map((item) => {
@@ -29,7 +28,7 @@ export const UserDataReducer = (state = initialState, action): ProjectShape[] =>
     //         ...item,
     //         todos: [
     //           ...item.todos,
-    //           { _id: payload._id, text: payload.todo, completed: false }, //
+    //           { _id: payload._id, text: payload.todo, completed: false }, // force break
     //         ],
     //       };
     //     }
