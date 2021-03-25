@@ -19,6 +19,7 @@ export interface UserDataShape {
 }
 
 export interface ThoughtCardProps {
+  projectId: string;
   thoughtId: string;
   thought: ThoughtShape;
 }

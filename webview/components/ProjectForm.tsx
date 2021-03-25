@@ -11,13 +11,13 @@ export const ProjectForm: React.FC = function () {
   const selector = (state: RootState) => state.userData;
   const userData = useSelector(selector);
 
-  const handleProjectAddition = function (e: React.FormEvent<HTMLFormElement>) {
+  const handleProjectAddition = function (e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
     if (input) dispatch(addProjectAction(input.trim()));
     setInput('');
   };
 
-  const handleProjectDeletion = function (e: React.FormEvent<HTMLFormElement>) {
+  const handleProjectDeletion = function (e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
     const projectId = selection;
     if (projectId) dispatch(deleteProjectAction(projectId));

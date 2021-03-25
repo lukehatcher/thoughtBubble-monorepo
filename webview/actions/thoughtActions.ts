@@ -16,31 +16,28 @@ export const addThoughtAction = (projectId: string, thought: string) => {
         const newThoughtId = res.data;
         dispatch({ type: 'addThought', payload: { projectId, thought, _id: newThoughtId } });
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.error('@thoughtActions.ts: ', err));
   };
 };
 
-// export const deleteTodoAction = (projectId: string, todoId: string) => {
-//   return async (dispatch, getState) => {
-//     const userSub = `github|${getState().storedUser.id}`;
-//     try {
-//       axios
-//         .delete('http://localhost:3001/api/projects/delete', {
-//           params: {
-//             type: 'todo',
-//             userSub,
-//             projectId,
-//             todoId,
-//           },
-//         })
-//         .then((res) => {
-//           dispatch({ type: 'deleteTodo', payload: { projectId, _id: todoId } });
-//         });
-//     } catch (err) {
-//       console.error('deleteProjectAction @todoActions.ts: ', err);
-//     }
-//   };
-// };
+export const deleteThoughtAction = (projectId: string, thoughtId: string) => {
+  return async (dispatch, getState) => {
+    const userSub = `github|${getState().storedUser.id}`;
+    axios
+      .delete('http://localhost:3001/api/projects/delete', {
+        params: {
+          type: 'todo',
+          userSub,
+          projectId,
+          todoId: thoughtId,
+        },
+      })
+      .then((res) => {
+        dispatch({ type: 'deleteThought', payload: { projectId, _id: thoughtId } });
+      })
+      .catch((err) => console.error('@thoughtActions.ts: ', err));
+  };
+};
 
 // export const todoStatusChangeAction = (projectId: string, todoId: string) => {
 //   return async (dispatch, getState) => {

@@ -10,7 +10,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({ project }) => {
   const dispatch = useDispatch();
   const { projectName, _id: projectId } = project;
 
-  const handleNewThought = function (e: React.FormEvent<HTMLFormElement>) {
+  const handleNewThought = function (e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
     if (input) dispatch(addThoughtAction(projectId, input.trim()));
     setInput('');
@@ -29,7 +29,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({ project }) => {
         <button type="submit">add new thought</button>
       </form>
       {project.todos.map((thought) => (
-        <ThoughtCard thought={thought} key={thought._id} thoughtId={thought._id} />
+        <ThoughtCard thought={thought} key={thought._id} projectId={projectId} thoughtId={thought._id} />
       ))}
     </div>
   );

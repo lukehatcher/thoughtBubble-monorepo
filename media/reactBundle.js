@@ -35747,7 +35747,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.addThoughtAction = void 0;
+exports.deleteThoughtAction = exports.addThoughtAction = void 0;
 var axios_1 = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 var addThoughtAction = function (projectId, thought) {
     // todo -> thought DONE (except for api endpoints)
@@ -35767,33 +35767,35 @@ var addThoughtAction = function (projectId, thought) {
                 var newThoughtId = res.data;
                 dispatch({ type: 'addThought', payload: { projectId: projectId, thought: thought, _id: newThoughtId } });
             })
-                .catch(function (err) { return console.error(err); });
+                .catch(function (err) { return console.error('@thoughtActions.ts: ', err); });
             return [2 /*return*/];
         });
     }); };
 };
 exports.addThoughtAction = addThoughtAction;
-// export const deleteTodoAction = (projectId: string, todoId: string) => {
-//   return async (dispatch, getState) => {
-//     const userSub = `github|${getState().storedUser.id}`;
-//     try {
-//       axios
-//         .delete('http://localhost:3001/api/projects/delete', {
-//           params: {
-//             type: 'todo',
-//             userSub,
-//             projectId,
-//             todoId,
-//           },
-//         })
-//         .then((res) => {
-//           dispatch({ type: 'deleteTodo', payload: { projectId, _id: todoId } });
-//         });
-//     } catch (err) {
-//       console.error('deleteProjectAction @todoActions.ts: ', err);
-//     }
-//   };
-// };
+var deleteThoughtAction = function (projectId, thoughtId) {
+    return function (dispatch, getState) { return __awaiter(void 0, void 0, void 0, function () {
+        var userSub;
+        return __generator(this, function (_a) {
+            userSub = "github|" + getState().storedUser.id;
+            axios_1.default
+                .delete('http://localhost:3001/api/projects/delete', {
+                params: {
+                    type: 'todo',
+                    userSub: userSub,
+                    projectId: projectId,
+                    todoId: thoughtId,
+                },
+            })
+                .then(function (res) {
+                dispatch({ type: 'deleteThought', payload: { projectId: projectId, _id: thoughtId } });
+            })
+                .catch(function (err) { return console.error('@thoughtActions.ts: ', err); });
+            return [2 /*return*/];
+        });
+    }); };
+};
+exports.deleteThoughtAction = deleteThoughtAction;
 // export const todoStatusChangeAction = (projectId: string, todoId: string) => {
 //   return async (dispatch, getState) => {
 //     const userSub = getState().storedUser.sub;
@@ -36057,7 +36059,7 @@ var ProjectCard = function (_a) {
         React.createElement("form", { onSubmit: function (e) { return handleNewThought(e); } },
             React.createElement("input", { type: "text", value: input, placeholder: "add a new thought to \"" + projectName + "\"...", onChange: function (e) { return setInput(e.target.value); } }),
             React.createElement("button", { type: "submit" }, "add new thought")),
-        project.todos.map(function (thought) { return (React.createElement(ThoughtCard_1.ThoughtCard, { thought: thought, key: thought._id, thoughtId: thought._id })); })));
+        project.todos.map(function (thought) { return (React.createElement(ThoughtCard_1.ThoughtCard, { thought: thought, key: thought._id, projectId: projectId, thoughtId: thought._id })); })));
 };
 exports.ProjectCard = ProjectCard;
 var styles = {
@@ -36154,13 +36156,22 @@ exports.ProjectList = ProjectList;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ThoughtCard = void 0;
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+var thoughtActions_1 = __webpack_require__(/*! ../actions/thoughtActions */ "./webview/actions/thoughtActions.ts");
 var ThoughtCard = function (_a) {
-    var thought = _a.thought, thoughtId = _a.thoughtId;
+    var thought = _a.thought, projectId = _a.projectId, thoughtId = _a.thoughtId;
+    var dispatch = react_redux_1.useDispatch();
+    var handleThoughtDeletion = function () {
+        dispatch(thoughtActions_1.deleteThoughtAction(projectId, thoughtId));
+    };
+    var handleThoughtToggle = function () {
+        // dispatch(deleteThoughtAction(projectId, thoughtId));
+    };
     return (React.createElement("div", null,
         React.createElement("div", null, thought.text),
         React.createElement("div", null, thought.completed ? 'completes' : 'in progress'),
-        React.createElement("button", { className: "thought-del-btn", onClick: function () { } }, "delete thought"),
-        React.createElement("button", { className: "thought-toggle-btn", onClick: function () { } }, "toggle thought")));
+        React.createElement("button", { className: "thought-del-btn", onClick: function () { return handleThoughtDeletion(); } }, "delete thought"),
+        React.createElement("button", { className: "thought-toggle-btn", onClick: function () { return handleThoughtToggle(); } }, "toggle thought")));
 };
 exports.ThoughtCard = ThoughtCard;
 
@@ -36276,17 +36287,15 @@ var UserDataReducer = function (state, action) {
                         ]) });
                 }
             });
-        // case 'deleteTodo':
-        //   return state.map((item) => {
-        //     if (item._id !== payload.projectId) {
-        //       return item;
-        //     } else {
-        //       return {
-        //         ...item,
-        //         todos: item.todos.filter((todo) => todo._id !== payload._id),
-        //       };
-        //     }
-        //   });
+        case 'deleteThought':
+            return state.map(function (item) {
+                if (item._id !== payload.projectId) {
+                    return item;
+                }
+                else {
+                    return __assign(__assign({}, item), { todos: item.todos.filter(function (todo) { return todo._id !== payload._id; }) });
+                }
+            });
         // case 'todoStatusChange':
         //   return state.map((item) => {
         //     if (item._id !== payload.projectId) {

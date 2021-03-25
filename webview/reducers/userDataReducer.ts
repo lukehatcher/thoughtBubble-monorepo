@@ -33,17 +33,17 @@ export const UserDataReducer = (state = initialState, action): ProjectShape[] =>
           };
         }
       });
-    // case 'deleteTodo':
-    //   return state.map((item) => {
-    //     if (item._id !== payload.projectId) {
-    //       return item;
-    //     } else {
-    //       return {
-    //         ...item,
-    //         todos: item.todos.filter((todo) => todo._id !== payload._id),
-    //       };
-    //     }
-    //   });
+    case 'deleteThought':
+      return state.map((item) => {
+        if (item._id !== payload.projectId) {
+          return item;
+        } else {
+          return {
+            ...item,
+            todos: item.todos.filter((todo) => todo._id !== payload._id),
+          };
+        }
+      });
     // case 'todoStatusChange':
     //   return state.map((item) => {
     //     if (item._id !== payload.projectId) {
