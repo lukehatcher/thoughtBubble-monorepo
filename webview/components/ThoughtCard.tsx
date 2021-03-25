@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
-import { deleteThoughtAction } from '../actions/thoughtActions';
+import { deleteThoughtAction, thoughtStatusChangeAction } from '../actions/thoughtActions';
 import { ThoughtCardProps } from '../interfaces/interfaces';
 
 export const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, projectId, thoughtId }) => {
@@ -11,7 +11,7 @@ export const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, projectId, th
   };
 
   const handleThoughtToggle = function (): void {
-    // dispatch(deleteThoughtAction(projectId, thoughtId));
+    dispatch(thoughtStatusChangeAction(projectId, thoughtId));
   };
 
   return (

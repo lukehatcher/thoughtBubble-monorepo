@@ -44,22 +44,22 @@ export const UserDataReducer = (state = initialState, action): ProjectShape[] =>
           };
         }
       });
-    // case 'todoStatusChange':
-    //   return state.map((item) => {
-    //     if (item._id !== payload.projectId) {
-    //       return item;
-    //     } else {
-    //       return {
-    //         ...item,
-    //         todos: item.todos.map((todo) => {
-    //           if (todo._id === payload._id) {
-    //             todo.completed = !todo.completed;
-    //           }
-    //           return todo;
-    //         }),
-    //       };
-    //     }
-    //   });
+    case 'thoughtStatusChange':
+      return state.map((item) => {
+        if (item._id !== payload.projectId) {
+          return item;
+        } else {
+          return {
+            ...item,
+            todos: item.todos.map((todo) => {
+              if (todo._id === payload._id) {
+                todo.completed = !todo.completed;
+              }
+              return todo;
+            }),
+          };
+        }
+      });
     // case 'editTodo':
     //   return state.map((item) => {
     //     if (item._id !== payload.projectId) {

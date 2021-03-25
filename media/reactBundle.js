@@ -35747,7 +35747,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.deleteThoughtAction = exports.addThoughtAction = void 0;
+exports.thoughtStatusChangeAction = exports.deleteThoughtAction = exports.addThoughtAction = void 0;
 var axios_1 = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 var addThoughtAction = function (projectId, thought) {
     // todo -> thought DONE (except for api endpoints)
@@ -35796,26 +35796,27 @@ var deleteThoughtAction = function (projectId, thoughtId) {
     }); };
 };
 exports.deleteThoughtAction = deleteThoughtAction;
-// export const todoStatusChangeAction = (projectId: string, todoId: string) => {
-//   return async (dispatch, getState) => {
-//     const userSub = getState().storedUser.sub;
-//     try {
-//       axios
-//         .put('http://localhost:3001/api/projects/put', {
-//           type: 'todo/toggle',
-//           userSub,
-//           projectId,
-//           todoId,
-//           newThought: null,
-//         })
-//         .then((res) => {
-//           dispatch({ type: 'todoStatusChange', payload: { projectId, _id: todoId } });
-//         });
-//     } catch (err) {
-//       console.error('todoStatusChangeAction @todoActions.ts: ', err);
-//     }
-//   };
-// };
+var thoughtStatusChangeAction = function (projectId, thoughtId) {
+    return function (dispatch, getState) { return __awaiter(void 0, void 0, void 0, function () {
+        var userSub;
+        return __generator(this, function (_a) {
+            userSub = "github|" + getState().storedUser.id;
+            axios_1.default
+                .put('http://localhost:3001/api/projects/put', {
+                type: 'todo/toggle',
+                userSub: userSub,
+                projectId: projectId,
+                todoId: thoughtId,
+            })
+                .then(function (res) {
+                dispatch({ type: 'thoughtStatusChange', payload: { projectId: projectId, _id: thoughtId } });
+            })
+                .catch(function (err) { return console.error('@thoughtActions.ts: ', err); });
+            return [2 /*return*/];
+        });
+    }); };
+};
+exports.thoughtStatusChangeAction = thoughtStatusChangeAction;
 // export const editThoughtAction = (newThought: string, projectId: string, todoId: string) => {
 //   return async (dispatch, getState) => {
 //     const userSub = getState().storedUser.sub;
@@ -36165,7 +36166,7 @@ var ThoughtCard = function (_a) {
         dispatch(thoughtActions_1.deleteThoughtAction(projectId, thoughtId));
     };
     var handleThoughtToggle = function () {
-        // dispatch(deleteThoughtAction(projectId, thoughtId));
+        dispatch(thoughtActions_1.thoughtStatusChangeAction(projectId, thoughtId));
     };
     return (React.createElement("div", null,
         React.createElement("div", null, thought.text),
@@ -36296,22 +36297,20 @@ var UserDataReducer = function (state, action) {
                     return __assign(__assign({}, item), { todos: item.todos.filter(function (todo) { return todo._id !== payload._id; }) });
                 }
             });
-        // case 'todoStatusChange':
-        //   return state.map((item) => {
-        //     if (item._id !== payload.projectId) {
-        //       return item;
-        //     } else {
-        //       return {
-        //         ...item,
-        //         todos: item.todos.map((todo) => {
-        //           if (todo._id === payload._id) {
-        //             todo.completed = !todo.completed;
-        //           }
-        //           return todo;
-        //         }),
-        //       };
-        //     }
-        //   });
+        case 'thoughtStatusChange':
+            return state.map(function (item) {
+                if (item._id !== payload.projectId) {
+                    return item;
+                }
+                else {
+                    return __assign(__assign({}, item), { todos: item.todos.map(function (todo) {
+                            if (todo._id === payload._id) {
+                                todo.completed = !todo.completed;
+                            }
+                            return todo;
+                        }) });
+                }
+            });
         // case 'editTodo':
         //   return state.map((item) => {
         //     if (item._id !== payload.projectId) {
