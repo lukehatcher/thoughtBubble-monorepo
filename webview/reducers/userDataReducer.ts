@@ -7,7 +7,7 @@ export const UserDataReducer = (state = initialState, action): ProjectShape[] =>
   switch (type) {
     case 'fetchData':
       return payload.projects;
-    case 'addProject': // id
+    case 'addProject':
       return [
         ...state,
         {
@@ -19,21 +19,20 @@ export const UserDataReducer = (state = initialState, action): ProjectShape[] =>
     case 'deleteProject':
       console.log(state, 'checking things');
       return state.filter((projects) => projects._id !== payload);
-    // case 'addTodo':
-    //   // looks complicated cause we need to copy each level
-    //   return state.map((item) => {
-    //     if (item._id !== payload.projectId) {
-    //       return item;
-    //     } else {
-    //       return {
-    //         ...item,
-    //         todos: [
-    //           ...item.todos,
-    //           { _id: payload._id, text: payload.todo, completed: false }, // force break
-    //         ],
-    //       };
-    //     }
-    //   });
+    case 'addThought': // renamed for ext
+      return state.map((item) => {
+        if (item._id !== payload.projectId) {
+          return item;
+        } else {
+          return {
+            ...item,
+            todos: [
+              ...item.todos,
+              { _id: payload._id, text: payload.thought, completed: false }, // force break
+            ],
+          };
+        }
+      });
     // case 'deleteTodo':
     //   return state.map((item) => {
     //     if (item._id !== payload.projectId) {
