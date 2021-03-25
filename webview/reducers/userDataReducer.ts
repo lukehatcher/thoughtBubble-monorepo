@@ -1,6 +1,6 @@
 import { ProjectShape } from '../interfaces/interfaces';
 
-const initialState = []; // array of objs, where each obj has todos arry of objs
+const initialState: ProjectShape[] = [];
 
 export const UserDataReducer = (state = initialState, action): ProjectShape[] => {
   const { type, payload } = action; // need to add destructuring in other files
@@ -17,6 +17,7 @@ export const UserDataReducer = (state = initialState, action): ProjectShape[] =>
         },
       ];
     case 'deleteProject':
+      console.log(state, 'checking things');
       return state.filter((projects) => projects._id !== payload);
     // case 'addTodo':
     //   // looks complicated cause we need to copy each level

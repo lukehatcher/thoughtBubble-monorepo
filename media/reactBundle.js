@@ -36092,7 +36092,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.UserDataReducer = void 0;
-var initialState = []; // array of objs, where each obj has todos arry of objs
+var initialState = [];
 var UserDataReducer = function (state, action) {
     if (state === void 0) { state = initialState; }
     var type = action.type, payload = action.payload; // need to add destructuring in other files
@@ -36108,6 +36108,7 @@ var UserDataReducer = function (state, action) {
                 },
             ]);
         case 'deleteProject':
+            console.log(state, 'checking things');
             return state.filter(function (projects) { return projects._id !== payload; });
         // case 'addTodo':
         //   // looks complicated cause we need to copy each level
