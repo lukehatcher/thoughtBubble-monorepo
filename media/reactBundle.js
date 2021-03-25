@@ -36055,7 +36055,7 @@ var ProjectCard = function (_a) {
     return (React.createElement("div", null,
         React.createElement("h1", { style: styles.h1 }, projectName),
         React.createElement("form", { onSubmit: function (e) { return handleNewThought(e); } },
-            React.createElement("input", { type: "text", value: input, placeholder: "add a new thought to " + projectName + "...", onChange: function (e) { return setInput(e.target.value); } }),
+            React.createElement("input", { type: "text", value: input, placeholder: "add a new thought to \"" + projectName + "\"...", onChange: function (e) { return setInput(e.target.value); } }),
             React.createElement("button", { type: "submit" }, "add new thought")),
         project.todos.map(function (thought) { return (React.createElement(ThoughtCard_1.ThoughtCard, { thought: thought, key: thought._id, thoughtId: thought._id })); })));
 };
@@ -36104,7 +36104,7 @@ var ProjectForm = function () {
     return (React.createElement("div", null,
         React.createElement("form", { onSubmit: function (e) { return handleProjectAddition(e); } },
             React.createElement("label", null, "add new project"),
-            React.createElement("input", { type: "text", placeholder: "add a new project", onChange: function (e) { return setInput(e.target.value); } }),
+            React.createElement("input", { type: "text", value: input, placeholder: "create a new project", onChange: function (e) { return setInput(e.target.value); } }),
             React.createElement("button", { type: "submit" }, "submit new proj")),
         React.createElement("form", { onSubmit: function (e) {
                 handleProjectDeletion(e);

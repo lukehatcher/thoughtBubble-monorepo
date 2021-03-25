@@ -23,7 +23,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({ project }) => {
         <input
           type="text"
           value={input}
-          placeholder={`add a new thought to ${projectName}...`}
+          placeholder={`add a new thought to "${projectName}"...`}
           onChange={(e) => setInput(e.target.value)}
         ></input>
         <button type="submit">add new thought</button>

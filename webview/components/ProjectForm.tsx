@@ -27,7 +27,12 @@ export const ProjectForm: React.FC = function () {
     <div>
       <form onSubmit={(e) => handleProjectAddition(e)}>
         <label>add new project</label>
-        <input type="text" placeholder="add a new project" onChange={(e) => setInput(e.target.value)}></input>
+        <input
+          type="text"
+          value={input}
+          placeholder="create a new project"
+          onChange={(e) => setInput(e.target.value)}
+        ></input>
         <button type="submit">submit new proj</button>
       </form>
 
