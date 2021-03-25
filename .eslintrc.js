@@ -8,14 +8,12 @@ module.exports = {
 	extends: [
 		'eslint:recommended',
 		'plugin:@typescript-eslint/recommended',
+		'prettier',
 	],
 	rules: {
-		'semi': [2, 'always'],
 		'@typescript-eslint/no-unused-vars': 0,
 		'@typescript-eslint/no-explicit-any': 0,
 		'@typescript-eslint/explicit-module-boundary-types': 0,
 		'@typescript-eslint/no-non-null-assertion': 0,
-		'eol-last': ['error', 'always'],
-		quotes: ['error', 'single']
 	}
 };
