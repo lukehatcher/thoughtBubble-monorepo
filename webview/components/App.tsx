@@ -4,6 +4,7 @@ import { ProjectList } from './ProjectList';
 import { RootState } from '../reducers/rootReducer';
 import { LogoutButton } from './LogoutButton';
 import { LoginButton } from './LoginButton';
+import { ProjectForm } from './ProjectForm';
 
 export const App: React.FC = () => {
   const selector = (state: RootState) => state.userData;
@@ -19,6 +20,7 @@ export const App: React.FC = () => {
   return (
     <>
       <LogoutButton />
+      <ProjectForm />
       <ProjectList />
     </>
   );
