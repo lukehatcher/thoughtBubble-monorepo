@@ -1,0 +1,64 @@
+html {
+	margin: 5px;
+  box-sizing: border-box;
+}
+
+/* submenues */
+
+.submenu-trigger {
+  width: 30px;
+  display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+  justify-content: center;
+  /* background: rgb(87, 10, 10); */
+}
+.menu-item {
+	background: #212121;
+  cursor: pointer;
+  padding: 5px;
+  height: 28px;
+  border-bottom: 1px solid rgb(187, 187, 187);
+}
+.menu-item:hover {
+  color: #6200EE;
+}
+
+/* container for all projects (scrollview) */
+
+#projectList-container {
+	border: 1px solid red;
+}
+
+/* project card + their thought cards */
+
+.projectCard-container {
+	border: 1px solid black;
+}
+
+.thoughtCard-container {
+	/* border: 1px solid hotpink; */
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+  box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.35);
+}
+
+.thoughtCard-container:hover {
+  background-color: grey;
+}
+
+.completed-text {
+  text-decoration: line-through;
+  opacity: 0.4;
+}
+
+.incompleted-text {
+  
+}
+
+/* projects header/CRUD form */
+
+#projectsHeader-container {
+	border: 1px solid grey;
+}

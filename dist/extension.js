@@ -5300,11 +5300,9 @@ class MainPanel {
         // And the uri we use to load this script in the webview
         const scriptUri = webview.asWebviewUri(scriptPathOnDisk);
         // Local path to css styles
-        const styleResetPath = vscode.Uri.joinPath(this._extensionUri, 'media', 'reset.css');
-        const stylesPathMainPath = vscode.Uri.joinPath(this._extensionUri, 'media', 'vscode.css');
+        const stylesMainPath = vscode.Uri.joinPath(this._extensionUri, 'media', 'style.css');
         // Uri to load styles into webview
-        const stylesResetUri = webview.asWebviewUri(styleResetPath);
-        const stylesMainUri = webview.asWebviewUri(stylesPathMainPath);
+        const stylesMainUri = webview.asWebviewUri(stylesMainPath);
         // Use a nonce to only allow specific scripts to be run;
         const nonce = generateNonce_1.getNonce();
         return `<!DOCTYPE html>
@@ -5315,15 +5313,17 @@ class MainPanel {
 					Use a content security policy to only allow loading images from https or from our extension directory,
 					and only allow scripts that have a specific nonce.
 				-->
-				<meta http-equiv="Content-Security-Policy" content="style-src ${webview.cspSource}; img-src ${webview.cspSource} https:; script-src 'nonce-${nonce}';">
+				<meta http-equiv="Content-Security-Policy" content="style-src https: 'unsafe-inline' ${webview.cspSource}; img-src ${webview.cspSource}; script-src 'nonce-${nonce}' https: 'unsafe-inline';">
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<link href="${stylesResetUri}" rel="stylesheet">
 				<link href="${stylesMainUri}" rel="stylesheet">
+        <!-- <script type="module" src="vscode-webview-resource://0d198a8c-b665-467a-8d30-8c7d37de2d4e/file///Users/lukehatcher/Documents/projects/vscode-react-test/media/ionicons/ionicons.esm.js"></script>
+        <script nomodule="" src="vscode-webview-resource://0d198a8c-b665-467a-8d30-8c7d37de2d4e/file///Users/lukehatcher/Documents/projects/vscode-react-test/media/ionicons/ionicons.js"></script> -->
 				<script nonce="${nonce}">
 					const vscodeGlobal = acquireVsCodeApi();
 				</script>
 			</head>
 			<body>
+        <!-- <ion-icon name="heart"></ion-icon> -->
 				<div id="root"></div>
 				<script nonce="${nonce}" src="${scriptUri}"></script>
 			</body>

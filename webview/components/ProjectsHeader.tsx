@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addProjectAction, deleteProjectAction } from '../actions/projectActions';
 import { RootState } from '../reducers/rootReducer';
 
-export const ProjectForm: React.FC = function () {
+export const ProjectsHeader: React.FC = function () {
   const [input, setInput] = useState('');
   const [selection, setSelection] = useState('');
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ export const ProjectForm: React.FC = function () {
   };
 
   return (
-    <div>
+    <div id="projectsHeader-container">
       <form onSubmit={(e) => handleProjectAddition(e)}>
         <label>add new project</label>
         <input
