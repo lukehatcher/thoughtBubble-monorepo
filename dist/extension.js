@@ -5226,7 +5226,7 @@ class MainPanel {
         // This happens when the user closes the panel or when the panel is closed programatically
         this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
         // Handle messages from the webview
-        this._panel.webview.onDidReceiveMessage(message => {
+        this._panel.webview.onDidReceiveMessage((message) => {
             switch (message.command) {
                 case 'alert':
                     vscode.window.showErrorMessage(message.value);
@@ -5254,9 +5254,7 @@ class MainPanel {
         }, null, this._disposables);
     }
     static createOrShow(extensionUri) {
-        const column = vscode.window.activeTextEditor
-            ? vscode.window.activeTextEditor.viewColumn
-            : undefined;
+        const column = vscode.window.activeTextEditor ? vscode.window.activeTextEditor.viewColumn : undefined;
         // If you already have the tab open, show it.
         if (MainPanel.currentPanel) {
             MainPanel.currentPanel._panel.reveal(column);
@@ -5269,7 +5267,7 @@ class MainPanel {
         {
             enableScripts: true,
             retainContextWhenHidden: true,
-            localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'media')]
+            localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'media')],
         });
         MainPanel.currentPanel = new MainPanel(panel, extensionUri);
     }

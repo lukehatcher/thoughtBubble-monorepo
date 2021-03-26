@@ -1,4 +1,4 @@
-  
+/*   
 html {
 	box-sizing: border-box;
 	font-size: 13px;
@@ -28,4 +28,20 @@ ul {
 img {
 	max-width: 100%;
 	height: auto;
+} */
+
+.menu {
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+}
+.menu-item {
+  cursor: pointer;
+  padding: 5px;
+  height: 28px;
+  border-bottom: 1px solid rgb(187, 187, 187);
+}
+.menu-item:hover {
+  color: #6200EE;
 }

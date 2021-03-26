@@ -56,23 +56,23 @@ export const thoughtStatusChangeAction = (projectId: string, thoughtId: string) 
   };
 };
 
-// export const editThoughtAction = (newThought: string, projectId: string, todoId: string) => {
-//   return async (dispatch, getState) => {
-//     const userSub = getState().storedUser.sub;
-//     try {
-//       axios
-//         .put('http://localhost:3001/api/projects/put', {
-//           type: 'todo/edit',
-//           userSub,
-//           projectId,
-//           todoId,
-//           newThought,
-//         })
-//         .then((res) => {
-//           dispatch({ type: 'editTodo', payload: { projectId, _id: todoId, newThought } });
-//         });
-//     } catch (err) {
-//       console.error('editThought @todoActions.ts: ', err);
-//     }
-//   };
-// };
+export const editThoughtAction = (newThought: string, projectId: string, thoughtId: string) => {
+  return async (dispatch, getState) => {
+    const userSub = `github|${getState().storedUser.id}`;
+    try {
+      axios
+        .put('http://localhost:3001/api/projects/put', {
+          type: 'todo/edit',
+          userSub,
+          projectId,
+          todoId: thoughtId,
+          newThought,
+        })
+        .then((res) => {
+          dispatch({ type: 'editThought', payload: { projectId, _id: thoughtId, newThought } });
+        });
+    } catch (err) {
+      console.error('@thoughtActions.ts: ', err);
+    }
+  };
+};
