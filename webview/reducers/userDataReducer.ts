@@ -76,28 +76,28 @@ export const UserDataReducer = (state = initialState, action): ProjectShape[] =>
           };
         }
       });
-    // case 'filterData/completed':
-    //   return payload.data.projects.map((project) => {
-    //     if (project._id === payload.projectId) {
-    //       return {
-    //         ...project,
-    //         todos: project.todos.filter((todo) => todo.completed),
-    //       };
-    //     } else {
-    //       return project;
-    //     }
-    //   });
-    // case 'filterData/incomplete':
-    //   return payload.data.projects.map((project) => {
-    //     if (project._id === payload.projectId) {
-    //       return {
-    //         ...project,
-    //         todos: project.todos.filter((todo) => !todo.completed),
-    //       };
-    //     } else {
-    //       return project;
-    //     }
-    //   });
+    case 'filterData/completed':
+      return payload.data.projects.map((project) => {
+        if (project._id === payload.projectId) {
+          return {
+            ...project,
+            todos: project.todos.filter((thought) => thought.completed),
+          };
+        } else {
+          return project;
+        }
+      });
+    case 'filterData/incomplete':
+      return payload.data.projects.map((project) => {
+        if (project._id === payload.projectId) {
+          return {
+            ...project,
+            todos: project.todos.filter((thought) => !thought.completed),
+          };
+        } else {
+          return project;
+        }
+      });
     default:
       return state;
   }

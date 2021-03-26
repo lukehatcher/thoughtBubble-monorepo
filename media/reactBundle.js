@@ -36179,6 +36179,86 @@ exports.fetchDataAction = fetchDataAction;
 
 /***/ }),
 
+/***/ "./webview/actions/filterActions.ts":
+/*!******************************************!*\
+  !*** ./webview/actions/filterActions.ts ***!
+  \******************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.filtertThoughtsAction = void 0;
+var axios_1 = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+var filtertThoughtsAction = function (projectId, filterType) {
+    return function (dispatch, getState) { return __awaiter(void 0, void 0, void 0, function () {
+        var userSub, response, err_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    userSub = "github|" + getState().storedUser.id;
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, axios_1.default.get('http://localhost:3001/api/projects/fetch', {
+                            params: {
+                                userSub: userSub,
+                            },
+                        })];
+                case 2:
+                    response = _a.sent();
+                    dispatch({ type: "filterData/" + filterType, payload: { data: response.data, projectId: projectId } });
+                    return [3 /*break*/, 4];
+                case 3:
+                    err_1 = _a.sent();
+                    console.error('fetchDataAction.ts: ', err_1);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    }); };
+};
+exports.filtertThoughtsAction = filtertThoughtsAction;
+
+
+/***/ }),
+
 /***/ "./webview/actions/projectActions.ts":
 /*!*******************************************!*\
   !*** ./webview/actions/projectActions.ts ***!
@@ -36688,22 +36768,44 @@ var react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var react_redux_1 = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 var thoughtActions_1 = __webpack_require__(/*! ../actions/thoughtActions */ "./webview/actions/thoughtActions.ts");
 var ThoughtCard_1 = __webpack_require__(/*! ./ThoughtCard */ "./webview/components/ThoughtCard.tsx");
+var reactjs_popup_1 = __webpack_require__(/*! reactjs-popup */ "./node_modules/reactjs-popup/dist/reactjs-popup.esm.js");
+var fetchDataAction_1 = __webpack_require__(/*! ../actions/fetchDataAction */ "./webview/actions/fetchDataAction.ts");
+var filterActions_1 = __webpack_require__(/*! ../actions/filterActions */ "./webview/actions/filterActions.ts");
 var ProjectCard = function (_a) {
     var project = _a.project;
     var _b = react_1.useState(''), input = _b[0], setInput = _b[1];
     var dispatch = react_redux_1.useDispatch();
     var projectName = project.projectName, projectId = project._id;
+    var userSub = "github|" + react_redux_1.useSelector(function (state) { return state.storedUser.id; });
     var handleNewThought = function (e) {
         e.preventDefault();
         if (input)
             dispatch(thoughtActions_1.addThoughtAction(projectId, input.trim()));
         setInput('');
     };
-    return (React.createElement("div", null,
+    var handleThoughtFilter = function (filterType) {
+        console.log('hgduial');
+        switch (filterType) {
+            case 'completed':
+                dispatch(filterActions_1.filtertThoughtsAction(projectId, 'completed'));
+                return;
+            case 'incomplete':
+                dispatch(filterActions_1.filtertThoughtsAction(projectId, 'incomplete'));
+                return;
+            case 'all':
+                dispatch(fetchDataAction_1.fetchDataAction(userSub));
+                return;
+        }
+    };
+    return (React.createElement("div", { id: "projectCaard-container" },
         React.createElement("h1", { style: styles.h1 }, projectName),
         React.createElement("form", { onSubmit: function (e) { return handleNewThought(e); } },
             React.createElement("input", { type: "text", value: input, placeholder: "add a new thought to \"" + projectName + "\"...", onChange: function (e) { return setInput(e.target.value); } }),
             React.createElement("button", { type: "submit" }, "add new thought")),
+        React.createElement(reactjs_popup_1.Popup, { trigger: React.createElement("div", { className: "submenu-trigger" }, "filter"), position: "right top", on: "hover", mouseLeaveDelay: 100, mouseEnterDelay: 100, arrow: false, nested: true },
+            React.createElement("div", { className: "menu-item", onClick: function () { return handleThoughtFilter('completed'); } }, "completed"),
+            React.createElement("div", { className: "menu-item", onClick: function () { return handleThoughtFilter('incomplete'); } }, "incomplete"),
+            React.createElement("div", { className: "menu-item", onClick: function () { return handleThoughtFilter('all'); } }, "view all")),
         project.todos.map(function (thought) { return (React.createElement(ThoughtCard_1.ThoughtCard, { thought: thought, key: thought._id, projectId: projectId, thoughtId: thought._id })); })));
 };
 exports.ProjectCard = ProjectCard;
@@ -36820,17 +36922,22 @@ var ThoughtCard = function (_a) {
             dispatch(thoughtActions_1.editThoughtAction(input, projectId, thoughtId));
         setInput('');
     };
+    var handleThoughtTag = function () {
+        // dispath action\
+        // coming soon
+    };
     return (React.createElement("div", null,
         React.createElement("div", null, thought.text),
         React.createElement("div", null, thought.completed ? 'completed' : 'in progress'),
-        React.createElement("div", { className: "menu" },
-            React.createElement(reactjs_popup_1.Popup, { trigger: React.createElement("div", { className: "menu-item" }, "more menu"), position: "right top", on: "hover", closeOnDocumentClick: true, mouseLeaveDelay: 300, mouseEnterDelay: 0, contentStyle: { padding: '0px', border: 'none' }, arrow: false },
-                React.createElement("div", { className: "menu" },
-                    React.createElement("button", { className: "menu-item", onClick: function () { return handleThoughtDeletion(); } }, "delete thought"),
-                    React.createElement("button", { className: "menu-item", onClick: function () { return handleThoughtToggle(); } }, "toggle thought"),
-                    React.createElement("form", { className: "menu-item", onSubmit: function () { return handleThoughtEdit(); } },
-                        React.createElement("input", { type: "text", value: input, placeholder: "edit thought", onChange: function (e) { return setInput(e.target.value); } }),
-                        React.createElement("button", { type: "submit" }, "submit edit")))))));
+        React.createElement(reactjs_popup_1.Popup, { trigger: React.createElement("div", { className: "submenu-trigger" }, "more"), position: "right top", on: "hover", mouseLeaveDelay: 100, mouseEnterDelay: 100, 
+            // contentStyle={{ padding: '0px', border: 'none' }}
+            arrow: false, nested: true },
+            React.createElement("div", { className: "menu-item", onClick: function () { return handleThoughtDeletion(); } }, "delete thought"),
+            React.createElement("div", { className: "menu-item", onClick: function () { return handleThoughtToggle(); } }, "toggle thought"),
+            React.createElement("div", { className: "menu-item", onClick: function () { return handleThoughtTag(); } }, "tag (coming soon)"),
+            React.createElement("form", { className: "menu-item", onSubmit: function () { return handleThoughtEdit(); } },
+                React.createElement("input", { type: "text", value: input, placeholder: "edit thought", onChange: function (e) { return setInput(e.target.value); } }),
+                React.createElement("button", { type: "submit" }, "submit")))));
 };
 exports.ThoughtCard = ThoughtCard;
 
@@ -36983,28 +37090,24 @@ var UserDataReducer = function (state, action) {
                         }) });
                 }
             });
-        // case 'filterData/completed':
-        //   return payload.data.projects.map((project) => {
-        //     if (project._id === payload.projectId) {
-        //       return {
-        //         ...project,
-        //         todos: project.todos.filter((todo) => todo.completed),
-        //       };
-        //     } else {
-        //       return project;
-        //     }
-        //   });
-        // case 'filterData/incomplete':
-        //   return payload.data.projects.map((project) => {
-        //     if (project._id === payload.projectId) {
-        //       return {
-        //         ...project,
-        //         todos: project.todos.filter((todo) => !todo.completed),
-        //       };
-        //     } else {
-        //       return project;
-        //     }
-        //   });
+        case 'filterData/completed':
+            return payload.data.projects.map(function (project) {
+                if (project._id === payload.projectId) {
+                    return __assign(__assign({}, project), { todos: project.todos.filter(function (thought) { return thought.completed; }) });
+                }
+                else {
+                    return project;
+                }
+            });
+        case 'filterData/incomplete':
+            return payload.data.projects.map(function (project) {
+                if (project._id === payload.projectId) {
+                    return __assign(__assign({}, project), { todos: project.todos.filter(function (thought) { return !thought.completed; }) });
+                }
+                else {
+                    return project;
+                }
+            });
         default:
             return state;
     }
