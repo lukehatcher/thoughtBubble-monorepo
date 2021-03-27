@@ -1,5 +1,6 @@
-import { UserInfo, UserDoc } from './model'; // model and type
 import { v4 as uuidv4 } from 'uuid';
+import { UserInfo } from './index'; // model
+import { UserDocInterface } from './model'; // type
 
 export const initUserdata = async (userSub: string, projects: any[]): Promise<any> => {
   const newData = {
@@ -17,7 +18,7 @@ export const checkIfUserExists = async (userSub: string): Promise<boolean> => {
   return !!exists;
 };
 
-export const getUserData = async (userSub): Promise<UserDoc> => {
+export const getUserData = async (userSub): Promise<UserDocInterface> => {
   // missing param type, see server error
   const result = await UserInfo.findOne({ userSub });
   return result;
