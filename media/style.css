@@ -11,21 +11,92 @@ html {
   align-items: center;
   justify-content: center;
 }
+.submenu-trigger:hover {
+  cursor: pointer;
+}
+
+.top-corners {
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+}
+
+.bottom-corners {
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
 .menu-item {
-	background: #212121;
+  display: flex;
+  align-items: center;
+	background: #1b1f24;
   cursor: pointer;
   padding: 5px;
   height: 28px;
-  border-bottom: 1px solid rgb(187, 187, 187);
 }
+
 .menu-item:hover {
   color: #6200EE;
+}
+
+.menu-item-override {
+  height: auto;
+  border-radius: 5px;
+}
+
+input:focus {
+  outline: none;
+}
+
+.edit-thought-input {
+  background-color: #1b1f24;
+  color: #AAB2C0;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #AAB2C0;
+  margin-left: 10px;
+  margin-right: 5px;
+}
+
+textarea:focus {
+  outline: none;
+  border: .25px solid #AAB2C0;
+  border-radius: 1px;
+}
+
+.new-thought-input {
+  background-color: #1b1f24;
+  color: #AAB2C0;
+  /* margin-left: 10px; */
+  /* margin-right: 5px; */
+  height: 80px;
+  width: 400px;
+  margin: 5px;
+  padding: 10px;
+}
+
+.edit-thought-submit {
+  background-color: #1b1f24;
+  outline: none;
+  color: #AAB2C0;
+  border: none;
+  /* border: 1px solid #AAB2C0; */
+  /* border-radius: 5px; */
+}
+
+.edit-thought-submit:hover {
+  cursor: pointer;
 }
 
 /* container for all projects (scrollview) */
 
 #projectList-container {
 	border: 1px solid red;
+  margin-bottom: 100px;
+}
+
+.proj-title-container {
+  display: flex;
+  flex-direction: row;
 }
 
 /* project card + their thought cards */
@@ -35,14 +106,15 @@ html {
 }
 
 .thoughtCard-container {
+  background: #1F232B;
   border-radius: 10px;
   padding: 10px;
   margin: 10px;
-  box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.35);
+  /* box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.35); */
 }
 
 .thoughtCard-container:hover {
-  background-color: grey;
+  /* background-color: grey; */
 }
 
 .completed-text {
