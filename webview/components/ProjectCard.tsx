@@ -58,13 +58,13 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
         arrow={false}
         nested
       >
-        <div className="menu-item" onClick={() => handleThoughtFilter('completed')}>
+        <div className="menu-item top-corners" onClick={() => handleThoughtFilter('completed')}>
           completed
         </div>
         <div className="menu-item" onClick={() => handleThoughtFilter('incomplete')}>
           incomplete
         </div>
-        <div className="menu-item" onClick={() => handleThoughtFilter('all')}>
+        <div className="menu-item bottom-corners" onClick={() => handleThoughtFilter('all')}>
           view all
         </div>
       </Popup>

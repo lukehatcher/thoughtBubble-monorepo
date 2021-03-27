@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Popup } from 'reactjs-popup';
 import { deleteThoughtAction, editThoughtAction, thoughtStatusChangeAction } from '../actions/thoughtActions';
 import { ThoughtCardProps } from '../interfaces/interfaces';
-import { VscEllipsis } from 'react-icons/vsc';
+import { VscEllipsis, VscTrash, VscTag, VscCloudUpload, VscEdit } from 'react-icons/vsc';
+import { BsCheckBox } from 'react-icons/bs';
 
 export const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, projectId, thoughtId }) => {
   const [input, setInput] = useState('');
@@ -31,6 +32,7 @@ export const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, projectId, th
     <div className="thoughtCard-container">
       <p className={thought.completed ? 'completed-text' : 'incomplete-text'}>{thought.text}</p>
       <Popup
+        // contentStyle={{ border: '2px solid #AAB2C0', borderRadius: '10px' }}
         trigger={
           <div className="submenu-trigger">
             <VscEllipsis size="2em" />
@@ -43,18 +45,30 @@ export const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, projectId, th
         arrow={false}
         nested
       >
-        <div className="menu-item" onClick={() => handleThoughtDeletion()}>
-          delete thought
-        </div>
-        <div className="menu-item" onClick={() => handleThoughtToggle()}>
-          toggle thought
+        <div className="menu-item top-corners" onClick={() => handleThoughtToggle()}>
+          <BsCheckBox size="1em" color="#AAB2C0" />
+          &nbsp;&nbsp; toggle status
         </div>
         <div className="menu-item" onClick={() => handleThoughtTag()}>
-          tag (coming soon)
+          <VscTag size="1em" color="#AAB2C0" />
+          &nbsp;&nbsp; tag (coming soon)
         </div>
-        <form className="menu-item" onSubmit={() => handleThoughtEdit()}>
-          <input type="text" value={input} placeholder="edit thought" onChange={(e) => setInput(e.target.value)} />
-          <button type="submit">submit</button>
+        <div className="menu-item" onClick={() => handleThoughtDeletion()}>
+          <VscTrash size="1em" color="#AAB2C0" />
+          &nbsp;&nbsp; delete thought
+        </div>
+        <form className="menu-item bottom-corners" onSubmit={() => handleThoughtEdit()}>
+          <VscEdit size="1em" color="#AAB2C0" />
+          <input
+            className="edit-input"
+            type="text"
+            value={input}
+            placeholder="edit thought..."
+            onChange={(e) => setInput(e.target.value)}
+          />
+          <button className="edit-input-submit" type="submit">
+            <VscCloudUpload size="1.5em" />
+          </button>
         </form>
       </Popup>
     </div>
