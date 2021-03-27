@@ -1,16 +1,13 @@
 import axios from 'axios';
-
+// new api
 export const addThoughtAction = (projectId: string, thought: string) => {
-  // todo -> thought DONE (except for api endpoints)
   return async (dispatch, getState) => {
     const userSub = `github|${getState().storedUser.id}`;
     axios
-      .post('http://localhost:3001/api/projects/post', {
-        type: 'todo',
+      .post('http://localhost:3001/api/thoughts', {
         userSub,
-        projectName: null,
         projectId,
-        todo: thought,
+        thought,
       })
       .then((res) => {
         const newThoughtId = res.data;
@@ -19,17 +16,16 @@ export const addThoughtAction = (projectId: string, thought: string) => {
       .catch((err) => console.error('@thoughtActions.ts: ', err));
   };
 };
-
+// new api
 export const deleteThoughtAction = (projectId: string, thoughtId: string) => {
   return async (dispatch, getState) => {
     const userSub = `github|${getState().storedUser.id}`;
     axios
-      .delete('http://localhost:3001/api/projects/delete', {
+      .delete('http://localhost:3001/api/thoughts', {
         params: {
-          type: 'todo',
           userSub,
           projectId,
-          todoId: thoughtId,
+          thoughtId,
         },
       })
       .then((res) => {
@@ -38,16 +34,15 @@ export const deleteThoughtAction = (projectId: string, thoughtId: string) => {
       .catch((err) => console.error('@thoughtActions.ts: ', err));
   };
 };
-
+// new api
 export const thoughtStatusChangeAction = (projectId: string, thoughtId: string) => {
   return async (dispatch, getState) => {
     const userSub = `github|${getState().storedUser.id}`;
     axios
-      .put('http://localhost:3001/api/projects/put', {
-        type: 'todo/toggle',
+      .put('http://localhost:3001/api/thoughts/status', {
         userSub,
         projectId,
-        todoId: thoughtId,
+        thoughtId,
       })
       .then((res) => {
         dispatch({ type: 'thoughtStatusChange', payload: { projectId, _id: thoughtId } });
@@ -55,17 +50,16 @@ export const thoughtStatusChangeAction = (projectId: string, thoughtId: string) 
       .catch((err) => console.error('@thoughtActions.ts: ', err));
   };
 };
-
+// new api
 export const editThoughtAction = (newThought: string, projectId: string, thoughtId: string) => {
   return async (dispatch, getState) => {
     const userSub = `github|${getState().storedUser.id}`;
     try {
       axios
-        .put('http://localhost:3001/api/projects/put', {
-          type: 'todo/edit',
+        .put('http://localhost:3001/api/thoughts', {
           userSub,
           projectId,
-          todoId: thoughtId,
+          thoughtId,
           newThought,
         })
         .then((res) => {

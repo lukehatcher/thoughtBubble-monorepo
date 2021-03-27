@@ -1,10 +1,9 @@
-
 import axios from 'axios';
-
+// new api
 export const fetchDataAction = (userSub: string) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get('http://localhost:3001/api/projects/fetch', {
+      const response = await axios.get('http://localhost:3001/api/projects', {
         params: {
           userSub,
         },

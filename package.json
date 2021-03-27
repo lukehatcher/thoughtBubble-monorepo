@@ -48,15 +48,15 @@
     "bundle-view": "webpack --config webpack.view.config.js --mode development"
   },
   "dependencies": {
+    "@octokit/rest": "^18.3.5",
+    "axios": "^0.21.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "redux": "^4.0.5",
+    "react-icons": "^4.2.0",
     "react-redux": "^7.2.2",
-    "redux-thunk": "^2.3.0",
-    "axios": "^0.21.1",
     "reactjs-popup": "^2.0.4",
-    "@octokit/rest": "^18.3.5",
-    "react-icons": "^4.2.0"
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "typescript": "^4.0.2",
