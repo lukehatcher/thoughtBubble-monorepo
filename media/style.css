@@ -11,6 +11,9 @@ html {
   align-items: center;
   justify-content: center;
 }
+.submenu-trigger:hover {
+  cursor: pointer;
+}
 
 .top-corners {
   border-top-right-radius: 5px;
@@ -23,10 +26,8 @@ html {
 }
 
 .menu-item {
-  /* #1F232B thought card background */
   display: flex;
   align-items: center;
-  /* justify-content: center; */
 	background: #1b1f24;
   cursor: pointer;
   padding: 5px;
@@ -37,11 +38,16 @@ html {
   color: #6200EE;
 }
 
+.menu-item-override {
+  height: auto;
+  border-radius: 5px;
+}
+
 input:focus {
   outline: none;
 }
 
-.edit-input {
+.edit-thought-input {
   background-color: #1b1f24;
   color: #AAB2C0;
   border: none;
@@ -51,7 +57,24 @@ input:focus {
   margin-right: 5px;
 }
 
-.edit-input-submit {
+textarea:focus {
+  outline: none;
+  border: .25px solid #AAB2C0;
+  border-radius: 1px;
+}
+
+.new-thought-input {
+  background-color: #1b1f24;
+  color: #AAB2C0;
+  /* margin-left: 10px; */
+  /* margin-right: 5px; */
+  height: 80px;
+  width: 400px;
+  margin: 5px;
+  padding: 10px;
+}
+
+.edit-thought-submit {
   background-color: #1b1f24;
   outline: none;
   color: #AAB2C0;
@@ -60,7 +83,7 @@ input:focus {
   /* border-radius: 5px; */
 }
 
-.edit-input-submit:hover {
+.edit-thought-submit:hover {
   cursor: pointer;
 }
 
@@ -68,6 +91,12 @@ input:focus {
 
 #projectList-container {
 	border: 1px solid red;
+  margin-bottom: 100px;
+}
+
+.proj-title-container {
+  display: flex;
+  flex-direction: row;
 }
 
 /* project card + their thought cards */

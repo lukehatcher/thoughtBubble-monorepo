@@ -60,13 +60,13 @@ export const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, projectId, th
         <form className="menu-item bottom-corners" onSubmit={() => handleThoughtEdit()}>
           <VscEdit size="1em" color="#AAB2C0" />
           <input
-            className="edit-input"
+            className="edit-thought-input"
             type="text"
             value={input}
             placeholder="edit thought..."
             onChange={(e) => setInput(e.target.value)}
           />
-          <button className="edit-input-submit" type="submit">
+          <button className="edit-thought-submit" type="submit">
             <VscCloudUpload size="1.5em" />
           </button>
         </form>
