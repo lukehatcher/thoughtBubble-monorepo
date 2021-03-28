@@ -1,18 +1,18 @@
 import * as express from 'express';
-import * as controllers from '../controllers/thoughtControllers';
+import ThoughtsController from '../controllers/thoughtControllers';
 
 const router = express.Router();
 
 // api/thought
 router
   .route('/')
-  .post(controllers.createThought)
-  .put(controllers.editThought)
-  .delete(controllers.deleteThought);
+  .post(ThoughtsController.createThought)
+  .put(ThoughtsController.editThought)
+  .delete(ThoughtsController.deleteThought);
 
 // api/thought/status
 router
   .route('/status') //
-  .put(controllers.toggleThoughtStatus);
+  .put(ThoughtsController.toggleThoughtStatus);
 
 export default router;
