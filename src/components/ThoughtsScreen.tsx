@@ -13,14 +13,18 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view';
+import { SwipeListView } from 'react-native-swipe-list-view';
 import { RouteProp } from '@react-navigation/native'; // type
 import { StackNavigationProp } from '@react-navigation/stack'; // type
 import { StackParamList } from './ProjectsNavStack'; // type
 import { RootState } from '../reducers/rootReducer'; // type
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { addTodoAction, deleteTodoAction, todoStatusChangeAction } from '../actions/todoActions';
+import {
+  addThoughtAction,
+  deleteThoughtAction,
+  thoughtStatusChangeAction,
+} from '../actions/thoughtActions';
 import { filtertThoughtsAction } from '../actions/filterActions';
 import { fetchDataAction } from '../actions/fetchDataAction';
 import { MoreModal } from './MoreModal';
@@ -56,21 +60,21 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
     });
   }, [navigation]);
 
-  const handleTodoAddition = (todo: string) => {
+  const handleThoughtAddition = (thought: string) => {
     setInput('');
-    if (!todo) {
+    if (!thought) {
       Alert.alert('invalid input');
       return;
     }
-    dispatch(addTodoAction(projectId, todo));
+    dispatch(addThoughtAction(projectId, thought));
   };
 
-  const handleTodoDelete = (todoId: string) => {
-    dispatch(deleteTodoAction(projectId, todoId));
+  const handleThoughtDelete = (thoughtId: string) => {
+    dispatch(deleteThoughtAction(projectId, thoughtId));
   };
 
-  const handleTodoStatusChange = (todoId: string) => {
-    dispatch(todoStatusChangeAction(projectId, todoId));
+  const handleThoughtStatusChange = (thoughtId: string) => {
+    dispatch(thoughtStatusChangeAction(projectId, thoughtId));
   };
 
   const handleThoughtFilter = (typeOfFilter: string) => {
@@ -102,14 +106,14 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
 
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnMid]}
-        onPress={() => handleTodoStatusChange(data.item._id)}
+        onPress={() => handleThoughtStatusChange(data.item._id)}
       >
         <Ionicon name="checkbox-outline" size={25} color="white" />
       </TouchableOpacity>
 
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnRight]}
-        onPress={() => handleTodoDelete(data.item._id)}
+        onPress={() => handleThoughtDelete(data.item._id)}
       >
         <Ionicon name="trash-outline" size={25} color="white" />
       </TouchableOpacity>
@@ -181,7 +185,7 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
               color="black"
               onPress={() => {
                 setModalView(false);
-                handleTodoAddition(input.trim());
+                handleThoughtAddition(input.trim());
               }}
             />
           </TouchableOpacity>
@@ -362,7 +366,4 @@ const styles = StyleSheet.create({
   sortText: {
     color: 'white',
   },
-  // sortBtns: {
-  //   backgroundColor
-  // }
 });
