@@ -1,10 +1,10 @@
 import axios from 'axios';
-
+// new api
 export const filtertThoughtsAction = (projectId: string, filterType: string) => {
   return async (dispatch, getState) => {
     const userSub = `github|${getState().storedUser.id}`;
     try {
-      const response = await axios.get('http://localhost:3001/api/projects/fetch', {
+      const response = await axios.get('http://localhost:3001/api/projects', {
         params: {
           userSub,
         },

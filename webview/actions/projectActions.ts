@@ -1,15 +1,12 @@
 import axios from 'axios';
-
+// new api
 export const addProjectAction = (projectName: string) => {
   return async (dispatch, getState) => {
     const userSub = `github|${getState().storedUser.id}`;
     axios
-      .post('http://localhost:3001/api/projects/post', {
-        type: 'project',
+      .post('http://localhost:3001/api/projects', {
         userSub,
         projectName,
-        projectId: null,
-        todo: null,
       })
       .then((res) => {
         const newId = res.data;
@@ -18,17 +15,15 @@ export const addProjectAction = (projectName: string) => {
       .catch((err) => console.error('@projectActions.ts: ', err));
   };
 };
-
+// new api
 export const deleteProjectAction = (projectId: string) => {
   return async (dispatch, getState) => {
     const userSub = `github|${getState().storedUser.id}`;
     axios
-      .delete('http://localhost:3001/api/projects/delete', {
+      .delete('http://localhost:3001/api/projects', {
         params: {
-          type: 'project',
           userSub,
           projectId,
-          todo: null,
         },
       })
       .then((res) => {
