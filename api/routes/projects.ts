@@ -1,19 +1,19 @@
 import * as express from 'express';
-import * as controllers from '../controllers/projectControllers';
+import ProjectsController from '../controllers/projectControllers';
 
 const router = express.Router();
 
 // api/projects
 router
   .route('/')
-  .get(controllers.fetchProjects)
-  .post(controllers.createProject)
-  .delete(controllers.deleteProject);
+  .get(ProjectsController.fetchProjects)
+  .post(ProjectsController.createProject)
+  .delete(ProjectsController.deleteProject);
 
 // api/projects/init
 // not tested
 router
   .route('/init') //
-  .post(controllers.initProjects);
+  .post(ProjectsController.initProjects);
 
 export default router;
