@@ -2,13 +2,7 @@ import React, { useState } from 'react';
 import { Modal, Button, View, Text, TextInput, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { editThoughtAction } from '../actions/thoughtActions';
-
-interface MoreModalProps {
-  moreModalView: boolean;
-  setMoreModalView: React.Dispatch<React.SetStateAction<boolean>>;
-  projectId: string;
-  thoughtId: string;
-}
+import { MoreModalProps } from '../interfaces/componentProps';
 
 export const MoreModal: React.FC<MoreModalProps> = ({
   moreModalView,

@@ -5,19 +5,10 @@ import { HomeScreen } from './HomeScreen';
 import { ProjectsNavStack } from './ProjectsNavStack';
 import { StatsScreen } from './StatsScreen';
 import Ionicon from 'react-native-vector-icons/Ionicons';
-
-// similar to app.jsx for old app
-
-type TabsParamList = {
-  // all good here
-  Home: undefined;
-  Projects: undefined;
-  Stats: undefined;
-}; // https://reactnavigation.org/docs/typescript/
+import { TabsParamList } from '../interfaces/navigation';
+import { AppNavTabsProps } from '../interfaces/componentProps';
 
 const Tab = createBottomTabNavigator<TabsParamList>();
-
-interface AppNavTabsProps {}
 
 export const AppNavTabs: React.FC<AppNavTabsProps> = () => {
   return (
@@ -38,9 +29,7 @@ export const AppNavTabs: React.FC<AppNavTabsProps> = () => {
           component={HomeScreen}
           options={{
             title: 'Home',
-            tabBarIcon: (
-              { color, size }, // destruc. default options
-            ) => <Ionicon name="home" size={30} color={color} />,
+            tabBarIcon: ({ color }) => <Ionicon name="home" size={30} color={color} />,
           }}
         />
         <Tab.Screen
@@ -48,9 +37,7 @@ export const AppNavTabs: React.FC<AppNavTabsProps> = () => {
           component={ProjectsNavStack} // projects stack
           options={{
             title: 'Projects',
-            tabBarIcon: (
-              { color, size }, // destruc. default options
-            ) => <Ionicon name="list" size={30} color={color} />,
+            tabBarIcon: ({ color }) => <Ionicon name="list" size={30} color={color} />,
           }}
         />
         <Tab.Screen
@@ -58,9 +45,7 @@ export const AppNavTabs: React.FC<AppNavTabsProps> = () => {
           component={StatsScreen}
           options={{
             title: 'Stats',
-            tabBarIcon: (
-              { color, size }, // destruc. default options
-            ) => <Ionicon name="analytics" size={30} color={color} />,
+            tabBarIcon: ({ color }) => <Ionicon name="analytics" size={30} color={color} />,
           }}
         />
       </Tab.Navigator>

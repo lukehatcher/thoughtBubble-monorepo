@@ -1,8 +1,6 @@
-// id
 import React, { useState } from 'react';
 import {
   View,
-  ScrollView,
   Text,
   Button,
   StyleSheet,
@@ -13,18 +11,12 @@ import {
   LogBox,
   Alert,
 } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { useSelector, useDispatch } from 'react-redux';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import { RootState } from '../reducers/rootReducer'; // type
-import { StackParamList } from './ProjectsNavStack';
+import { ProjectsScreenProps } from '../interfaces/componentProps'; // type
 import { addProjectAction, deleteProjectAction } from '../actions/projectActions';
-
-interface ProjectsScreenProps {
-  // https://reactnavigation.org/docs/typescript/ & ben a
-  navigation: StackNavigationProp<StackParamList, 'Projects'>;
-}
 
 export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) => {
   const [modalView, setModalView] = useState(false);
@@ -35,7 +27,6 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
   let userProjectsData = useSelector(selector);
 
   const handleProjectAddition = function (projectName: string) {
-    // id
     setInput('');
     if (!projectName) {
       Alert.alert('invalid input');
@@ -45,7 +36,6 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
   };
 
   const handleProjectDeletion = function (projectId: string) {
-    // id
     dispatch(deleteProjectAction(projectId));
   };
 

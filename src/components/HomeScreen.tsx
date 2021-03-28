@@ -1,19 +1,9 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  ActivityIndicator,
-  Image,
-  StyleSheet,
-  Button,
-  TouchableOpacity,
-  StatusBar,
-} from 'react-native';
+import { View, Text, Image, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../reducers/rootReducer';
 import { _onLogOut } from '../utils/auth';
-
-interface HomeScreenProps {}
+import { HomeScreenProps } from '../interfaces/componentProps';
 
 export const HomeScreen: React.FC<HomeScreenProps> = () => {
   const selector = (state: RootState) => state.storedUser;
@@ -73,8 +63,6 @@ const styles = StyleSheet.create({
     color: 'rgb(199, 199, 204)',
   },
   btn1: {
-    // alignContent: 'center',
-    // justifyContent: 'center',
     position: 'absolute',
     bottom: 15,
     backgroundColor: '#CF6679',
@@ -85,6 +73,3 @@ const styles = StyleSheet.create({
     width: 250,
   },
 });
-
-// rgb(44, 44, 46)
-// rgb(28, 28, 30)

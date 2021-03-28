@@ -9,8 +9,7 @@ const appReducer = combineReducers({
 
 export const rootReducer = (state, action) => {
   if (action.type === 'USER_LOGOUT') {
-    // https://stackoverflow.com/questions/35622588/how-to-reset-the-state-of-a-redux-store
-    // reducers are supposed to return the initial state when they are called with undefined
+    // reducers return initial state when called with undefined, thus this will clear store
     state = undefined;
   }
   return appReducer(state, action);

@@ -2,8 +2,6 @@
  * Sample React Native App
  * https://github.com/facebook/react-native
  *
- * @format
- * @flow strict-local
  */
 
 import React from 'react';
@@ -40,16 +38,13 @@ const App: React.FC<AppProps> = () => {
   );
 };
 
-// ================== pre app render ========================
-// should move this code to a seperate file later
-
 checkForIdToken().then(async (res) => {
-  // this function updates the store to match my asyncstorage before rendering app
-  // this is ONLY EXECUTED when the app is first clicked on and loaded
+  // this function updates the redux store to match any contents in the asyncstorage before rendering app
+  // only executed when app is first loaded/launched
   const status = res !== null;
-  await store.dispatch(storeUserAction(res)); // store users jwt if theres one in asyncstorage
+  await store.dispatch(storeUserAction(res)); // store idToken in redux store if theres an idToken in asyncstorage
   if (status) {
-    await store.dispatch(fetchDataAction(res.sub)); // store all data
+    await store.dispatch(fetchDataAction(res.sub)); // populate the redux store with the user's data
   }
 });
 

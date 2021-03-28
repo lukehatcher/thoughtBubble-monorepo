@@ -2,18 +2,10 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { ProjectsScreen } from './ProjectsScreen';
 import { ThoughtsScreen } from './ThoughtsScreen';
-
-export type StackParamList = {
-  // all good here
-  Projects: undefined;
-  Thoughts: {
-    projectId: string; // id
-  };
-};
+import { StackParamList } from '../interfaces/navigation';
+import { ProjectsNavStackProps } from '../interfaces/componentProps';
 
 const ProjectStack = createStackNavigator<StackParamList>();
-
-interface ProjectsNavStackProps {}
 
 export const ProjectsNavStack: React.FC<ProjectsNavStackProps> = () => {
   return (

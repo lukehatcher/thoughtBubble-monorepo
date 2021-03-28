@@ -14,9 +14,6 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import { SwipeListView } from 'react-native-swipe-list-view';
-import { RouteProp } from '@react-navigation/native'; // type
-import { StackNavigationProp } from '@react-navigation/stack'; // type
-import { StackParamList } from './ProjectsNavStack'; // type
 import { RootState } from '../reducers/rootReducer'; // type
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -28,11 +25,7 @@ import {
 import { filtertThoughtsAction } from '../actions/filterActions';
 import { fetchDataAction } from '../actions/fetchDataAction';
 import { MoreModal } from './MoreModal';
-
-interface TodosScreenProps {
-  route: RouteProp<StackParamList, 'Thoughts'>;
-  navigation: StackNavigationProp<StackParamList, 'Projects'>;
-}
+import { TodosScreenProps } from '../interfaces/componentProps'; // type
 
 export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }) => {
   const [modalView, setModalView] = useState(false);
@@ -44,7 +37,7 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
   const { projectId } = route.params;
   const thoughtsSelector = (state: RootState) =>
     state.userData.find((proj) => proj._id === projectId).todos;
-  let todos = useSelector(thoughtsSelector); // retrive todos for the project we're on
+  let todos = useSelector(thoughtsSelector); // retrive thoughts for the project we're on
 
   const userSelector = (state: RootState) => state.storedUser.sub;
   const userSub = useSelector(userSelector);
