@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as morgan from 'morgan';
-import projectRoutes from '../routes/projects';
-import thoughtRoutes from '../routes/thoughts';
+import projectRoutes from './routes/projects';
+import thoughtRoutes from './routes/thoughts';
 
 const PORT = process.env.PORT;
 const app = express();
