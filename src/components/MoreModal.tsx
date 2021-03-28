@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button, View, Text, TextInput, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { editThoughtAction } from '../actions/todoActions';
+import { editThoughtAction } from '../actions/thoughtActions';
 
 interface MoreModalProps {
   moreModalView: boolean;
@@ -32,7 +32,6 @@ export const MoreModal: React.FC<MoreModalProps> = ({
     <Modal visible={moreModalView} animationType="fade" transparent>
       <View style={styles.modal}>
         <View style={styles.innerView}>
-          {/* <Text style={styles.text}>Edit thought: {thoughtId}</Text> */}
           <TextInput
             onChangeText={(text) => {
               setInput(text.trim());
@@ -43,7 +42,11 @@ export const MoreModal: React.FC<MoreModalProps> = ({
             placeholderTextColor="white"
             style={styles.textInput}
           />
-          <Button onPress={() => handleThoughtEdit(input, thoughtId)} title="submit" color="white"/>
+          <Button
+            onPress={() => handleThoughtEdit(input, thoughtId)}
+            title="submit"
+            color="white"
+          />
           <Button onPress={() => setMoreModalView(false)} title="cancel" color="white" />
           <Text>add a color tag (coming soon)</Text>
         </View>
@@ -57,7 +60,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: '#121212',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   textInput: {
@@ -72,7 +74,6 @@ const styles = StyleSheet.create({
   innerView: {
     backgroundColor: '#303030',
     padding: 40,
-    // height: 200,
     borderRadius: 15,
   },
 });

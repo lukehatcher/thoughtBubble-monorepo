@@ -1,20 +1,19 @@
-const initialState = []; // array of objs, where each obj has todos arry of objs
-// https://stackoverflow.com/questions/6854431/how-do-i-get-the-objectid-after-i-save-an-object-in-mongoose/47002504
+const initialState = [];
 
 interface userData {
   _id: string;
   projectName: string;
   todos: any[];
-  key?: string; // https://github.com/jemise111/react-native-swipe-list-view#usage
+  key?: string; // used later for -> https://github.com/jemise111/react-native-swipe-list-view#usage
 }
 
 export const UserDataReducer = (state = initialState, action): userData[] => {
-  const { type, payload } = action; // need to add destructuring in other files
+  const { type, payload } = action;
   switch (type) {
     case 'fetchData':
       console.log(payload, 'payload');
       return payload.projects;
-    case 'addProject': // id
+    case 'addProject':
       return [
         ...state,
         {
@@ -26,8 +25,7 @@ export const UserDataReducer = (state = initialState, action): userData[] => {
     case 'deleteProject':
       console.log('filter about to run');
       return state.filter((projects) => projects._id !== payload);
-    case 'addTodo':
-      // looks complicated cause we need to copy each level
+    case 'addThought':
       return state.map((item) => {
         if (item._id !== payload.projectId) {
           return item;
@@ -36,50 +34,50 @@ export const UserDataReducer = (state = initialState, action): userData[] => {
             ...item,
             todos: [
               ...item.todos,
-              { _id: payload._id, text: payload.todo, completed: false }, //
+              { _id: payload._id, text: payload.thought, completed: false }, //
             ],
           };
         }
       });
-    case 'deleteTodo':
+    case 'deleteThought':
       return state.map((item) => {
         if (item._id !== payload.projectId) {
           return item;
         } else {
           return {
             ...item,
-            todos: item.todos.filter((todo) => todo._id !== payload._id),
+            todos: item.todos.filter((thought) => thought._id !== payload._id),
           };
         }
       });
-    case 'todoStatusChange':
+    case 'thoughtStatusChange':
       return state.map((item) => {
         if (item._id !== payload.projectId) {
           return item;
         } else {
           return {
             ...item,
-            todos: item.todos.map((todo) => {
-              if (todo._id === payload._id) {
-                todo.completed = !todo.completed;
+            todos: item.todos.map((thought) => {
+              if (thought._id === payload._id) {
+                thought.completed = !thought.completed;
               }
-              return todo;
+              return thought;
             }),
           };
         }
       });
-    case 'editTodo':
+    case 'editThought':
       return state.map((item) => {
         if (item._id !== payload.projectId) {
           return item;
         } else {
           return {
             ...item,
-            todos: item.todos.map((todo) => {
-              if (todo._id === payload._id) {
-                todo.text = payload.newThought;
+            todos: item.todos.map((thought) => {
+              if (thought._id === payload._id) {
+                thought.text = payload.newThought;
               }
-              return todo;
+              return thought;
             }),
           };
         }
@@ -89,7 +87,7 @@ export const UserDataReducer = (state = initialState, action): userData[] => {
         if (project._id === payload.projectId) {
           return {
             ...project,
-            todos: project.todos.filter((todo) => todo.completed),
+            todos: project.todos.filter((thought) => thought.completed),
           };
         } else {
           return project;
@@ -100,7 +98,7 @@ export const UserDataReducer = (state = initialState, action): userData[] => {
         if (project._id === payload.projectId) {
           return {
             ...project,
-            todos: project.todos.filter((todo) => !todo.completed),
+            todos: project.todos.filter((thought) => !thought.completed),
           };
         } else {
           return project;
