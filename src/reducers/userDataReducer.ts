@@ -26,7 +26,7 @@ export const UserDataReducer = (state = initialState, action): userData[] => {
     case 'deleteProject':
       console.log('filter about to run');
       return state.filter((projects) => projects._id !== payload);
-    case 'addTodo':
+    case 'addThought':
       // looks complicated cause we need to copy each level
       return state.map((item) => {
         if (item._id !== payload.projectId) {
