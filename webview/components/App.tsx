@@ -19,8 +19,9 @@ export const App: React.FC = () => {
   }
   return (
     <>
-      <LogoutButton />
-      <ProjectsHeader />
+      <header id="main-header">
+        <ProjectsHeader />
+      </header>
       <ProjectList />
     </>
   );

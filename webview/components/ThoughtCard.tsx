@@ -19,7 +19,8 @@ export const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, projectId, th
     dispatch(thoughtStatusChangeAction(projectId, thoughtId));
   };
 
-  const handleThoughtEdit = function (): void {
+  const handleThoughtEdit = function (e: React.FormEvent<HTMLFormElement>): void {
+    e.preventDefault();
     if (input) dispatch(editThoughtAction(input, projectId, thoughtId));
     setInput('');
   };
@@ -57,7 +58,7 @@ export const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, projectId, th
           <VscTrash size="1em" color="#AAB2C0" />
           &nbsp;&nbsp; delete thought
         </div>
-        <form className="menu-item bottom-corners" onSubmit={() => handleThoughtEdit()}>
+        <form className="menu-item bottom-corners" onSubmit={(e) => handleThoughtEdit(e)}>
           <VscEdit size="1em" color="#AAB2C0" />
           <input
             className="edit-thought-input"

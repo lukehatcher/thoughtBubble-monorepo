@@ -1,5 +1,4 @@
 html {
-	margin: 5px;
   box-sizing: border-box;
 }
 
@@ -90,7 +89,6 @@ textarea:focus {
 /* container for all projects (scrollview) */
 
 #projectList-container {
-	border: 1px solid red;
   margin-bottom: 100px;
 }
 
@@ -102,7 +100,7 @@ textarea:focus {
 /* project card + their thought cards */
 
 .projectCard-container {
-	border: 1px solid black;
+	/* border: 1px solid black; */
 }
 
 .thoughtCard-container {
@@ -119,15 +117,44 @@ textarea:focus {
 
 .completed-text {
   text-decoration: line-through;
-  opacity: 0.4;
+  color: #aab2c046
+  /* opacity: 0.4; */
 }
 
 .incompleted-text {
   
 }
 
-/* projects header/CRUD form */
+/* header + logout/in buttons */
 
-#projectsHeader-container {
-	border: 1px solid grey;
+#header-toolbar-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
+}
+
+#main-header {
+  position: sticky;
+  top: 0px;
+  background-color: #1b1f24;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+#logout-btn {
+  position: absolute;
+  right: 10px;
+  outline: none;
+  border: none;
+  background-color: #6200EE;
+  padding: 10px;
+  border-radius: 5px;
+}
+#logout-btn:hover {
+  cursor: pointer;
+}
+
+#title {
+  position: absolute;
 }

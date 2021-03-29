@@ -102,7 +102,7 @@ class MainPanel {
             return;
           case 'getUser': {
             const userData = StateManager.getToken() || '';
-            vscode.window.showInformationMessage(userData); // dont need
+            // vscode.window.showInformationMessage(userData);
             this._panel.webview.postMessage({ command: 'sendingData', userData }); // whole obj = event.data;
             // panel.webview.postMessage({ command: 'sendingData', responseData: userData }); // whole obj = event.data;
             return;
