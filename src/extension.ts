@@ -119,6 +119,11 @@ class MainPanel {
               this._panel.webview.postMessage({ command: 'sendingData', userData: StateManager.getToken() });
             });
             return;
+          case 'refreshExt':
+            // reload extension
+            vscode.commands
+              .executeCommand('thoughtBubble.kill')
+              .then(() => vscode.commands.executeCommand('thoughtBubble.start'));
         }
       },
       null,
