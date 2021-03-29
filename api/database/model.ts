@@ -14,8 +14,7 @@ export const userDocMongoSchema = new mongoose.Schema({ // userDocMongoSchema
   }],
 });
 
-// https://stackoverflow.com/questions/42275358/mongoose-property-x-does-not-exist-on-type-document
-export interface UserDocInterface extends mongoose.Document { // UserDocInterface // UserDoc
+export interface UserDocInterface extends mongoose.Document {
   _id: String,
   userSub: String,
   projects: [{

@@ -54,15 +54,16 @@ class ProjectsController {
       .then((exists) => {
         if (!exists) {
           db.initUserdata(userSub, [])
-            .then((newData) => {
-              res.status(201).send(newData);
-            })
+            .then((newData) => res.status(201).send(newData))
             .catch((err) => console.error(this.location, err));
         } else {
           res.sendStatus(200);
         }
       })
-      .catch((err) => console.error(this.location, err));
+      .catch((err) => {
+        console.error(this.location, err);
+        res.sendStatus(400);
+      });
   }
 }
 
