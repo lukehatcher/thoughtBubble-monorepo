@@ -2,13 +2,13 @@ import { Request, Response } from 'express';
 import * as db from '../database/queries';
 
 class ThoughtsController {
-  location: string;
+  private readonly location: string;
 
   constructor() {
     this.location = '@thoughtControllers.ts: ';
   }
 
-  async createThought(req: Request, res: Response): Promise<void> {
+  public async createThought(req: Request, res: Response): Promise<void> {
     const { userSub, projectId, thought } = req.body;
     db.addThought(userSub, projectId, thought)
       .then((newId) => {
@@ -20,7 +20,7 @@ class ThoughtsController {
       });
   }
 
-  async deleteThought(req: Request, res: Response): Promise<void> {
+  public async deleteThought(req: Request, res: Response): Promise<void> {
     const { userSub, projectId, thoughtId } = req.query;
     db.deleteThought(userSub, projectId, thoughtId)
       .then(() => {
@@ -32,7 +32,7 @@ class ThoughtsController {
       });
   }
 
-  async editThought(req: Request, res: Response): Promise<void> {
+  public async editThought(req: Request, res: Response): Promise<void> {
     const { userSub, projectId, thoughtId, newThought } = req.body;
     db.editThought(userSub, projectId, thoughtId, newThought)
       .then(() => {
@@ -44,7 +44,7 @@ class ThoughtsController {
       });
   }
 
-  async toggleThoughtStatus(req: Request, res: Response): Promise<void> {
+  public async toggleThoughtStatus(req: Request, res: Response): Promise<void> {
     const { userSub, projectId, thoughtId } = req.body;
     db.toggleThoughtCompletion(userSub, projectId, thoughtId)
       .then(() => {

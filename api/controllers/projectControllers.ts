@@ -2,13 +2,13 @@ import { Request, Response } from 'express';
 import * as db from '../database/queries';
 
 class ProjectsController {
-  location: string;
+  private readonly location: string;
 
   constructor() {
     this.location = '@projectControllers.ts: ';
   }
 
-  async fetchProjects(req: Request, res: Response): Promise<void> {
+  public async fetchProjects(req: Request, res: Response): Promise<void> {
     const { userSub } = req.query;
     db.getUserData(userSub)
       .then((data) => {
@@ -20,7 +20,7 @@ class ProjectsController {
       });
   }
 
-  async createProject(req: Request, res: Response): Promise<void> {
+  public async createProject(req: Request, res: Response): Promise<void> {
     const { userSub, projectName } = req.body;
     db.addProject(userSub, projectName)
       .then((newId) => {
@@ -32,7 +32,7 @@ class ProjectsController {
       });
   }
 
-  async deleteProject(req: Request, res: Response): Promise<void> {
+  public async deleteProject(req: Request, res: Response): Promise<void> {
     const { userSub, projectId } = req.query;
     db.deleteProject(userSub, projectId)
       .then(() => {
@@ -44,7 +44,7 @@ class ProjectsController {
       });
   }
 
-  async initProjects(req: Request, res: Response): Promise<void> {
+  public async initProjects(req: Request, res: Response): Promise<void> {
     const { userSub } = req.body;
     if (!userSub) {
       res.sendStatus(400);
