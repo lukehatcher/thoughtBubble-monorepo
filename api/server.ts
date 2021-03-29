@@ -1,4 +1,5 @@
 import * as express from 'express';
+import { Request, Response, NextFunction } from 'express';
 import * as morgan from 'morgan';
 import projectRoutes from './routes/projects';
 import thoughtRoutes from './routes/thoughts';
@@ -9,7 +10,7 @@ const app = express();
 app.use(morgan('dev'));
 app.use(express.json());
 
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
