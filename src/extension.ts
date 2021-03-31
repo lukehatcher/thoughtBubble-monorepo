@@ -64,6 +64,11 @@ export async function activate(context: vscode.ExtensionContext) {
         if (item) {
           await addThoughtFromQuickPick(item.projectId, selectedText);
           quickPick.dispose();
+          // refresh view
+          // vscode.commands
+          //   .executeCommand('thoughtBubble.kill')
+          //   .then(() => vscode.commands.executeCommand('thoughtBubble.start'));
+          MainPanel.currentPanel?.refresh();
         }
       });
       // hides quickpicker is its closed without a selection
@@ -137,8 +142,7 @@ class MainPanel {
           case 'getUser': {
             const userData = StateManager.getToken() || '';
             // vscode.window.showInformationMessage(userData);
-            this._panel.webview.postMessage({ command: 'sendingData', userData }); // whole obj = event.data;
-            // panel.webview.postMessage({ command: 'sendingData', responseData: userData }); // whole obj = event.data;
+            this._panel.webview.postMessage({ command: 'sendingData/refresh', userData }); // whole obj = event.data;
             return;
           }
           case 'logout':
@@ -150,11 +154,12 @@ class MainPanel {
           case 'login':
             // execute login then post message to webview where redux store is updated
             vscode.commands.executeCommand('thoughtBubble.login').then(() => {
-              this._panel.webview.postMessage({ command: 'sendingData', userData: StateManager.getToken() });
+              this._panel.webview.postMessage({ command: 'sendingData/refresh', userData: StateManager.getToken() });
             });
             return;
           case 'refreshExt':
             // reload extension
+            // used when you are already in the extension and you want to reload
             vscode.commands
               .executeCommand('thoughtBubble.kill')
               .then(() => vscode.commands.executeCommand('thoughtBubble.start'));
@@ -163,6 +168,13 @@ class MainPanel {
       null,
       this._disposables
     );
+  }
+
+  public refresh() {
+    // used to "background refresh" the view i.e. you used the "add thought" command while in a js file...
+    // and you want it to show up in you thoughtBubble tab without having to refresh next time you open
+    // note: this refresh is not needed if the thoughtBubble extension was not already open in a seperate tab
+    this._panel.webview.postMessage({ command: 'sendingData/refresh', userData: StateManager.getToken() });
   }
 
   public dispose() {
