@@ -16,7 +16,7 @@ vscodeGlobal.postMessage({
 window.addEventListener('message', (e) => {
   const message = e.data; // The json data that the extension sent
   switch (message.command) {
-    case 'sendingData': {
+    case 'sendingData/refresh': {
       // should check db here first then await...
       store.dispatch({ type: 'storeUser', payload: JSON.parse(message.userData) });
       const userSub = `github|${JSON.parse(message.userData).id}`; // for now
