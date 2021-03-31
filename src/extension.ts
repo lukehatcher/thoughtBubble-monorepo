@@ -2,6 +2,8 @@ import * as vscode from 'vscode';
 import { getNonce } from './generateNonce';
 import { Credentials } from './credentials';
 import { StateManager } from './stateManager';
+import { addThoughtFromQuickPick, fetchQuickPickData } from './quickPick';
+import { projectTuple } from './interfaces';
 
 export async function activate(context: vscode.ExtensionContext) {
   StateManager.globalState = context.globalState; // so i can reference state anywhere
@@ -35,6 +37,38 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand('thoughtBubble.kill', () => {
       MainPanel.kill();
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('thoughtBubble.addThought', async () => {
+      const { activeTextEditor } = vscode.window;
+      if (!activeTextEditor) {
+        vscode.window.showErrorMessage('please open a code editor to use this command');
+        return;
+      }
+      const selectedText = activeTextEditor.document.getText(activeTextEditor.selection);
+      const projectData = await fetchQuickPickData();
+      if (!projectData) {
+        vscode.window.showErrorMessage('please log into thoughtBubble to use this command');
+        return;
+      }
+      // extend quickpickitem to take a hidden id prop
+      const quickPick: vscode.QuickPick<vscode.QuickPickItem & { projectId: string }> = vscode.window.createQuickPick();
+      quickPick.items = projectData!.map((proj: projectTuple) => ({
+        label: proj.projectName,
+        projectId: proj.projectId,
+      }));
+
+      quickPick.onDidChangeSelection(async ([item]) => {
+        if (item) {
+          await addThoughtFromQuickPick(item.projectId, selectedText);
+          quickPick.dispose();
+        }
+      });
+      // hides quickpicker is its closed without a selection
+      quickPick.onDidHide(() => quickPick.dispose());
+      quickPick.show();
     })
   );
 }
