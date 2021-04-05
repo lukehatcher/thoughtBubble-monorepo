@@ -4,7 +4,9 @@ import { App } from './components/App';
 import { Provider } from 'react-redux';
 import store from './store';
 import { fetchDataAction } from './actions/fetchDataAction';
-// import { storeUserAction } from './actions/storeUserAction';
+import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
+import { Test } from './components/Test';
+import { ProjectList } from './components/ProjectList';
 
 // request user token from extension
 vscodeGlobal.postMessage({
@@ -28,7 +30,13 @@ window.addEventListener('message', (e) => {
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <Router>
+      <Switch>
+        <Route path="/testing" exact component={Test} />
+        <Route path="/projectList" exact component={ProjectList} />
+        <Route path="/" component={App} />
+      </Switch>
+    </Router>
   </Provider>,
   document.getElementById('root')
 );

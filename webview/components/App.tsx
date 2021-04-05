@@ -3,8 +3,10 @@ import { useSelector } from 'react-redux';
 import { ProjectList } from './ProjectList';
 import { RootState } from '../reducers/rootReducer';
 import { LogoutButton } from './LogoutButton';
+import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import { LoginButton } from './LoginButton';
 import { ProjectsHeader } from './ProjectsHeader';
+import { Test } from './Test';
 
 export const App: React.FC = () => {
   const selector = (state: RootState) => state.userData;
@@ -22,7 +24,17 @@ export const App: React.FC = () => {
       <header id="main-header">
         <ProjectsHeader />
       </header>
-      <ProjectList />
+      <ul>
+        <li>
+          <Link to="/testing">test link</Link>
+        </li>
+        <li>
+          <Link to="/projectList">see your projects</Link>
+        </li>
+        <li>
+          <Link to="/home">home</Link>
+        </li>
+      </ul>
     </>
   );
 };
