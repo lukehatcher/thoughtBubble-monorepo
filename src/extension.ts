@@ -192,6 +192,8 @@ class MainPanel {
   }
 
   private _render(webview: vscode.Webview) {
+    const faviconMainPath = vscode.Uri.joinPath(this._extensionUri, 'media', 'logo128.png');
+    this._panel.iconPath = faviconMainPath;
     this._panel.title = 'thoughtBubble';
     this._panel.webview.html = this._getHtmlForWebview(webview);
   }
@@ -199,13 +201,11 @@ class MainPanel {
   private _getHtmlForWebview(webview: vscode.Webview) {
     // Local path to main script run in the webview
     const scriptPathOnDisk = vscode.Uri.joinPath(this._extensionUri, 'media', 'reactBundle.js');
-
     // And the uri we use to load this script in the webview
     const scriptUri = webview.asWebviewUri(scriptPathOnDisk);
 
     // Local path to css styles
     const stylesMainPath = vscode.Uri.joinPath(this._extensionUri, 'media', 'style.css');
-
     // Uri to load styles into webview
     const stylesMainUri = webview.asWebviewUri(stylesMainPath);
 
@@ -222,9 +222,7 @@ class MainPanel {
 				-->
 				<meta http-equiv="Content-Security-Policy" content="style-src https: 'unsafe-inline' ${webview.cspSource}; img-src ${webview.cspSource}; script-src 'nonce-${nonce}' https: 'unsafe-inline';">
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<link href="${stylesMainUri}" rel="stylesheet">
-        <!-- <script type="module" src="vscode-webview-resource://0d198a8c-b665-467a-8d30-8c7d37de2d4e/file///Users/lukehatcher/Documents/projects/vscode-react-test/media/ionicons/ionicons.esm.js"></script>
-        <script nomodule="" src="vscode-webview-resource://0d198a8c-b665-467a-8d30-8c7d37de2d4e/file///Users/lukehatcher/Documents/projects/vscode-react-test/media/ionicons/ionicons.js"></script> -->
+				<link rel="stylesheet" href="${stylesMainUri}">
 				<script nonce="${nonce}">
 					const vscodeGlobal = acquireVsCodeApi();
 				</script>
