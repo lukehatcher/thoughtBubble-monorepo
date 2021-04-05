@@ -1,10 +1,10 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { App } from './components/App';
+import { HomePage } from './components/HomePage';
 import { Provider } from 'react-redux';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import store from './store';
 import { fetchDataAction } from './actions/fetchDataAction';
-import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import { Test } from './components/Test';
 import { ProjectList } from './components/ProjectList';
 
@@ -20,8 +20,9 @@ window.addEventListener('message', (e) => {
   switch (message.command) {
     case 'sendingData/refresh': {
       // should check db here first then await...
+      console.log('dasliufhgasldfiuh');
       store.dispatch({ type: 'storeUser', payload: JSON.parse(message.userData) });
-      const userSub = `github|${JSON.parse(message.userData).id}`; // for now
+      const userSub = `github|${JSON.parse(message.userData).id}`;
       store.dispatch(fetchDataAction(userSub));
       return;
     }
@@ -34,7 +35,7 @@ ReactDOM.render(
       <Switch>
         <Route path="/testing" exact component={Test} />
         <Route path="/projectList" exact component={ProjectList} />
-        <Route path="/" component={App} />
+        <Route path="/" component={HomePage} />
       </Switch>
     </Router>
   </Provider>,
