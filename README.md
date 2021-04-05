@@ -1,4 +1,4 @@
-<div align="center"><img src="./media/logo128.png" width="35%" height="35%"></img></div>
+<div align="center"><img src="./media/logo256.png" width="30%" height="30%"></img></div>
 
 # thoughtBubble (VSCode extension)
 
