@@ -192,7 +192,7 @@ class MainPanel {
   }
 
   private _render(webview: vscode.Webview) {
-    const faviconMainPath = vscode.Uri.joinPath(this._extensionUri, 'media', 'logo128.png');
+    const faviconMainPath = vscode.Uri.joinPath(this._extensionUri, 'media', 'logo256.png');
     this._panel.iconPath = faviconMainPath;
     this._panel.title = 'thoughtBubble';
     this._panel.webview.html = this._getHtmlForWebview(webview);
