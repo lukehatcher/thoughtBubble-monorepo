@@ -1,4 +1,4 @@
-<div align="center"><img src="./logo256.png" width="35%" height="35%"></img></div>
+<div align="center"><img src="./docs/images/logo256.png" width="35%" height="35%"></img></div>
 
 # thoughtBubble
 
@@ -6,11 +6,15 @@ _bubble your thoughts together by syncing them between your phone and code edito
 
 ## demo video
 
-<div align="center"><a href="https://www.youtube.com/watch?v=rfUMVnv-l9g" target="_blank"><img src="./youtubeThumbnail.png" height="500" width="auto"></a></div>
+<div align="center"><a href="https://www.youtube.com/watch?v=rfUMVnv-l9g" target="_blank"><img src="./docs/images/youtubeThumbnail.png" height="500" width="auto"></a></div>
 
-## user interface example
+## monorepo structure
 
-<div align="center"><img src="./appUI.png" height="400" width="auto"></div>
+| sub directory        |           stack           |
+| :------------------- | :-----------------------: |
+| thoughtbubble-api    |  Node/Express/Mongo API   |
+| thoughtbubble-mobile |  React Native mobile app  |
+| thoughtbubble-vscode | React.js VSCode extension |
 
 ## background & tech stack
 
@@ -24,4 +28,4 @@ I built this project to help better centralize my code related thoughts for proj
 
 ## note on previous app iterations
 
-The initial MVP version of the mobile application was built in a hackathon style without redux and TS. You can see that archived version [here](https://github.com/lukehatcher/vscode-ios-todos).
+The initial MVP version of the mobile application was built in a hackathon style without much of its current tech. You can see that archived version [here](https://github.com/lukehatcher/vscode-ios-todos) or the video [here](https://www.youtube.com/watch?v=Qmo6s5LgVo4).
