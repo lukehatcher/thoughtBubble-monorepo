@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { storeUserAction } from '../actions/storeUserAction';
 import { useDispatch } from 'react-redux';
+import { LogoutButtonProps } from '../interfaces/componentProps';
 
-export const LogoutButton: React.FC = () => {
+export const LogoutButton: React.FC<LogoutButtonProps> = ({ id }) => {
   const dispatch = useDispatch();
 
   const logoutUser = async function () {
@@ -17,7 +18,7 @@ export const LogoutButton: React.FC = () => {
   };
 
   return (
-    <button type="button" id="logout-btn" onClick={() => logoutUser()}>
+    <button id={id} type="button" onClick={() => logoutUser()}>
       Logout
     </button>
   );
