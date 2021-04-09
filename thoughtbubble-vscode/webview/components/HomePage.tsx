@@ -5,6 +5,7 @@ import { RootState } from '../reducers/rootReducer';
 import { LogoutButton } from './LogoutButton';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import { LoginButton } from './LoginButton';
+import { VscSettingsGear, VscBook } from 'react-icons/vsc';
 
 export const HomePage: React.FC = () => {
   const loginSelector = (state: RootState) => state.userData;
@@ -29,17 +30,29 @@ export const HomePage: React.FC = () => {
     );
   }
   return (
-    <>
-      <h3>{`welcome ${name}, (${username})`}</h3>
-      <img src={pic} alt="user's github profile pic" width="200" height="200" />
-      <ul>
-        <li>
-          <Link to="/testing">test link</Link>
-        </li>
-        <li>
-          <Link to="/projectList">see your projects</Link>
-        </li>
-      </ul>
-    </>
+    <div id="home-container">
+      <nav id="home-nav-container">
+        <div className="home-nav-item">
+          <VscBook size="1.5em" />
+          &nbsp;&nbsp;
+          <Link to="/projectList" className="home-nav-link">
+            projects
+          </Link>
+        </div>
+        <div className="home-nav-item">
+          <VscSettingsGear size="1.5em" />
+          &nbsp;&nbsp;
+          <Link to="/settings" className="home-nav-link">
+            settings
+          </Link>
+        </div>
+      </nav>
+      <div id="home-main-container">
+        <header>
+          <h3>{`welcome ${name}, (${username})`}</h3>
+          <img src={pic} id="user-img" alt="user's github profile pic" />
+        </header>
+      </div>
+    </div>
   );
 };

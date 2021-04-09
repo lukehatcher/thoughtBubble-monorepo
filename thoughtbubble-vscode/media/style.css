@@ -27,14 +27,14 @@ html {
 .menu-item {
   display: flex;
   align-items: center;
-	background: #1b1f24;
+  background: #1b1f24;
   cursor: pointer;
   padding: 5px;
   height: 28px;
 }
 
 .menu-item:hover {
-  color: #6200EE;
+  color: #6200ee;
 }
 
 .menu-item-override {
@@ -48,23 +48,23 @@ input:focus {
 
 .edit-thought-input {
   background-color: #1b1f24;
-  color: #AAB2C0;
+  color: #aab2c0;
   border: none;
   outline: none;
-  border-bottom: 1px solid #AAB2C0;
+  border-bottom: 1px solid #aab2c0;
   margin-left: 10px;
   margin-right: 5px;
 }
 
 textarea:focus {
   outline: none;
-  border: .25px solid #AAB2C0;
+  border: 0.25px solid #aab2c0;
   border-radius: 1px;
 }
 
 .new-thought-input {
   background-color: #1b1f24;
-  color: #AAB2C0;
+  color: #aab2c0;
   /* margin-left: 10px; */
   /* margin-right: 5px; */
   height: 80px;
@@ -76,7 +76,7 @@ textarea:focus {
 .edit-thought-submit {
   background-color: #1b1f24;
   outline: none;
-  color: #AAB2C0;
+  color: #aab2c0;
   border: none;
   /* border: 1px solid #AAB2C0; */
   /* border-radius: 5px; */
@@ -100,11 +100,11 @@ textarea:focus {
 /* project card + their thought cards */
 
 .projectCard-container {
-	/* border: 1px solid black; */
+  /* border: 1px solid black; */
 }
 
 .thoughtCard-container {
-  background: #1F232B;
+  background: #1f232b;
   border-radius: 10px;
   padding: 10px;
   margin: 10px;
@@ -117,12 +117,11 @@ textarea:focus {
 
 .completed-text {
   text-decoration: line-through;
-  color: #aab2c046
+  color: #aab2c046;
   /* opacity: 0.4; */
 }
 
 .incompleted-text {
-  
 }
 
 /* header + logout/in buttons */
@@ -147,7 +146,7 @@ textarea:focus {
   right: 10px;
   outline: none;
   border: none;
-  background-color: #6200EE;
+  background-color: #6200ee;
   padding: 10px;
   border-radius: 5px;
 }

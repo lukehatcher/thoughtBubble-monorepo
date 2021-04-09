@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import store from './store';
 import { fetchDataAction } from './actions/fetchDataAction';
-import { Test } from './components/Test';
+import { SettingsPage } from './components/SettingsPage';
 import { ProjectList } from './components/ProjectList';
 
 // request user token from extension
@@ -32,7 +32,7 @@ ReactDOM.render(
   <Provider store={store}>
     <Router>
       <Switch>
-        <Route path="/testing" exact component={Test} />
+        <Route path="/settings" exact component={SettingsPage} />
         <Route path="/projectList" exact component={ProjectList} />
         <Route path="/" component={HomePage} />
       </Switch>

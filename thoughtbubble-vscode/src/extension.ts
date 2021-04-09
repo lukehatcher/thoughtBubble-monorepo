@@ -206,8 +206,10 @@ class MainPanel {
 
     // Local path to css styles
     const stylesMainPath = vscode.Uri.joinPath(this._extensionUri, 'media', 'style.css');
+    const stylesHomePath = vscode.Uri.joinPath(this._extensionUri, 'media', 'homePage.css');
     // Uri to load styles into webview
     const stylesMainUri = webview.asWebviewUri(stylesMainPath);
+    const stylesHomeUri = webview.asWebviewUri(stylesHomePath);
 
     // Use a nonce to only allow specific scripts to be run;
     const nonce = getNonce();
@@ -223,6 +225,7 @@ class MainPanel {
 				<meta http-equiv="Content-Security-Policy" content="style-src https: 'unsafe-inline' ${webview.cspSource}; img-src ${webview.cspSource} https:; script-src 'nonce-${nonce}' https: 'unsafe-inline';">
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 				<link rel="stylesheet" href="${stylesMainUri}">
+				<link rel="stylesheet" href="${stylesHomeUri}">
 				<script nonce="${nonce}">
 					const vscodeGlobal = acquireVsCodeApi();
 				</script>
