@@ -34,23 +34,29 @@ export const HomePage: React.FC = () => {
       <nav id="home-nav-container">
         <div className="home-nav-item">
           <VscBook size="1.5em" />
-          &nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;
           <Link to="/projectList" className="home-nav-link">
             projects
           </Link>
         </div>
         <div className="home-nav-item">
           <VscSettingsGear size="1.5em" />
-          &nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;
           <Link to="/settings" className="home-nav-link">
             settings
           </Link>
         </div>
       </nav>
       <div id="home-main-container">
-        <header>
-          <h3>{`welcome ${name}, (${username})`}</h3>
-          <img src={pic} id="user-img" alt="user's github profile pic" />
+        <header id="home-header">
+          {/* the var id is the github handle */}
+          <div id="welcome-text-container">
+            <h3 id="welcome-text">{`welcome back ${name}`}</h3>
+          </div>
+          <div id="pic-and-logout-container">
+            <img src={pic} id="user-img" alt="user's github profile pic" />
+            <LogoutButton id="logout-btn-home" />
+          </div>
         </header>
       </div>
     </div>

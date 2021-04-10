@@ -88,7 +88,7 @@ export const ProjectsHeader: React.FC = function () {
       <div className="submenu-trigger" onClick={() => handleExtRefresh()}>
         <VscRefresh size="2em" />
       </div>
-      <LogoutButton />
+      <LogoutButton id="logout-btn-projects" />
     </div>
   );
 };

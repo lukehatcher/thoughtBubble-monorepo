@@ -141,7 +141,7 @@ textarea:focus {
   border-bottom-right-radius: 5px;
 }
 
-#logout-btn {
+#logout-btn-projects {
   position: absolute;
   right: 10px;
   outline: none;
@@ -150,7 +150,7 @@ textarea:focus {
   padding: 10px;
   border-radius: 5px;
 }
-#logout-btn:hover {
+#logout-btn-projects:hover {
   cursor: pointer;
 }
 

@@ -18,8 +18,8 @@ export const LogoutButton: React.FC<LogoutButtonProps> = ({ id }) => {
   };
 
   return (
-    <button id={id} type="button" onClick={() => logoutUser()}>
-      Logout
+    <button id={id} type="button" title="logout" onClick={() => logoutUser()}>
+      logout
     </button>
   );
 };
