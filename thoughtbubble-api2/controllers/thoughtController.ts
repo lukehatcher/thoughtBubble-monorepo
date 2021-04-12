@@ -24,7 +24,7 @@ class ThoughtsController {
     const { userSub, projectId, thoughtId } = req.query;
     try {
       await Thought.delete({ id: Number(thoughtId) });
-      res.send({ projectId }).status(200);
+      res.sendStatus(200);
     } catch (err) {
       console.error(this.location, err);
       res.sendStatus(400);

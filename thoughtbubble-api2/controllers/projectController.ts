@@ -1,5 +1,8 @@
+import 'reflect-metadata';
 import { Request, Response } from 'express';
+import { getConnection } from 'typeorm';
 import { Project } from '../entities/Project';
+import { Thought } from '../entities/Thought';
 import { User } from '../entities/User';
 
 class ProjectsController {
@@ -39,6 +42,7 @@ class ProjectsController {
     // working
     const { userSub, projectId } = req.query;
     try {
+      // cascade delete takse care of thoughts
       await Project.delete({ id: Number(projectId) });
       res.send({ projectId }).status(200);
     } catch (err) {

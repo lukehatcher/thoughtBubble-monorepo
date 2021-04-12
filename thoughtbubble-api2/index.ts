@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 import { join } from 'path';
 import express from 'express';

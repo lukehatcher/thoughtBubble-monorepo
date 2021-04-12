@@ -20,7 +20,9 @@ export class Thought extends BaseEntity {
   @Column()
   projectId!: number;
 
-  @ManyToOne(() => Project, (project) => project.thoughts)
+  @ManyToOne(() => Project, (project) => project.thoughts, { onDelete: 'CASCADE' })
+  // when delete a proj, all thoughts get deleted
+  // can still individually delete thoughts though
   @JoinColumn({ name: 'projectId' })
   user!: Promise<Project>;
 }
