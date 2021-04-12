@@ -2,6 +2,7 @@ import { createConnection } from 'typeorm';
 import { join } from 'path';
 import express from 'express';
 import projectRouter from './routes/projects'; // default export
+import thoughtRouter from './routes/thoughts';
 
 const main = async () => {
   await createConnection({
@@ -18,16 +19,9 @@ const main = async () => {
   const app = express();
   // app.use(cors({origin: '*'}));
   app.use(express.json()); // for post and x only
-  app.get('/', (_req, res) => {
-    res.send('hello');
-  });
-
   app.use('/api/projects', projectRouter);
-  // app.use('/api/thoughts', thoughtRoutes);
-
-  app.listen(3001, () => {
-    console.log('📈listening on port 3001');
-  });
+  app.use('/api/thoughts', thoughtRouter);
+  app.listen(3001, () => console.log('📈listening on port 3001'));
 };
 
 main();

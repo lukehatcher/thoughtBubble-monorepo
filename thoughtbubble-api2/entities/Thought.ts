@@ -1,23 +1,26 @@
-// import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, JoinColumn } from 'typeorm';
-// import { User } from './User';
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, JoinColumn } from 'typeorm';
+import { Project } from './Project';
 
-// @Entity()
-// export class Thought extends BaseEntity {
-//   // extending with base enteity allows for using .find .create etc
-//   // see TS2564 for bang
-//   @PrimaryGeneratedColumn()
-//   id!: number;
+@Entity()
+export class Thought extends BaseEntity {
+  // extending with base enteity allows for using .find .create etc
+  // see TS2564 for bang
+  @PrimaryGeneratedColumn()
+  id!: number;
 
-//   @Column('text')
-//   username!: string;
+  @Column('text')
+  text!: string;
 
-//   @Column('boolean', { default: false })
-//   completed!: false;
+  @Column('boolean', { default: false })
+  completed!: false;
 
-//   @Column()
-//   userId!: number;
+  @Column('boolean', { nullable: true })
+  tag!: string;
 
-//   @ManyToOne(() => User, (user) => user.thoughts)
-//   @JoinColumn({ name: 'userId' })
-//   user!: Promise<User>;
-// }
+  @Column()
+  projectId!: number;
+
+  @ManyToOne(() => Project, (project) => project.thoughts)
+  @JoinColumn({ name: 'projectId' })
+  user!: Promise<Project>;
+}

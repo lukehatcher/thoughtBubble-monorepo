@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Thought } from './Thought';
 import { User } from './User';
 // import { Thought } from './Thought';
 
@@ -21,4 +22,7 @@ export class Project extends BaseEntity {
   @ManyToOne(() => User, (user) => user.projects)
   @JoinColumn({ name: 'userId' })
   user!: Promise<User>;
+
+  @OneToMany(() => Thought, (thought) => thought.projectId)
+  thoughts!: Promise<Thought[]>;
 }

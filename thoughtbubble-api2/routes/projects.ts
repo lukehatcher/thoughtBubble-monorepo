@@ -8,7 +8,7 @@ router
   .route('/')
   // .get(ProjectsController.fetchProjects)
   .post(ProjectsController.createProject) // working
-  .delete(ProjectsController.deleteProject);
+  .delete(ProjectsController.deleteProject); // working
 
 // api/projects/init
 // not tested

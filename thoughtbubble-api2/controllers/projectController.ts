@@ -36,6 +36,7 @@ class ProjectsController {
   };
 
   public deleteProject = async (req: Request, res: Response): Promise<void> => {
+    // working
     const { userSub, projectId } = req.query;
     try {
       await Project.delete({ id: Number(projectId) });

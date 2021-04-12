@@ -27,4 +27,19 @@ const testDel = async function () {
   }
 };
 
-testDel();
+// testDel();
+
+const testAddThought = async function () {
+  try {
+    const response = await axios.post('http://localhost:3001/api/thoughts', {
+      userSub: '1337',
+      projectId: 7,
+      thought: 'hello <3',
+    });
+    console.log(response.data);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+testAddThought();
