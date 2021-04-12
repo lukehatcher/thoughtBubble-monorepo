@@ -9,6 +9,7 @@ class ThoughtsController {
   }
 
   public createThought = async (req: Request, res: Response): Promise<void> => {
+    // correctly throws error is project id is not in db project table
     const { userSub, projectId, thought } = req.body;
     try {
       const newThought = await Thought.create({ text: thought, projectId }).save();
@@ -19,17 +20,16 @@ class ThoughtsController {
     }
   };
 
-  // public async deleteThought(req: Request, res: Response): Promise<void> {
-  //   const { userSub, projectId, thoughtId } = req.query;
-  //   db.deleteThought(userSub, projectId, thoughtId)
-  //     .then(() => {
-  //       res.sendStatus(200);
-  //     })
-  //     .catch((err) => {
-  //       console.error(this.location, err);
-  //       res.sendStatus(400);
-  //     });
-  // }
+  public deleteThought = async (req: Request, res: Response): Promise<void> => {
+    const { userSub, projectId, thoughtId } = req.query;
+    try {
+      await Thought.delete({ id: Number(thoughtId) });
+      res.send({ projectId }).status(200);
+    } catch (err) {
+      console.error(this.location, err);
+      res.sendStatus(400);
+    }
+  };
 
   // public async editThought(req: Request, res: Response): Promise<void> {
   //   const { userSub, projectId, thoughtId, newThought } = req.body;

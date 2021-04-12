@@ -4,9 +4,11 @@ import ThoughtsController from '../controllers/thoughtController';
 const router = express.Router();
 
 // api/thought
-router.route('/').post(ThoughtsController.createThought);
-// .put(ThoughtsController.editThought)
-// .delete(ThoughtsController.deleteThought);
+router
+  .route('/')
+  .post(ThoughtsController.createThought)
+  // .put(ThoughtsController.editThought)
+  .delete(ThoughtsController.deleteThought);
 
 // api/thought/status
 // router
