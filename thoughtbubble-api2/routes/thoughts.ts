@@ -11,8 +11,8 @@ router
   .delete(ThoughtsController.deleteThought);
 
 // api/thought/status
-// router
-//   .route('/status') //
-//   .put(ThoughtsController.toggleThoughtStatus);
+router
+  .route('/status') //
+  .put(ThoughtsController.toggleThoughtStatus);
 
 export default router;

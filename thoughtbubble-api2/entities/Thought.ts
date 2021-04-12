@@ -12,9 +12,9 @@ export class Thought extends BaseEntity {
   text!: string;
 
   @Column('boolean', { default: false })
-  completed!: false;
+  completed!: boolean;
 
-  @Column('boolean', { nullable: true })
+  @Column('text', { nullable: true })
   tag!: string;
 
   @Column()

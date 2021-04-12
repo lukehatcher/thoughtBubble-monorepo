@@ -77,7 +77,7 @@ const testUpdateThought = async function () {
     const response = await axios.put('http://localhost:3001/api/thoughts', {
       userSub: 'luke',
       projectId: 1,
-      thoughtId: 17,
+      thoughtId: 16,
       newThought: 'this is new',
     });
     console.log(response.data);
@@ -86,4 +86,18 @@ const testUpdateThought = async function () {
   }
 };
 
-testUpdateThought();
+// testUpdateThought();
+
+const testToggle = async function () {
+  try {
+    const response = await axios.put('http://localhost:3001/api/thoughts/status', {
+      userSub: 'luke',
+      projectId: 0,
+      thoughtId: 16,
+    });
+    console.log(response.data);
+  } catch (err) {
+    console.error(err);
+  }
+};
+testToggle();

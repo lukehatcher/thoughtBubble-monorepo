@@ -48,17 +48,23 @@ class ThoughtsController {
     }
   };
 
-  //   public async toggleThoughtStatus(req: Request, res: Response): Promise<void> {
-  //     const { userSub, projectId, thoughtId } = req.body;
-  //     db.toggleThoughtCompletion(userSub, projectId, thoughtId)
-  //       .then(() => {
-  //         res.sendStatus(201);
-  //       })
-  //       .catch((err) => {
-  //         console.error(this.location, err);
-  //         res.sendStatus(400);
-  //       });
-  //   }
+  public toggleThoughtStatus = async (req: Request, res: Response): Promise<void> => {
+    const { userSub, projectId, thoughtId } = req.body;
+    try {
+      const thought = await Thought.findOne({ id: thoughtId });
+      const currBool = thought?.completed;
+      await getConnection() //
+        .createQueryBuilder()
+        .update(Thought)
+        .set({ completed: !currBool })
+        .where('id = :id', { id: thoughtId })
+        .execute();
+      res.sendStatus(200);
+    } catch (err) {
+      console.error(this.location, err);
+      res.sendStatus(400);
+    }
+  };
 }
 
 export default new ThoughtsController();
