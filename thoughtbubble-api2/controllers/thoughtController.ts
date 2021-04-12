@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { getConnection } from 'typeorm';
 import { Thought } from '../entities/Thought';
 
 class ThoughtsController {
@@ -31,17 +32,21 @@ class ThoughtsController {
     }
   };
 
-  // public async editThought(req: Request, res: Response): Promise<void> {
-  //   const { userSub, projectId, thoughtId, newThought } = req.body;
-  //   db.editThought(userSub, projectId, thoughtId, newThought)
-  //     .then(() => {
-  //       res.sendStatus(201);
-  //     })
-  //     .catch((err) => {
-  //       console.error(this.location, err);
-  //       res.sendStatus(400);
-  //     });
-  // }
+  public editThought = async (req: Request, res: Response): Promise<void> => {
+    const { userSub, projectId, thoughtId, newThought } = req.body;
+    try {
+      await getConnection() //
+        .createQueryBuilder()
+        .update(Thought)
+        .set({ text: newThought })
+        .where('id = :id', { id: thoughtId })
+        .execute();
+      res.sendStatus(200);
+    } catch (err) {
+      console.error(this.location, err);
+      res.sendStatus(400);
+    }
+  };
 
   //   public async toggleThoughtStatus(req: Request, res: Response): Promise<void> {
   //     const { userSub, projectId, thoughtId } = req.body;

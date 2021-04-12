@@ -7,7 +7,7 @@ const router = express.Router();
 router
   .route('/')
   .post(ThoughtsController.createThought)
-  // .put(ThoughtsController.editThought)
+  .put(ThoughtsController.editThought)
   .delete(ThoughtsController.deleteThought);
 
 // api/thought/status

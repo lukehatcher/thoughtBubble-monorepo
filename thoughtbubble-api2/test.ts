@@ -35,7 +35,7 @@ const testDel = async function () {
   }
 };
 
-testDel();
+// testDel();
 
 const testAddThought = async function (x: number) {
   try {
@@ -71,3 +71,19 @@ const testDelThought = async function () {
 };
 
 // testDelThought();
+
+const testUpdateThought = async function () {
+  try {
+    const response = await axios.put('http://localhost:3001/api/thoughts', {
+      userSub: 'luke',
+      projectId: 1,
+      thoughtId: 17,
+      newThought: 'this is new',
+    });
+    console.log(response.data);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+testUpdateThought();
