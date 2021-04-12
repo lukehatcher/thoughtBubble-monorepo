@@ -14,16 +14,17 @@ const testPost = async function () {
   }
 };
 
-testPost();
+// testPost();
 
-// public async createProject(req: Request, res: Response): Promise<void> {
-// 	const { userSub, projectName } = req.body;
-// 	db.addProject(userSub, projectName)
-// 		.then((newId) => {
-// 			res.status(201).send(newId);
-// 		})
-// 		.catch((err) => {
-// 			console.error(this.location, err);
-// 			res.sendStatus(400);
-// 		});
-// }
+const testDel = async function () {
+  try {
+    const response = await axios.delete('http://localhost:3001/api/projects', {
+      params: { userSub: '1337', projectId: 9 },
+    });
+    console.log(response.data);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+testDel();

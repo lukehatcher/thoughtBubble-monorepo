@@ -7,8 +7,8 @@ const router = express.Router();
 router
   .route('/')
   // .get(ProjectsController.fetchProjects)
-  .post(ProjectsController.createProject); // working
-// .delete(ProjectsController.deleteProject);
+  .post(ProjectsController.createProject) // working
+  .delete(ProjectsController.deleteProject);
 
 // api/projects/init
 // not tested
