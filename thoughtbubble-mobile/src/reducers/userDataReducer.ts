@@ -66,24 +66,23 @@ export const UserDataReducer = (state = initialState, action): ProjectShape[] =>
           };
         }
       });
-    // ======
     case 'filterData/completed':
-      return payload.data.projects.map((project) => {
+      return payload.data.map((project) => {
         if (project.id === payload.projectId) {
           return {
             ...project,
-            todos: project.todos.filter((thought) => thought.completed),
+            projectThoughts: project.projectThoughts.filter((thought) => thought.completed),
           };
         } else {
           return project;
         }
       });
     case 'filterData/incomplete':
-      return payload.data.projects.map((project) => {
+      return payload.data.map((project) => {
         if (project.id === payload.projectId) {
           return {
             ...project,
-            todos: project.todos.filter((thought) => !thought.completed),
+            projectThoughts: project.projectThoughts.filter((thought) => !thought.completed),
           };
         } else {
           return project;
