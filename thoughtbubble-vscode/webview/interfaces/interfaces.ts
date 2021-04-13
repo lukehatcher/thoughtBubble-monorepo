@@ -11,7 +11,7 @@ export interface ThoughtShape {
 export interface ProjectShape {
   // dup
   id: string;
-  userId: number;
+  userId: string;
   projectName: string;
   projectThoughts: ThoughtShape[];
   completed: boolean;

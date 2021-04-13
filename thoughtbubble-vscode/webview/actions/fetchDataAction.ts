@@ -8,7 +8,6 @@ export const fetchDataAction = (userSub: string) => {
           userSub,
         },
       });
-      console.log(response.data);
       dispatch({ type: 'fetchData', payload: response.data });
     } catch (err) {
       console.error('@fetchDataAction.ts: ', err);

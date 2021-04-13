@@ -11,9 +11,11 @@ export const UserDataReducer = (state = initialState, action): ProjectShape[] =>
       return [
         ...state,
         {
-          _id: payload._id,
+          id: payload.id,
           projectName: payload.projectName,
-          todos: [],
+          projectThoughts: [],
+          userId: payload.userId,
+          completed: false,
         },
       ];
     case 'deleteProject':
