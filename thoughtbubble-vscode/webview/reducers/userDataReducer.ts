@@ -28,9 +28,9 @@ export const UserDataReducer = (state = initialState, action): ProjectShape[] =>
         } else {
           return {
             ...item,
-            todos: [
+            projectThoughts: [
               ...item.projectThoughts,
-              { id: payload.id, text: payload.thought, completed: false }, //
+              { id: payload.id, text: payload.thought, completed: false, projectId: payload.projectId, tag: null },
             ],
           };
         }
