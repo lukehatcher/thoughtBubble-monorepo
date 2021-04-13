@@ -34,31 +34,15 @@ export const UserDataReducer = (state = initialState, action): ProjectShape[] =>
           };
         }
       });
-    case 'thoughtStatusChange':
-      return state.map((item) => {
-        if (item._id !== payload.projectId) {
-          return item;
-        } else {
-          return {
-            ...item,
-            todos: item.todos.map((thought) => {
-              if (thought._id === payload._id) {
-                thought.completed = !thought.completed;
-              }
-              return thought;
-            }),
-          };
-        }
-      });
     case 'editThought':
       return state.map((item) => {
-        if (item._id !== payload.projectId) {
+        if (item.id !== payload.projectId) {
           return item;
         } else {
           return {
             ...item,
-            todos: item.todos.map((thought) => {
-              if (thought._id === payload._id) {
+            projectThoughts: item.projectThoughts.map((thought) => {
+              if (thought.id === payload.id) {
                 thought.text = payload.newThought;
               }
               return thought;
@@ -66,9 +50,26 @@ export const UserDataReducer = (state = initialState, action): ProjectShape[] =>
           };
         }
       });
+    case 'thoughtStatusChange':
+      return state.map((item) => {
+        if (item.id !== payload.projectId) {
+          return item;
+        } else {
+          return {
+            ...item,
+            projectThoughts: item.projectThoughts.map((thought) => {
+              if (thought.id === payload.id) {
+                thought.completed = !thought.completed;
+              }
+              return thought;
+            }),
+          };
+        }
+      });
+    // ======
     case 'filterData/completed':
       return payload.data.projects.map((project) => {
-        if (project._id === payload.projectId) {
+        if (project.id === payload.projectId) {
           return {
             ...project,
             todos: project.todos.filter((thought) => thought.completed),
@@ -79,7 +80,7 @@ export const UserDataReducer = (state = initialState, action): ProjectShape[] =>
       });
     case 'filterData/incomplete':
       return payload.data.projects.map((project) => {
-        if (project._id === payload.projectId) {
+        if (project.id === payload.projectId) {
           return {
             ...project,
             todos: project.todos.filter((thought) => !thought.completed),
