@@ -99,14 +99,14 @@ export const ThoughtsScreen: React.FC<ThoughtScreenProps> = ({ route, navigation
 
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnMid]}
-        onPress={() => handleThoughtStatusChange(data.item._id)}
+        onPress={() => handleThoughtStatusChange(data.item.id)}
       >
         <Ionicon name="checkbox-outline" size={25} color="white" />
       </TouchableOpacity>
 
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnRight]}
-        onPress={() => handleThoughtDelete(data.item._id)}
+        onPress={() => handleThoughtDelete(data.item.id)}
       >
         <Ionicon name="trash-outline" size={25} color="white" />
       </TouchableOpacity>
