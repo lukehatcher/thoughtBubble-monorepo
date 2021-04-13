@@ -23,13 +23,13 @@ export const deleteThoughtAction = (projectId: string, thoughtId: string) => {
     axios
       .delete('http://localhost:3001/api/thoughts', {
         params: {
-          userSub,
-          projectId,
+          userSub, // not used atm
+          projectId, // not used in api atm
           thoughtId,
         },
       })
       .then((res) => {
-        dispatch({ type: 'deleteThought', payload: { projectId, _id: thoughtId } });
+        dispatch({ type: 'deleteThought', payload: { projectId, id: thoughtId } });
       })
       .catch((err) => console.error('@thoughtActions.ts: ', err));
   };

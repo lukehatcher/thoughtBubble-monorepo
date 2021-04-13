@@ -21,40 +21,40 @@ export const UserDataReducer = (state = initialState, action): ProjectShape[] =>
     case 'deleteProject':
       console.log(state, 'checking things');
       return state.filter((projects) => projects.id !== payload);
-    case 'addThought': // renamed for ext
+    case 'addThought':
       return state.map((item) => {
-        if (item._id !== payload.projectId) {
+        if (item.id !== payload.projectId) {
           return item;
         } else {
           return {
             ...item,
             todos: [
-              ...item.todos,
-              { _id: payload._id, text: payload.thought, completed: false }, // force break
+              ...item.projectThoughts,
+              { id: payload.id, text: payload.thought, completed: false }, //
             ],
           };
         }
       });
     case 'deleteThought':
       return state.map((item) => {
-        if (item._id !== payload.projectId) {
+        if (item.id !== payload.projectId) {
           return item;
         } else {
           return {
             ...item,
-            todos: item.todos.filter((todo) => todo._id !== payload._id),
+            projectThoughts: item.projectThoughts.filter((thought) => thought.id !== payload.id),
           };
         }
       });
     case 'thoughtStatusChange':
       return state.map((item) => {
-        if (item._id !== payload.projectId) {
+        if (item.id !== payload.projectId) {
           return item;
         } else {
           return {
             ...item,
-            todos: item.todos.map((todo) => {
-              if (todo._id === payload._id) {
+            todos: item.projectThoughts.map((todo) => {
+              if (todo.id === payload.id) {
                 todo.completed = !todo.completed;
               }
               return todo;
@@ -64,26 +64,26 @@ export const UserDataReducer = (state = initialState, action): ProjectShape[] =>
       });
     case 'editThought':
       return state.map((item) => {
-        if (item._id !== payload.projectId) {
+        if (item.id !== payload.projectId) {
           return item;
         } else {
           return {
             ...item,
-            todos: item.todos.map((todo) => {
-              if (todo._id === payload._id) {
-                todo.text = payload.newThought;
+            todos: item.projectThoughts.map((thought) => {
+              if (thought.id === payload.id) {
+                thought.text = payload.newThought;
               }
-              return todo;
+              return thought;
             }),
           };
         }
       });
     case 'filterData/completed':
       return payload.data.projects.map((project) => {
-        if (project._id === payload.projectId) {
+        if (project.id === payload.projectId) {
           return {
             ...project,
-            todos: project.todos.filter((thought) => thought.completed),
+            projectThoughts: project.projectThoughts.filter((thought) => thought.completed),
           };
         } else {
           return project;
@@ -91,10 +91,10 @@ export const UserDataReducer = (state = initialState, action): ProjectShape[] =>
       });
     case 'filterData/incomplete':
       return payload.data.projects.map((project) => {
-        if (project._id === payload.projectId) {
+        if (project.id === payload.projectId) {
           return {
             ...project,
-            todos: project.todos.filter((thought) => !thought.completed),
+            projectThoughts: project.projectThoughts.filter((thought) => !thought.completed),
           };
         } else {
           return project;
