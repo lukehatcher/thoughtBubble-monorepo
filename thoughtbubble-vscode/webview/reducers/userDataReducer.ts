@@ -53,7 +53,7 @@ export const UserDataReducer = (state = initialState, action): ProjectShape[] =>
         } else {
           return {
             ...item,
-            todos: item.projectThoughts.map((thought) => {
+            projectThoughts: item.projectThoughts.map((thought) => {
               if (thought.id === payload.id) {
                 thought.text = payload.newThought;
               }

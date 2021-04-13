@@ -41,13 +41,13 @@ export const editThoughtAction = (newThought: string, projectId: string, thought
     try {
       axios
         .put('http://localhost:3001/api/thoughts', {
-          userSub,
-          projectId,
+          userSub, // not used in new api atm
+          projectId, // not used in new api atm
           thoughtId,
           newThought,
         })
         .then((res) => {
-          dispatch({ type: 'editThought', payload: { projectId, _id: thoughtId, newThought } });
+          dispatch({ type: 'editThought', payload: { projectId, id: thoughtId, newThought } });
         });
     } catch (err) {
       console.error('@thoughtActions.ts: ', err);
