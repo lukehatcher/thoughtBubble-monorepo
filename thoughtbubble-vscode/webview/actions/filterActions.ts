@@ -9,7 +9,6 @@ export const filtertThoughtsAction = (projectId: string, filterType: string) => 
           userSub,
         },
       });
-      console.log('fgdhasjkl');
       dispatch({ type: `filterData/${filterType}`, payload: { data: response.data, projectId } });
     } catch (err) {
       console.error('fetchDataAction.ts: ', err);

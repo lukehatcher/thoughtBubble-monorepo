@@ -8,16 +8,7 @@ export const UserDataReducer = (state = initialState, action): ProjectShape[] =>
     case 'fetchData':
       return payload;
     case 'addProject':
-      return [
-        ...state,
-        {
-          id: payload.id,
-          projectName: payload.projectName,
-          projectThoughts: [],
-          userId: payload.userId,
-          completed: false,
-        },
-      ];
+      return [...state, payload];
     case 'deleteProject':
       console.log(state, 'checking things');
       return state.filter((projects) => projects.id !== payload);
