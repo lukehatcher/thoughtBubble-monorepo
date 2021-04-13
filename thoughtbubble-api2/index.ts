@@ -1,4 +1,6 @@
 import 'reflect-metadata';
+import cors from 'cors';
+import morgan from 'morgan';
 import { createConnection } from 'typeorm';
 import { join } from 'path';
 import express from 'express';
@@ -23,7 +25,8 @@ const main = async () => {
   // console.log(newUser);
 
   const app = express();
-  // app.use(cors({origin: '*'}));
+  app.use(cors());
+  app.use(morgan('dev'));
   app.use(express.json()); // for post and x only
   app.use('/api/projects', projectRouter);
   app.use('/api/thoughts', thoughtRouter);
