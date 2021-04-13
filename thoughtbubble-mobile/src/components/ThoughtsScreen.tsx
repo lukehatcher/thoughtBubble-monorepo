@@ -25,9 +25,9 @@ import {
 import { filtertThoughtsAction } from '../actions/filterActions';
 import { fetchDataAction } from '../actions/fetchDataAction';
 import { MoreModal } from './MoreModal';
-import { TodosScreenProps } from '../interfaces/componentProps'; // type
+import { ThoughtScreenProps } from '../interfaces/componentProps'; // type
 
-export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }) => {
+export const ThoughtsScreen: React.FC<ThoughtScreenProps> = ({ route, navigation }) => {
   const [modalView, setModalView] = useState(false);
   const [sortModalView, setSortModalView] = useState(false);
   const [moreModalView, setMoreModalView] = useState(false);

@@ -19,7 +19,7 @@ export interface ProjectsScreenProps {
   navigation: StackNavigationProp<StackParamList, 'Projects'>;
 }
 
-export interface TodosScreenProps {
+export interface ThoughtScreenProps {
   route: RouteProp<StackParamList, 'Thoughts'>;
   navigation: StackNavigationProp<StackParamList, 'Projects'>;
 }
