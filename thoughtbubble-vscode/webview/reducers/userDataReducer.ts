@@ -28,10 +28,7 @@ export const UserDataReducer = (state = initialState, action): ProjectShape[] =>
         } else {
           return {
             ...item,
-            projectThoughts: [
-              ...item.projectThoughts,
-              { id: payload.id, text: payload.thought, completed: false, projectId: payload.projectId, tag: null },
-            ],
+            projectThoughts: [...item.projectThoughts, payload],
           };
         }
       });

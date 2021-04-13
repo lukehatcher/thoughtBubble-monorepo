@@ -14,7 +14,7 @@ class ThoughtsController {
     const { userSub, projectId, thought } = req.body;
     try {
       const newThought = await Thought.create({ text: thought, projectId }).save();
-      res.send({ newThought }); // maybe just send the id
+      res.send(newThought); // maybe just send the id
     } catch (err) {
       console.error(this.location, err);
       res.sendStatus(400);
