@@ -6,7 +6,7 @@ const router = express.Router();
 // api/projects
 router
   .route('/')
-  // .get(ProjectsController.fetchProjects)
+  .get(ProjectsController.fetchProjects)
   .post(ProjectsController.createProject) // working
   .delete(ProjectsController.deleteProject); // working
 

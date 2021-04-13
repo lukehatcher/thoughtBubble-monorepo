@@ -100,4 +100,18 @@ const testToggle = async function () {
     console.error(err);
   }
 };
-testToggle();
+// testToggle();
+
+const testFetch = async function () {
+  try {
+    const response = await axios.get('http://localhost:3001/api/projects', {
+      params: {
+        userSub: '1234',
+      },
+    });
+    console.log(response.data);
+  } catch (err) {
+    console.error(err);
+  }
+};
+testFetch();
