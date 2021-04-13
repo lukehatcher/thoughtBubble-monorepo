@@ -1,21 +1,18 @@
 export interface ThoughtShape {
-  _id: string;
+  id: string;
+  projectId: string;
   text: string;
   completed: boolean;
+  tag: string | null;
 }
 
-// shape of data in redux store
+// shape of data in redux store && shape of data returned from api
 export interface ProjectShape {
-  _id: string;
+  id: string;
+  userId: number;
   projectName: string;
-  todos: ThoughtShape[];
-}
-
-// data from GET request
-export interface UserDataShape {
-  _id: string;
-  userSub: string;
-  projects: ProjectShape[];
+  projectThoughts: ThoughtShape[];
+  completed: boolean;
 }
 
 // data for vscode quickpick
