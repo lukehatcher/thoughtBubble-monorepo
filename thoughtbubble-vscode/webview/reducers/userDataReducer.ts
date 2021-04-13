@@ -46,22 +46,6 @@ export const UserDataReducer = (state = initialState, action): ProjectShape[] =>
           };
         }
       });
-    case 'thoughtStatusChange':
-      return state.map((item) => {
-        if (item.id !== payload.projectId) {
-          return item;
-        } else {
-          return {
-            ...item,
-            todos: item.projectThoughts.map((todo) => {
-              if (todo.id === payload.id) {
-                todo.completed = !todo.completed;
-              }
-              return todo;
-            }),
-          };
-        }
-      });
     case 'editThought':
       return state.map((item) => {
         if (item.id !== payload.projectId) {
@@ -72,6 +56,22 @@ export const UserDataReducer = (state = initialState, action): ProjectShape[] =>
             todos: item.projectThoughts.map((thought) => {
               if (thought.id === payload.id) {
                 thought.text = payload.newThought;
+              }
+              return thought;
+            }),
+          };
+        }
+      });
+    case 'thoughtStatusChange':
+      return state.map((item) => {
+        if (item.id !== payload.projectId) {
+          return item;
+        } else {
+          return {
+            ...item,
+            projectThoughts: item.projectThoughts.map((thought) => {
+              if (thought.id === payload.id) {
+                thought.completed = !thought.completed;
               }
               return thought;
             }),
