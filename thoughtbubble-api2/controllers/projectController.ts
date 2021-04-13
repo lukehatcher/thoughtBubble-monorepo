@@ -64,7 +64,6 @@ class ProjectsController {
   };
 
   public deleteProject = async (req: Request, res: Response): Promise<void> => {
-    // working
     const { userSub, projectId } = req.query;
     try {
       // cascade delete takse care of thoughts
@@ -74,6 +73,25 @@ class ProjectsController {
       console.error(this.location, err);
       res.sendStatus(400);
     }
+  };
+
+  public initProjects = async (_req: Request, res: Response): Promise<void> => {
+    // const { userSub } = req.body;
+    // try {
+
+    //   await User.create({ });
+    res.sendStatus(200);
+    // } catch (err) {
+    //   console.error(this.location, err);
+    //   res.sendStatus(400);
+    // }
+
+    // const newUser = await User.create({
+    //   username: 'lukehatcher',
+    //   githubId: 'github|52586655',
+    //   email: 'lukehatcher98@gmail.com',
+    // }).save();
+    // console.log(newUser);
   };
 }
 

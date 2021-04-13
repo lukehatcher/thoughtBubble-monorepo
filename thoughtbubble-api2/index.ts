@@ -17,13 +17,6 @@ const main = async () => {
     synchronize: true,
   });
 
-  // const newUser = await User.create({
-  //   username: 'lukehatcher',
-  //   githubId: 'github|52586655',
-  //   email: 'lukehatcher98@gmail.com',
-  // }).save();
-  // console.log(newUser);
-
   const app = express();
   app.use(cors());
   app.use(morgan('dev'));

@@ -7,12 +7,12 @@ interface userData {
   key?: string; // used later for -> https://github.com/jemise111/react-native-swipe-list-view#usage
 }
 
-export const UserDataReducer = (state = initialState, action): userData[] => {
+export const UserDataReducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
     case 'fetchData':
       console.log(payload, 'payload');
-      return payload.projects;
+      return payload;
     case 'addProject':
       return [
         ...state,

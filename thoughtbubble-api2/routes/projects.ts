@@ -12,8 +12,8 @@ router
 
 // api/projects/init
 // not tested
-// router
-//   .route('/init') //
-//   .post(ProjectsController.initProjects);
+router
+  .route('/init') //
+  .post(ProjectsController.initProjects);
 
 export default router;
