@@ -49,7 +49,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
   const renderItem = (data) => (
     // for slidables
     <TouchableHighlight
-      onPress={() => navigation.navigate('Thoughts', { projectId: data.item._id })}
+      onPress={() => navigation.navigate('Thoughts', { projectId: data.item.id })}
       style={styles.rowFront}
       underlayColor={'grey'}
     >
@@ -74,7 +74,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnRight]}
-        onPress={() => handleProjectDeletion(data.item._id)} // id
+        onPress={() => handleProjectDeletion(data.item.id)} // id
       >
         <Ionicon name="trash-outline" size={25} color="white" />
       </TouchableOpacity>
@@ -88,7 +88,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
     <>
       <View style={styles.container}>
         <SwipeListView
-          data={userProjectsData.map((i) => ({ ...i, key: i._id }))} // swipeviewlist api requires key prop
+          data={userProjectsData.map((i) => ({ ...i, key: i.id }))} // swipeviewlist api requires key prop
           renderItem={renderItem}
           renderHiddenItem={renderHiddenItem}
           recalculateHiddenLayout
@@ -194,7 +194,6 @@ const styles = StyleSheet.create({
     width: 250,
   }, // new ================
   container: {
-    // holds the guys
     flex: 1,
     backgroundColor: '#121212',
   },

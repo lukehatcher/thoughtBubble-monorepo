@@ -1,30 +1,18 @@
-const initialState = [];
+import { ProjectShape } from '../interfaces/data';
 
-interface userData {
-  _id: string;
-  projectName: string;
-  todos: any[];
-  key?: string; // used later for -> https://github.com/jemise111/react-native-swipe-list-view#usage
-}
+const initialState: ProjectShape[] = [];
 
-export const UserDataReducer = (state = initialState, action) => {
+export const UserDataReducer = (state = initialState, action): ProjectShape[] => {
   const { type, payload } = action;
   switch (type) {
     case 'fetchData':
       console.log(payload, 'payload');
       return payload;
     case 'addProject':
-      return [
-        ...state,
-        {
-          _id: payload._id,
-          projectName: payload.projectName,
-          todos: [],
-        },
-      ];
+      return [...state, payload];
     case 'deleteProject':
       console.log('filter about to run');
-      return state.filter((projects) => projects._id !== payload);
+      return state.filter((projects) => projects.id !== payload);
     case 'addThought':
       return state.map((item) => {
         if (item._id !== payload.projectId) {

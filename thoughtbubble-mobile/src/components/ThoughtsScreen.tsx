@@ -36,7 +36,7 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
   const dispatch = useDispatch();
   const { projectId } = route.params;
   const thoughtsSelector = (state: RootState) =>
-    state.userData.find((proj) => proj._id === projectId).todos;
+    state.userData.find((proj) => proj.id === projectId).projectThoughts;
   let todos = useSelector(thoughtsSelector); // retrive thoughts for the project we're on
 
   const userSelector = (state: RootState) => state.storedUser.sub;
