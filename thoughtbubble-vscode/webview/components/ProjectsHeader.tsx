@@ -79,7 +79,7 @@ export const ProjectsHeader: React.FC = function () {
         <>
           <div className="menu-item top-corners">click on a project to delete it</div>
           {userData.map((proj) => (
-            <div className="menu-item" key={proj.id} onClick={() => handleProjectDeletion(proj._id)}>
+            <div className="menu-item" key={proj.id} onClick={() => handleProjectDeletion(proj.id)}>
               {proj.projectName}
             </div>
           ))}

@@ -20,7 +20,7 @@ export const UserDataReducer = (state = initialState, action): ProjectShape[] =>
       ];
     case 'deleteProject':
       console.log(state, 'checking things');
-      return state.filter((projects) => projects._id !== payload);
+      return state.filter((projects) => projects.id !== payload);
     case 'addThought': // renamed for ext
       return state.map((item) => {
         if (item._id !== payload.projectId) {

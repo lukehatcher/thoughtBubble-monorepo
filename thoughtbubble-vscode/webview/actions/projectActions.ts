@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { ProjectShape } from '../interfaces/interfaces';
-// new api
+
 export const addProjectAction = (projectName: string) => {
   return async (dispatch, getState) => {
     const userSub = `github|${getState().storedUser.id}`;
@@ -16,7 +16,7 @@ export const addProjectAction = (projectName: string) => {
       .catch((err) => console.error('@projectActions.ts: ', err));
   };
 };
-// new api
+
 export const deleteProjectAction = (projectId: string) => {
   return async (dispatch, getState) => {
     const userSub = `github|${getState().storedUser.id}`;
@@ -27,7 +27,7 @@ export const deleteProjectAction = (projectId: string) => {
           projectId,
         },
       })
-      .then((res) => {
+      .then((_res) => {
         dispatch({ type: 'deleteProject', payload: projectId });
       })
       .catch((err) => console.error('@projectActions.ts: ', err));
