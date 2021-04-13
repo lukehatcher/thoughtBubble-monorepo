@@ -6,7 +6,7 @@ export const UserDataReducer = (state = initialState, action): ProjectShape[] =>
   const { type, payload } = action; // need to add destructuring in other files
   switch (type) {
     case 'fetchData':
-      return payload.projects;
+      return payload;
     case 'addProject':
       return [
         ...state,
