@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { ProjectShape } from '../interfaces/data';
 
 export const addProjectAction = function (projectName: string) {
   return async (dispatch, getState) => {
@@ -9,8 +10,8 @@ export const addProjectAction = function (projectName: string) {
         projectName,
       })
       .then((res) => {
-        const newId = res.data;
-        dispatch({ type: 'addProject', payload: { projectName, _id: newId } });
+        const newProject: ProjectShape = res.data;
+        dispatch({ type: 'addProject', payload: newProject });
       })
       .catch((err) => console.error('@projectActions.ts: ', err));
   };

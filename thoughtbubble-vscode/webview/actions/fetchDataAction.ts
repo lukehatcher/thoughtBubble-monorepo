@@ -10,7 +10,7 @@ export const fetchDataAction = (userSub: string) => {
       });
       dispatch({ type: 'fetchData', payload: response.data });
     } catch (err) {
-      console.error('fetchDataAction.ts: ', err);
+      console.error('@fetchDataAction.ts: ', err);
     }
   };
 };

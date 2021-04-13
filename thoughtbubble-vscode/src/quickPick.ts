@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import axios from 'axios';
 import { StateManager } from './stateManager';
-import { UserDataShape, projectTuple } from './interfaces';
+import { ProjectShape, projectTuple } from './interfaces';
 
 export async function fetchQuickPickData(): Promise<null | projectTuple[]> {
   const userData = StateManager.getToken();
@@ -9,8 +9,8 @@ export async function fetchQuickPickData(): Promise<null | projectTuple[]> {
   const userSub = `github|${JSON.parse(userData).id}`;
   try {
     const response = await axios.get('http://localhost:3001/api/projects', { params: { userSub } });
-    const userData: UserDataShape = response.data;
-    return userData.projects.map((proj) => ({ projectName: proj.projectName, projectId: proj._id }));
+    const userData: ProjectShape[] = response.data;
+    return userData.map((proj) => ({ projectName: proj.projectName, projectId: proj.id }));
   } catch (err) {
     vscode.window.showErrorMessage(JSON.stringify(err));
     return null; // ts needs this

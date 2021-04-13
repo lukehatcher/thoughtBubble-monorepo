@@ -25,9 +25,9 @@ import {
 import { filtertThoughtsAction } from '../actions/filterActions';
 import { fetchDataAction } from '../actions/fetchDataAction';
 import { MoreModal } from './MoreModal';
-import { TodosScreenProps } from '../interfaces/componentProps'; // type
+import { ThoughtScreenProps } from '../interfaces/componentProps'; // type
 
-export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }) => {
+export const ThoughtsScreen: React.FC<ThoughtScreenProps> = ({ route, navigation }) => {
   const [modalView, setModalView] = useState(false);
   const [sortModalView, setSortModalView] = useState(false);
   const [moreModalView, setMoreModalView] = useState(false);
@@ -36,8 +36,8 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
   const dispatch = useDispatch();
   const { projectId } = route.params;
   const thoughtsSelector = (state: RootState) =>
-    state.userData.find((proj) => proj._id === projectId).todos;
-  let todos = useSelector(thoughtsSelector); // retrive thoughts for the project we're on
+    state.userData.find((proj) => proj.id === projectId).projectThoughts;
+  let thoughts = useSelector(thoughtsSelector); // retrive thoughts for the project we're on
 
   const userSelector = (state: RootState) => state.storedUser.sub;
   const userSub = useSelector(userSelector);
@@ -99,14 +99,14 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
 
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnMid]}
-        onPress={() => handleThoughtStatusChange(data.item._id)}
+        onPress={() => handleThoughtStatusChange(data.item.id)}
       >
         <Ionicon name="checkbox-outline" size={25} color="white" />
       </TouchableOpacity>
 
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnRight]}
-        onPress={() => handleThoughtDelete(data.item._id)}
+        onPress={() => handleThoughtDelete(data.item.id)}
       >
         <Ionicon name="trash-outline" size={25} color="white" />
       </TouchableOpacity>
@@ -139,7 +139,7 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
     <>
       <View style={styles.container}>
         <SwipeListView
-          data={todos.map((i) => ({ ...i, key: i._id }))} // swipeviewlist api requires key prop
+          data={thoughts.map((i) => ({ ...i, key: i.id }))} // swipeviewlist api requires key prop
           renderItem={renderItem}
           renderHiddenItem={renderHiddenItem}
           recalculateHiddenLayout

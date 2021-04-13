@@ -14,7 +14,7 @@ import { AiOutlineCloseCircle, AiOutlineCheckCircle, AiOutlineReload } from 'rea
 export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
   const [input, setInput] = useState('');
   const dispatch = useDispatch();
-  const { projectName, _id: projectId } = project;
+  const { projectName, id: projectId } = project;
   const selector = (state: RootState) => state.storedUser!.id; // TS non-null-assertion-operator
   const userSub = `github|${useSelector(selector)}`;
 
@@ -25,7 +25,6 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
   };
 
   const handleThoughtFilter = function (filterType: string): void {
-    console.log('hgduial');
     switch (filterType) {
       case 'completed':
         dispatch(filtertThoughtsAction(projectId, 'completed'));
@@ -98,8 +97,8 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
         </Popup>
       </div>
       {/* display the actual thoughts */}
-      {project.todos.map((thought) => (
-        <ThoughtCard thought={thought} key={thought._id} projectId={projectId} thoughtId={thought._id} />
+      {project.projectThoughts.map((thought) => (
+        <ThoughtCard thought={thought} key={thought.id} projectId={projectId} thoughtId={thought.id} />
       ))}
     </div>
   );

@@ -17,7 +17,7 @@ export const ProjectList: React.FC = () => {
       <Link to="/home">return home</Link>
       <div id="projectList-container">
         {userProjects.map((project) => (
-          <ProjectCard project={project} key={project._id} />
+          <ProjectCard project={project} key={project.id} />
         ))}
       </div>
     </>
