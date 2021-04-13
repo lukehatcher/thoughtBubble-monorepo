@@ -79,7 +79,7 @@ export const UserDataReducer = (state = initialState, action): ProjectShape[] =>
         }
       });
     case 'filterData/completed':
-      return payload.data.projects.map((project) => {
+      return payload.data.map((project) => {
         if (project.id === payload.projectId) {
           return {
             ...project,
@@ -90,7 +90,7 @@ export const UserDataReducer = (state = initialState, action): ProjectShape[] =>
         }
       });
     case 'filterData/incomplete':
-      return payload.data.projects.map((project) => {
+      return payload.data.map((project) => {
         if (project.id === payload.projectId) {
           return {
             ...project,

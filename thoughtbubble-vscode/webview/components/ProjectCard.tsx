@@ -25,7 +25,6 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
   };
 
   const handleThoughtFilter = function (filterType: string): void {
-    console.log('hgduial');
     switch (filterType) {
       case 'completed':
         dispatch(filtertThoughtsAction(projectId, 'completed'));
