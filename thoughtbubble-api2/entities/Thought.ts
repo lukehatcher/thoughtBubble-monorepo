@@ -5,8 +5,8 @@ import { Project } from './Project';
 export class Thought extends BaseEntity {
   // extending with base enteity allows for using .find .create etc
   // see TS2564 for bang
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
 
   @Column('text')
   text!: string;
@@ -18,7 +18,7 @@ export class Thought extends BaseEntity {
   tag!: string;
 
   @Column()
-  projectId!: number;
+  projectId!: string;
 
   @ManyToOne(() => Project, (project) => project.thoughts, { onDelete: 'CASCADE' })
   // when delete a proj, all thoughts get deleted

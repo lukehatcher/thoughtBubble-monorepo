@@ -7,8 +7,8 @@ import { User } from './User';
 export class Project extends BaseEntity {
   // extending with base enteity allows for using .find .create etc
   // see TS2564 for bang
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
 
   @Column('text')
   projectName!: string;
@@ -17,7 +17,7 @@ export class Project extends BaseEntity {
   completed!: false;
 
   @Column()
-  userId!: number;
+  userId!: string;
 
   @ManyToOne(() => User, (user) => user.projects)
   @JoinColumn({ name: 'userId' })

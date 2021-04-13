@@ -1,12 +1,13 @@
 import axios from 'axios';
+import { User } from './entities/User';
 
 const userSub = 'github|52586655';
 
-const testPost = async function () {
+const testPost = async function (s: string) {
   try {
     const response = await axios.post('http://localhost:3001/api/projects', {
-      userSub: '1337',
-      projectName: 'tsdfbsde',
+      userSub,
+      projectName: s,
     });
     console.log(response.data);
   } catch (err) {
@@ -14,15 +15,10 @@ const testPost = async function () {
   }
 };
 
-// testPost();
-// testPost();
-// testPost();
-// testPost();
-// testPost();
-// testPost();
-// testPost();
-// testPost();
-// testPost();
+// testPost('asd');
+// testPost('asdf');
+// testPost('sdfd');
+// testPost('aaa');
 
 const testDel = async function () {
   try {
@@ -37,12 +33,12 @@ const testDel = async function () {
 
 // testDel();
 
-const testAddThought = async function (x: number) {
+const testAddThought = async function (s: string) {
   try {
     const response = await axios.post('http://localhost:3001/api/thoughts', {
-      userSub: '1337',
-      projectId: x,
-      thought: 'asdf',
+      userSub,
+      projectId: 'd47c424e-edac-4444-915f-245ba1c84dec',
+      thought: s,
     });
     console.log(response.data);
   } catch (err) {
@@ -50,10 +46,10 @@ const testAddThought = async function (x: number) {
   }
 };
 
-// testAddThought(2);
-// testAddThought(3);
-// testAddThought(4);
-// testAddThought(5);
+// testAddThought('hello');
+// testAddThought('thoughts');
+// testAddThought('blah');
+// testAddThought('asldkjfhl');
 
 const testDelThought = async function () {
   try {
@@ -106,7 +102,7 @@ const testFetch = async function () {
   try {
     const response = await axios.get('http://localhost:3001/api/projects', {
       params: {
-        userSub: '1234',
+        userSub,
       },
     });
     console.log(response.data);

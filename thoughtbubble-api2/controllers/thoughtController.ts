@@ -24,7 +24,7 @@ class ThoughtsController {
   public deleteThought = async (req: Request, res: Response): Promise<void> => {
     const { userSub, projectId, thoughtId } = req.query;
     try {
-      await Thought.delete({ id: Number(thoughtId) });
+      await Thought.delete({ id: thoughtId?.toString() });
       res.sendStatus(200);
     } catch (err) {
       console.error(this.location, err);

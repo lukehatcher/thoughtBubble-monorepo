@@ -4,6 +4,7 @@ import { join } from 'path';
 import express from 'express';
 import projectRouter from './routes/projects'; // default export
 import thoughtRouter from './routes/thoughts';
+import { User } from './entities/User';
 
 const main = async () => {
   await createConnection({
@@ -14,7 +15,11 @@ const main = async () => {
     synchronize: true,
   });
 
-  // const newUser = await User.create({ username: 'bobhatcher', githubId: '1337', email: 'swag@bob.com' }).save();
+  // const newUser = await User.create({
+  //   username: 'lukehatcher',
+  //   githubId: 'github|52586655',
+  //   email: 'lukehatcher98@gmail.com',
+  // }).save();
   // console.log(newUser);
 
   const app = express();

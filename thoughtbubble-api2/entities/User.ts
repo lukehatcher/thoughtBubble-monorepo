@@ -5,8 +5,8 @@ import { Project } from './Project';
 export class User extends BaseEntity {
   // extending with base enteity allows for using .find .create etc
   // see TS2564 for bangs
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
 
   @Column('text')
   username!: string;
