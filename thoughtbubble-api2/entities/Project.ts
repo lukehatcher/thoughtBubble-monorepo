@@ -1,4 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  BaseEntity,
+  ManyToOne,
+  JoinColumn,
+  OneToMany,
+  CreateDateColumn,
+} from 'typeorm';
 import { Thought } from './Thought';
 import { User } from './User';
 // import { Thought } from './Thought';
@@ -9,6 +18,9 @@ export class Project extends BaseEntity {
   // see TS2564 for bang
   @PrimaryGeneratedColumn('uuid')
   id!: string;
+
+  @CreateDateColumn()
+  createdDate!: Date;
 
   @Column('text')
   projectName!: string;

@@ -21,6 +21,7 @@ class ProjectsController {
       const usersProjects = await getRepository(Project) //
         .createQueryBuilder('project')
         .where('project.userId = :userId', { userId: userIdx })
+        .orderBy('project.createdDate', 'ASC')
         .getMany();
       console.log('___end___');
       console.log(JSON.stringify(usersProjects));
@@ -33,6 +34,7 @@ class ProjectsController {
         const projectThoughts = await getRepository(Thought) //
           .createQueryBuilder('thought')
           .where('thought.projectId = :projectId', { projectId: projectIdx })
+          .orderBy('thought.createdDate', 'ASC')
           .getMany();
         const projectThoughts2 = projectThoughts as any[];
         data[i].projectThoughts = projectThoughts2; // thoughts is a keyword
@@ -54,7 +56,7 @@ class ProjectsController {
       const user = await User.findOne({ githubId: userSub }); // wack naming
       const userId = user?.id;
       const newProject = await Project.create({ projectName, userId }).save();
-      res.send({ newProject }); // maybe just send the id
+      res.send(newProject); // maybe just send the id
     } catch (err) {
       console.error(this.location, err);
       res.sendStatus(400);

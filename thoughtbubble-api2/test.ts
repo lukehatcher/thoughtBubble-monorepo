@@ -49,7 +49,7 @@ const testAddThought = async function (s: string) {
 // testAddThought('hello');
 // testAddThought('thoughts');
 // testAddThought('blah');
-// testAddThought('asldkjfhl');
+testAddThought('this is new');
 
 const testDelThought = async function () {
   try {
@@ -110,4 +110,4 @@ const testFetch = async function () {
     console.error(err);
   }
 };
-testFetch();
+// testFetch();
