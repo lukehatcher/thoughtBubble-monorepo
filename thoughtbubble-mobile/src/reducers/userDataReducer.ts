@@ -11,19 +11,15 @@ export const UserDataReducer = (state = initialState, action): ProjectShape[] =>
     case 'addProject':
       return [...state, payload];
     case 'deleteProject':
-      console.log('filter about to run');
       return state.filter((projects) => projects.id !== payload);
     case 'addThought':
       return state.map((item) => {
-        if (item._id !== payload.projectId) {
+        if (item.id !== payload.projectId) {
           return item;
         } else {
           return {
             ...item,
-            todos: [
-              ...item.todos,
-              { _id: payload._id, text: payload.thought, completed: false }, //
-            ],
+            projectThoughts: [...item.projectThoughts, payload],
           };
         }
       });

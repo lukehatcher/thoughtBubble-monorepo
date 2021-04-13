@@ -37,7 +37,7 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
   const { projectId } = route.params;
   const thoughtsSelector = (state: RootState) =>
     state.userData.find((proj) => proj.id === projectId).projectThoughts;
-  let todos = useSelector(thoughtsSelector); // retrive thoughts for the project we're on
+  let thoughts = useSelector(thoughtsSelector); // retrive thoughts for the project we're on
 
   const userSelector = (state: RootState) => state.storedUser.sub;
   const userSub = useSelector(userSelector);
@@ -139,7 +139,7 @@ export const ThoughtsScreen: React.FC<TodosScreenProps> = ({ route, navigation }
     <>
       <View style={styles.container}>
         <SwipeListView
-          data={todos.map((i) => ({ ...i, key: i._id }))} // swipeviewlist api requires key prop
+          data={thoughts.map((i) => ({ ...i, key: i.id }))} // swipeviewlist api requires key prop
           renderItem={renderItem}
           renderHiddenItem={renderHiddenItem}
           recalculateHiddenLayout
