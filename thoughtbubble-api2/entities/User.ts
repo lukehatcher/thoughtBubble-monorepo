@@ -11,6 +11,9 @@ export class User extends BaseEntity {
   @Column('text')
   username!: string;
 
+  @Column('boolean', { default: true })
+  dailyEmail!: boolean;
+
   @Column('text', { unique: true })
   githubId!: string;
 
