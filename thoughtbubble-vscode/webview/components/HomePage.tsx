@@ -8,7 +8,7 @@ import { LoginButton } from './LoginButton';
 import { VscSettingsGear, VscBook } from 'react-icons/vsc';
 
 export const HomePage: React.FC = () => {
-  const loginSelector = (state: RootState) => state.userData;
+  const loginSelector = (state: RootState) => state.userProjectData;
   const userSelector = (state: RootState) => state.storedUser;
   const loginStatus = useSelector(loginSelector);
 

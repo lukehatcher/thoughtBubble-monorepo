@@ -6,7 +6,7 @@ import { ProjectCard } from './ProjectCard';
 import { ProjectsHeader } from './ProjectsHeader';
 
 export const ProjectList: React.FC = () => {
-  const projectSelector = (state: RootState) => state.userData; // need to type userdata
+  const projectSelector = (state: RootState) => state.userProjectData; // need to type userdata
   const userProjects = useSelector(projectSelector);
 
   return (

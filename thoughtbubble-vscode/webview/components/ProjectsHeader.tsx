@@ -10,7 +10,7 @@ import { LogoutButton } from './LogoutButton';
 export const ProjectsHeader: React.FC = function () {
   const [input, setInput] = useState('');
   const dispatch = useDispatch();
-  const selector = (state: RootState) => state.userData;
+  const selector = (state: RootState) => state.userProjectData;
   const userData = useSelector(selector);
 
   const handleProjectAddition = function (e: React.FormEvent<HTMLFormElement>): void {

@@ -2,7 +2,7 @@ import { ProjectShape } from '../interfaces/interfaces';
 
 const initialState: ProjectShape[] = [];
 
-export const UserDataReducer = (state = initialState, action): ProjectShape[] => {
+export const UserProjectDataReducer = (state = initialState, action): ProjectShape[] => {
   const { type, payload } = action; // need to add destructuring in other files
   switch (type) {
     case 'fetchData':
