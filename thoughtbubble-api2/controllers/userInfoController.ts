@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import { Request, Response } from 'express';
 import { getConnection } from 'typeorm';
-import { Thought } from '../entities/Thought';
 import { User } from '../entities/User';
 import { sendEmail } from '../services/email';
 
@@ -17,12 +16,6 @@ class userInfoController {
     try {
       const user = await User.findOne({ githubId: userSub });
       const dailyEmailSetting = user?.dailyEmail;
-      await getConnection() //
-        .createQueryBuilder()
-        .update(User)
-        .set({ dailyEmail: !dailyEmailSetting })
-        .where('githubId = :githubId', { githubId: userSub })
-        .execute();
       if (dailyEmailSetting) {
         // opting out
         sendEmail(
@@ -38,6 +31,12 @@ class userInfoController {
           'thoughtBubble email settings changed',
           '<h3>thoughtBubble</h3><p>you have successfully turned <b>on</b> email notifications</p>'
         );
+        await getConnection() //
+          .createQueryBuilder()
+          .update(User)
+          .set({ dailyEmail: !dailyEmailSetting })
+          .where('githubId = :githubId', { githubId: userSub })
+          .execute();
         res.sendStatus(200);
       }
     } catch (err) {
@@ -47,7 +46,7 @@ class userInfoController {
   };
 
   public fetchUserInfo = async (req: Request, res: Response): Promise<void> => {
-    const { userSub } = req.body;
+    const userSub = req.query.userSub as string;
     try {
       const user = await User.findOne({ githubId: userSub });
       // return user item without projects
