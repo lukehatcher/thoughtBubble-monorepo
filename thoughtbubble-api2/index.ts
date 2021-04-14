@@ -6,16 +6,24 @@ import { join } from 'path';
 import express from 'express';
 import projectRouter from './routes/projects'; // default export
 import thoughtRouter from './routes/thoughts';
+import emailRouter from './routes/email';
 import { User } from './entities/User';
 
-const main = async () => {
-  await createConnection({
-    type: 'postgres',
-    database: 'thoughtbubble',
-    entities: [join(__dirname, './entities/*.*')],
-    logging: true, // !process.env.__prod__
-    synchronize: true,
-  });
+const PORT = process.env.PORT;
+const NODE_ENV = process.env.NODE_ENV;
+
+(async function () {
+  try {
+    await createConnection({
+      type: 'postgres',
+      database: 'thoughtbubble',
+      entities: [join(__dirname, './entities/*.*')],
+      logging: NODE_ENV === 'development',
+      synchronize: NODE_ENV === 'development',
+    });
+  } catch (err) {
+    console.error('error creating typeORM postgres connection', err);
+  }
 
   const app = express();
   app.use(cors());
@@ -23,7 +31,6 @@ const main = async () => {
   app.use(express.json()); // for post and x only
   app.use('/api/projects', projectRouter);
   app.use('/api/thoughts', thoughtRouter);
-  app.listen(3001, () => console.log('📈listening on port 3001'));
-};
-
-main();
+  app.use('/api/email', emailRouter);
+  app.listen(PORT, () => console.log(`✅ listening on port ${PORT}`));
+})();
