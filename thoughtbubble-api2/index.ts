@@ -6,8 +6,7 @@ import { join } from 'path';
 import express from 'express';
 import projectRouter from './routes/projects'; // default export
 import thoughtRouter from './routes/thoughts';
-import emailRouter from './routes/email';
-import { User } from './entities/User';
+import userInfoRouter from './routes/userInfo';
 
 const PORT = process.env.PORT;
 const NODE_ENV = process.env.NODE_ENV;
@@ -31,6 +30,6 @@ const NODE_ENV = process.env.NODE_ENV;
   app.use(express.json()); // for post and x only
   app.use('/api/projects', projectRouter);
   app.use('/api/thoughts', thoughtRouter);
-  app.use('/api/email', emailRouter);
+  app.use('/api/userinfo', userInfoRouter);
   app.listen(PORT, () => console.log(`✅ listening on port ${PORT}`));
 })();

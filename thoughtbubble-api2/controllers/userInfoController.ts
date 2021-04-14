@@ -5,7 +5,7 @@ import { Thought } from '../entities/Thought';
 import { User } from '../entities/User';
 import { sendEmail } from '../services/email';
 
-class emailController {
+class userInfoController {
   private readonly location: string;
 
   constructor() {
@@ -45,6 +45,26 @@ class emailController {
       res.sendStatus(400);
     }
   };
+
+  public fetchUserInfo = async (req: Request, res: Response): Promise<void> => {
+    const { userSub } = req.body;
+    try {
+      const user = await User.findOne({ githubId: userSub });
+      // return user item without projects
+      // cannot just delete cause of ts 2790
+      const userInfo = {
+        id: user?.id,
+        username: user?.username,
+        githubId: user?.githubId,
+        email: user?.email,
+        dailyEmail: user?.dailyEmail,
+      };
+      res.send(userInfo);
+    } catch (err) {
+      console.error(this.location, err);
+      res.sendStatus(400);
+    }
+  };
 }
 
-export default new emailController();
+export default new userInfoController();
