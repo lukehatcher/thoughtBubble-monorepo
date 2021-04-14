@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { changeEmailSettingsAction } from '../actions/emailActions';
+import { changeEmailSettingsAction } from '../actions/userInfoActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../reducers/rootReducer';
 
@@ -7,16 +7,20 @@ import { RootState } from '../reducers/rootReducer';
 
 export const SettingsPage: React.FC = function () {
   const dispatch = useDispatch();
-  // const selectEmailSetting = (state: RootState) => state
+  const selectEmailSetting = (state: RootState) => state.userInfo.dailyEmail;
+  const dailyEmailSetting = useSelector(selectEmailSetting);
 
   const handleEmailSettingToggle = function () {
-    dispatch(changeEmailSettingsAction);
+    dispatch(changeEmailSettingsAction());
   };
 
   return (
     <div>
-      <p>this is the settings page</p>
-      <button type="button" onClick={handleEmailSettingToggle}></button>
+      <h1>settings</h1>
+      <h3>daily emails: {dailyEmailSetting ? 'currently on' : 'currently off'}</h3>
+      <button type="button" onClick={() => handleEmailSettingToggle()}>
+        {dailyEmailSetting ? 'opt-out' : 'opt-in'}
+      </button>
     </div>
   );
 };

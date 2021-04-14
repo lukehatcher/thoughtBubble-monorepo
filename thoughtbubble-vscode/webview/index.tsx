@@ -7,6 +7,7 @@ import store from './store';
 import { fetchDataAction } from './actions/fetchDataAction';
 import { SettingsPage } from './components/SettingsPage';
 import { ProjectList } from './components/ProjectList';
+import { fetchUserInfoAction } from './actions/userInfoActions';
 
 // request user token from extension
 vscodeGlobal.postMessage({
@@ -22,7 +23,9 @@ window.addEventListener('message', (e) => {
       // should check db here first then await...
       store.dispatch({ type: 'storeUser', payload: JSON.parse(message.userData) });
       const userSub = `github|${JSON.parse(message.userData).id}`;
+      // seed redux store
       store.dispatch(fetchDataAction(userSub));
+      store.dispatch(fetchUserInfoAction());
       return;
     }
   }
