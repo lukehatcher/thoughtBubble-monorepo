@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
 import { storeUserReducer } from './storedUserReducer';
 import { UserProjectDataReducer } from './userProjectDataReducer';
+import { userInfoReducer } from './userInfoReducer';
 
 const appReducer = combineReducers({
   storedUser: storeUserReducer,
   userProjectData: UserProjectDataReducer,
+  userInfo: userInfoReducer,
 });
 
 export const rootReducer = (state, action) => {
