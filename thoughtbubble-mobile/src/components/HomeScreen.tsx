@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, Button, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, Button, TouchableOpacity, ScrollView } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../reducers/rootReducer';
 import { _onLogOut } from '../utils/auth';
@@ -8,6 +8,8 @@ import { HomeScreenProps } from '../interfaces/componentProps';
 export const HomeScreen: React.FC<HomeScreenProps> = () => {
   const selector = (state: RootState) => state.storedUser;
   let idToken = useSelector(selector);
+  // const selectEmailSetting = (state: RootState) => state.userInfo.dailyEmail;
+  // const dailyEmailSetting = useSelector(selectEmailSetting);
 
   return (
     <>
@@ -21,6 +23,9 @@ export const HomeScreen: React.FC<HomeScreenProps> = () => {
           </View>
           <View>
             <Text style={styles.text}>Email: {idToken.email}</Text>
+          </View>
+          <View>
+            <Text style={styles.text}>email settings (on/off)</Text>
           </View>
           <TouchableOpacity style={styles.btn1}>
             <Button title="logout" onPress={() => _onLogOut()} color="#121212" />
