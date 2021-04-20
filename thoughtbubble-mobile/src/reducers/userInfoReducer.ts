@@ -5,6 +5,8 @@ interface UserInfoShape {
   username: string;
   githubId: string;
   dailyEmail: boolean;
+  weeklyEmail: boolean;
+  // darkMode: boolean;
 }
 
 const initialState: UserInfoShape = {
@@ -13,6 +15,8 @@ const initialState: UserInfoShape = {
   username: '',
   githubId: '',
   dailyEmail: true,
+  weeklyEmail: true,
+  // darkMode: true,
 };
 
 export const userInfoReducer = (state = initialState, action): UserInfoShape => {
@@ -23,6 +27,16 @@ export const userInfoReducer = (state = initialState, action): UserInfoShape => 
       return {
         ...state,
         dailyEmail: !state.dailyEmail,
+      };
+    case 'toggleWeeklyEmail':
+      return {
+        ...state,
+        weeklyEmail: !state.weeklyEmail,
+      };
+    case 'toggleDarkMode':
+      return {
+        ...state,
+        // darkMode: !state.darkMode,
       };
     default:
       return state;

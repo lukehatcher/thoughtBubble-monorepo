@@ -1,15 +1,22 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, Button, TouchableOpacity, ScrollView } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../reducers/rootReducer';
 import { _onLogOut } from '../utils/auth';
 import { HomeScreenProps } from '../interfaces/componentProps';
+import { changeEmailSettingsAction } from '../actions/userInfoActions';
+import Switch from 'react-native-switch-pro';
 
 export const HomeScreen: React.FC<HomeScreenProps> = () => {
-  const selector = (state: RootState) => state.storedUser;
-  let idToken = useSelector(selector);
-  // const selectEmailSetting = (state: RootState) => state.userInfo.dailyEmail;
-  // const dailyEmailSetting = useSelector(selectEmailSetting);
+  const dispatch = useDispatch();
+  let idToken = useSelector((state: RootState) => state.storedUser);
+  const dailyEmailSetting = useSelector((state: RootState) => state.userInfo.dailyEmail);
+  const weeklyEmailSetting = useSelector((state: RootState) => state.userInfo.weeklyEmail);
+
+  const handleEmailSettingToggle = function (emailSetting: string) {
+    if (emailSetting === 'daily') dispatch(changeEmailSettingsAction('daily'));
+    else dispatch(changeEmailSettingsAction('weekly'));
+  };
 
   return (
     <>
@@ -17,26 +24,43 @@ export const HomeScreen: React.FC<HomeScreenProps> = () => {
         <Image source={{ uri: idToken.picture }} style={styles.img} />
       </View>
       <View style={styles.bottomContainer}>
-        <View style={styles.infoContainer}>
-          <View>
-            <Text style={styles.text}>Name: {idToken.name}</Text>
-          </View>
-          <View>
-            <Text style={styles.text}>Email: {idToken.email}</Text>
-          </View>
-          <View>
-            <Text style={styles.text}>email settings (on/off)</Text>
-          </View>
-          <TouchableOpacity style={styles.btn1}>
-            <Button title="logout" onPress={() => _onLogOut()} color="#121212" />
-          </TouchableOpacity>
+        <View style={styles.settingItem}>
+          <Text style={styles.text}>Name: {idToken.name}</Text>
         </View>
+        <View style={styles.settingItem}>
+          <Text style={styles.text}>Email: {idToken.email}</Text>
+        </View>
+        <View style={styles.settingItem}>
+          <Text style={styles.text}>daily emails: </Text>
+          <Switch value={dailyEmailSetting} onSyncPress={() => handleEmailSettingToggle('daily')} />
+        </View>
+        <View style={styles.settingItem}>
+          <Text style={styles.text}>weekly emails: (coming soon)</Text>
+          <Switch value={weeklyEmailSetting} onSyncPress={() => handleEmailSettingToggle('weekly')} />
+        </View>
+        <View style={styles.settingItem}>
+          <Text style={styles.text}>dark mode: on</Text>
+          <Switch onSyncPress={() => console.log('dark mode changed')} />
+        </View>
+        {/* <TouchableOpacity>
+          <Button title="toggle email" onPress={() => handleEmailSettingToggle()} />
+        </TouchableOpacity> */}
+        <TouchableOpacity style={styles.btn1}>
+          <Button title="logout" onPress={() => _onLogOut()} color="#121212" />
+        </TouchableOpacity>
       </View>
     </>
   );
 };
 
 const styles = StyleSheet.create({
+  settingItem: {
+    padding: 15,
+    // margin: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: 'white',
+    backgroundColor: 'rgb(44, 44, 46)',
+  },
   img: {
     width: 100,
     height: 100,
@@ -50,26 +74,27 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     flex: 2.75,
-    alignItems: 'center',
-    justifyContent: 'center',
+    // alignItems: 'center',
+    // justifyContent: 'center',
     backgroundColor: '#121212',
-    height: '75%',
+    // height: '75%',
   },
-  infoContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgb(44, 44, 46)',
-    padding: 25,
-    width: '90%',
-    height: '90%',
-    borderRadius: 30,
-  },
+  // infoContainer: {
+  //   // deleted
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  //   backgroundColor: 'rgb(44, 44, 46)',
+  //   padding: 25,
+  //   width: '90%',
+  //   height: '90%',
+  //   borderRadius: 30,
+  // },
   text: {
     color: 'rgb(199, 199, 204)',
   },
   btn1: {
-    position: 'absolute',
-    bottom: 15,
+    // position: 'absolute',
+    // bottom: 15,
     backgroundColor: '#CF6679',
     borderRadius: 15,
     padding: 6,
