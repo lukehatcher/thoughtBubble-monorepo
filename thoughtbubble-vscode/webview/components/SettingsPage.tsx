@@ -29,7 +29,7 @@ export const SettingsPage: React.FC = function () {
           checkedIcon={false}
           uncheckedIcon={false}
           offColor="#121212"
-          activeBoxShadow={null}
+          activeBoxShadow={'none'}
           height={21} // 28 default
           width={42} // 56 default
         />
@@ -42,9 +42,9 @@ export const SettingsPage: React.FC = function () {
           checkedIcon={false}
           uncheckedIcon={false}
           offColor="#121212"
-          activeBoxShadow={null}
-          height={21} // 28 default
-          width={42} // 56 default
+          activeBoxShadow={'none'}
+          height={21}
+          width={42}
         />
       </div>
     </div>
