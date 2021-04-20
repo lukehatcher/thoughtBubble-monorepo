@@ -2,7 +2,7 @@ import { ProjectShape } from '../interfaces/data';
 
 const initialState: ProjectShape[] = [];
 
-export const UserDataReducer = (state = initialState, action): ProjectShape[] => {
+export const UserProjectDataReducer = (state = initialState, action): ProjectShape[] => {
   const { type, payload } = action;
   switch (type) {
     case 'fetchData':
