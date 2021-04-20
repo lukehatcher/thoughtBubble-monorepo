@@ -3,7 +3,6 @@ import { Request, Response } from 'express';
 import { getConnection } from 'typeorm';
 import { User } from '../entities/User';
 import { sendEmail } from '../services/email';
-import { youtubeAnalytics } from 'googleapis/build/src/apis/youtubeAnalytics';
 
 class userInfoController {
   private readonly location: string;
@@ -16,14 +15,15 @@ class userInfoController {
     const userSub = req.query.userSub as string;
     try {
       const user = await User.findOne({ githubId: userSub });
-      // return user item without projects
-      // cannot just delete cause of ts 2790
+      // return user item without projects, cannot just delete projs cause of ts2790
       const userInfo = {
         id: user?.id,
         username: user?.username,
         githubId: user?.githubId,
         email: user?.email,
         dailyEmail: user?.dailyEmail,
+        weeklyEmail: user?.weeklyEmail,
+        darkMode: user?.darkMode,
       };
       res.send(userInfo);
     } catch (err) {
@@ -34,15 +34,20 @@ class userInfoController {
 
   public toggleDarkMode = async (req: Request, res: Response) => {
     const { userSub } = req.body;
-    const user = await User.findOne({ githubId: userSub });
-    const darkModeSetting = user?.darkMode;
-    await getConnection() //
-      .createQueryBuilder()
-      .update(User)
-      .set({ darkMode: !darkModeSetting })
-      .where('githubId = :githubId', { githubId: userSub })
-      .execute();
-    res.sendStatus(200);
+    try {
+      const user = await User.findOne({ githubId: userSub });
+      const darkModeSetting = user?.darkMode;
+      await getConnection() //
+        .createQueryBuilder()
+        .update(User)
+        .set({ darkMode: !darkModeSetting })
+        .where('githubId = :githubId', { githubId: userSub })
+        .execute();
+      res.sendStatus(200);
+    } catch (err) {
+      console.error(this.location, err);
+      res.sendStatus(400);
+    }
   };
 
   public toggleDailyEmailSetting = async (req: Request, res: Response): Promise<void> => {
