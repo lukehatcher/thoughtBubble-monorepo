@@ -1,18 +1,19 @@
 import { combineReducers } from 'redux';
 import { storeUserReducer } from './storedUserReducer';
-import { UserDataReducer } from './userDataReducer';
+import { UserProjectDataReducer } from './userProjectDataReducer';
+import { userInfoReducer } from './userInfoReducer';
 
 const appReducer = combineReducers({
   storedUser: storeUserReducer,
-  userData: UserDataReducer,
+  userProjectData: UserProjectDataReducer,
+  userInfo: userInfoReducer,
 });
 
 export const rootReducer = (state, action) => {
   if (action.type === 'USER_LOGOUT') {
-    // reducers return initial state when called with undefined, thus this will clear store
     state = undefined;
   }
   return appReducer(state, action);
 };
 
-export type RootState = ReturnType<typeof rootReducer>; // used for useSelector hooks
+export type RootState = ReturnType<typeof rootReducer>;

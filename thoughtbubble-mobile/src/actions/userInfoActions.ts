@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const fetchUserInfoAction = () => {
   return async (dispatch, getState) => {
-    const userSub = `github|${getState().storedUser.id}`;
+    const userSub = getState().storedUser.sub;
     axios
       .get('http://localhost:3001/api/userinfo', {
         params: { userSub },
@@ -17,7 +17,7 @@ export const fetchUserInfoAction = () => {
 export const changeEmailSettingsAction = (emailSetting: string) => {
   if (emailSetting === 'daily') {
     return async (dispatch, getState) => {
-      const userSub = `github|${getState().storedUser.id}`;
+      const userSub = getState().storedUser.sub;
       axios
         .put('http://localhost:3001/api/userinfo/dailyemail', {
           userSub,
@@ -29,7 +29,7 @@ export const changeEmailSettingsAction = (emailSetting: string) => {
     };
   } else {
     return async (dispatch, getState) => {
-      const userSub = `github|${getState().storedUser.id}`;
+      const userSub = getState().storedUser.sub;
       axios
         .put('http://localhost:3001/api/userinfo/weeklyemail', {
           userSub,
@@ -40,4 +40,18 @@ export const changeEmailSettingsAction = (emailSetting: string) => {
         .catch((err) => console.error('@userInfoActions.ts: ', err));
     };
   }
+};
+
+export const changeDarkModeAction = () => {
+  return async (dispatch, getState) => {
+    const userSub = getState().storedUser.sub;
+    axios
+      .put('http://localhost:3001/api/userinfo/darkmode', {
+        userSub,
+      })
+      .then(() => {
+        dispatch({ type: 'toggleDarkMode', payload: '' });
+      })
+      .catch((err) => console.error('@userInfoActions.ts: ', err));
+  };
 };

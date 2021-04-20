@@ -3,7 +3,7 @@ import jwtDecode, { JwtPayload } from 'jwt-decode';
 import { persistidToken, clearAsyncStorage } from './asyncStorage';
 import store from '../store';
 import { storeUserAction } from '../actions/storeUserAction';
-import { fetchDataAction } from '../actions/fetchDataAction';
+import { fetchProjectDataAction } from '../actions/fetchProjectDataAction';
 
 const auth0 = new Auth0({
   domain: 'dev-4pq8almu.us.auth0.com',
@@ -19,7 +19,7 @@ export const _onLogIn = function (): void {
       await persistidToken(decodedJwt);
       store.dispatch(storeUserAction(decodedJwt));
       // throws error here
-      store.dispatch(fetchDataAction(decodedJwt.sub)); // also adds user to db if needed
+      store.dispatch(fetchProjectDataAction(decodedJwt.sub)); // also adds user to db if needed
     })
     .catch((err) => console.log('auth.ts: login canceled/error logging into auth0', err));
 };

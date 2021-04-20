@@ -16,7 +16,7 @@ const initialState: UserInfoShape = {
   githubId: '',
   dailyEmail: true,
   weeklyEmail: true,
-  darkMode: true, // not used atm
+  darkMode: true,
 };
 
 export const userInfoReducer = (state = initialState, action): UserInfoShape => {
@@ -33,11 +33,11 @@ export const userInfoReducer = (state = initialState, action): UserInfoShape => 
         ...state,
         weeklyEmail: !state.weeklyEmail,
       };
-    // case 'toggleDarkMode':
-    //   return {
-    //     ...state,
-    //     darkMode: !state.darkMode,
-    //   };
+    case 'toggleDarkMode':
+      return {
+        ...state,
+        darkMode: !state.darkMode,
+      };
     default:
       return state;
   }

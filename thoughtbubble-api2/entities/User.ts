@@ -14,6 +14,12 @@ export class User extends BaseEntity {
   @Column('boolean', { default: true })
   dailyEmail!: boolean;
 
+  @Column('boolean', { default: true })
+  weeklyEmail!: boolean;
+
+  @Column('boolean', { default: true })
+  darkMode!: boolean;
+
   @Column('text', { unique: true })
   githubId!: string;
 

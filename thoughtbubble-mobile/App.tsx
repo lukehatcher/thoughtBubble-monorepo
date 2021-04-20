@@ -12,9 +12,10 @@ import { AppNavTabs } from './src/components/AppNavTabs';
 import { LoginScreen } from './src/components/LoginScreen';
 import { checkForIdToken } from './src/utils/asyncStorage';
 import { storeUserAction } from './src/actions/storeUserAction';
-import { fetchDataAction } from './src/actions/fetchDataAction';
+import { fetchProjectDataAction } from './src/actions/fetchProjectDataAction';
 import { RootState } from './src/reducers/rootReducer'; // type
 import store from './src/store';
+import { fetchUserInfoAction } from './src/actions/userInfoActions';
 
 interface AppProps {}
 
@@ -44,7 +45,8 @@ checkForIdToken().then(async (res) => {
   const status = res !== null;
   await store.dispatch(storeUserAction(res)); // store idToken in redux store if theres an idToken in asyncstorage
   if (status) {
-    await store.dispatch(fetchDataAction(res.sub)); // populate the redux store with the user's data
+    await store.dispatch(fetchProjectDataAction(res.sub)); // populate the redux store with the user's projects
+    await store.dispatch(fetchUserInfoAction()); // fetch users personal settings/info etc
   }
 });
 

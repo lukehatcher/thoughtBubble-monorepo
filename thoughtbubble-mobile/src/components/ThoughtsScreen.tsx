@@ -17,13 +17,9 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import { RootState } from '../reducers/rootReducer'; // type
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {
-  addThoughtAction,
-  deleteThoughtAction,
-  thoughtStatusChangeAction,
-} from '../actions/thoughtActions';
+import { addThoughtAction, deleteThoughtAction, thoughtStatusChangeAction } from '../actions/thoughtActions';
 import { filtertThoughtsAction } from '../actions/filterActions';
-import { fetchDataAction } from '../actions/fetchDataAction';
+import { fetchProjectDataAction } from '../actions/fetchProjectDataAction';
 import { MoreModal } from './MoreModal';
 import { ThoughtScreenProps } from '../interfaces/componentProps'; // type
 
@@ -36,7 +32,7 @@ export const ThoughtsScreen: React.FC<ThoughtScreenProps> = ({ route, navigation
   const dispatch = useDispatch();
   const { projectId } = route.params;
   const thoughtsSelector = (state: RootState) =>
-    state.userData.find((proj) => proj.id === projectId).projectThoughts;
+    state.userProjectData.find((proj) => proj.id === projectId).projectThoughts;
   let thoughts = useSelector(thoughtsSelector); // retrive thoughts for the project we're on
 
   const userSelector = (state: RootState) => state.storedUser.sub;
@@ -71,7 +67,7 @@ export const ThoughtsScreen: React.FC<ThoughtScreenProps> = ({ route, navigation
   };
 
   const handleThoughtFilter = (typeOfFilter: string) => {
-    if (typeOfFilter === 'all') dispatch(fetchDataAction(userSub));
+    if (typeOfFilter === 'all') dispatch(fetchProjectDataAction(userSub));
     dispatch(filtertThoughtsAction(projectId, typeOfFilter));
   };
 
@@ -122,9 +118,7 @@ export const ThoughtsScreen: React.FC<ThoughtScreenProps> = ({ route, navigation
     // for slidables
     <TouchableHighlight style={styles.rowFront} underlayColor={'grey'}>
       <>
-        <Text style={data.item.completed ? styles.textCompleted : styles.text}>
-          {data.item.text}
-        </Text>
+        <Text style={data.item.completed ? styles.textCompleted : styles.text}>{data.item.text}</Text>
         <TouchableOpacity style={styles.moreBtn} onPress={() => renderModal(data.item.key)}>
           <MaterialIcons name="more-vert" size={35} color="rgb(199, 199, 204)" />
         </TouchableOpacity>
@@ -198,18 +192,10 @@ export const ThoughtsScreen: React.FC<ThoughtScreenProps> = ({ route, navigation
         <View style={styles.modal}>
           <Text style={styles.sortText}>filter by status</Text>
           <TouchableOpacity style={styles.btn2}>
-            <Button
-              color="white"
-              title="completed"
-              onPress={() => handleThoughtFilter('completed')}
-            />
+            <Button color="white" title="completed" onPress={() => handleThoughtFilter('completed')} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.btn2}>
-            <Button
-              color="white"
-              title="in progress"
-              onPress={() => handleThoughtFilter('incomplete')}
-            />
+            <Button color="white" title="in progress" onPress={() => handleThoughtFilter('incomplete')} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.btn2}>
             <Button color="white" title="view all" onPress={() => handleThoughtFilter('all')} />

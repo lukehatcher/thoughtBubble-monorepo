@@ -8,7 +8,15 @@ router // api/userinfo
   .get(ProjectsController.fetchUserInfo);
 
 router // api/userinfo/email
-  .route('/email')
+  .route('/dailyemail')
   .put(ProjectsController.toggleDailyEmailSetting);
+
+router // api/userinfo/email
+  .route('/weeklyemail')
+  .put(ProjectsController.toggleWeeklyEmailSetting);
+
+router // api/userinfo/email
+  .route('/darkmode')
+  .put(ProjectsController.toggleDarkMode);
 
 export default router;
