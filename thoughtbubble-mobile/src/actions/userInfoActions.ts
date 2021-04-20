@@ -42,16 +42,16 @@ export const changeEmailSettingsAction = (emailSetting: string) => {
   }
 };
 
-// export const changeDarkModeAction = () => {
-//   return async (dispatch, getState) => {
-//     const userSub = `github|${getState().storedUser.id}`;
-//     axios
-//       .put('http://localhost:3001/api/userinfo/darkmode', {
-//         userSub,
-//       })
-//       .then((res) => {
-//         dispatch({ type: 'toggleDarkMode', payload: '' });
-//       })
-//       .catch((err) => console.error('@thoughtActions.ts: ', err));
-//   };
-// };
+export const changeDarkModeAction = () => {
+  return async (dispatch, getState) => {
+    const userSub = getState().storedUser.sub;
+    axios
+      .put('http://localhost:3001/api/userinfo/darkmode', {
+        userSub,
+      })
+      .then(() => {
+        dispatch({ type: 'toggleDarkMode', payload: '' });
+      })
+      .catch((err) => console.error('@userInfoActions.ts: ', err));
+  };
+};

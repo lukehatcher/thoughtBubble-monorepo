@@ -1,21 +1,27 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, Button, TouchableOpacity, ScrollView } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
+import Switch from 'react-native-switch-pro';
 import { RootState } from '../reducers/rootReducer';
 import { _onLogOut } from '../utils/auth';
 import { HomeScreenProps } from '../interfaces/componentProps';
-import { changeEmailSettingsAction } from '../actions/userInfoActions';
-import Switch from 'react-native-switch-pro';
+import { changeEmailSettingsAction, changeDarkModeAction } from '../actions/userInfoActions';
 
 export const HomeScreen: React.FC<HomeScreenProps> = () => {
   const dispatch = useDispatch();
   let idToken = useSelector((state: RootState) => state.storedUser);
   const dailyEmailSetting = useSelector((state: RootState) => state.userInfo.dailyEmail);
   const weeklyEmailSetting = useSelector((state: RootState) => state.userInfo.weeklyEmail);
+  const darkModeSetting = useSelector((state: RootState) => state.userInfo.darkMode);
 
-  const handleEmailSettingToggle = function (emailSetting: string) {
+  const handleEmailSettingToggle = function (emailSetting: string): void {
     if (emailSetting === 'daily') dispatch(changeEmailSettingsAction('daily'));
     else dispatch(changeEmailSettingsAction('weekly'));
+  };
+
+  const handleDarkModeToggle = function (): void {
+    console.log('changed dark mode');
+    dispatch(changeDarkModeAction());
   };
 
   return (
@@ -35,16 +41,13 @@ export const HomeScreen: React.FC<HomeScreenProps> = () => {
           <Switch value={dailyEmailSetting} onSyncPress={() => handleEmailSettingToggle('daily')} />
         </View>
         <View style={styles.settingItem}>
-          <Text style={styles.text}>weekly emails: (coming soon)</Text>
+          <Text style={styles.text}>weekly emails </Text>
           <Switch value={weeklyEmailSetting} onSyncPress={() => handleEmailSettingToggle('weekly')} />
         </View>
         <View style={styles.settingItem}>
           <Text style={styles.text}>dark mode: on</Text>
-          <Switch onSyncPress={() => console.log('dark mode changed')} />
+          <Switch value={darkModeSetting} onSyncPress={() => handleDarkModeToggle()} />
         </View>
-        {/* <TouchableOpacity>
-          <Button title="toggle email" onPress={() => handleEmailSettingToggle()} />
-        </TouchableOpacity> */}
         <TouchableOpacity style={styles.btn1}>
           <Button title="logout" onPress={() => _onLogOut()} color="#121212" />
         </TouchableOpacity>
@@ -70,7 +73,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#6200EE', // #6200EE primary, #3700B3 primary variant
+    backgroundColor: '#BB86FC', // #6200EE primary, #3700B3 primary variant
   },
   bottomContainer: {
     flex: 2.75,
