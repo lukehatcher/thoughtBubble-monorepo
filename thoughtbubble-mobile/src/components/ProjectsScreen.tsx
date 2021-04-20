@@ -23,7 +23,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
   const [input, setInput] = useState('');
   const dispatch = useDispatch();
 
-  const selector = (state: RootState) => state.userData;
+  const selector = (state: RootState) => state.userProjectData;
   let userProjectsData = useSelector(selector);
 
   const handleProjectAddition = function (projectName: string) {
