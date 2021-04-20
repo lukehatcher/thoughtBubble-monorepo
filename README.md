@@ -12,7 +12,7 @@ _bubble your thoughts together by syncing them between your phone and code edito
 
 | sub directory                                                                                                  |           stack           |
 | :------------------------------------------------------------------------------------------------------------- | :-----------------------: |
-| [thoughtbubble-api](https://github.com/lukehatcher/thoughtBubble-monorepo/tree/master/thoughtbubble-api)       | Node/Express/Postgres API |
+| [thoughtbubble-api](https://github.com/lukehatcher/thoughtBubble-monorepo/tree/master/thoughtbubble-api2)      | Node/Express/Postgres API |
 | [thoughtbubble-mobile](https://github.com/lukehatcher/thoughtBubble-monorepo/tree/master/thoughtbubble-mobile) |  React Native mobile app  |
 | [thoughtbubble-vscode](https://github.com/lukehatcher/thoughtBubble-monorepo/tree/master/thoughtbubble-vscode) | React.js VSCode extension |
 
