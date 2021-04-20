@@ -1,12 +1,13 @@
 interface UserInfoShape {
+  // from query on User entity table
   id: string;
   email: string;
   username: string;
   githubId: string;
   dailyEmail: boolean;
+  weeklyEmail: boolean;
+  darkMode: boolean;
 }
-
-// data pertaining to a specific user from the User entity table
 
 const initialState: UserInfoShape = {
   id: '',
@@ -14,6 +15,8 @@ const initialState: UserInfoShape = {
   username: '',
   githubId: '',
   dailyEmail: true,
+  weeklyEmail: true,
+  darkMode: true, // not used atm
 };
 
 export const userInfoReducer = (state = initialState, action): UserInfoShape => {
@@ -25,6 +28,16 @@ export const userInfoReducer = (state = initialState, action): UserInfoShape => 
         ...state,
         dailyEmail: !state.dailyEmail,
       };
+    case 'toggleWeeklyEmail':
+      return {
+        ...state,
+        weeklyEmail: !state.weeklyEmail,
+      };
+    // case 'toggleDarkMode':
+    //   return {
+    //     ...state,
+    //     darkMode: !state.darkMode,
+    //   };
     default:
       return state;
   }
