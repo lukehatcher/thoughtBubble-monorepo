@@ -6,13 +6,16 @@ import { RootState } from '../reducers/rootReducer';
 import { _onLogOut } from '../utils/auth';
 import { HomeScreenProps } from '../interfaces/componentProps';
 import { changeEmailSettingsAction, changeDarkModeAction } from '../actions/userInfoActions';
+import { colors } from '../constants/colors';
+import { useTheme } from '../hooks/useTheme';
+import { getAutomaticTypeDirectiveNames } from 'typescript';
 
 export const HomeScreen: React.FC<HomeScreenProps> = () => {
   const dispatch = useDispatch();
   let idToken = useSelector((state: RootState) => state.storedUser);
   const dailyEmailSetting = useSelector((state: RootState) => state.userInfo.dailyEmail);
   const weeklyEmailSetting = useSelector((state: RootState) => state.userInfo.weeklyEmail);
-  const darkModeSetting = useSelector((state: RootState) => state.userInfo.darkMode);
+  const theme = useSelector((state: RootState) => state.userInfo.darkMode);
 
   const handleEmailSettingToggle = function (emailSetting: string): void {
     if (emailSetting === 'daily') dispatch(changeEmailSettingsAction('daily'));
@@ -20,89 +23,261 @@ export const HomeScreen: React.FC<HomeScreenProps> = () => {
   };
 
   const handleDarkModeToggle = function (): void {
-    console.log('changed dark mode');
     dispatch(changeDarkModeAction());
   };
 
+  const useTheme = (name: string) => (theme ? stylesDark[name] : stylesLight[name]);
+
   return (
     <>
-      <View style={styles.imageContainer}>
-        <Image source={{ uri: idToken.picture }} style={styles.img} />
+      <View style={useTheme('topView')}></View>
+      <View style={useTheme('middleView')}>
+        <Text style={useTheme('headerText')}>settings</Text>
       </View>
-      <View style={styles.bottomContainer}>
-        <View style={styles.settingItem}>
-          <Text style={styles.text}>Name: {idToken.name}</Text>
+
+      <View style={useTheme('bottomContainer')}>
+        <View style={useTheme('userPicPlusInfo')}>
+          <Image source={{ uri: idToken.picture }} style={useTheme('img')} />
+          <View style={stylesDark.nameEmail}>
+            <Text style={useTheme('text')}>{idToken.name}</Text>
+            <Text style={useTheme('text')}>{idToken.email}</Text>
+          </View>
         </View>
-        <View style={styles.settingItem}>
-          <Text style={styles.text}>Email: {idToken.email}</Text>
+
+        <Text style={useTheme('textColor')}>notifications</Text>
+        <View style={useTheme('emailSettingsContainer')}>
+          <View style={useTheme('emailSettingsItem')}>
+            <Text style={useTheme('text')}>daily emails</Text>
+            <Switch
+              value={dailyEmailSetting}
+              onSyncPress={() => handleEmailSettingToggle('daily')}
+              backgroundActive={colors.darkMode.secondary}
+              style={stylesDark.toggle}
+              // backgroundInactive={colors.darkMode.background}
+            />
+          </View>
+          <View style={useTheme('emailSettingsItem')}>
+            <Text style={useTheme('text')}>weekly emails </Text>
+            <Switch
+              value={weeklyEmailSetting}
+              onSyncPress={() => handleEmailSettingToggle('weekly')}
+              backgroundActive={colors.darkMode.secondary}
+              style={stylesDark.toggle}
+              // backgroundInactive={colors.darkMode.background}
+            />
+          </View>
         </View>
-        <View style={styles.settingItem}>
-          <Text style={styles.text}>daily emails: </Text>
-          <Switch value={dailyEmailSetting} onSyncPress={() => handleEmailSettingToggle('daily')} />
+
+        <Text style={useTheme('textColor')}>theme</Text>
+        <View style={useTheme('settingItemTheme')}>
+          <Text style={useTheme('text')}>dark mode</Text>
+          <Switch
+            value={theme}
+            onSyncPress={() => handleDarkModeToggle()}
+            backgroundActive={colors.darkMode.secondary}
+            // backgroundInactive={colors.darkMode.background}
+            style={stylesDark.toggle}
+            // height={18} // 21
+            // width={40} // 40
+          />
         </View>
-        <View style={styles.settingItem}>
-          <Text style={styles.text}>weekly emails </Text>
-          <Switch value={weeklyEmailSetting} onSyncPress={() => handleEmailSettingToggle('weekly')} />
-        </View>
-        <View style={styles.settingItem}>
-          <Text style={styles.text}>dark mode: on</Text>
-          <Switch value={darkModeSetting} onSyncPress={() => handleDarkModeToggle()} />
-        </View>
-        <TouchableOpacity style={styles.btn1}>
-          <Button title="logout" onPress={() => _onLogOut()} color="#121212" />
+        <TouchableOpacity style={useTheme('logoutBtn')}>
+          <Button
+            title="logout"
+            onPress={() => _onLogOut()}
+            color={theme ? colors.darkMode.onError : colors.lightMode.onError}
+          />
         </TouchableOpacity>
       </View>
     </>
   );
 };
 
-const styles = StyleSheet.create({
-  settingItem: {
-    padding: 15,
-    // margin: 1,
-    borderBottomWidth: 1,
-    borderBottomColor: 'white',
-    backgroundColor: 'rgb(44, 44, 46)',
+// ==================== darkmode styles ====================
+
+export const stylesDark = StyleSheet.create({
+  emailSettingsItem: {
+    flexDirection: 'row',
+    paddingVertical: 10,
   },
-  img: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+  toggle: {
+    marginRight: 7.5,
+    marginLeft: 'auto',
   },
-  imageContainer: {
-    flex: 1,
+  topView: {
+    flex: 0.25,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#BB86FC', // #6200EE primary, #3700B3 primary variant
+    backgroundColor: colors.darkMode.background,
+  },
+  middleView: {
+    flex: 0.3,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.darkMode.dp1,
   },
   bottomContainer: {
+    paddingTop: 25,
     flex: 2.75,
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    backgroundColor: '#121212',
-    // height: '75%',
+    backgroundColor: colors.darkMode.background,
   },
-  // infoContainer: {
-  //   // deleted
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  //   backgroundColor: 'rgb(44, 44, 46)',
-  //   padding: 25,
-  //   width: '90%',
-  //   height: '90%',
-  //   borderRadius: 30,
-  // },
+  userPicPlusInfo: {
+    flexDirection: 'row',
+    padding: 15,
+    margin: 10,
+    backgroundColor: colors.darkMode.dp1,
+    borderRadius: 6,
+  },
+  nameEmail: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    marginLeft: 30,
+  },
+  emailSettingsContainer: {
+    padding: 15,
+    margin: 10,
+    backgroundColor: colors.darkMode.dp1,
+    borderRadius: 6,
+  },
+  settingItemTheme: {
+    flexDirection: 'row',
+    padding: 15,
+    margin: 10,
+    backgroundColor: colors.darkMode.dp1,
+    borderRadius: 6,
+  },
+  img: {
+    width: 80,
+    height: 80,
+    borderRadius: 50,
+  },
+  headerText: {
+    color: colors.darkMode.primary,
+    fontSize: 25,
+  },
   text: {
-    color: 'rgb(199, 199, 204)',
+    color: colors.darkMode.textOnSurface,
+    fontSize: 15, // 14 default
   },
-  btn1: {
-    // position: 'absolute',
-    // bottom: 15,
-    backgroundColor: '#CF6679',
+  textColor: {
+    color: colors.darkMode.primary,
+    marginLeft: 10,
+    fontSize: 20,
+  },
+  logoutBtn: {
+    color: colors.darkMode.onError,
+    backgroundColor: colors.darkMode.error,
     borderRadius: 15,
     padding: 6,
-    margin: 10,
+    marginHorizontal: 70,
     marginTop: 25,
-    width: 250,
+  },
+});
+
+// ==================== lightmode styles ====================
+
+export const stylesLight = StyleSheet.create({
+  emailSettingsItem: {
+    flexDirection: 'row',
+    paddingVertical: 10,
+  },
+  toggle: {
+    marginRight: 7.5,
+    marginLeft: 'auto',
+  },
+  topView: {
+    flex: 0.25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.lightMode.primaryVariant, // #6200EE primary, #3700B3 primary variant
+  },
+  middleView: {
+    flex: 0.3,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.lightMode.primary, // #6200EE primary, #3700B3 primary variant
+  },
+  bottomContainer: {
+    paddingTop: 25,
+    flex: 2.75,
+    backgroundColor: colors.lightMode.background,
+  },
+  userPicPlusInfo: {
+    flexDirection: 'row',
+    padding: 15,
+    margin: 10,
+    backgroundColor: colors.lightMode.background,
+    borderRadius: 6,
+    // shadow
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
+  },
+  nameEmail: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    marginLeft: 30,
+  },
+  emailSettingsContainer: {
+    padding: 15,
+    margin: 10,
+    backgroundColor: colors.lightMode.background,
+    borderRadius: 6,
+    // shadow
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
+  },
+  settingItemTheme: {
+    flexDirection: 'row',
+    padding: 15,
+    margin: 10,
+    backgroundColor: colors.lightMode.background,
+    borderRadius: 6,
+    // shadow
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
+  },
+  img: {
+    width: 80,
+    height: 80,
+    borderRadius: 50,
+  },
+  headerText: {
+    color: colors.lightMode.textOnPrimary,
+    fontSize: 25,
+  },
+  text: {
+    color: colors.lightMode.textOnSurface,
+    fontSize: 15, // 14 default
+  },
+  textColor: {
+    color: colors.lightMode.primaryVariant,
+    marginLeft: 10,
+    fontSize: 20,
+  },
+  logoutBtn: {
+    color: colors.lightMode.onError,
+    backgroundColor: colors.lightMode.error,
+    borderRadius: 15,
+    padding: 6,
+    marginHorizontal: 70,
+    marginTop: 25,
   },
 });
