@@ -7,23 +7,27 @@ import { StatsScreen } from './StatsScreen';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import { TabsParamList } from '../interfaces/navigation';
 import { AppNavTabsProps } from '../interfaces/componentProps';
+import { useSelector } from 'react-redux';
+import { RootState } from '../reducers/rootReducer';
+import { colors } from '../constants/colors';
 
 const Tab = createBottomTabNavigator<TabsParamList>();
 
 export const AppNavTabs: React.FC<AppNavTabsProps> = () => {
+  const theme = useSelector((state: RootState) => state.userInfo.darkMode);
+
+  const dynamicTabBarOptions = {
+    activeTintColor: theme ? colors.darkMode.primary : colors.lightMode.secondary,
+    inactiveTintColor: theme ? colors.darkMode.textOnSurface : colors.lightMode.textOnPrimary,
+    showLabel: false,
+    style: {
+      backgroundColor: theme ? colors.darkMode.dp1 : colors.lightMode.primary,
+    },
+  };
+
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        initialRouteName="Projects"
-        tabBarOptions={{
-          activeTintColor: '#6200EE', // purple
-          inactiveTintColor: 'rgb(199, 199, 204)', // ios grey
-          showLabel: false,
-          style: {
-            backgroundColor: '#212121', // ios grey
-          },
-        }}
-      >
+      <Tab.Navigator initialRouteName="Projects" tabBarOptions={dynamicTabBarOptions}>
         <Tab.Screen
           name="Home"
           component={HomeScreen}
