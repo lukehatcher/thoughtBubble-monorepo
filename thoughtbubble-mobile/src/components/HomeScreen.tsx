@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, Button, TouchableOpacity, ScrollView } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import Switch from 'react-native-switch-pro';
+// import Switch from 'react-native-switch-pro';
+import { Switch } from 'react-native-paper';
 import { RootState } from '../reducers/rootReducer';
 import { _onLogOut } from '../utils/auth';
 import { HomeScreenProps } from '../interfaces/componentProps';
@@ -49,20 +50,16 @@ export const HomeScreen: React.FC<HomeScreenProps> = () => {
             <Text style={useTheme('text')}>daily emails</Text>
             <Switch
               value={dailyEmailSetting}
-              onSyncPress={() => handleEmailSettingToggle('daily')}
-              backgroundActive={colors.darkMode.secondary}
-              style={stylesDark.toggle}
-              // backgroundInactive={colors.darkMode.background}
+              onValueChange={() => handleEmailSettingToggle('daily')}
+              style={stylesShared.toggle}
             />
           </View>
           <View style={useTheme('emailSettingsItem')}>
             <Text style={useTheme('text')}>weekly emails </Text>
             <Switch
               value={weeklyEmailSetting}
-              onSyncPress={() => handleEmailSettingToggle('weekly')}
-              backgroundActive={colors.darkMode.secondary}
-              style={stylesDark.toggle}
-              // backgroundInactive={colors.darkMode.background}
+              onValueChange={() => handleEmailSettingToggle('weekly')}
+              style={stylesShared.toggle}
             />
           </View>
         </View>
@@ -70,15 +67,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = () => {
         <Text style={useTheme('textColor')}>theme</Text>
         <View style={useTheme('settingItemTheme')}>
           <Text style={useTheme('text')}>dark mode</Text>
-          <Switch
-            value={theme}
-            onSyncPress={() => handleDarkModeToggle()}
-            backgroundActive={colors.darkMode.secondary}
-            // backgroundInactive={colors.darkMode.background}
-            style={stylesDark.toggle}
-            // height={18} // 21
-            // width={40} // 40
-          />
+          <Switch value={theme} onValueChange={() => handleDarkModeToggle()} style={stylesShared.toggle} />
         </View>
         <TouchableOpacity style={useTheme('logoutBtn')}>
           <Button
@@ -92,17 +81,16 @@ export const HomeScreen: React.FC<HomeScreenProps> = () => {
   );
 };
 
-// ==================== darkmode styles ====================
-
-export const stylesDark = StyleSheet.create({
-  emailSettingsItem: {
-    flexDirection: 'row',
-    paddingVertical: 10,
-  },
+const stylesShared = StyleSheet.create({
   toggle: {
     marginRight: 7.5,
     marginLeft: 'auto',
   },
+});
+
+// ==================== darkmode styles ====================
+
+export const stylesDark = StyleSheet.create({
   topView: {
     flex: 0.25,
     justifyContent: 'center',
@@ -138,8 +126,14 @@ export const stylesDark = StyleSheet.create({
     backgroundColor: colors.darkMode.dp1,
     borderRadius: 6,
   },
+  emailSettingsItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+  },
   settingItemTheme: {
     flexDirection: 'row',
+    alignItems: 'center',
     padding: 15,
     margin: 10,
     backgroundColor: colors.darkMode.dp1,
@@ -176,14 +170,6 @@ export const stylesDark = StyleSheet.create({
 // ==================== lightmode styles ====================
 
 export const stylesLight = StyleSheet.create({
-  emailSettingsItem: {
-    flexDirection: 'row',
-    paddingVertical: 10,
-  },
-  toggle: {
-    marginRight: 7.5,
-    marginLeft: 'auto',
-  },
   topView: {
     flex: 0.25,
     justifyContent: 'center',
@@ -237,8 +223,14 @@ export const stylesLight = StyleSheet.create({
     shadowRadius: 2.22,
     elevation: 3,
   },
+  emailSettingsItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+  },
   settingItemTheme: {
     flexDirection: 'row',
+    alignItems: 'center',
     padding: 15,
     margin: 10,
     backgroundColor: colors.lightMode.background,

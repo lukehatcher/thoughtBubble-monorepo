@@ -12,6 +12,7 @@ import { ThoughtScreenProps } from '../interfaces/componentProps'; // type
 import { colors } from '../constants/colors';
 import { SortThoughtModal } from './SortThoughtModal';
 import { AddThoughtModal } from './AddThoughtModal';
+import { FAB } from 'react-native-paper';
 
 export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) => {
   const [addThoughtModalView, setAddThoughtModalView] = useState(false); // plus modal
@@ -149,29 +150,18 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
         setAddThoughtModalView={setAddThoughtModalView}
       />
       <SortThoughtModal projectId={projectId} sortModalView={sortModalView} setSortModalView={setSortModalView} />
-      <TouchableOpacity style={sharedStyles.plusBtnContainer} onPress={() => setAddThoughtModalView(true)}>
-        <Ionicon name="add-circle" size={80} style={sharedStyles.plusBtn} color={colors.darkMode.secondary} />
-      </TouchableOpacity>
+      <FAB style={sharedStyles.fab} icon="plus" onPress={() => setAddThoughtModalView(true)} label="new thought" />
     </>
   );
 };
 
 const sharedStyles = StyleSheet.create({
   // styles not effected bhy light/dark mode
-  plusBtnContainer: {
+  fab: {
     position: 'absolute',
-    bottom: 20,
-    right: 20,
-  },
-  plusBtn: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 12,
-    },
-    shadowOpacity: 0.48,
-    shadowRadius: 13.0,
-    elevation: 24,
+    right: 0,
+    bottom: 0,
+    margin: 16,
   },
   hiddenBackText: {
     // see notes in code

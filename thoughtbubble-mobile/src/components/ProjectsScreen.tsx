@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, TouchableHighlight, LogBox } 
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { useSelector, useDispatch } from 'react-redux';
 import Ionicon from 'react-native-vector-icons/Ionicons';
+import { FAB } from 'react-native-paper';
 import { RootState } from '../reducers/rootReducer'; // type
 import { ProjectsScreenProps } from '../interfaces/componentProps'; // type
 import { deleteProjectAction } from '../actions/projectActions';
@@ -88,12 +89,19 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
         />
       </View>
       <AddProjectModal addProjModalView={addProjModalView} setAddProjModalView={setAddProjModalView} />
-      <TouchableOpacity style={useTheme('plusBtnContainer')} onPress={() => setAddProjModalView(true)}>
-        <Ionicon name="add-circle" size={80} style={useTheme('plusBtn')} color={colors.darkMode.secondary} />
-      </TouchableOpacity>
+      <FAB style={sharedStyles.fab} icon="plus" onPress={() => setAddProjModalView(true)} label="new project" />
     </>
   );
 };
+
+const sharedStyles = StyleSheet.create({
+  fab: {
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    margin: 16,
+  },
+});
 
 const stylesDark = StyleSheet.create({
   mainContainer: {
@@ -105,21 +113,6 @@ const stylesDark = StyleSheet.create({
     flex: 1,
     padding: 15,
     color: colors.darkMode.textOnSurface,
-  },
-  plusBtnContainer: {
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
-  },
-  plusBtn: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 12,
-    },
-    shadowOpacity: 0.48,
-    shadowRadius: 13.0,
-    elevation: 24,
   },
   rowFront: {
     backgroundColor: colors.darkMode.dp1,
@@ -168,21 +161,6 @@ const stylesLight = StyleSheet.create({
     flex: 1,
     padding: 15,
     color: colors.lightMode.textOnSurface,
-  },
-  plusBtnContainer: {
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
-  },
-  plusBtn: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 12,
-    },
-    shadowOpacity: 0.48,
-    shadowRadius: 13.0,
-    elevation: 24,
   },
   rowFront: {
     backgroundColor: colors.lightMode.background,
