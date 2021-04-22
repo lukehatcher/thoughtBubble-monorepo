@@ -17,18 +17,13 @@ class ProjectsController {
     try {
       const user = await User.findOne({ githubId: userSub }); // wack naming
       const userIdx = user?.id;
-      console.log('___start___');
       const usersProjects = await getRepository(Project) //
         .createQueryBuilder('project')
         .where('project.userId = :userId', { userId: userIdx })
         .orderBy('project.createdDate', 'ASC')
         .getMany();
-      console.log('___end___');
-      console.log(JSON.stringify(usersProjects));
 
-      console.log('___start___');
       let data: any[] = usersProjects as any[];
-      console.log(usersProjects);
       for (let i = 0; i < data.length; i++) {
         const projectIdx = data[i].id;
         const projectThoughts = await getRepository(Thought) //
@@ -38,9 +33,7 @@ class ProjectsController {
           .getMany();
         const projectThoughts2 = projectThoughts as any[];
         data[i].projectThoughts = projectThoughts2; // thoughts is a keyword
-        console.log('___end___');
       }
-      console.log(JSON.stringify(data));
 
       res.send(data).status(200);
     } catch (err) {
