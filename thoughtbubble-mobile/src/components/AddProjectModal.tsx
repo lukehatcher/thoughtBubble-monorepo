@@ -28,26 +28,26 @@ export const AddProjectModal: React.FC<AddProjectModalProps> = function ({ addPr
         <View style={useTheme('modal')}>
           <TextInput
             onChangeText={(text) => setInput(text)}
-            placeholder="add a new project..."
+            placeholder="Add a new project"
             multiline
             style={useTheme('textInput')}
             keyboardAppearance="dark"
             placeholderTextColor="rgb(199, 199, 204)"
           />
-          <TouchableOpacity style={useTheme('btn1')}>
+          <TouchableOpacity style={useTheme('btn')}>
             <Button
               title="submit"
-              color="black"
+              color={theme ? colors.darkMode.textOnPrimary : colors.lightMode.textOnPrimary}
               onPress={() => {
                 setAddProjModalView(false);
                 handleProjectAddition(input.trim());
               }}
             />
           </TouchableOpacity>
-          <TouchableOpacity style={useTheme('btn2')}>
+          <TouchableOpacity style={useTheme('btn')}>
             <Button
               title="cancel"
-              color="white"
+              color={theme ? colors.darkMode.textOnPrimary : colors.lightMode.textOnPrimary}
               onPress={() => {
                 setAddProjModalView(false);
               }}
@@ -67,29 +67,50 @@ const stylesDark = StyleSheet.create({
     backgroundColor: colors.darkMode.background,
   },
   textInput: {
-    borderBottomColor: 'white',
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    paddingTop: 15,
+    paddingBottom: 15,
+    padding: 20,
+    borderRadius: 6,
+    borderWidth: 2,
+    borderColor: colors.darkMode.primary,
     width: 250,
-    color: 'white',
+    color: colors.darkMode.textOnBackground,
+    marginBottom: 20,
   },
-  btn1: {
-    backgroundColor: '#6200EE',
-    borderRadius: 15,
+  btn: {
+    backgroundColor: colors.darkMode.primary,
+    borderRadius: 10,
     padding: 6,
     margin: 10,
-    marginTop: 25,
-    width: 250,
-  },
-  btn2: {
-    borderRadius: 15,
-    borderColor: '#6200EE',
-    borderWidth: 2,
-    padding: 6,
-    margin: 8,
+    marginBottom: 10,
     width: 250,
   },
 });
 
 const stylesLight = StyleSheet.create({
-  //
+  modal: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.lightMode.background,
+  },
+  textInput: {
+    paddingTop: 15,
+    paddingBottom: 15,
+    padding: 20,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: colors.lightMode.primary,
+    width: 250,
+    color: colors.lightMode.textOnBackground,
+    marginBottom: 20,
+  },
+  btn: {
+    backgroundColor: colors.lightMode.primary,
+    borderRadius: 10,
+    padding: 6,
+    margin: 10,
+    marginBottom: 10,
+    width: 250,
+  },
 });

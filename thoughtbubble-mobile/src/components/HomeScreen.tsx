@@ -8,7 +8,6 @@ import { HomeScreenProps } from '../interfaces/componentProps';
 import { changeEmailSettingsAction, changeDarkModeAction } from '../actions/userInfoActions';
 import { colors } from '../constants/colors';
 import { useTheme } from '../hooks/useTheme';
-import { getAutomaticTypeDirectiveNames } from 'typescript';
 
 export const HomeScreen: React.FC<HomeScreenProps> = () => {
   const dispatch = useDispatch();
