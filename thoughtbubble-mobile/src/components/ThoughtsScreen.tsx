@@ -3,8 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity, TouchableHighlight, LogBox } 
 import { useDispatch, useSelector } from 'react-redux';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import { SwipeListView } from 'react-native-swipe-list-view';
-import { RootState } from '../reducers/rootReducer'; // type
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { RootState } from '../reducers/rootReducer'; // type
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { deleteThoughtAction, thoughtStatusChangeAction } from '../actions/thoughtActions';
 import { MoreModal } from './MoreModal';
@@ -24,6 +24,8 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
     state.userProjectData.find((proj) => proj.id === projectId).projectThoughts;
   let thoughts = useSelector(thoughtsSelector); // retrive thoughts for the project we're on
   const theme = useSelector((state: RootState) => state.userInfo.darkMode);
+
+  const useTheme = (name: string) => (theme ? stylesDark[name] : stylesLight[name]);
 
   useLayoutEffect(() => {
     // adds the sort button to the stack header
@@ -57,28 +59,33 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
 
   const renderHiddenItem = (data, rowMap) => (
     // for slidables
-    <View style={{ ...styles.rowFront, backgroundColor: 'rgb(0, 122, 255)' }}>
+    <View
+      style={{
+        ...useTheme('rowFront'),
+        backgroundColor: theme ? colors.darkMode.primary : colors.lightMode.primaryVariant,
+      }}
+    >
       {/* to match height of back view to the dynamic front view height,
       add random view below with same text (but invisable) to get same height */}
       <View>
-        <Text style={styles.hiddenBackText}>{data.item.text}</Text>
+        <Text style={sharedStyles.hiddenBackText}>{data.item.text}</Text>
       </View>
       <TouchableOpacity
-        style={[styles.backRightBtn, styles.backRightBtnLeft]}
+        style={[useTheme('backRightBtn'), useTheme('backRightBtnLeft')]}
         onPress={() => closeRow(rowMap, data.item.key)}
       >
         <Ionicon name="close-circle-outline" size={25} color="white" />
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={[styles.backRightBtn, styles.backRightBtnMid]}
+        style={[useTheme('backRightBtn'), useTheme('backRightBtnMid')]}
         onPress={() => handleThoughtStatusChange(data.item.id)}
       >
         <Ionicon name="checkbox-outline" size={25} color="white" />
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={[styles.backRightBtn, styles.backRightBtnRight]}
+        style={[useTheme('backRightBtn'), useTheme('backRightBtnRight')]}
         onPress={() => handleThoughtDelete(data.item.id)}
       >
         <Ionicon name="trash-outline" size={25} color="white" />
@@ -93,11 +100,15 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
 
   const renderItem = (data) => (
     // for slidables
-    <TouchableHighlight style={styles.rowFront} underlayColor={'grey'}>
+    <TouchableHighlight style={useTheme('rowFront')} underlayColor={'grey'}>
       <>
-        <Text style={data.item.completed ? styles.textCompleted : styles.text}>{data.item.text}</Text>
-        <TouchableOpacity style={styles.moreBtn} onPress={() => renderModal(data.item.key)}>
-          <MaterialIcons name="more-vert" size={35} color="rgb(199, 199, 204)" />
+        <Text style={data.item.completed ? useTheme('textCompleted') : useTheme('text')}>{data.item.text}</Text>
+        <TouchableOpacity style={useTheme('moreBtn')} onPress={() => renderModal(data.item.key)}>
+          <MaterialIcons
+            name="more-vert"
+            size={35}
+            color={theme ? colors.darkMode.primary : colors.lightMode.primary}
+          />
         </TouchableOpacity>
       </>
     </TouchableHighlight>
@@ -108,7 +119,7 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
 
   return (
     <>
-      <View style={styles.container}>
+      <View style={useTheme('mainContainer')}>
         <SwipeListView
           data={thoughts.map((i) => ({ ...i, key: i.id }))} // swipeviewlist api requires key prop
           renderItem={renderItem}
@@ -138,38 +149,15 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
         setAddThoughtModalView={setAddThoughtModalView}
       />
       <SortThoughtModal projectId={projectId} sortModalView={sortModalView} setSortModalView={setSortModalView} />
-      <TouchableOpacity style={styles.plusBtnContainer} onPress={() => setAddThoughtModalView(true)}>
-        <Ionicon name="add-circle" size={80} style={styles.plusBtn} color={colors.darkMode.secondary} />
+      <TouchableOpacity style={sharedStyles.plusBtnContainer} onPress={() => setAddThoughtModalView(true)}>
+        <Ionicon name="add-circle" size={80} style={sharedStyles.plusBtn} color={colors.darkMode.secondary} />
       </TouchableOpacity>
     </>
   );
 };
 
-const styles = StyleSheet.create({
-  center: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  moreBtn: {
-    position: 'absolute',
-    right: 0,
-  },
-  text: {
-    fontSize: 20,
-    flex: 1,
-    padding: 15,
-    paddingEnd: 35,
-    color: 'rgb(199, 199, 204)',
-  },
-  textCompleted: {
-    textDecorationLine: 'line-through',
-    padding: 15,
-    paddingEnd: 35,
-    color: 'grey',
-    fontSize: 20,
-    flex: 1,
-  },
+const sharedStyles = StyleSheet.create({
+  // styles not effected bhy light/dark mode
   plusBtnContainer: {
     position: 'absolute',
     bottom: 20,
@@ -185,40 +173,42 @@ const styles = StyleSheet.create({
     shadowRadius: 13.0,
     elevation: 24,
   },
-  modal: {
+  hiddenBackText: {
+    // see notes in code
+    fontSize: 20,
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#121212',
+    padding: 15,
+    color: 'rgba(0, 0, 0, 0)',
   },
-  textInput: {
-    borderBottomColor: 'white',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    width: 250,
-    color: 'white',
-  },
-  btn1: {
-    backgroundColor: '#6200EE',
-    borderRadius: 15,
-    padding: 6,
-    margin: 10,
-    marginTop: 25,
-    width: 250,
-  },
-  btn2: {
-    borderRadius: 15,
-    borderColor: '#6200EE',
-    borderWidth: 2,
-    padding: 6,
-    margin: 8,
-    width: 250,
-  }, // === SwipeListView styles ===
-  container: {
+});
+
+const stylesDark = StyleSheet.create({
+  mainContainer: {
     flex: 1,
-    backgroundColor: '#121212',
+    backgroundColor: colors.darkMode.background,
   },
+  moreBtn: {
+    position: 'absolute',
+    right: 0,
+  },
+  text: {
+    fontSize: 20,
+    flex: 1,
+    padding: 15,
+    paddingEnd: 35,
+    color: colors.darkMode.textOnSurface,
+  },
+  textCompleted: {
+    textDecorationLine: 'line-through',
+    padding: 15,
+    paddingEnd: 35,
+    color: `${colors.darkMode.textOnSurface}50`,
+    fontSize: 20,
+    flex: 1,
+  },
+  // === SwipeListView styles ===
   rowFront: {
-    backgroundColor: '#303030',
+    backgroundColor: colors.darkMode.dp1,
     flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'center',
@@ -226,23 +216,6 @@ const styles = StyleSheet.create({
     marginTop: 15,
     marginHorizontal: 10,
     borderRadius: 10,
-    // shadow
-    shadowColor: 'black',
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.7,
-    shadowRadius: 5.46,
-    elevation: 9,
-  },
-  rowBack: {
-    alignItems: 'center',
-    backgroundColor: '#DDD',
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingLeft: 15,
   },
   backRightBtn: {
     alignItems: 'center',
@@ -253,23 +226,93 @@ const styles = StyleSheet.create({
     width: 50,
   },
   backRightBtnLeft: {
-    backgroundColor: 'rgb(0, 122, 255)', // ios light blue
+    // backgroundColor: 'rgb(0, 122, 255)',
+    backgroundColor: colors.darkMode.primary, // 'rgb(0, 122, 255)', // ios light blue
     right: 100,
   },
   backRightBtnMid: {
-    backgroundColor: 'rgb(52, 199, 89)', // ios light green
+    // backgroundColor: 'rgb(52, 199, 89)',
+    backgroundColor: colors.darkMode.secondary, // 'rgb(52, 199, 89)', // ios light green
     right: 50,
   },
   backRightBtnRight: {
-    backgroundColor: 'rgb(255, 59, 48)', // ios light red
+    // backgroundColor: 'rgb(255, 59, 48)',
+    backgroundColor: colors.darkMode.error, // 'rgb(255, 59, 48)', // ios light red
     right: 0,
     borderBottomRightRadius: 10,
     borderTopRightRadius: 10,
   },
-  hiddenBackText: {
+});
+
+// ============================================================================
+
+const stylesLight = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    backgroundColor: colors.lightMode.background,
+  },
+  moreBtn: {
+    position: 'absolute',
+    right: 0,
+  },
+  text: {
     fontSize: 20,
     flex: 1,
     padding: 15,
-    color: 'rgba(0, 0, 0, 0)',
+    paddingEnd: 35,
+    color: colors.lightMode.textOnSurface,
+  },
+  textCompleted: {
+    textDecorationLine: 'line-through',
+    padding: 15,
+    paddingEnd: 35,
+    color: `${colors.lightMode.textOnSurface}50`,
+    fontSize: 20,
+    flex: 1,
+  },
+  // === SwipeListView styles ===
+  rowFront: {
+    backgroundColor: colors.lightMode.background,
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 'auto',
+    marginTop: 15,
+    marginHorizontal: 10,
+    borderRadius: 10,
+    shadowColor: '#000',
+    // shadow
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
+  },
+  backRightBtn: {
+    alignItems: 'center',
+    bottom: 0,
+    justifyContent: 'center',
+    position: 'absolute',
+    top: 0,
+    width: 50,
+  },
+  backRightBtnLeft: {
+    // backgroundColor: 'rgb(0, 122, 255)',
+    backgroundColor: colors.lightMode.primaryVariant, // 'rgb(0, 122, 255)', // ios light blue
+    right: 100,
+  },
+  backRightBtnMid: {
+    // backgroundColor: 'rgb(52, 199, 89)',
+    backgroundColor: colors.lightMode.secondary, // 'rgb(52, 199, 89)', // ios light green
+    right: 50,
+  },
+  backRightBtnRight: {
+    // backgroundColor: 'rgb(255, 59, 48)',
+    backgroundColor: colors.lightMode.error, // 'rgb(255, 59, 48)', // ios light red
+    right: 0,
+    borderBottomRightRadius: 10,
+    borderTopRightRadius: 10,
   },
 });

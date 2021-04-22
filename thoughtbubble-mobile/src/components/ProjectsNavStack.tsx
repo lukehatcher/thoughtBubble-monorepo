@@ -17,8 +17,10 @@ export const ProjectsNavStack: React.FC<ProjectsNavStackProps> = () => {
     headerStyle: {
       backgroundColor: theme ? colors.darkMode.dp1 : colors.lightMode.primary,
     },
-    headerTintColor: theme ? colors.darkMode.textOnBackground : colors.lightMode.textOnPrimary,
+    headerTintColor: theme ? colors.darkMode.primary : colors.lightMode.textOnPrimary,
+    headerTitleStyle: { color: 'white' }, // constant
   };
+
   return (
     <ProjectStack.Navigator screenOptions={dynamicScreenOptions}>
       <ProjectStack.Screen name="Projects" component={ProjectsScreen} />

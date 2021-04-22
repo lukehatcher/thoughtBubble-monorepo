@@ -15,8 +15,8 @@ interface ColorVersion {
 export const colors: { darkMode: ColorVersion; lightMode: ColorVersion } = {
   darkMode: {
     primary: '#BB86FC', // pink
-    primaryVariant: '#3700B3', // dark purple
-    secondary: '#03DAC6', // teal (+ btn)
+    primaryVariant: '#3700B3', // dark purple // same
+    secondary: '#03DAC6', // teal (+ btn) // same
     background: '#121212',
     textOnPrimary: '#000000',
     textOnSecondary: '#000000',
@@ -28,8 +28,8 @@ export const colors: { darkMode: ColorVersion; lightMode: ColorVersion } = {
   },
   lightMode: {
     primary: '#6200EE', // purple
-    primaryVariant: '#3700B3', // darker purple
-    secondary: '#03DAC6', // teal (+ btn)
+    primaryVariant: '#3700B3', // darker purple // same
+    secondary: '#03DAC6', // teal (+ btn) // same
     background: '#FFFFFF',
     textOnPrimary: '#FFFFFF',
     textOnSecondary: '#000000',
