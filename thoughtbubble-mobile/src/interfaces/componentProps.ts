@@ -19,6 +19,12 @@ export interface AddProjectModalProps {
   setAddProjModalView: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+export interface AddThoughtModalProps {
+  projectId: string;
+  addThoughtModalView: boolean;
+  setAddThoughtModalView: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 export interface SortThoughtModalProps {
   projectId: string;
   sortModalView: boolean;

@@ -1,15 +1,10 @@
 import React, { useState, FC } from 'react';
-import { Alert, Button, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Button, Modal, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { addThoughtAction } from '../actions/thoughtActions';
 import { colors } from '../constants/colors';
+import { AddThoughtModalProps } from '../interfaces/componentProps';
 import { RootState } from '../reducers/rootReducer';
-
-interface AddThoughtModalProps {
-  projectId: string;
-  addThoughtModalView: boolean;
-  setAddThoughtModalView: React.Dispatch<React.SetStateAction<boolean>>;
-}
 
 export const AddThoughtModal: FC<AddThoughtModalProps> = function ({
   projectId,
