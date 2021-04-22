@@ -73,7 +73,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
 
   return (
     <>
-      <View style={useTheme('container')}>
+      <View style={useTheme('mainContainer')}>
         <SwipeListView
           data={userProjectsData.map((i) => ({ ...i, key: i.id }))} // swipeviewlist api requires key prop
           renderItem={renderItem}
@@ -89,15 +89,14 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
       </View>
       <AddProjectModal addProjModalView={addProjModalView} setAddProjModalView={setAddProjModalView} />
       <TouchableOpacity style={useTheme('plusBtnContainer')} onPress={() => setAddProjModalView(true)}>
-        <Ionicon name="add-circle" size={80} style={useTheme('plusBtnContainer')} color={colors.darkMode.secondary} />
+        <Ionicon name="add-circle" size={80} style={useTheme('plusBtn')} color={colors.darkMode.secondary} />
       </TouchableOpacity>
     </>
   );
 };
 
 const stylesDark = StyleSheet.create({
-  container: {
-    // main background
+  mainContainer: {
     flex: 1,
     backgroundColor: colors.darkMode.background,
   },
@@ -159,7 +158,7 @@ const stylesDark = StyleSheet.create({
 });
 
 const stylesLight = StyleSheet.create({
-  container: {
+  mainContainer: {
     // main background
     flex: 1,
     backgroundColor: colors.lightMode.background,

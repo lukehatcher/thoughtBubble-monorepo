@@ -1,62 +1,44 @@
-import React, { useState, useLayoutEffect } from 'react';
-import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  TouchableOpacity,
-  Modal,
-  TextInput,
-  TouchableHighlight,
-  LogBox,
-  Alert,
-} from 'react-native';
+import React, { useState, useLayoutEffect, FC } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, TouchableHighlight, LogBox } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { RootState } from '../reducers/rootReducer'; // type
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { addThoughtAction, deleteThoughtAction, thoughtStatusChangeAction } from '../actions/thoughtActions';
-import { filtertThoughtsAction } from '../actions/filterActions';
-import { fetchProjectDataAction } from '../actions/fetchProjectDataAction';
+import { deleteThoughtAction, thoughtStatusChangeAction } from '../actions/thoughtActions';
 import { MoreModal } from './MoreModal';
 import { ThoughtScreenProps } from '../interfaces/componentProps'; // type
+import { colors } from '../constants/colors';
+import { SortThoughtModal } from './SortThoughtModal';
+import { AddThoughtModal } from './AddThoughtModal';
 
-export const ThoughtsScreen: React.FC<ThoughtScreenProps> = ({ route, navigation }) => {
-  const [modalView, setModalView] = useState(false);
+export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) => {
+  const [addThoughtModalView, setAddThoughtModalView] = useState(false); // plus modal
   const [sortModalView, setSortModalView] = useState(false);
   const [moreModalView, setMoreModalView] = useState(false);
   const [focusedId, setFocusedId] = useState('');
-  const [input, setInput] = useState('');
   const dispatch = useDispatch();
   const { projectId } = route.params;
   const thoughtsSelector = (state: RootState) =>
     state.userProjectData.find((proj) => proj.id === projectId).projectThoughts;
   let thoughts = useSelector(thoughtsSelector); // retrive thoughts for the project we're on
-
-  const userSelector = (state: RootState) => state.storedUser.sub;
-  const userSub = useSelector(userSelector);
+  const theme = useSelector((state: RootState) => state.userInfo.darkMode);
 
   useLayoutEffect(() => {
     // adds the sort button to the stack header
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity style={styles.sortIcon} onPress={() => setSortModalView(true)}>
-          <MaterialCommunityIcons name="sort-variant" size={40} color="rgb(199, 199, 204)" />
+        <TouchableOpacity style={{ marginRight: 30, marginBottom: 2 }} onPress={() => setSortModalView(true)}>
+          <MaterialCommunityIcons
+            name="sort-variant"
+            size={40}
+            color={theme ? colors.darkMode.primary : colors.lightMode.textOnPrimary}
+          />
         </TouchableOpacity>
       ),
     });
-  }, [navigation]);
-
-  const handleThoughtAddition = (thought: string) => {
-    setInput('');
-    if (!thought) {
-      Alert.alert('invalid input');
-      return;
-    }
-    dispatch(addThoughtAction(projectId, thought));
-  };
+  }, [navigation, theme]);
 
   const handleThoughtDelete = (thoughtId: string) => {
     dispatch(deleteThoughtAction(projectId, thoughtId));
@@ -64,11 +46,6 @@ export const ThoughtsScreen: React.FC<ThoughtScreenProps> = ({ route, navigation
 
   const handleThoughtStatusChange = (thoughtId: string) => {
     dispatch(thoughtStatusChangeAction(projectId, thoughtId));
-  };
-
-  const handleThoughtFilter = (typeOfFilter: string) => {
-    if (typeOfFilter === 'all') dispatch(fetchProjectDataAction(userSub));
-    dispatch(filtertThoughtsAction(projectId, typeOfFilter));
   };
 
   const closeRow = (rowMap, rowKey) => {
@@ -155,57 +132,14 @@ export const ThoughtsScreen: React.FC<ThoughtScreenProps> = ({ route, navigation
       ) : (
         <></>
       )}
-      {/* ======= + modal ======= */}
-      <Modal animationType="slide" visible={modalView}>
-        <View style={styles.modal}>
-          <TextInput
-            onChangeText={(text) => setInput(text)}
-            placeholder="add a new thought..."
-            multiline
-            style={styles.textInput}
-            keyboardAppearance="dark"
-            placeholderTextColor="white"
-          />
-          <TouchableOpacity style={styles.btn1}>
-            <Button
-              title="submit"
-              color="black"
-              onPress={() => {
-                setModalView(false);
-                handleThoughtAddition(input.trim());
-              }}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btn2}>
-            <Button
-              title="cancel"
-              color="white"
-              onPress={() => {
-                setModalView(false);
-              }}
-            />
-          </TouchableOpacity>
-        </View>
-      </Modal>
-      {/* ======= sort modal ======= */}
-      <Modal animationType="fade" visible={sortModalView}>
-        <View style={styles.modal}>
-          <Text style={styles.sortText}>filter by status</Text>
-          <TouchableOpacity style={styles.btn2}>
-            <Button color="white" title="completed" onPress={() => handleThoughtFilter('completed')} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btn2}>
-            <Button color="white" title="in progress" onPress={() => handleThoughtFilter('incomplete')} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btn2}>
-            <Button color="white" title="view all" onPress={() => handleThoughtFilter('all')} />
-          </TouchableOpacity>
-          <Text style={styles.sortText}>filter by color</Text>
-          <Button color="red" title="close" onPress={() => setSortModalView(false)} />
-        </View>
-      </Modal>
-      <TouchableOpacity style={styles.plusBtnContainer} onPress={() => setModalView(true)}>
-        <Ionicon name="add-circle" size={80} style={styles.plusBtn} color="#6200EE" />
+      <AddThoughtModal
+        projectId={projectId}
+        addThoughtModalView={addThoughtModalView}
+        setAddThoughtModalView={setAddThoughtModalView}
+      />
+      <SortThoughtModal projectId={projectId} sortModalView={sortModalView} setSortModalView={setSortModalView} />
+      <TouchableOpacity style={styles.plusBtnContainer} onPress={() => setAddThoughtModalView(true)}>
+        <Ionicon name="add-circle" size={80} style={styles.plusBtn} color={colors.darkMode.secondary} />
       </TouchableOpacity>
     </>
   );
@@ -337,12 +271,5 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15,
     color: 'rgba(0, 0, 0, 0)',
-  },
-  sortIcon: {
-    marginRight: 30,
-    marginBottom: 2,
-  },
-  sortText: {
-    color: 'white',
   },
 });
