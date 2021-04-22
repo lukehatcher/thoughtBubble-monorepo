@@ -19,6 +19,12 @@ export interface AddProjectModalProps {
   setAddProjModalView: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+export interface SortThoughtModalProps {
+  projectId: string;
+  sortModalView: boolean;
+  setSortModalView: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 // typing reactnavigation -> https://reactnavigation.org/docs/typescript/
 export interface ProjectsScreenProps {
   navigation: StackNavigationProp<StackParamList, 'Projects'>;
