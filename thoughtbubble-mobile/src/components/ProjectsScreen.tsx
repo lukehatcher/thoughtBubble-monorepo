@@ -1,39 +1,19 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  TouchableOpacity,
-  Modal,
-  TextInput,
-  TouchableHighlight,
-  LogBox,
-  Alert,
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TouchableHighlight, LogBox } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { useSelector, useDispatch } from 'react-redux';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import { RootState } from '../reducers/rootReducer'; // type
 import { ProjectsScreenProps } from '../interfaces/componentProps'; // type
-import { addProjectAction, deleteProjectAction } from '../actions/projectActions';
+import { deleteProjectAction } from '../actions/projectActions';
+import { colors } from '../constants/colors';
+import { AddProjectModal } from './AddProjectModal';
 
 export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) => {
-  const [modalView, setModalView] = useState(false);
-  const [input, setInput] = useState('');
+  const [addProjModalView, setAddProjModalView] = useState(false);
   const dispatch = useDispatch();
-
-  const selector = (state: RootState) => state.userProjectData;
-  let userProjectsData = useSelector(selector);
-
-  const handleProjectAddition = function (projectName: string) {
-    setInput('');
-    if (!projectName) {
-      Alert.alert('invalid input');
-      return;
-    }
-    dispatch(addProjectAction(projectName));
-  };
+  const theme = useSelector((state: RootState) => state.userInfo.darkMode);
+  let userProjectsData = useSelector((state: RootState) => state.userProjectData);
 
   const handleProjectDeletion = function (projectId: string) {
     dispatch(deleteProjectAction(projectId));
@@ -59,7 +39,12 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
 
   const renderHiddenItem = (data, rowMap) => (
     // for slidables
-    <View style={{ ...styles.rowFront, backgroundColor: 'rgb(0, 122, 255)' }}>
+    <View
+      style={{
+        ...styles.rowFront,
+        backgroundColor: theme ? colors.darkMode.primary : colors.lightMode.primary,
+      }}
+    >
       {/* to match height of back view to the dynamic front view height,
       add random view below with same text (but invisable) to get same height */}
       <View>
@@ -100,54 +85,25 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
           previewOpenValue={-40}
         />
       </View>
-      {/* ======= modal ======= */}
-      <Modal animationType="slide" visible={modalView}>
-        <View style={styles.modal}>
-          <TextInput
-            onChangeText={(text) => setInput(text)}
-            placeholder="add a new project..."
-            multiline
-            style={styles.textInput}
-            keyboardAppearance="dark"
-            placeholderTextColor="rgb(199, 199, 204)"
-          />
-          <TouchableOpacity style={styles.btn1}>
-            <Button
-              title="submit"
-              color="black"
-              onPress={() => {
-                setModalView(false);
-                handleProjectAddition(input.trim());
-              }}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btn2}>
-            <Button
-              title="cancel"
-              color="white"
-              onPress={() => {
-                setModalView(false);
-              }}
-            />
-          </TouchableOpacity>
-        </View>
-      </Modal>
-      <TouchableOpacity style={styles.plusBtnContainer} onPress={() => setModalView(true)}>
-        <Ionicon name="add-circle" size={80} style={styles.plusBtn} color="#6200EE" />
+      <AddProjectModal addProjModalView={addProjModalView} setAddProjModalView={setAddProjModalView} />
+      <TouchableOpacity style={styles.plusBtnContainer} onPress={() => setAddProjModalView(true)}>
+        <Ionicon name="add-circle" size={80} style={styles.plusBtn} color={colors.darkMode.secondary} />
       </TouchableOpacity>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  dark: {
-    backgroundColor: 'rgb(44, 44, 46)',
+  container: {
+    // main background
+    flex: 1,
+    backgroundColor: colors.darkMode.background,
   },
   text: {
     fontSize: 20,
     flex: 1,
     padding: 15,
-    color: 'rgb(199, 199, 204)',
+    color: colors.darkMode.textOnSurface,
   },
   plusBtnContainer: {
     position: 'absolute',
@@ -164,41 +120,8 @@ const styles = StyleSheet.create({
     shadowRadius: 13.0,
     elevation: 24,
   },
-  modal: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#121212',
-  },
-  textInput: {
-    borderBottomColor: 'white',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    width: 250,
-    color: 'white',
-  },
-  btn1: {
-    backgroundColor: '#6200EE',
-    borderRadius: 15,
-    padding: 6,
-    margin: 10,
-    marginTop: 25,
-    width: 250,
-  },
-  btn2: {
-    // color: '#6A0DAD',
-    borderRadius: 15,
-    borderColor: '#6200EE',
-    borderWidth: 2,
-    padding: 6,
-    margin: 8,
-    width: 250,
-  }, // new ================
-  container: {
-    flex: 1,
-    backgroundColor: '#121212',
-  },
   rowFront: {
-    backgroundColor: '#303030',
+    backgroundColor: colors.darkMode.dp1,
     alignItems: 'center',
     justifyContent: 'center',
     height: 'auto', // !!!!!!!!!
@@ -206,23 +129,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     flexWrap: 'wrap',
     borderRadius: 10,
-    // shadow
-    shadowColor: 'black',
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.7,
-    shadowRadius: 5.46,
-    elevation: 9,
-  },
-  rowBack: {
-    alignItems: 'center',
-    backgroundColor: '#DDD',
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingLeft: 15,
   },
   backRightBtn: {
     alignItems: 'center',
@@ -231,15 +137,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     width: 75,
-    // ====
-    // backgroundColor: 'rgb(0, 122, 255)',
   },
   backRightBtnLeft: {
-    backgroundColor: 'rgb(0, 122, 255)', // apple ios colors (light)
+    backgroundColor: colors.darkMode.primary,
     right: 75,
   },
   backRightBtnRight: {
-    backgroundColor: 'rgb(255, 59, 48)', // apple ios colors (light)
+    backgroundColor: colors.darkMode.error,
     right: 0,
     borderBottomRightRadius: 10,
     borderTopRightRadius: 10,
