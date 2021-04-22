@@ -4,7 +4,7 @@ export interface idTokenShape {
   aud: string;
   auth_time: string;
   email: string;
-  email_verification: true;
+  email_verification: boolean;
   exp: number;
   family_name: string;
   given_name: string;
