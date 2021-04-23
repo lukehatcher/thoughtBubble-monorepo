@@ -46,7 +46,7 @@ export const AddProjectModal: React.FC<AddProjectModalProps> = function ({ addPr
           />
           <Button
             mode="contained"
-            icon="folder-upload-outline"
+            icon="folder-upload"
             color={theme ? colors.darkMode.primary : colors.lightMode.primary}
             onPress={() => {
               setAddProjModalView(false);
@@ -72,10 +72,6 @@ export const AddProjectModal: React.FC<AddProjectModalProps> = function ({ addPr
     </>
   );
 };
-
-const sharedStyles = StyleSheet.create({
-  //
-});
 
 const stylesDark = StyleSheet.create({
   modal: {

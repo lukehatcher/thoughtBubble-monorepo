@@ -1,6 +1,7 @@
 import React, { useState, FC } from 'react';
-import { Alert, Button, Modal, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Modal, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { Button, TextInput } from 'react-native-paper';
 import { addThoughtAction } from '../actions/thoughtActions';
 import { colors } from '../constants/colors';
 import { AddThoughtModalProps } from '../interfaces/componentProps';
@@ -31,32 +32,46 @@ export const AddThoughtModal: FC<AddThoughtModalProps> = function ({
       <Modal animationType="slide" visible={addThoughtModalView}>
         <View style={useTheme('modal')}>
           <TextInput
-            onChangeText={(text) => setInput(text)}
-            placeholder="Add a new thought"
+            mode="outlined"
+            label="new project"
+            value={input}
+            onChangeText={(input) => setInput(input)}
+            placeholder="Add a new project"
             multiline
             style={useTheme('textInput')}
+            theme={{
+              colors: {
+                primary: theme ? colors.darkMode.primary : colors.lightMode.primary,
+                text: theme ? colors.darkMode.textOnSurface : colors.lightMode.textOnBackground,
+                placeholder: theme ? `${colors.darkMode.textOnSurface}87` : `${colors.lightMode.textOnBackground}87`,
+              },
+            }}
             keyboardAppearance="dark"
-            placeholderTextColor="rgb(199, 199, 204)"
           />
-          <TouchableOpacity style={useTheme('btn')}>
-            <Button
-              title="submit"
-              color={theme ? colors.darkMode.textOnPrimary : colors.lightMode.textOnPrimary}
-              onPress={() => {
-                setAddThoughtModalView(false);
-                handleThoughtAddition(input.trim());
-              }}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity style={useTheme('btn')}>
-            <Button
-              title="cancel"
-              color={theme ? colors.darkMode.textOnPrimary : colors.lightMode.textOnPrimary}
-              onPress={() => {
-                setAddThoughtModalView(false);
-              }}
-            />
-          </TouchableOpacity>
+
+          <Button
+            mode="contained"
+            icon="file-upload"
+            color={theme ? colors.darkMode.primary : colors.lightMode.primary}
+            onPress={() => {
+              setAddThoughtModalView(false);
+              handleThoughtAddition(input.trim());
+            }}
+            style={useTheme('btn')}
+          >
+            add thought
+          </Button>
+          <Button
+            mode="contained"
+            icon="close-thick"
+            color={theme ? colors.darkMode.primary : colors.lightMode.primary}
+            onPress={() => {
+              setAddThoughtModalView(false);
+            }}
+            style={useTheme('btn')}
+          >
+            close
+          </Button>
         </View>
       </Modal>
     </>
@@ -71,23 +86,14 @@ const stylesDark = StyleSheet.create({
     backgroundColor: colors.darkMode.background,
   },
   textInput: {
-    paddingTop: 15,
-    paddingBottom: 15,
-    padding: 20,
-    borderRadius: 6,
-    borderWidth: 2,
-    borderColor: colors.darkMode.primary,
+    color: 'white',
+    backgroundColor: colors.darkMode.dp1,
     width: 250,
-    color: colors.darkMode.textOnBackground,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   btn: {
-    backgroundColor: colors.darkMode.primary,
-    borderRadius: 10,
-    padding: 6,
-    margin: 10,
     marginBottom: 10,
-    width: 250,
+    // width: 250,
   },
 });
 
@@ -99,22 +105,12 @@ const stylesLight = StyleSheet.create({
     backgroundColor: colors.lightMode.background,
   },
   textInput: {
-    paddingTop: 15,
-    paddingBottom: 15,
-    padding: 20,
-    borderRadius: 6,
-    borderWidth: 1,
-    borderColor: colors.lightMode.primary,
+    backgroundColor: colors.lightMode.background,
     width: 250,
-    color: colors.lightMode.textOnBackground,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   btn: {
-    backgroundColor: colors.lightMode.primary,
-    borderRadius: 10,
-    padding: 6,
-    margin: 10,
     marginBottom: 10,
-    width: 250,
+    // width: 250,
   },
 });
