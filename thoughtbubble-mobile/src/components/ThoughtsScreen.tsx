@@ -101,10 +101,18 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
 
   const renderItem = (data) => (
     // for slidables
+    // thought is data.item.text
     <TouchableHighlight style={useTheme('rowFront')} underlayColor={'grey'}>
       <>
         <Text style={data.item.completed ? useTheme('textCompleted') : useTheme('text')}>{data.item.text}</Text>
-        <TouchableOpacity style={useTheme('moreBtn')} onPress={() => renderModal(data.item.key)}>
+        {data.item.tag ? (
+          <TouchableOpacity style={sharedStyles.tagIcon} onPress={() => renderModal(data.item.key)}>
+            <MaterialIcons name="star" size={25} color={data.item.tag} />
+          </TouchableOpacity>
+        ) : (
+          <></>
+        )}
+        <TouchableOpacity style={sharedStyles.moreBtn} onPress={() => renderModal(data.item.key)}>
           <MaterialIcons
             name="more-vert"
             size={35}
@@ -156,7 +164,7 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
 };
 
 const sharedStyles = StyleSheet.create({
-  // styles not effected bhy light/dark mode
+  // styles not effected by light/dark mode
   fab: {
     position: 'absolute',
     right: 0,
@@ -170,16 +178,20 @@ const sharedStyles = StyleSheet.create({
     padding: 15,
     color: 'rgba(0, 0, 0, 0)',
   },
+  moreBtn: {
+    position: 'absolute',
+    right: 0,
+  },
+  tagIcon: {
+    position: 'absolute',
+    right: 30,
+  },
 });
 
 const stylesDark = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: colors.darkMode.background,
-  },
-  moreBtn: {
-    position: 'absolute',
-    right: 0,
   },
   text: {
     fontSize: 20,
@@ -240,10 +252,6 @@ const stylesLight = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: colors.lightMode.background,
-  },
-  moreBtn: {
-    position: 'absolute',
-    right: 0,
   },
   text: {
     fontSize: 20,

@@ -68,3 +68,19 @@ export const thoughtStatusChangeAction = (projectId: string, thoughtId: string) 
       .catch((err) => console.error('@thoughtActions.ts: ', err));
   };
 };
+
+export const thoughtTagChangeAction = function (projectId: string, thoughtId: string, tag: string | null) {
+  return async (dispatch, getState) => {
+    const userSub = getState().storedUser.sub;
+    axios
+      .put('http://localhost:3001/api/thoughts/tag', {
+        userSub, // not used atm with the new api
+        thoughtId,
+        tag,
+      })
+      .then(() => {
+        dispatch({ type: 'editThoughtTag', payload: { projectId, tag, id: thoughtId } });
+      })
+      .catch((err) => console.error('@thoughtActions.ts: ', err));
+  };
+};

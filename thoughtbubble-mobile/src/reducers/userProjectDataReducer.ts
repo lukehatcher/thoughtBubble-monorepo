@@ -50,6 +50,22 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
           };
         }
       });
+    case 'editThoughtTag':
+      return state.map((item) => {
+        if (item.id !== payload.projectId) {
+          return item;
+        } else {
+          return {
+            ...item,
+            projectThoughts: item.projectThoughts.map((thought) => {
+              if (thought.id === payload.id) {
+                thought.tag = payload.tag;
+              }
+              return thought;
+            }),
+          };
+        }
+      });
     case 'thoughtStatusChange':
       return state.map((item) => {
         if (item.id !== payload.projectId) {
