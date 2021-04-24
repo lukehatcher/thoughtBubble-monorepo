@@ -77,45 +77,52 @@ export const MoreModal: FC<MoreModalProps> = ({ moreModalView, setMoreModalView,
           <View style={sharedStyles.tagContainer}>
             <IconButton
               icon="tag"
-              size={30}
+              size={27}
               color={'red'}
               style={tag === 'red' ? useTheme('currentTag') : null}
               onPress={() => handleThoughtTag('red')}
             />
             <IconButton
               icon="tag"
-              size={30}
+              size={27}
               color={'orange'}
-              style={tag === 'yellow' ? useTheme('currentTag') : null}
-              onPress={() => handleThoughtTag('yellow')}
+              style={tag === 'orange' ? useTheme('currentTag') : null}
+              onPress={() => handleThoughtTag('orange')}
             />
             <IconButton
               icon="tag"
-              size={30}
+              size={27}
               color={'green'}
               style={tag === 'green' ? useTheme('currentTag') : null}
               onPress={() => handleThoughtTag('green')}
             />
             <IconButton
               icon="tag"
-              size={30}
+              size={27}
               color={'blue'}
               style={tag === 'blue' ? useTheme('currentTag') : null}
               onPress={() => handleThoughtTag('blue')}
             />
             <IconButton
               icon="tag"
-              size={30}
+              size={27}
               color={'purple'}
               style={tag === 'purple' ? useTheme('currentTag') : null}
               onPress={() => handleThoughtTag('purple')}
             />
             <IconButton
               icon="tag-off"
-              size={30}
+              size={27}
               color={'silver'}
               style={!tag ? useTheme('currentTag') : null}
               onPress={() => handleThoughtTag(null)}
+            />
+            <IconButton
+              icon="star"
+              size={27}
+              color="#D4AF37"
+              style={tag === 'star' ? useTheme('currentTag') : null}
+              onPress={() => handleThoughtTag('star')}
             />
           </View>
         </View>

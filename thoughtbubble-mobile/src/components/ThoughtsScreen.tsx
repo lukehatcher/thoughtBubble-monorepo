@@ -107,7 +107,11 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
         <Text style={data.item.completed ? useTheme('textCompleted') : useTheme('text')}>{data.item.text}</Text>
         {data.item.tag ? (
           <TouchableOpacity style={sharedStyles.tagIcon} onPress={() => renderModal(data.item.key)}>
-            <MaterialIcons name="star" size={25} color={data.item.tag} />
+            {data.item.tag !== 'star' ? (
+              <MaterialCommunityIcons name="tag" size={25} color={data.item.tag} />
+            ) : (
+              <MaterialCommunityIcons name="star" size={25} color="#D4AF37" />
+            )}
           </TouchableOpacity>
         ) : (
           <></>
