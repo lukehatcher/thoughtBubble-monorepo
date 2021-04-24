@@ -3,16 +3,18 @@ import ThoughtsController from '../controllers/thoughtController';
 
 const router = express.Router();
 
-// api/thought
-router
+router // api/thought
   .route('/')
   .post(ThoughtsController.createThought)
   .put(ThoughtsController.editThought)
   .delete(ThoughtsController.deleteThought);
 
-// api/thought/status
-router
-  .route('/status') //
+router // api/thought/status
+  .route('/status')
   .put(ThoughtsController.toggleThoughtStatus);
+
+router // api/thought/tag
+  .route('/tag')
+  .put(ThoughtsController.editTag);
 
 export default router;
