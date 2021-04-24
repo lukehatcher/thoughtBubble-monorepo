@@ -65,6 +65,23 @@ class ThoughtsController {
       res.sendStatus(400);
     }
   };
+
+  public editTag = async (req: Request, res: Response) => {
+    const { userSub, thoughtId, tag: newtag } = req.body;
+    try {
+      const thought = await Thought.findOne({ id: thoughtId });
+      await getConnection() //
+        .createQueryBuilder()
+        .update(Thought)
+        .set({ tag: newtag })
+        .where('id = :id', { id: thoughtId })
+        .execute();
+      res.sendStatus(200);
+    } catch (err) {
+      console.error(this.location, err);
+      res.sendStatus(400);
+    }
+  };
 }
 
 export default new ThoughtsController();

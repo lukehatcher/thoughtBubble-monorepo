@@ -1,15 +1,15 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { HomeScreen } from './HomeScreen';
+import { SettingsScreen } from './SettingsScreen';
 import { ProjectsNavStack } from './ProjectsNavStack';
 import { StatsScreen } from './StatsScreen';
-import Ionicon from 'react-native-vector-icons/Ionicons';
 import { TabsParamList } from '../interfaces/navigation';
 import { AppNavTabsProps } from '../interfaces/componentProps';
 import { useSelector } from 'react-redux';
 import { RootState } from '../reducers/rootReducer';
 import { colors } from '../constants/colors';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Tab = createBottomTabNavigator<TabsParamList>();
 
@@ -29,11 +29,11 @@ export const AppNavTabs: React.FC<AppNavTabsProps> = () => {
     <NavigationContainer>
       <Tab.Navigator initialRouteName="Projects" tabBarOptions={dynamicTabBarOptions}>
         <Tab.Screen
-          name="Home"
-          component={HomeScreen}
+          name="Settings"
+          component={SettingsScreen}
           options={{
-            title: 'Home',
-            tabBarIcon: ({ color }) => <Ionicon name="home" size={30} color={color} />,
+            title: 'Settings',
+            tabBarIcon: ({ color }) => <MaterialCommunityIcons name="cog" size={30} color={color} />,
           }}
         />
         <Tab.Screen
@@ -41,7 +41,7 @@ export const AppNavTabs: React.FC<AppNavTabsProps> = () => {
           component={ProjectsNavStack} // projects stack
           options={{
             title: 'Projects',
-            tabBarIcon: ({ color }) => <Ionicon name="list" size={30} color={color} />,
+            tabBarIcon: ({ color }) => <MaterialCommunityIcons name="format-list-bulleted" size={30} color={color} />,
           }}
         />
         <Tab.Screen
@@ -49,7 +49,7 @@ export const AppNavTabs: React.FC<AppNavTabsProps> = () => {
           component={StatsScreen}
           options={{
             title: 'Stats',
-            tabBarIcon: ({ color }) => <Ionicon name="analytics" size={30} color={color} />,
+            tabBarIcon: ({ color }) => <MaterialCommunityIcons name="chart-timeline-variant" size={30} color={color} />,
           }}
         />
       </Tab.Navigator>

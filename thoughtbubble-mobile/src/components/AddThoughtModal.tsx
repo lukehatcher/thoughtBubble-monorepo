@@ -1,7 +1,7 @@
 import React, { useState, FC } from 'react';
 import { Alert, Modal, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, TextInput } from 'react-native-paper';
+import { Button, IconButton, TextInput } from 'react-native-paper';
 import { addThoughtAction } from '../actions/thoughtActions';
 import { colors } from '../constants/colors';
 import { AddThoughtModalProps } from '../interfaces/componentProps';
@@ -61,22 +61,26 @@ export const AddThoughtModal: FC<AddThoughtModalProps> = function ({
           >
             add thought
           </Button>
-          <Button
-            mode="contained"
-            icon="close-thick"
+          <IconButton
+            icon="close"
+            size={50}
             color={theme ? colors.darkMode.primary : colors.lightMode.primary}
-            onPress={() => {
-              setAddThoughtModalView(false);
-            }}
-            style={useTheme('btn')}
-          >
-            close
-          </Button>
+            style={sharedStyles.closeBtn}
+            onPress={() => setAddThoughtModalView(false)}
+          />
         </View>
       </Modal>
     </>
   );
 };
+
+const sharedStyles = StyleSheet.create({
+  closeBtn: {
+    position: 'absolute',
+    top: 50,
+    right: 16,
+  },
+});
 
 const stylesDark = StyleSheet.create({
   modal: {

@@ -1,7 +1,7 @@
 // typing reactnavigation -> https://reactnavigation.org/docs/typescript/
 
 export type TabsParamList = {
-  Home: undefined;
+  Settings: undefined;
   Projects: undefined;
   Stats: undefined;
 };

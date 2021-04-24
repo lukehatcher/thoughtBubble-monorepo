@@ -2,8 +2,8 @@ import React, { useState, useLayoutEffect, FC } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TouchableHighlight, LogBox } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import { SwipeListView } from 'react-native-swipe-list-view';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { SwipeListView } from 'react-native-swipe-list-view';
 import { RootState } from '../reducers/rootReducer'; // type
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { deleteThoughtAction, thoughtStatusChangeAction } from '../actions/thoughtActions';
@@ -101,10 +101,22 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
 
   const renderItem = (data) => (
     // for slidables
+    // thought is data.item.text
     <TouchableHighlight style={useTheme('rowFront')} underlayColor={'grey'}>
       <>
         <Text style={data.item.completed ? useTheme('textCompleted') : useTheme('text')}>{data.item.text}</Text>
-        <TouchableOpacity style={useTheme('moreBtn')} onPress={() => renderModal(data.item.key)}>
+        {data.item.tag ? (
+          <TouchableOpacity style={sharedStyles.tagIcon} onPress={() => renderModal(data.item.key)}>
+            {data.item.tag !== 'star' ? (
+              <MaterialCommunityIcons name="tag" size={25} color={data.item.tag} />
+            ) : (
+              <MaterialCommunityIcons name="star" size={25} color="#D4AF37" />
+            )}
+          </TouchableOpacity>
+        ) : (
+          <></>
+        )}
+        <TouchableOpacity style={sharedStyles.moreBtn} onPress={() => renderModal(data.item.key)}>
           <MaterialIcons
             name="more-vert"
             size={35}
@@ -156,7 +168,7 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
 };
 
 const sharedStyles = StyleSheet.create({
-  // styles not effected bhy light/dark mode
+  // styles not effected by light/dark mode
   fab: {
     position: 'absolute',
     right: 0,
@@ -170,16 +182,20 @@ const sharedStyles = StyleSheet.create({
     padding: 15,
     color: 'rgba(0, 0, 0, 0)',
   },
+  moreBtn: {
+    position: 'absolute',
+    right: 0,
+  },
+  tagIcon: {
+    position: 'absolute',
+    right: 30,
+  },
 });
 
 const stylesDark = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: colors.darkMode.background,
-  },
-  moreBtn: {
-    position: 'absolute',
-    right: 0,
   },
   text: {
     fontSize: 20,
@@ -240,10 +256,6 @@ const stylesLight = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: colors.lightMode.background,
-  },
-  moreBtn: {
-    position: 'absolute',
-    right: 0,
   },
   text: {
     fontSize: 20,
