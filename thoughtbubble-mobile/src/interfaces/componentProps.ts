@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { StackParamList } from './navigation';
 
 export interface LoginScreenProps {}
-export interface HomeScreenProps {}
+export interface SettingsScreenProps {}
 export interface AppNavTabsProps {}
 export interface ProjectsNavStackProps {}
 

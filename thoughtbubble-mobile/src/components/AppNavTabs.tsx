@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { HomeScreen } from './HomeScreen';
+import { SettingsScreen } from './SettingsScreen';
 import { ProjectsNavStack } from './ProjectsNavStack';
 import { StatsScreen } from './StatsScreen';
 import { TabsParamList } from '../interfaces/navigation';
@@ -29,10 +29,10 @@ export const AppNavTabs: React.FC<AppNavTabsProps> = () => {
     <NavigationContainer>
       <Tab.Navigator initialRouteName="Projects" tabBarOptions={dynamicTabBarOptions}>
         <Tab.Screen
-          name="Home"
-          component={HomeScreen}
+          name="Settings"
+          component={SettingsScreen}
           options={{
-            title: 'Home',
+            title: 'Settings',
             tabBarIcon: ({ color }) => <MaterialCommunityIcons name="cog" size={30} color={color} />,
           }}
         />

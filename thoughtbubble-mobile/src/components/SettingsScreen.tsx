@@ -1,16 +1,14 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, Button, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, Image, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-// import Switch from 'react-native-switch-pro';
 import { Switch } from 'react-native-paper';
 import { RootState } from '../reducers/rootReducer';
 import { _onLogOut } from '../utils/auth';
-import { HomeScreenProps } from '../interfaces/componentProps';
+import { SettingsScreenProps } from '../interfaces/componentProps';
 import { changeEmailSettingsAction, changeDarkModeAction } from '../actions/userInfoActions';
 import { colors } from '../constants/colors';
-import { useTheme } from '../hooks/useTheme';
 
-export const HomeScreen: React.FC<HomeScreenProps> = () => {
+export const SettingsScreen: React.FC<SettingsScreenProps> = () => {
   const dispatch = useDispatch();
   let idToken = useSelector((state: RootState) => state.storedUser);
   const dailyEmailSetting = useSelector((state: RootState) => state.userInfo.dailyEmail);
@@ -32,7 +30,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = () => {
     <>
       <View style={useTheme('topView')}></View>
       <View style={useTheme('middleView')}>
-        <Text style={useTheme('headerText')}>settings</Text>
+        <Text style={useTheme('headerText')}>Settings</Text>
       </View>
 
       <View style={useTheme('bottomContainer')}>
