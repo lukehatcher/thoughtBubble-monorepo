@@ -7,7 +7,8 @@
 import React from 'react';
 import { ActivityIndicator, StatusBar } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Provider } from 'react-redux';
+import { Provider as ReduxProvider } from 'react-redux';
+import { Provider as PaperProvider } from 'react-native-paper';
 import { AppNavTabs } from './src/components/AppNavTabs';
 import { LoginScreen } from './src/components/LoginScreen';
 import { checkForIdToken } from './src/utils/asyncStorage';
@@ -52,7 +53,9 @@ checkForIdToken().then(async (res) => {
 
 // wrap app with redux provider
 export const ReduxApp = () => (
-  <Provider store={store}>
-    <App />
-  </Provider>
+  <ReduxProvider store={store}>
+    <PaperProvider>
+      <App />
+    </PaperProvider>
+  </ReduxProvider>
 );
