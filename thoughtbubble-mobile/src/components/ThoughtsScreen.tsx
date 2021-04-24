@@ -2,8 +2,8 @@ import React, { useState, useLayoutEffect, FC } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TouchableHighlight, LogBox } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import { SwipeListView } from 'react-native-swipe-list-view';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { SwipeListView } from 'react-native-swipe-list-view';
 import { RootState } from '../reducers/rootReducer'; // type
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { deleteThoughtAction, thoughtStatusChangeAction } from '../actions/thoughtActions';
