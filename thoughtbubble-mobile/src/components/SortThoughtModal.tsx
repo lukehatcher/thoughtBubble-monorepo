@@ -1,57 +1,88 @@
 import React, { FC } from 'react';
-import { Modal, View, Text, TouchableOpacity, Button, StyleSheet } from 'react-native';
+import { Modal, View, Text, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProjectDataAction } from '../actions/fetchProjectDataAction';
-import { filtertThoughtsAction } from '../actions/filterActions';
+import { filterThoughtsByStatusAction, filterThoughtsByTagAction } from '../actions/filterActions';
 import { colors } from '../constants/colors';
 import { SortThoughtModalProps } from '../interfaces/componentProps';
 import { RootState } from '../reducers/rootReducer';
+import { Chip, IconButton } from 'react-native-paper';
 
 export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId, sortModalView, setSortModalView }) {
   const dispatch = useDispatch();
   const userSub = useSelector((state: RootState) => state.storedUser.sub);
   const theme = useSelector((state: RootState) => state.userInfo.darkMode);
+  // keep filters in redux state
 
   const useTheme = (name: string) => (theme ? stylesDark[name] : stylesLight[name]);
 
   const handleThoughtFilter = (typeOfFilter: string) => {
     if (typeOfFilter === 'all') dispatch(fetchProjectDataAction(userSub));
-    dispatch(filtertThoughtsAction(projectId, typeOfFilter));
+    if (typeOfFilter === 'completed' || typeOfFilter === 'incomplete')
+      dispatch(filterThoughtsByStatusAction(projectId, typeOfFilter));
+    // else its a tag
+    else dispatch(filterThoughtsByTagAction(projectId, typeOfFilter));
   };
 
   return (
     <>
       <Modal animationType="fade" visible={sortModalView}>
         <View style={useTheme('modal')}>
-          <Text style={useTheme('text')}>filter by status</Text>
-          <TouchableOpacity style={useTheme('btn')}>
-            <Button
-              color={theme ? colors.darkMode.textOnBackground : colors.lightMode.textOnBackground}
-              title="completed"
-              onPress={() => handleThoughtFilter('completed')}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity style={useTheme('btn')}>
-            <Button
-              color={theme ? colors.darkMode.textOnBackground : colors.lightMode.textOnBackground}
-              title="in progress"
-              onPress={() => handleThoughtFilter('incomplete')}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity style={useTheme('btn')}>
-            <Button
-              color={theme ? colors.darkMode.textOnBackground : colors.lightMode.textOnBackground}
-              title="view all"
-              onPress={() => handleThoughtFilter('all')}
-            />
-          </TouchableOpacity>
-          <Text style={useTheme('text')}>filter by color</Text>
-          <Button color="red" title="close" onPress={() => setSortModalView(false)} />
+          <Text style={useTheme('text')}>add filters</Text>
+          <Chip icon="check" onPress={() => handleThoughtFilter('completed')}>
+            completed
+          </Chip>
+          <Chip icon="close" onPress={() => handleThoughtFilter('incomplete')}>
+            incomplete
+          </Chip>
+          <Chip icon="eye-outline" onPress={() => handleThoughtFilter('all')}>
+            view all
+          </Chip>
+          <Chip selected={true} selectedColor="red" icon="tag" onPress={() => handleThoughtFilter('red')}>
+            red
+          </Chip>
+          <Chip icon="tag" selectedColor="orange" onPress={() => handleThoughtFilter('orange')}>
+            orange
+          </Chip>
+          <Chip icon="tag" selectedColor="green" onPress={() => handleThoughtFilter('green')}>
+            green
+          </Chip>
+          <Chip icon="tag" selectedColor="blue" onPress={() => handleThoughtFilter('blue')}>
+            blue
+          </Chip>
+          <Chip icon="tag" selectedColor="purple" onPress={() => handleThoughtFilter('purple')}>
+            purple
+          </Chip>
+          <Chip icon="star" selectedColor="#D4AF37" onPress={() => handleThoughtFilter('purple')}>
+            favorites
+          </Chip>
+          <Chip
+            icon="alert-circle-outline"
+            onPress={() => console.log('Pressed')}
+            onClose={() => console.log('closed')}
+          >
+            remove all filters
+          </Chip>
+          <IconButton
+            icon="close"
+            size={50}
+            color={theme ? colors.darkMode.primary : colors.lightMode.primary}
+            style={sharedStyles.closeBtn}
+            onPress={() => setSortModalView(false)}
+          />
         </View>
       </Modal>
     </>
   );
 };
+
+const sharedStyles = StyleSheet.create({
+  closeBtn: {
+    position: 'absolute',
+    top: 50,
+    right: 16,
+  },
+});
 
 const stylesDark = StyleSheet.create({
   modal: {
