@@ -82,27 +82,49 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
           };
         }
       });
-    case 'filterData/completed':
+    case 'filterData':
       return payload.data.map((project) => {
-        if (project.id === payload.projectId) {
-          return {
-            ...project,
-            projectThoughts: project.projectThoughts.filter((thought) => thought.completed),
-          };
+        let { status, tags } = payload.filters;
+        console.log(status, tags);
+        if (status === 'all') {
+          if (project.id === payload.projectId) {
+            if (!tags.length) return project; // if no tags
+            return {
+              ...project,
+              projectThoughts: project.projectThoughts.filter((thought) => tags.includes(thought.tag)),
+            };
+          } else {
+            return project;
+          }
         } else {
-          return project;
+          // convert complete/incomplete
+          status = status === 'completed' ? true : false;
+          // status is completed or incomplete
+          if (project.id === payload.projectId) {
+            if (!tags.length)
+              return {
+                ...project,
+                projectThoughts: project.projectThoughts.filter((thought) => thought.completed === status),
+              };
+            return {
+              ...project,
+              projectThoughts: project.projectThoughts.filter(
+                (thought) => thought.completed === status && tags.includes(thought.tag),
+              ),
+            };
+          } else {
+            return project;
+          }
         }
-      });
-    case 'filterData/incomplete':
-      return payload.data.map((project) => {
-        if (project.id === payload.projectId) {
-          return {
-            ...project,
-            projectThoughts: project.projectThoughts.filter((thought) => !thought.completed),
-          };
-        } else {
-          return project;
-        }
+        // ==== original ====
+        // if (project.id === payload.projectId) {
+        //   return {
+        //     ...project,
+        //     projectThoughts: project.projectThoughts.filter((thought) => thought.completed),
+        //   };
+        // } else {
+        //   return project;
+        // }
       });
     default:
       return state;

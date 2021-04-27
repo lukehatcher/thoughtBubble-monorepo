@@ -1,27 +1,39 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Modal, View, Text, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProjectDataAction } from '../actions/fetchProjectDataAction';
-import { filterThoughtsByStatusAction, filterThoughtsByTagAction } from '../actions/filterActions';
+import { filterThoughtsAction } from '../actions/filterActions';
 import { colors } from '../constants/colors';
 import { SortThoughtModalProps } from '../interfaces/componentProps';
 import { RootState } from '../reducers/rootReducer';
 import { Chip, IconButton } from 'react-native-paper';
 
+interface Filters {
+  status: string;
+  tags: string[];
+}
+
+const statusFilters = ['all', 'incomplete', 'completed'];
+
 export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId, sortModalView, setSortModalView }) {
   const dispatch = useDispatch();
   const userSub = useSelector((state: RootState) => state.storedUser.sub);
   const theme = useSelector((state: RootState) => state.userInfo.darkMode);
+  // const [red, setRed] = useState(false);
+  const filters: Filters = { status: 'all', tags: [] };
   // keep filters in redux state
 
   const useTheme = (name: string) => (theme ? stylesDark[name] : stylesLight[name]);
 
   const handleThoughtFilter = (typeOfFilter: string) => {
-    if (typeOfFilter === 'all') dispatch(fetchProjectDataAction(userSub));
-    if (typeOfFilter === 'completed' || typeOfFilter === 'incomplete')
-      dispatch(filterThoughtsByStatusAction(projectId, typeOfFilter));
-    // else its a tag
-    else dispatch(filterThoughtsByTagAction(projectId, typeOfFilter));
+    if (statusFilters.includes(typeOfFilter)) {
+      filters.status = typeOfFilter;
+    } else {
+      if (filters.tags.includes(typeOfFilter)) filters.tags.filter((i) => i !== typeOfFilter);
+      // toggle
+      else filters.tags.push(typeOfFilter);
+    }
+    dispatch(filterThoughtsAction(projectId, filters));
   };
 
   return (

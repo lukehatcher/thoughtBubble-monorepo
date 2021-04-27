@@ -1,35 +1,38 @@
-interface Filters {
-  completed: boolean;
-  incomplete: boolean;
-  all: boolean;
-  red: boolean;
-  orange: boolean;
-  green: boolean;
-  blue: boolean;
-  purple: boolean;
-  star: boolean;
-}
+// interface ColorFilters {
+//   red: 'red';
+//   orange: 'orange';
+//   green: 'green';
+//   blue: 'blue';
+//   purple: 'purple';
+//   star: 'star';
+// }
 
-const initialState: Filters = {
-  completed: false,
-  incomplete: false,
-  all: false,
-  red: false,
-  orange: false,
-  green: false,
-  blue: false,
-  purple: false,
-  star: false,
-};
+// export const StatusFilters = {
+//   all: 'all',
+//   completed: 'completed',
+//   incomplete: 'incomplete',
+// };
 
-export const filterReducer = (state = initialState, action): Filters => {
-  switch (action.type) {
-    case 'changeFilter':
-      return {
-        ...state,
-        // toggle boolean for type specified in payload
-      };
-    default:
-      return state;
-  }
-};
+// interface Filters {
+//   status: string;
+//   colors: string[];
+// }
+
+// const initialState: Filters = {
+//   status: 'all',
+//   colors: [],
+// };
+
+// export const filterReducer = (state = initialState, action): Filters => {
+//   switch (action.type) {
+//     case 'changeFilter':
+//       return {
+//         ...state,
+//         // toggle boolean for type specified in payload
+//       };
+//     default:
+//       return state;
+//   }
+// };
+
+// // ================
