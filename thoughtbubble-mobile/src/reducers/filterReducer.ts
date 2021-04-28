@@ -1,38 +1,21 @@
-// interface ColorFilters {
-//   red: 'red';
-//   orange: 'orange';
-//   green: 'green';
-//   blue: 'blue';
-//   purple: 'purple';
-//   star: 'star';
-// }
+interface ProjectFilters {
+  id: string;
+  status: 'all' | 'completed' | 'incomplete';
+  tags: string[];
+}
 
-// export const StatusFilters = {
-//   all: 'all',
-//   completed: 'completed',
-//   incomplete: 'incomplete',
-// };
+const initialState: ProjectFilters[] = [];
 
-// interface Filters {
-//   status: string;
-//   colors: string[];
-// }
+// need to initialize all projects, add project, delete project
 
-// const initialState: Filters = {
-//   status: 'all',
-//   colors: [],
-// };
-
-// export const filterReducer = (state = initialState, action): Filters => {
-//   switch (action.type) {
-//     case 'changeFilter':
-//       return {
-//         ...state,
-//         // toggle boolean for type specified in payload
-//       };
-//     default:
-//       return state;
-//   }
-// };
-
-// // ================
+export const filterReducer = (state = initialState, action): ProjectFilters[] => {
+  switch (action.type) {
+    case 'changeFilter':
+      return {
+        ...state,
+        // etc
+      };
+    default:
+      return state;
+  }
+};
