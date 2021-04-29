@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { ProjectShape } from '../interfaces/data';
 
 export const addProjectAction = function (projectName: string) {
   return async (dispatch, getState) => {
@@ -10,8 +9,11 @@ export const addProjectAction = function (projectName: string) {
         projectName,
       })
       .then((res) => {
-        const newProject: ProjectShape = res.data;
+        const newProject = res.data;
+        newProject.projectThoughts = []; // does not come with query entity
+        console.log(res.data);
         dispatch({ type: 'addProject', payload: newProject });
+        dispatch({ type: 'filters/addProject', payload: newProject });
       })
       .catch((err) => console.error('@projectActions.ts: ', err));
   };
@@ -29,7 +31,24 @@ export const deleteProjectAction = function (projectId: string) {
       })
       .then(() => {
         dispatch({ type: 'deleteProject', payload: projectId });
+        dispatch({ type: 'filters/deleteProject', payload: projectId });
       })
       .catch((err) => console.error('@projectActions.ts: ', err));
+  };
+};
+
+export const filterProjectAction = function (projectId: string, filters: any) {
+  return async (dispatch, getState) => {
+    const userSub = getState().storedUser.sub;
+    try {
+      const response = await axios.get('http://localhost:3001/api/projects', {
+        params: {
+          userSub,
+        },
+      });
+      dispatch({ type: 'filterData', payload: { data: response.data, filters, projectId } });
+    } catch (err) {
+      console.error('@projectActions.ts: ', err);
+    }
   };
 };

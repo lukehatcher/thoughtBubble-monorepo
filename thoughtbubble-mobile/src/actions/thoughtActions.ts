@@ -10,8 +10,6 @@ export const addThoughtAction = (projectId: string, thought: string) => {
         thought,
       })
       .then((res) => {
-        // res.data -> the new thought
-        console.log(res.data);
         dispatch({ type: 'addThought', payload: res.data });
       })
       .catch((err) => console.error('@thoughtActions.ts: ', err));

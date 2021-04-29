@@ -6,7 +6,6 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
   const { type, payload } = action;
   switch (type) {
     case 'fetchData':
-      console.log(payload, 'payload');
       return payload;
     case 'addProject':
       return [...state, payload];
@@ -82,26 +81,40 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
           };
         }
       });
-    case 'filterData/completed':
+    case 'filterData':
+      // payload has all userProjectData, projectId and filters[] props on it, filters has id, status and tags[] on each object
       return payload.data.map((project) => {
-        if (project.id === payload.projectId) {
-          return {
-            ...project,
-            projectThoughts: project.projectThoughts.filter((thought) => thought.completed),
-          };
+        let { status, tags } = payload.filters.find((proj) => proj.id === payload.projectId);
+        console.log(status, tags);
+        if (status === 'all') {
+          if (project.id === payload.projectId) {
+            if (!tags.length) return project; // if no tags
+            return {
+              ...project,
+              projectThoughts: project.projectThoughts.filter((thought) => tags.includes(thought.tag)),
+            };
+          } else {
+            return project;
+          }
         } else {
-          return project;
-        }
-      });
-    case 'filterData/incomplete':
-      return payload.data.map((project) => {
-        if (project.id === payload.projectId) {
-          return {
-            ...project,
-            projectThoughts: project.projectThoughts.filter((thought) => !thought.completed),
-          };
-        } else {
-          return project;
+          // convert complete/incomplete
+          status = status === 'completed' ? true : false;
+          // status is completed or incomplete
+          if (project.id === payload.projectId) {
+            if (!tags.length)
+              return {
+                ...project,
+                projectThoughts: project.projectThoughts.filter((thought) => thought.completed === status),
+              };
+            return {
+              ...project,
+              projectThoughts: project.projectThoughts.filter(
+                (thought) => thought.completed === status && tags.includes(thought.tag),
+              ),
+            };
+          } else {
+            return project;
+          }
         }
       });
     default:
