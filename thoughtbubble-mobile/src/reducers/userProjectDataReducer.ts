@@ -1,4 +1,7 @@
 import { ProjectShape } from '../interfaces/data';
+// import store from '../store';
+// const filters = store.getState().filters;
+// console.log(filters, 'xxx');
 
 const initialState: ProjectShape[] = [];
 
@@ -6,7 +9,6 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
   const { type, payload } = action;
   switch (type) {
     case 'fetchData':
-      console.log(payload, 'payload');
       return payload;
     case 'addProject':
       return [...state, payload];
@@ -82,9 +84,12 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
           };
         }
       });
+    // given a set of filters...
     case 'filterData':
+      // payload has all userProjectData, projectId and filters[] props on it, filters has id, status and tags[] on each object
+      console.log(payload.filters, 'from big reducer');
       return payload.data.map((project) => {
-        let { status, tags } = payload.filters;
+        let { status, tags } = payload.filters.find((proj) => proj.id === payload.projectId);
         console.log(status, tags);
         if (status === 'all') {
           if (project.id === payload.projectId) {
@@ -116,15 +121,6 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
             return project;
           }
         }
-        // ==== original ====
-        // if (project.id === payload.projectId) {
-        //   return {
-        //     ...project,
-        //     projectThoughts: project.projectThoughts.filter((thought) => thought.completed),
-        //   };
-        // } else {
-        //   return project;
-        // }
       });
     default:
       return state;

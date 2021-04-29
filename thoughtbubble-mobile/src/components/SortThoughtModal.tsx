@@ -1,39 +1,56 @@
 import React, { FC, useState } from 'react';
 import { Modal, View, Text, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { Chip, IconButton } from 'react-native-paper';
 import { fetchProjectDataAction } from '../actions/fetchProjectDataAction';
 import { filterThoughtsAction } from '../actions/filterActions';
 import { colors } from '../constants/colors';
 import { SortThoughtModalProps } from '../interfaces/componentProps';
 import { RootState } from '../reducers/rootReducer';
-import { Chip, IconButton } from 'react-native-paper';
 
-interface Filters {
-  status: string;
-  tags: string[];
-}
+// interface Filters {
+//   status: string;
+//   tags: string[];
+// }
 
 const statusFilters = ['all', 'incomplete', 'completed'];
+type StatusFilters = 'all' | 'incomplete' | 'completed';
 
 export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId, sortModalView, setSortModalView }) {
+  console.log('rendered');
   const dispatch = useDispatch();
   const userSub = useSelector((state: RootState) => state.storedUser.sub);
   const theme = useSelector((state: RootState) => state.userInfo.darkMode);
-  // const [red, setRed] = useState(false);
-  const filters: Filters = { status: 'all', tags: [] };
-  // keep filters in redux state
-
   const useTheme = (name: string) => (theme ? stylesDark[name] : stylesLight[name]);
+  const filters = useSelector((state: RootState) => state.filters);
 
-  const handleThoughtFilter = (typeOfFilter: string) => {
+  const handleThoughtFilter = async (typeOfFilter: string) => {
+    // turn this into seperate actions later
+    // const project = filters.find((project) => project.id === projectId);
     if (statusFilters.includes(typeOfFilter)) {
-      filters.status = typeOfFilter;
+      filters.find((project) => project.id === projectId).status = typeOfFilter as StatusFilters;
     } else {
-      if (filters.tags.includes(typeOfFilter)) filters.tags.filter((i) => i !== typeOfFilter);
-      // toggle
-      else filters.tags.push(typeOfFilter);
+      // remove filter tag
+      if (filters.find((project) => project.id === projectId).tags.includes(typeOfFilter)) {
+        filters.find((project) => project.id === projectId).tags = filters
+          .find((project) => project.id === projectId)
+          .tags.filter((tag) => tag !== typeOfFilter);
+        // add filter tag
+      } else filters.find((project) => project.id === projectId).tags.push(typeOfFilter);
     }
-    dispatch(filterThoughtsAction(projectId, filters));
+    await dispatch({ type: 'addRemoveFilter', payload: filters });
+    console.log('inbetween'); // filter below is updated
+    await dispatch(filterThoughtsAction(projectId, filters));
+  };
+
+  const isStatusSelected = function (status: string) {
+    if (!filters.length) return false;
+    return filters.find((proj) => proj.id === projectId).status === status;
+  };
+
+  const isTagSelected = function (tag: string) {
+    if (!filters.length) return false;
+    return filters.find((proj) => proj.id === projectId).tags.includes(tag);
   };
 
   return (
@@ -41,31 +58,73 @@ export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId
       <Modal animationType="fade" visible={sortModalView}>
         <View style={useTheme('modal')}>
           <Text style={useTheme('text')}>add filters</Text>
-          <Chip icon="check" onPress={() => handleThoughtFilter('completed')}>
+          <Chip
+            selected={isStatusSelected('completed')} //
+            icon="check"
+            onPress={() => handleThoughtFilter('completed')}
+          >
             completed
           </Chip>
-          <Chip icon="close" onPress={() => handleThoughtFilter('incomplete')}>
+          <Chip
+            selected={isStatusSelected('incomplete')}
+            icon="close"
+            onPress={() => handleThoughtFilter('incomplete')}
+          >
             incomplete
           </Chip>
-          <Chip icon="eye-outline" onPress={() => handleThoughtFilter('all')}>
+          <Chip
+            selected={isStatusSelected('all')} //
+            icon="eye-outline"
+            onPress={() => handleThoughtFilter('all')}
+          >
             view all
           </Chip>
-          <Chip selected={true} selectedColor="red" icon="tag" onPress={() => handleThoughtFilter('red')}>
+          <Chip
+            selected={isTagSelected('red')}
+            selectedColor="red"
+            icon="tag"
+            onPress={() => handleThoughtFilter('red')}
+          >
             red
           </Chip>
-          <Chip icon="tag" selectedColor="orange" onPress={() => handleThoughtFilter('orange')}>
+          <Chip
+            selected={isTagSelected('orange')}
+            icon="tag"
+            selectedColor="orange"
+            onPress={() => handleThoughtFilter('orange')}
+          >
             orange
           </Chip>
-          <Chip icon="tag" selectedColor="green" onPress={() => handleThoughtFilter('green')}>
+          <Chip
+            selected={isTagSelected('green')}
+            icon="tag"
+            selectedColor="green"
+            onPress={() => handleThoughtFilter('green')}
+          >
             green
           </Chip>
-          <Chip icon="tag" selectedColor="blue" onPress={() => handleThoughtFilter('blue')}>
+          <Chip
+            selected={isTagSelected('blue')}
+            icon="tag"
+            selectedColor="blue"
+            onPress={() => handleThoughtFilter('blue')}
+          >
             blue
           </Chip>
-          <Chip icon="tag" selectedColor="purple" onPress={() => handleThoughtFilter('purple')}>
+          <Chip
+            selected={isTagSelected('purple')}
+            icon="tag"
+            selectedColor="purple"
+            onPress={() => handleThoughtFilter('purple')}
+          >
             purple
           </Chip>
-          <Chip icon="star" selectedColor="#D4AF37" onPress={() => handleThoughtFilter('purple')}>
+          <Chip
+            selected={isTagSelected('star')}
+            icon="star"
+            selectedColor="#D4AF37"
+            onPress={() => handleThoughtFilter('star')}
+          >
             favorites
           </Chip>
           <Chip
