@@ -6,19 +6,22 @@ import { filterProjectAction } from '../actions/projectActions';
 import { colors } from '../constants/colors';
 import { SortThoughtModalProps } from '../interfaces/componentProps';
 import { RootState } from '../reducers/rootReducer';
-import { updateFiltersAction } from '../actions/filterActions';
+import { clearTagsAction, updateFiltersAction } from '../actions/filterActions';
 
 export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId, sortModalView, setSortModalView }) {
-  console.log('rendered');
   const dispatch = useDispatch();
-  const userSub = useSelector((state: RootState) => state.storedUser.sub);
   const theme = useSelector((state: RootState) => state.userInfo.darkMode);
   const useTheme = (name: string) => (theme ? stylesDark[name] : stylesLight[name]);
   const filters = useSelector((state: RootState) => state.filters);
 
-  const handleThoughtFilter = async (typeOfFilter: string) => {
+  const handleThoughtFilter = async function (typeOfFilter: string) {
     await dispatch(updateFiltersAction(projectId, typeOfFilter));
-    await dispatch(filterProjectAction(projectId, filters)); // do we need to pass filters here?
+    await dispatch(filterProjectAction(projectId, filters)); // do I need to pass filters here?
+  };
+
+  const handleClearTags = async function () {
+    await dispatch(clearTagsAction(projectId));
+    await dispatch(filterProjectAction(projectId, filters));
   };
 
   const isStatusSelected = function (status: string) {
@@ -105,12 +108,8 @@ export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId
           >
             favorites
           </Chip>
-          <Chip
-            icon="alert-circle-outline"
-            onPress={() => console.log('Pressed')}
-            onClose={() => console.log('closed')}
-          >
-            remove all filters
+          <Chip icon="tag-off-outline" onPress={() => handleClearTags()}>
+            remove all tags
           </Chip>
           <IconButton
             icon="close"

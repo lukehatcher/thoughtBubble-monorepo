@@ -81,10 +81,8 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
           };
         }
       });
-    // given a set of filters...
     case 'filterData':
       // payload has all userProjectData, projectId and filters[] props on it, filters has id, status and tags[] on each object
-      console.log(payload.filters, 'from big reducer');
       return payload.data.map((project) => {
         let { status, tags } = payload.filters.find((proj) => proj.id === payload.projectId);
         console.log(status, tags);

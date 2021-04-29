@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { ProjectShape } from '../interfaces/data';
 
 export const addProjectAction = function (projectName: string) {
   return async (dispatch, getState) => {

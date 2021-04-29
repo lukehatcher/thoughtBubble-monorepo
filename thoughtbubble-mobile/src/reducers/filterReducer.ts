@@ -1,13 +1,12 @@
-interface ProjectFilters {
-  id: string;
-  status: 'all' | 'completed' | 'incomplete';
-  tags: string[];
-}
-
+type StatusFilters = 'all' | 'incomplete' | 'completed';
+const statusFilters = ['all', 'incomplete', 'completed'];
 const initialState: ProjectFilters[] = [];
 
-const statusFilters = ['all', 'incomplete', 'completed'];
-// type StatusFilters = 'all' | 'incomplete' | 'completed';
+interface ProjectFilters {
+  id: string;
+  status: StatusFilters;
+  tags: string[];
+}
 
 export const filterReducer = (state = initialState, action): ProjectFilters[] => {
   switch (action.type) {
@@ -49,6 +48,15 @@ export const filterReducer = (state = initialState, action): ProjectFilters[] =>
           }
         });
       }
+    case 'filters/clearTags':
+      return state.map((proj) => {
+        if (proj.id === action.payload) {
+          proj.tags = [];
+          return proj;
+        } else {
+          return proj;
+        }
+      });
     default:
       return state;
   }
