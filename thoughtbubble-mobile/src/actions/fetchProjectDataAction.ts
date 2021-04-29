@@ -9,7 +9,7 @@ export const fetchProjectDataAction = function (userSub: string) {
         },
       });
       dispatch({ type: 'fetchData', payload: response.data });
-      dispatch({ type: 'initProjectFilters', payload: response.data });
+      dispatch({ type: 'filters/initialize', payload: response.data });
     } catch (err) {
       console.error('@fetchDataAction.ts: ', err);
     }

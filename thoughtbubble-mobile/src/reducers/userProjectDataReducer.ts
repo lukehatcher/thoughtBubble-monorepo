@@ -1,7 +1,4 @@
 import { ProjectShape } from '../interfaces/data';
-// import store from '../store';
-// const filters = store.getState().filters;
-// console.log(filters, 'xxx');
 
 const initialState: ProjectShape[] = [];
 

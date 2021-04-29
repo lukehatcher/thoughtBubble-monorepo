@@ -1,20 +1,12 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { Modal, View, Text, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Chip, IconButton } from 'react-native-paper';
-import { fetchProjectDataAction } from '../actions/fetchProjectDataAction';
-import { filterThoughtsAction } from '../actions/filterActions';
+import { filterProjectAction } from '../actions/projectActions';
 import { colors } from '../constants/colors';
 import { SortThoughtModalProps } from '../interfaces/componentProps';
 import { RootState } from '../reducers/rootReducer';
-
-// interface Filters {
-//   status: string;
-//   tags: string[];
-// }
-
-const statusFilters = ['all', 'incomplete', 'completed'];
-type StatusFilters = 'all' | 'incomplete' | 'completed';
+import { updateFiltersAction } from '../actions/filterActions';
 
 export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId, sortModalView, setSortModalView }) {
   console.log('rendered');
@@ -25,22 +17,8 @@ export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId
   const filters = useSelector((state: RootState) => state.filters);
 
   const handleThoughtFilter = async (typeOfFilter: string) => {
-    // turn this into seperate actions later
-    // const project = filters.find((project) => project.id === projectId);
-    if (statusFilters.includes(typeOfFilter)) {
-      filters.find((project) => project.id === projectId).status = typeOfFilter as StatusFilters;
-    } else {
-      // remove filter tag
-      if (filters.find((project) => project.id === projectId).tags.includes(typeOfFilter)) {
-        filters.find((project) => project.id === projectId).tags = filters
-          .find((project) => project.id === projectId)
-          .tags.filter((tag) => tag !== typeOfFilter);
-        // add filter tag
-      } else filters.find((project) => project.id === projectId).tags.push(typeOfFilter);
-    }
-    await dispatch({ type: 'addRemoveFilter', payload: filters });
-    console.log('inbetween'); // filter below is updated
-    await dispatch(filterThoughtsAction(projectId, filters));
+    await dispatch(updateFiltersAction(projectId, typeOfFilter));
+    await dispatch(filterProjectAction(projectId, filters)); // do we need to pass filters here?
   };
 
   const isStatusSelected = function (status: string) {
