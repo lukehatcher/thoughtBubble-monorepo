@@ -1,5 +1,5 @@
-import * as express from 'express';
-import ProjectsController from '../controllers/projectControllers';
+import express from 'express';
+import ProjectsController from '../controllers/projectController';
 
 const router = express.Router();
 
@@ -7,8 +7,8 @@ const router = express.Router();
 router
   .route('/')
   .get(ProjectsController.fetchProjects)
-  .post(ProjectsController.createProject)
-  .delete(ProjectsController.deleteProject);
+  .post(ProjectsController.createProject) // working
+  .delete(ProjectsController.deleteProject); // working
 
 // api/projects/init
 // not tested
