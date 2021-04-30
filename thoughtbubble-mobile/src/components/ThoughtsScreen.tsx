@@ -133,18 +133,30 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
   return (
     <>
       <View style={useTheme('mainContainer')}>
-        <SwipeListView
-          data={thoughts.map((i) => ({ ...i, key: i.id }))} // swipeviewlist api requires key prop
-          renderItem={renderItem}
-          renderHiddenItem={renderHiddenItem}
-          recalculateHiddenLayout
-          disableRightSwipe
-          closeOnScroll
-          closeOnRowBeginSwipe
-          closeOnRowPress
-          rightOpenValue={-150}
-          previewOpenValue={-40}
-        />
+        {thoughts.length ? (
+          <SwipeListView
+            data={thoughts.map((i) => ({ ...i, key: i.id }))} // swipeviewlist api requires key prop
+            renderItem={renderItem}
+            renderHiddenItem={renderHiddenItem}
+            recalculateHiddenLayout
+            disableRightSwipe
+            closeOnScroll
+            closeOnRowBeginSwipe
+            closeOnRowPress
+            rightOpenValue={-150}
+            previewOpenValue={-40}
+          />
+        ) : (
+          // if user has no thoughts in this proj, this message + icon pops up
+          <View style={sharedStyles.nothingHere}>
+            <MaterialCommunityIcons
+              name="thought-bubble"
+              size={125}
+              color={theme ? `${colors.darkMode.textOnBackground}20` : `${colors.lightMode.textOnBackground}20`}
+            />
+            <Text style={useTheme('textNothingHere')}>oops, theres nothing to see here... yet</Text>
+          </View>
+        )}
       </View>
       {moreModalView ? (
         <MoreModal
@@ -190,6 +202,11 @@ const sharedStyles = StyleSheet.create({
     position: 'absolute',
     right: 30,
   },
+  nothingHere: {
+    marginTop: 75,
+    flex: 1,
+    alignItems: 'center',
+  },
 });
 
 const stylesDark = StyleSheet.create({
@@ -203,6 +220,11 @@ const stylesDark = StyleSheet.create({
     padding: 15,
     paddingEnd: 35,
     color: colors.darkMode.textOnSurface,
+  },
+  textNothingHere: {
+    color: `${colors.darkMode.textOnBackground}40`,
+    fontSize: 20,
+    marginTop: 20,
   },
   textCompleted: {
     textDecorationLine: 'line-through',
@@ -263,6 +285,11 @@ const stylesLight = StyleSheet.create({
     padding: 15,
     paddingEnd: 35,
     color: colors.lightMode.textOnSurface,
+  },
+  textNothingHere: {
+    color: `${colors.lightMode.textOnBackground}40`,
+    fontSize: 20,
+    marginTop: 20,
   },
   textCompleted: {
     textDecorationLine: 'line-through',

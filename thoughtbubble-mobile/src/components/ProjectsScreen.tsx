@@ -9,6 +9,7 @@ import { ProjectsScreenProps } from '../interfaces/componentProps'; // type
 import { deleteProjectAction } from '../actions/projectActions';
 import { colors } from '../constants/colors';
 import { AddProjectModal } from './AddProjectModal';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) => {
   const [addProjModalView, setAddProjModalView] = useState(false);
@@ -75,18 +76,30 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
   return (
     <>
       <View style={useTheme('mainContainer')}>
-        <SwipeListView
-          data={userProjectsData.map((i) => ({ ...i, key: i.id }))} // swipeviewlist api requires key prop
-          renderItem={renderItem}
-          renderHiddenItem={renderHiddenItem}
-          recalculateHiddenLayout
-          disableRightSwipe
-          closeOnScroll
-          closeOnRowBeginSwipe
-          closeOnRowPress
-          rightOpenValue={-150}
-          previewOpenValue={-40}
-        />
+        {userProjectsData.length ? (
+          <SwipeListView
+            data={userProjectsData.map((i) => ({ ...i, key: i.id }))} // swipeviewlist api requires key prop
+            renderItem={renderItem}
+            renderHiddenItem={renderHiddenItem}
+            recalculateHiddenLayout
+            disableRightSwipe
+            closeOnScroll
+            closeOnRowBeginSwipe
+            closeOnRowPress
+            rightOpenValue={-150}
+            previewOpenValue={-40}
+          />
+        ) : (
+          // if user has no projects, this message + icon pops up
+          <View style={sharedStyles.nothingHere}>
+            <MaterialCommunityIcons
+              name="thought-bubble"
+              size={125}
+              color={theme ? `${colors.darkMode.textOnBackground}20` : `${colors.lightMode.textOnBackground}20`}
+            />
+            <Text style={useTheme('textNothingHere')}>oops, theres nothing to see here... yet</Text>
+          </View>
+        )}
       </View>
       <AddProjectModal addProjModalView={addProjModalView} setAddProjModalView={setAddProjModalView} />
       <FAB style={sharedStyles.fab} icon="plus" onPress={() => setAddProjModalView(true)} label="new project" />
@@ -101,6 +114,11 @@ const sharedStyles = StyleSheet.create({
     bottom: 0,
     margin: 16,
   },
+  nothingHere: {
+    marginTop: 75,
+    flex: 1,
+    alignItems: 'center',
+  },
 });
 
 const stylesDark = StyleSheet.create({
@@ -113,6 +131,11 @@ const stylesDark = StyleSheet.create({
     flex: 1,
     padding: 15,
     color: colors.darkMode.textOnSurface,
+  },
+  textNothingHere: {
+    color: `${colors.darkMode.textOnBackground}40`,
+    fontSize: 20,
+    marginTop: 20,
   },
   rowFront: {
     backgroundColor: colors.darkMode.dp1,
@@ -161,6 +184,11 @@ const stylesLight = StyleSheet.create({
     flex: 1,
     padding: 15,
     color: colors.lightMode.textOnSurface,
+  },
+  textNothingHere: {
+    color: `${colors.lightMode.textOnBackground}40`,
+    fontSize: 20,
+    marginTop: 20,
   },
   rowFront: {
     backgroundColor: colors.lightMode.background,
