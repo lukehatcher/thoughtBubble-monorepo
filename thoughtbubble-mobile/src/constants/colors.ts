@@ -6,10 +6,12 @@ interface ColorVersion {
   textOnPrimary: string;
   textOnSecondary: string;
   textOnBackground: string;
+  textOnBackground87: string;
   textOnSurface: string;
   error: string;
   onError: string;
   dp1?: string;
+  dp2?: string;
 }
 
 export const colors: { darkMode: ColorVersion; lightMode: ColorVersion } = {
@@ -21,10 +23,12 @@ export const colors: { darkMode: ColorVersion; lightMode: ColorVersion } = {
     textOnPrimary: '#000000',
     textOnSecondary: '#000000',
     textOnBackground: '#FFFFFF', // 87 opacity
+    textOnBackground87: '#FFFFFF87',
     textOnSurface: '#FFFFFF',
     error: '#CF6679',
     onError: '#000000',
     dp1: '#1e1e1e',
+    dp2: '#222222',
   },
   lightMode: {
     primary: '#6200EE', // purple
@@ -34,9 +38,9 @@ export const colors: { darkMode: ColorVersion; lightMode: ColorVersion } = {
     textOnPrimary: '#FFFFFF',
     textOnSecondary: '#000000',
     textOnBackground: '#000000',
+    textOnBackground87: '#00000087',
     textOnSurface: '#000000',
     onError: '#FFFFFF',
     error: '#B00020',
-    dp1: '',
   },
 };
