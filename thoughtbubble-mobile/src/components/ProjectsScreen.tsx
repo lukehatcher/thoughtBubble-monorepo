@@ -46,7 +46,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
     <View
       style={{
         ...useTheme('rowFront'),
-        backgroundColor: theme ? colors.darkMode.primary : colors.lightMode.primaryVariant,
+        backgroundColor: theme ? colors.darkMode.error : colors.lightMode.error,
       }}
     >
       {/* to match height of back view to the dynamic front view height,
@@ -54,13 +54,6 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
       <View>
         <Text style={useTheme('hiddenBackText')}>{data.item.projectName}</Text>
       </View>
-      {/* // to match heights */}
-      <TouchableOpacity
-        style={[useTheme('backRightBtn'), useTheme('backRightBtnLeft')]}
-        onPress={() => closeRow(rowMap, data.item.key)}
-      >
-        <Ionicon name="close-circle-outline" size={25} color="white" />
-      </TouchableOpacity>
       <TouchableOpacity
         style={[useTheme('backRightBtn'), useTheme('backRightBtnRight')]}
         onPress={() => handleProjectDeletion(data.item.id)}
@@ -148,18 +141,16 @@ const stylesDark = StyleSheet.create({
     borderRadius: 10,
   },
   backRightBtn: {
-    alignItems: 'center',
-    bottom: 0,
-    justifyContent: 'center',
     position: 'absolute',
+    paddingRight: 20,
     top: 0,
-    width: 75,
-  },
-  backRightBtnLeft: {
-    backgroundColor: colors.darkMode.primary, // primaryVariant for light mode
-    right: 75,
+    bottom: 0,
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    width: 155,
   },
   backRightBtnRight: {
+    // change colors to see why all these styles are necesary
     backgroundColor: colors.darkMode.error,
     right: 0,
     borderBottomRightRadius: 10,
@@ -210,16 +201,13 @@ const stylesLight = StyleSheet.create({
     elevation: 3,
   },
   backRightBtn: {
-    alignItems: 'center',
-    bottom: 0,
-    justifyContent: 'center',
     position: 'absolute',
+    paddingRight: 20,
     top: 0,
-    width: 75,
-  },
-  backRightBtnLeft: {
-    backgroundColor: colors.lightMode.primaryVariant,
-    right: 75,
+    bottom: 0,
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    width: 155,
   },
   backRightBtnRight: {
     backgroundColor: colors.lightMode.error,
