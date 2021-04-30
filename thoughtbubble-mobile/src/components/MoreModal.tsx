@@ -71,7 +71,10 @@ export const MoreModal: FC<MoreModalProps> = ({ moreModalView, setMoreModalView,
             size={50}
             color={theme ? colors.darkMode.primary : colors.lightMode.primary}
             style={sharedStyles.closeBtn}
-            onPress={() => setMoreModalView(false)}
+            onPress={() => {
+              setMoreModalView(false);
+              setInput('');
+            }}
           />
           <Text style={useTheme('text')}>select tag</Text>
           <View style={sharedStyles.tagContainer}>

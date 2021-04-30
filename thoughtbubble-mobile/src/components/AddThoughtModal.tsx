@@ -66,7 +66,10 @@ export const AddThoughtModal: FC<AddThoughtModalProps> = function ({
             size={50}
             color={theme ? colors.darkMode.primary : colors.lightMode.primary}
             style={sharedStyles.closeBtn}
-            onPress={() => setAddThoughtModalView(false)}
+            onPress={() => {
+              setAddThoughtModalView(false);
+              setInput('');
+            }}
           />
         </View>
       </Modal>

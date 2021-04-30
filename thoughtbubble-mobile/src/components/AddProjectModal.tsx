@@ -61,7 +61,10 @@ export const AddProjectModal: React.FC<AddProjectModalProps> = function ({ addPr
             size={50}
             color={theme ? colors.darkMode.primary : colors.lightMode.primary}
             style={sharedStyles.closeBtn}
-            onPress={() => setAddProjModalView(false)}
+            onPress={() => {
+              setAddProjModalView(false);
+              setInput('');
+            }}
           />
         </View>
       </Modal>
