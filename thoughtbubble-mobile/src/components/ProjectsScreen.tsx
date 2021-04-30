@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TouchableHighlight, LogBox } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { useSelector, useDispatch } from 'react-redux';
-import Ionicon from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { FAB } from 'react-native-paper';
 import { RootState } from '../reducers/rootReducer'; // type
 import { ProjectsScreenProps } from '../interfaces/componentProps'; // type
 import { deleteProjectAction } from '../actions/projectActions';
 import { colors } from '../constants/colors';
 import { AddProjectModal } from './AddProjectModal';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) => {
   const [addProjModalView, setAddProjModalView] = useState(false);
@@ -37,11 +36,18 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
       style={useTheme('rowFront')}
       underlayColor={'grey'}
     >
-      <Text style={useTheme('text')}>{data.item.projectName}</Text>
+      <View style={sharedStyles.chevronContainer}>
+        <Text style={useTheme('text')}>{data.item.projectName}</Text>
+        <MaterialCommunityIcons
+          name="chevron-right"
+          size={40}
+          color={theme ? colors.darkMode.primary : colors.lightMode.primary}
+        />
+      </View>
     </TouchableHighlight>
   );
 
-  const renderHiddenItem = (data, rowMap) => (
+  const renderHiddenItem = (data, _rowMap) => (
     // for slidables
     <View
       style={{
@@ -58,7 +64,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
         style={[useTheme('backRightBtn'), useTheme('backRightBtnRight')]}
         onPress={() => handleProjectDeletion(data.item.id)}
       >
-        <Ionicon name="trash-outline" size={25} color="white" />
+        <MaterialCommunityIcons name="trash-can-outline" size={25} color="white" />
       </TouchableOpacity>
     </View>
   );
@@ -111,6 +117,12 @@ const sharedStyles = StyleSheet.create({
     marginTop: 75,
     flex: 1,
     alignItems: 'center',
+  },
+  chevronContainer: {
+    flex: 1,
+    alignItems: 'center',
+    flexDirection: 'row',
+    // backgroundColor: 'grey',
   },
 });
 
