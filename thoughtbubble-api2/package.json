@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "server": "nodemon -r dotenv/config index.ts"
+    "server": "nodemon index.ts"
   },
   "keywords": [],
   "author": "",

@@ -4,12 +4,10 @@ import morgan from 'morgan';
 import { createConnection } from 'typeorm';
 import { join } from 'path';
 import express from 'express';
-import projectRouter from './routes/projects'; // default export
+import projectRouter from './routes/projects';
 import thoughtRouter from './routes/thoughts';
 import userInfoRouter from './routes/userInfo';
-
-const PORT = process.env.PORT;
-const NODE_ENV = process.env.NODE_ENV;
+import config from './config/enviroment';
 
 (async function () {
   try {
@@ -17,8 +15,8 @@ const NODE_ENV = process.env.NODE_ENV;
       type: 'postgres',
       database: 'thoughtbubble',
       entities: [join(__dirname, './entities/*.*')],
-      logging: NODE_ENV === 'development',
-      synchronize: NODE_ENV === 'development',
+      logging: config.node_env === 'development',
+      synchronize: config.node_env === 'development',
     });
   } catch (err) {
     console.error('error creating typeORM postgres connection', err);
@@ -31,5 +29,5 @@ const NODE_ENV = process.env.NODE_ENV;
   app.use('/api/projects', projectRouter);
   app.use('/api/thoughts', thoughtRouter);
   app.use('/api/userinfo', userInfoRouter);
-  app.listen(PORT, () => console.log(`✅ listening on port ${PORT}`));
+  app.listen(config.port, () => console.log(`✅ listening on port ${config.port}`));
 })();
