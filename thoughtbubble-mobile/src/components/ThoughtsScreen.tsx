@@ -1,7 +1,6 @@
 import React, { useState, useLayoutEffect, FC } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TouchableHighlight, LogBox } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import Ionicon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { RootState } from '../reducers/rootReducer'; // type
@@ -63,7 +62,7 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
     <View
       style={{
         ...useTheme('rowFront'),
-        backgroundColor: theme ? colors.darkMode.primary : colors.lightMode.primaryVariant,
+        backgroundColor: theme ? colors.darkMode.error : colors.lightMode.error,
       }}
     >
       {/* to match height of back view to the dynamic front view height,
@@ -72,24 +71,17 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
         <Text style={sharedStyles.hiddenBackText}>{data.item.text}</Text>
       </View>
       <TouchableOpacity
-        style={[useTheme('backRightBtn'), useTheme('backRightBtnLeft')]}
-        onPress={() => closeRow(rowMap, data.item.key)}
-      >
-        <Ionicon name="close-circle-outline" size={25} color="white" />
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={[useTheme('backRightBtn'), useTheme('backRightBtnMid')]}
+        style={[useTheme('backRightBtn'), useTheme('backRightBtnRight')]}
         onPress={() => handleThoughtStatusChange(data.item.id)}
       >
-        <Ionicon name="checkbox-outline" size={25} color="white" />
+        <MaterialCommunityIcons name="checkbox-marked-outline" size={25} color="white" />
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={[useTheme('backRightBtn'), useTheme('backRightBtnRight')]}
+        style={[useTheme('backRightBtn'), useTheme('backRightBtnLeft')]}
         onPress={() => handleThoughtDelete(data.item.id)}
       >
-        <Ionicon name="trash-outline" size={25} color="white" />
+        <MaterialCommunityIcons name="trash-can-outline" size={25} color="white" />
       </TouchableOpacity>
     </View>
   );
@@ -246,6 +238,7 @@ const stylesDark = StyleSheet.create({
     borderRadius: 10,
   },
   backRightBtn: {
+    backgroundColor: 'pink',
     alignItems: 'center',
     bottom: 0,
     justifyContent: 'center',
@@ -254,18 +247,15 @@ const stylesDark = StyleSheet.create({
     width: 50,
   },
   backRightBtnLeft: {
-    // backgroundColor: 'rgb(0, 122, 255)',
-    backgroundColor: colors.darkMode.primary, // 'rgb(0, 122, 255)', // ios light blue
-    right: 100,
-  },
-  backRightBtnMid: {
-    // backgroundColor: 'rgb(52, 199, 89)',
-    backgroundColor: colors.darkMode.secondary, // 'rgb(52, 199, 89)', // ios light green
+    backgroundColor: colors.darkMode.error,
+    flex: 1,
+    alignItems: 'flex-end',
+    paddingRight: 20,
     right: 50,
+    width: 100,
   },
   backRightBtnRight: {
-    // backgroundColor: 'rgb(255, 59, 48)',
-    backgroundColor: colors.darkMode.error, // 'rgb(255, 59, 48)', // ios light red
+    backgroundColor: colors.darkMode.secondary,
     right: 0,
     borderBottomRightRadius: 10,
     borderTopRightRadius: 10,
@@ -328,18 +318,15 @@ const stylesLight = StyleSheet.create({
     width: 50,
   },
   backRightBtnLeft: {
-    // backgroundColor: 'rgb(0, 122, 255)',
-    backgroundColor: colors.lightMode.primaryVariant, // 'rgb(0, 122, 255)', // ios light blue
-    right: 100,
-  },
-  backRightBtnMid: {
-    // backgroundColor: 'rgb(52, 199, 89)',
-    backgroundColor: colors.lightMode.secondary, // 'rgb(52, 199, 89)', // ios light green
+    backgroundColor: colors.lightMode.error,
+    flex: 1,
+    alignItems: 'flex-end',
+    paddingRight: 20,
     right: 50,
+    width: 100,
   },
   backRightBtnRight: {
-    // backgroundColor: 'rgb(255, 59, 48)',
-    backgroundColor: colors.lightMode.error, // 'rgb(255, 59, 48)', // ios light red
+    backgroundColor: colors.lightMode.secondary,
     right: 0,
     borderBottomRightRadius: 10,
     borderTopRightRadius: 10,
