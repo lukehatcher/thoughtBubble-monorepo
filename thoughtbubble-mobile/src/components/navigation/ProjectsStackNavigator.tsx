@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
-import { ProjectsScreen } from './ProjectsScreen';
-import { ThoughtsScreen } from './ThoughtsScreen';
-import { StackParamList } from '../interfaces/navigation';
-import { ProjectsNavStackProps } from '../interfaces/componentProps';
-import { colors } from '../constants/colors';
-import { RootState } from '../reducers/rootReducer';
+import { ProjectsScreen } from '../ProjectsScreen';
+import { ThoughtsScreen } from '../ThoughtsScreen';
+import { ProjectStackParamList } from '../../interfaces/navigation';
+import { ProjectsStackNavigatorProps } from '../../interfaces/componentProps';
+import { colors } from '../../constants/colors';
+import { RootState } from '../../reducers/rootReducer';
 
-const ProjectStack = createStackNavigator<StackParamList>();
+const ProjectStack = createStackNavigator<ProjectStackParamList>();
 
-export const ProjectsNavStack: React.FC<ProjectsNavStackProps> = () => {
+export const ProjectsStackNavigator: FC<ProjectsStackNavigatorProps> = () => {
   const theme = useSelector((state: RootState) => state.userInfo.darkMode);
 
   const dynamicScreenOptions = {

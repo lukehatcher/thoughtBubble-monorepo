@@ -9,7 +9,7 @@ import { ActivityIndicator, StatusBar } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Provider as ReduxProvider } from 'react-redux';
 import { Provider as PaperProvider } from 'react-native-paper';
-import { AppNavTabs } from './src/components/AppNavTabs';
+import { AppTabsNavigator } from './src/components/navigation/AppTabsNavigator';
 import { LoginScreen } from './src/components/LoginScreen';
 import { checkForIdToken } from './src/utils/asyncStorage';
 import { storeUserAction } from './src/actions/storeUserAction';
@@ -28,7 +28,7 @@ const App: React.FC<AppProps> = () => {
     return (
       <>
         <StatusBar barStyle="light-content" />
-        <AppNavTabs />
+        <AppTabsNavigator />
       </>
     );
   }
