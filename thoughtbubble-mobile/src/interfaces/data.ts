@@ -1,6 +1,6 @@
 export interface ThoughtShape {
-  // dup
   id: string;
+  createdDate: Date;
   projectId: string;
   text: string;
   completed: boolean;
@@ -10,8 +10,8 @@ export interface ThoughtShape {
 
 // shape of data in redux store && shape of data returned from api
 export interface ProjectShape {
-  // dup
   id: string;
+  createdDate: Date;
   userId: string;
   projectName: string;
   projectThoughts: ThoughtShape[];

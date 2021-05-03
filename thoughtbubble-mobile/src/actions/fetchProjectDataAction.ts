@@ -8,6 +8,8 @@ export const fetchProjectDataAction = function (userSub: string) {
           userSub,
         },
       });
+      console.log(response.data);
+      console.log(response.data[0].projectThoughts[0]);
       dispatch({ type: 'fetchData', payload: response.data });
       dispatch({ type: 'filters/initialize', payload: response.data });
     } catch (err) {

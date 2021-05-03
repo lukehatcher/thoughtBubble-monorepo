@@ -1,11 +1,10 @@
 import React, { FC, useState } from 'react';
-import { View, Text, Button } from 'react-native';
+import { Text, Button } from 'react-native';
 import { useSelector } from 'react-redux';
 import { colors } from '../constants/colors';
 import { RootState } from '../reducers/rootReducer';
 import styled, { ThemeProvider } from 'styled-components/native';
 import { StatsHomeScreenProps } from '../interfaces/componentProps';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { statusFilters, tagFilters } from '../constants/filters';
 
 const { darkMode, lightMode } = colors;
@@ -22,6 +21,13 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
     secondary: isDarkMode ? darkMode.secondary : lightMode.secondary,
     textOnBackground: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground,
     dp1: isDarkMode ? darkMode.dp1 : lightMode.background,
+  };
+
+  const parseOutTime = function (dateTime: string) {
+    // takes a parsed date+time of format: Mon Apr 12 2021 20:32:19 GMT-0700 (PDT)
+    // returns shorter, timeless format: Mon Apr 12, 2021
+    const s = dateTime.split(' ');
+    return s.slice(0, 3).join(' ') + `, ${s[3]}`;
   };
 
   return (
@@ -41,8 +47,9 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
               >
                 <CarouselCardHeaderText>{proj.projectName}</CarouselCardHeaderText>
                 <Text># of thoughts: {proj.projectThoughts.length}</Text>
-                <Text>last updated:</Text>
                 <Text>created:</Text>
+                <Text>{parseOutTime(new Date(proj.createdDate).toString())}</Text>
+                <Text>last updated:</Text>
               </CarouselCard>
             ))}
           </CarouselContainer>
@@ -76,7 +83,7 @@ const CarouselContainer = styled.View`
 
 const CarouselCard = styled.TouchableOpacity`
   border: 1px solid black;
-  padding: 20px;
+  padding: 10px;
   border-radius: 10px;
   height: 160px;
   width: 150px;
