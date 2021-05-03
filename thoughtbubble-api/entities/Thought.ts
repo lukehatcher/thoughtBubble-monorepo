@@ -11,6 +11,12 @@ export class Thought extends BaseEntity {
   @CreateDateColumn()
   createdDate!: Date;
 
+  @Column()
+  creationLocation!: string;
+
+  @Column({ nullable: true })
+  lastUpdatedDate!: Date;
+
   @Column('text')
   text!: string;
 

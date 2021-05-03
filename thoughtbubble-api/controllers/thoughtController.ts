@@ -11,9 +11,9 @@ class ThoughtsController {
 
   public createThought = async (req: Request, res: Response): Promise<void> => {
     // correctly throws error is project id is not in db project table
-    const { userSub, projectId, thought } = req.body;
+    const { userSub, projectId, thought, creationLocation } = req.body;
     try {
-      const newThought = await Thought.create({ text: thought, projectId }).save();
+      const newThought = await Thought.create({ text: thought, projectId, creationLocation }).save();
       res.send(newThought); // maybe just send the id
     } catch (err) {
       console.error(this.location, err);

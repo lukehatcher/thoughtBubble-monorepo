@@ -8,7 +8,7 @@ export const addProjectAction = function (projectName: string) {
       .post('http://localhost:3001/api/projects', {
         userSub,
         projectName,
-        location: locations.MOBILE,
+        creationLocation: locations.MOBILE,
       })
       .then((res) => {
         const newProject = res.data;

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { locations } from '../constants/locations';
 
 export const addThoughtAction = (projectId: string, thought: string) => {
   return async (dispatch, getState) => {
@@ -8,6 +9,7 @@ export const addThoughtAction = (projectId: string, thought: string) => {
         userSub,
         projectId,
         thought,
+        creationLocation: locations.MOBILE,
       })
       .then((res) => {
         dispatch({ type: 'addThought', payload: res.data });

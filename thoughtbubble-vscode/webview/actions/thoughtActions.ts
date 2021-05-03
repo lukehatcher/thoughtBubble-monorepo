@@ -1,5 +1,6 @@
 import axios from 'axios';
-// new api
+import { locations } from '../constants/locations';
+
 export const addThoughtAction = (projectId: string, thought: string) => {
   return async (dispatch, getState) => {
     const userSub = `github|${getState().storedUser.id}`;
@@ -8,6 +9,7 @@ export const addThoughtAction = (projectId: string, thought: string) => {
         userSub,
         projectId,
         thought,
+        creationLocation: locations.VSCODE,
       })
       .then((res) => {
         // const newThoughtId = res.data;

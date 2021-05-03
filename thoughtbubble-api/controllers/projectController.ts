@@ -44,7 +44,7 @@ class ProjectsController {
 
   public createProject = async (req: Request, res: Response): Promise<void> => {
     // working
-    const { userSub, projectName, location: creationLocation } = req.body;
+    const { userSub, projectName, creationLocation } = req.body;
     try {
       const user = await User.findOne({ githubId: userSub }); // wack naming
       const userId = user?.id;
