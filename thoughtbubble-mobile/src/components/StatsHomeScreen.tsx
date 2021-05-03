@@ -1,11 +1,12 @@
 import React, { FC, useState } from 'react';
-import { View, Text, Modal, Button, ScrollView } from 'react-native';
+import { View, Text, Button } from 'react-native';
 import { useSelector } from 'react-redux';
 import { colors } from '../constants/colors';
 import { RootState } from '../reducers/rootReducer';
 import styled, { ThemeProvider } from 'styled-components/native';
 import { StatsHomeScreenProps } from '../interfaces/componentProps';
-import Carousel from 'react-native-snap-carousel';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { statusFilters, tagFilters } from '../constants/filters';
 
 const { darkMode, lightMode } = colors;
 
@@ -26,19 +27,26 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
   return (
     <ThemeProvider theme={theme}>
       <MainContainer>
-        <StyledScrollView horizontal>
-          <CarouselWrapper>
+        <HorizontalScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          // contentContainerStyle={{ 'flex-direction': 'row', margin: 15, background: 'green' }}
+        >
+          <CarouselContainer>
             {userProjectsData.map((proj) => (
-              <CarouselCard>
-                <Text>{proj.projectName}</Text>
-                <Button
-                  onPress={() => navigation.navigate('StatsForProject', { projectId: proj.id })}
-                  title="see details"
-                />
+              <CarouselCard
+                key={proj.id}
+                onPress={() => navigation.navigate('StatsForProject', { projectId: proj.id })}
+                activeOpacity={0.7} // 0.2 default
+              >
+                <CarouselCardHeaderText>{proj.projectName}</CarouselCardHeaderText>
+                <Text># of thoughts: {proj.projectThoughts.length}</Text>
+                <Text>last updated:</Text>
+                <Text>created:</Text>
               </CarouselCard>
             ))}
-          </CarouselWrapper>
-        </StyledScrollView>
+          </CarouselContainer>
+        </HorizontalScrollView>
       </MainContainer>
     </ThemeProvider>
   );
@@ -52,8 +60,8 @@ const MainContainer = styled.View`
   justify-content: center; */
 `;
 
-const StyledScrollView = styled.ScrollView`
-  background: ${(props) => props.theme.dp1};
+const HorizontalScrollView = styled.ScrollView`
+  background: ${(props) => props.theme.background};
   /* margin: 15px; */
   height: 100px;
   /* width: 100px; */
@@ -61,25 +69,23 @@ const StyledScrollView = styled.ScrollView`
   display: flex;
 `;
 
-const CarouselWrapper = styled.View`
+const CarouselContainer = styled.View`
   flex-direction: row;
   margin: 15px;
 `;
 
-const CarouselCard = styled.View`
-  border: 1px solid red;
-  padding: 15px;
+const CarouselCard = styled.TouchableOpacity`
+  border: 1px solid black;
+  padding: 20px;
   border-radius: 10px;
   height: 160px;
   width: 150px;
   margin: 10px;
+  background-color: ${(props) => props.theme.dp1};
 `;
 
-/* const Test = styled.Text`
-  background-color: pink;
-  color: red;
-  /* margin-bottom: 50px; */
-/* display: flex;
-  align-items: center;
-  justify-content: center; */
-// `;
+const CarouselCardHeaderText = styled.Text`
+  /* text-align: center */
+  color: ${(props) => props.theme.textOnBackground};
+  font-size: 20px;
+`;
