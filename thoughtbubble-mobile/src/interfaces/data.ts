@@ -1,6 +1,11 @@
+type Locations = 'mobile' | 'vscode';
+
 export interface ThoughtShape {
   id: string;
-  createdDate: Date;
+  // dates come in as string, they can be converted to type Date with `new Date(param)`
+  createdDate: string;
+  lastUpdatedDate?: string;
+  creationLocation: Locations;
   projectId: string;
   text: string;
   completed: boolean;
@@ -11,7 +16,9 @@ export interface ThoughtShape {
 // shape of data in redux store && shape of data returned from api
 export interface ProjectShape {
   id: string;
-  createdDate: Date;
+  createdDate: string;
+  lastUpdatedDate?: string;
+  creationLocation: Locations;
   userId: string;
   projectName: string;
   projectThoughts: ThoughtShape[];

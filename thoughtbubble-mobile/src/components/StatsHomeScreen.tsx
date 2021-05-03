@@ -50,6 +50,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
                 <Text>created:</Text>
                 <Text>{parseOutTime(new Date(proj.createdDate).toString())}</Text>
                 <Text>last updated:</Text>
+                <Text>{proj.creationLocation ? proj.creationLocation : 'idk where im from'}</Text>
               </CarouselCard>
             ))}
           </CarouselContainer>
