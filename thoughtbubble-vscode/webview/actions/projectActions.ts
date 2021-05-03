@@ -1,6 +1,11 @@
 import axios from 'axios';
 import { ProjectShape } from '../interfaces/interfaces';
 
+export enum locations {
+  MOBILE = 'mobile',
+  VSCODE = 'vscode',
+}
+
 export const addProjectAction = (projectName: string) => {
   return async (dispatch, getState) => {
     const userSub = `github|${getState().storedUser.id}`;
@@ -8,6 +13,7 @@ export const addProjectAction = (projectName: string) => {
       .post('http://localhost:3001/api/projects', {
         userSub,
         projectName,
+        location: locations.VSCODE,
       })
       .then((res) => {
         const newProject: ProjectShape = res.data;
