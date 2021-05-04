@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { locations } from '../constants/locations';
 
 export const addProjectAction = function (projectName: string) {
   return async (dispatch, getState) => {
@@ -7,6 +8,7 @@ export const addProjectAction = function (projectName: string) {
       .post('http://localhost:3001/api/projects', {
         userSub,
         projectName,
+        creationLocation: locations.MOBILE,
       })
       .then((res) => {
         const newProject = res.data;

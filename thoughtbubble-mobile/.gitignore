@@ -60,6 +60,3 @@ buck-out/
 
 # enviroment
 .env
-
-# hooks
-src/hooks/

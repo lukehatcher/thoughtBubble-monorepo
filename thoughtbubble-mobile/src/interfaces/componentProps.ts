@@ -1,11 +1,11 @@
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { StackParamList } from './navigation';
+import { ProjectStackParamList, StatsStackParamList } from './navigation';
 
 export interface LoginScreenProps {}
 export interface SettingsScreenProps {}
 export interface AppNavTabsProps {}
-export interface ProjectsNavStackProps {}
+export interface ProjectsStackNavigatorProps {}
 
 export interface MoreModalProps {
   moreModalView: boolean;
@@ -31,12 +31,23 @@ export interface SortThoughtModalProps {
   setSortModalView: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+// for central projects/thoughts nav stack
 // typing reactnavigation -> https://reactnavigation.org/docs/typescript/
 export interface ProjectsScreenProps {
-  navigation: StackNavigationProp<StackParamList, 'Projects'>;
+  navigation: StackNavigationProp<ProjectStackParamList, 'Projects'>;
 }
 
 export interface ThoughtScreenProps {
-  route: RouteProp<StackParamList, 'Thoughts'>;
-  navigation: StackNavigationProp<StackParamList, 'Projects'>;
+  route: RouteProp<ProjectStackParamList, 'Thoughts'>;
+  navigation: StackNavigationProp<ProjectStackParamList, 'Projects'>;
+}
+
+// for stats nav stack
+export interface StatsHomeScreenProps {
+  navigation: StackNavigationProp<StatsStackParamList, 'StatsHome'>;
+}
+
+export interface StatsProjectInfoScreenProps {
+  route: RouteProp<StatsStackParamList, 'StatsForProject'>;
+  navigation: StackNavigationProp<StatsStackParamList, 'StatsHome'>;
 }

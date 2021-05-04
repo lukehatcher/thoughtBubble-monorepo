@@ -43,12 +43,11 @@ class ProjectsController {
   };
 
   public createProject = async (req: Request, res: Response): Promise<void> => {
-    // working
-    const { userSub, projectName } = req.body;
+    const { userSub, projectName, creationLocation } = req.body;
     try {
       const user = await User.findOne({ githubId: userSub }); // wack naming
       const userId = user?.id;
-      const newProject = await Project.create({ projectName, userId }).save();
+      const newProject = await Project.create({ projectName, userId, creationLocation }).save();
       res.send(newProject); // maybe just send the id
     } catch (err) {
       console.error(this.location, err);

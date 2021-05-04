@@ -1,19 +1,19 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { SettingsScreen } from './SettingsScreen';
-import { ProjectsNavStack } from './ProjectsNavStack';
-import { StatsScreen } from './StatsScreen';
-import { TabsParamList } from '../interfaces/navigation';
-import { AppNavTabsProps } from '../interfaces/componentProps';
+import { SettingsScreen } from '../SettingsScreen';
+import { ProjectsStackNavigator } from './ProjectsStackNavigator';
+import { StatsStackNavigator } from './StatsStackNavigator';
+import { TabsParamList } from '../../interfaces/navigation';
+import { AppNavTabsProps } from '../../interfaces/componentProps';
 import { useSelector } from 'react-redux';
-import { RootState } from '../reducers/rootReducer';
-import { colors } from '../constants/colors';
+import { RootState } from '../../reducers/rootReducer';
+import { colors } from '../../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Tab = createBottomTabNavigator<TabsParamList>();
 
-export const AppNavTabs: React.FC<AppNavTabsProps> = () => {
+export const AppTabsNavigator: FC<AppNavTabsProps> = () => {
   const theme = useSelector((state: RootState) => state.userInfo.darkMode);
 
   const dynamicTabBarOptions = {
@@ -38,7 +38,7 @@ export const AppNavTabs: React.FC<AppNavTabsProps> = () => {
         />
         <Tab.Screen
           name="Projects"
-          component={ProjectsNavStack} // projects stack
+          component={ProjectsStackNavigator} // projects stack
           options={{
             title: 'Projects',
             tabBarIcon: ({ color }) => <MaterialCommunityIcons name="format-list-bulleted" size={30} color={color} />,
@@ -46,7 +46,7 @@ export const AppNavTabs: React.FC<AppNavTabsProps> = () => {
         />
         <Tab.Screen
           name="Stats"
-          component={StatsScreen}
+          component={StatsStackNavigator}
           options={{
             title: 'Stats',
             tabBarIcon: ({ color }) => <MaterialCommunityIcons name="chart-timeline-variant" size={30} color={color} />,

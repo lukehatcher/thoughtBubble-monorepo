@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { ProjectShape } from '../interfaces/interfaces';
+import { locations } from '../constants/locations';
 
 export const addProjectAction = (projectName: string) => {
   return async (dispatch, getState) => {
@@ -8,6 +9,7 @@ export const addProjectAction = (projectName: string) => {
       .post('http://localhost:3001/api/projects', {
         userSub,
         projectName,
+        creationLocation: locations.VSCODE,
       })
       .then((res) => {
         const newProject: ProjectShape = res.data;

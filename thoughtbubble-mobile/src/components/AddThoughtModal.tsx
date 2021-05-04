@@ -1,11 +1,11 @@
 import React, { useState, FC } from 'react';
 import { Alert, Modal, StyleSheet, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Button, IconButton, TextInput } from 'react-native-paper';
 import { addThoughtAction } from '../actions/thoughtActions';
 import { colors } from '../constants/colors';
 import { AddThoughtModalProps } from '../interfaces/componentProps';
-import { RootState } from '../reducers/rootReducer';
+import { useDarkCheck } from '../hooks/useDarkCheck';
 
 export const AddThoughtModal: FC<AddThoughtModalProps> = function ({
   projectId,
@@ -14,7 +14,7 @@ export const AddThoughtModal: FC<AddThoughtModalProps> = function ({
 }) {
   const dispatch = useDispatch();
   const [input, setInput] = useState('');
-  const theme = useSelector((state: RootState) => state.userInfo.darkMode);
+  const theme = useDarkCheck();
 
   const useTheme = (name: string) => (theme ? stylesDark[name] : stylesLight[name]);
 

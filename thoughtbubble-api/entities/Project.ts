@@ -22,6 +22,15 @@ export class Project extends BaseEntity {
   @CreateDateColumn()
   createdDate!: Date;
 
+  @Column()
+  creationLocation!: string;
+
+  @CreateDateColumn({ nullable: true })
+  lastUpdatedDate!: Date;
+
+  @Column('text', { nullable: true })
+  tag!: string;
+
   @Column('text')
   projectName!: string;
 

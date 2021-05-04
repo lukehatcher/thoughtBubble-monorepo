@@ -9,11 +9,12 @@ import { ProjectsScreenProps } from '../interfaces/componentProps'; // type
 import { deleteProjectAction } from '../actions/projectActions';
 import { colors } from '../constants/colors';
 import { AddProjectModal } from './AddProjectModal';
+import { useDarkCheck } from '../hooks/useDarkCheck';
 
 export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) => {
   const [addProjModalView, setAddProjModalView] = useState(false);
   const dispatch = useDispatch();
-  const theme = useSelector((state: RootState) => state.userInfo.darkMode);
+  const theme = useDarkCheck();
   let userProjectsData = useSelector((state: RootState) => state.userProjectData);
 
   const useTheme = (name: string) => (theme ? stylesDark[name] : stylesLight[name]);

@@ -6,9 +6,16 @@ export type TabsParamList = {
   Stats: undefined;
 };
 
-export type StackParamList = {
+export type ProjectStackParamList = {
   Projects: undefined;
   Thoughts: {
+    projectId: string;
+  };
+};
+
+export type StatsStackParamList = {
+  StatsHome: undefined;
+  StatsForProject: {
     projectId: string;
   };
 };
