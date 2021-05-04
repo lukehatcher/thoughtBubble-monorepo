@@ -14,8 +14,9 @@ export class Thought extends BaseEntity {
   @Column()
   creationLocation!: string;
 
-  @Column({ nullable: true })
-  lastUpdatedDate!: Date;
+  // maybe dont care when a single thought was last edited...
+  // @CreateDateColumn()
+  // lastUpdatedDate!: Date;
 
   @Column('text')
   text!: string;

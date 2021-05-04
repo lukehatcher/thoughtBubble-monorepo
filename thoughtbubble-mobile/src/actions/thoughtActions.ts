@@ -59,7 +59,7 @@ export const thoughtStatusChangeAction = (projectId: string, thoughtId: string) 
     axios
       .put('http://localhost:3001/api/thoughts/status', {
         userSub, // not used atm with the new api
-        projectId, // not used atm with the new api
+        projectId, // used for updating most recent edit time
         thoughtId,
       })
       .then(() => {
@@ -75,6 +75,7 @@ export const thoughtTagChangeAction = function (projectId: string, thoughtId: st
     axios
       .put('http://localhost:3001/api/thoughts/tag', {
         userSub, // not used atm with the new api
+        projectId, // used for updating most recent edit time
         thoughtId,
         tag,
       })

@@ -25,7 +25,7 @@ export class Project extends BaseEntity {
   @Column()
   creationLocation!: string;
 
-  @Column({ nullable: true })
+  @CreateDateColumn({ nullable: true })
   lastUpdatedDate!: Date;
 
   @Column('text', { nullable: true })
