@@ -8,6 +8,7 @@ target 'thoughtBubble' do
 
   use_react_native!(:path => config["reactNativePath"])
 
+
   target 'thoughtBubbleTests' do
     inherit! :complete
     # Pods for testing

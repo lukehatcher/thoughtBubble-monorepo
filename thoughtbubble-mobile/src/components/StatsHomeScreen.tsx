@@ -1,20 +1,31 @@
-import React, { FC, useState } from 'react';
-import { Text, Button } from 'react-native';
-import { useSelector } from 'react-redux';
+import React, { FC, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { colors } from '../constants/colors';
 import { RootState } from '../reducers/rootReducer';
 import styled, { ThemeProvider } from 'styled-components/native';
 import { StatsHomeScreenProps } from '../interfaces/componentProps';
-import { statusFilters, tagFilters } from '../constants/filters';
+import { fetchProjectDataAction } from '../actions/fetchProjectDataAction';
+import { useFocusEffect } from '@react-navigation/native';
+import { useDarkCheck } from '../hooks/useDarkCheck';
 
 const { darkMode, lightMode } = colors;
 
 export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
-  // aka theme var, should create a hook later
-  const isDarkMode = useSelector((state: RootState) => state.userInfo.darkMode);
+  const isDarkMode = useDarkCheck();
+  const dispatch = useDispatch();
+  const userSub = useSelector((state: RootState) => state.storedUser.sub); // need a hook for this
   const userProjectsData = useSelector((state: RootState) => state.userProjectData);
 
+  useFocusEffect(
+    // need to update proj array, due to the fact that if a thought was edited in any way...
+    // ...the 'lastUpdateDate' value would change
+    useCallback(() => {
+      dispatch(fetchProjectDataAction(userSub));
+    }, []),
+  );
+
   const theme = {
+    // for styled-components ThemeProvider
     background: isDarkMode ? darkMode.background : lightMode.background,
     primary: isDarkMode ? darkMode.primary : lightMode.primary,
     primaryVariant: isDarkMode ? darkMode.primaryVariant : lightMode.primaryVariant,
@@ -32,6 +43,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
 
   return (
     <ThemeProvider theme={theme}>
+      {console.log('rendered stats page')}
       <MainContainer>
         <HorizontalScrollView
           horizontal
@@ -46,11 +58,11 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
                 activeOpacity={0.7} // 0.2 default
               >
                 <CarouselCardHeaderText>{proj.projectName}</CarouselCardHeaderText>
-                <Text># of thoughts: {proj.projectThoughts.length}</Text>
-                <Text>created:</Text>
-                <Text>{parseOutTime(new Date(proj.createdDate).toString())}</Text>
-                <Text>last updated:</Text>
-                <Text>{proj.creationLocation ? proj.creationLocation : 'idk where im from'}</Text>
+                <CarouselCardText># of thoughts: {proj.projectThoughts.length}</CarouselCardText>
+                <CarouselCardText>created:</CarouselCardText>
+                <CarouselCardText>{parseOutTime(new Date(proj.createdDate).toString())}</CarouselCardText>
+                <CarouselCardText>last updated:</CarouselCardText>
+                <CarouselCardText>{parseOutTime(new Date(proj.lastUpdatedDate).toString())}</CarouselCardText>
               </CarouselCard>
             ))}
           </CarouselContainer>
@@ -94,6 +106,12 @@ const CarouselCard = styled.TouchableOpacity`
 
 const CarouselCardHeaderText = styled.Text`
   /* text-align: center */
+  margin-bottom: 5px;
   color: ${(props) => props.theme.textOnBackground};
   font-size: 20px;
+`;
+
+const CarouselCardText = styled.Text`
+  /* text-align: center */
+  color: ${(props) => props.theme.textOnBackground};
 `;
