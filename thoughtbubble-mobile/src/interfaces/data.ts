@@ -4,7 +4,7 @@ export interface ThoughtShape {
   id: string;
   // dates come in as string, they can be converted to type Date with `new Date(param)`
   createdDate: string;
-  lastUpdatedDate?: string;
+  // lastUpdatedDate?: string; // not yet // idk its ever needed
   creationLocation: Locations;
   projectId: string;
   text: string;
@@ -17,7 +17,7 @@ export interface ThoughtShape {
 export interface ProjectShape {
   id: string;
   createdDate: string;
-  lastUpdatedDate?: string;
+  lastUpdatedDate: string;
   creationLocation: Locations;
   userId: string;
   projectName: string;
