@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { Modal, View, Alert, StyleSheet } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Button, IconButton, TextInput } from 'react-native-paper';
 import { addProjectAction } from '../actions/projectActions';
 import { colors } from '../constants/colors';
 import { AddProjectModalProps } from '../interfaces/componentProps';
-import { RootState } from '../reducers/rootReducer';
+import { useDarkCheck } from '../hooks/useDarkCheck';
 
 export const AddProjectModal: React.FC<AddProjectModalProps> = function ({ addProjModalView, setAddProjModalView }) {
   const [input, setInput] = useState('');
   const dispatch = useDispatch();
-  const theme = useSelector((state: RootState) => state.userInfo.darkMode);
+  const theme = useDarkCheck();
 
   const useTheme = (name: string) => (theme ? stylesDark[name] : stylesLight[name]);
 

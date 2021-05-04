@@ -4,6 +4,7 @@ import { Button, TextInput, IconButton } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { editThoughtAction, thoughtTagChangeAction } from '../actions/thoughtActions';
 import { colors } from '../constants/colors';
+import { useDarkCheck } from '../hooks/useDarkCheck';
 import { MoreModalProps } from '../interfaces/componentProps';
 import { RootState } from '../reducers/rootReducer';
 
@@ -15,7 +16,7 @@ export const MoreModal: FC<MoreModalProps> = ({ moreModalView, setMoreModalView,
       .find((proj) => proj.id === projectId)
       .projectThoughts.find((thought) => thought.id === thoughtId).tag;
   const tag: string | null = useSelector(tagSelector);
-  const theme = useSelector((state: RootState) => state.userInfo.darkMode);
+  const theme = useDarkCheck();
 
   const useTheme = (name: string) => (theme ? stylesDark[name] : stylesLight[name]);
 

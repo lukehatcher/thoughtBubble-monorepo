@@ -7,13 +7,14 @@ import { _onLogOut } from '../utils/auth';
 import { SettingsScreenProps } from '../interfaces/componentProps';
 import { changeEmailSettingsAction, changeDarkModeAction } from '../actions/userInfoActions';
 import { colors } from '../constants/colors';
+import { useDarkCheck } from '../hooks/useDarkCheck';
 
 export const SettingsScreen: React.FC<SettingsScreenProps> = () => {
   const dispatch = useDispatch();
   let idToken = useSelector((state: RootState) => state.storedUser);
   const dailyEmailSetting = useSelector((state: RootState) => state.userInfo.dailyEmail);
   const weeklyEmailSetting = useSelector((state: RootState) => state.userInfo.weeklyEmail);
-  const theme = useSelector((state: RootState) => state.userInfo.darkMode);
+  const theme = useDarkCheck();
 
   const handleEmailSettingToggle = function (emailSetting: string): void {
     if (emailSetting === 'daily') dispatch(changeEmailSettingsAction('daily'));

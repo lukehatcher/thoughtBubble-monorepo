@@ -7,13 +7,14 @@ import { colors } from '../constants/colors';
 import { SortThoughtModalProps } from '../interfaces/componentProps';
 import { RootState } from '../reducers/rootReducer';
 import { clearTagsAction, updateFiltersAction } from '../actions/filterActions';
+import { useDarkCheck } from '../hooks/useDarkCheck';
 
 const { darkMode, lightMode } = colors;
 type StatusFilters = 'all' | 'incomplete' | 'completed'; // need to export this
 
 export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId, sortModalView, setSortModalView }) {
   const dispatch = useDispatch();
-  const theme = useSelector((state: RootState) => state.userInfo.darkMode);
+  const theme = useDarkCheck();
   const useTheme = (name: string) => (theme ? stylesDark[name] : stylesLight[name]);
   const filters = useSelector((state: RootState) => state.filters);
 

@@ -12,6 +12,7 @@ import { colors } from '../constants/colors';
 import { SortThoughtModal } from './SortThoughtModal';
 import { AddThoughtModal } from './AddThoughtModal';
 import { FAB } from 'react-native-paper';
+import { useDarkCheck } from '../hooks/useDarkCheck';
 
 export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) => {
   const [addThoughtModalView, setAddThoughtModalView] = useState(false); // plus modal
@@ -23,7 +24,7 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
   const thoughtsSelector = (state: RootState) =>
     state.userProjectData.find((proj) => proj.id === projectId).projectThoughts;
   let thoughts = useSelector(thoughtsSelector); // retrive thoughts for the project we're on
-  const theme = useSelector((state: RootState) => state.userInfo.darkMode);
+  const theme = useDarkCheck();
 
   const useTheme = (name: string) => (theme ? stylesDark[name] : stylesLight[name]);
 
