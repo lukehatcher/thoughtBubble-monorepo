@@ -33,14 +33,18 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
 
   return (
     <ThemeProvider theme={theme}>
-      <View>
+      <MainContainer>
         <Text>{JSON.stringify(project)}</Text>
         <PieChartHeader>where you spend your time</PieChartHeader>
         <VictoryPie data={pieChartData} height={350} />
-      </View>
+      </MainContainer>
     </ThemeProvider>
   );
 };
+
+const MainContainer = styled.View`
+  background-color: ${(props) => props.theme.background};
+`;
 
 const PieChartHeader = styled.Text`
   color: ${(prop) => prop.theme.textOnBackground};

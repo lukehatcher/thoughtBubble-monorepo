@@ -4,7 +4,7 @@
  *
  */
 
-import React from 'react';
+import React, { FC } from 'react';
 import { ActivityIndicator, StatusBar } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Provider as ReduxProvider } from 'react-redux';
@@ -20,11 +20,11 @@ import { fetchUserInfoAction } from './src/actions/userInfoActions';
 
 interface AppProps {}
 
-const App: React.FC<AppProps> = () => {
-  const selector = (state: RootState) => state.storedUser;
-  const loginStatus = useSelector(selector);
+const App: FC<AppProps> = () => {
+  const loginStatus = useSelector((state: RootState) => state.storedUser);
+  console.log(loginStatus, 'rendered app');
 
-  if (loginStatus !== null) {
+  if (loginStatus.sub) {
     return (
       <>
         <StatusBar barStyle="light-content" />
@@ -43,9 +43,8 @@ const App: React.FC<AppProps> = () => {
 checkForIdToken().then(async (res) => {
   // this function updates the redux store to match any contents in the asyncstorage before rendering app
   // only executed when app is first loaded/launched
-  const status = res !== null;
-  await store.dispatch(storeUserAction(res)); // store idToken in redux store if theres an idToken in asyncstorage
-  if (status) {
+  if (res !== null) {
+    await store.dispatch(storeUserAction(res)); // store idToken in redux store if theres an idToken in asyncstorage
     await store.dispatch(fetchProjectDataAction(res.sub)); // populate the redux store with the user's projects
     await store.dispatch(fetchUserInfoAction()); // fetch users personal settings/info etc
   }

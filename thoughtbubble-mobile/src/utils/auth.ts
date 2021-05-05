@@ -29,7 +29,6 @@ export const _onLogOut = function (): void {
     .clearSession()
     .then(async () => {
       await clearAsyncStorage();
-      store.dispatch(storeUserAction(null));
       store.dispatch({ type: 'USER_LOGOUT', payload: null });
     })
     .catch((err) => console.log('auth.ts: log out cancelled/error logging out w auth0', err));
