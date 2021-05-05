@@ -22,7 +22,6 @@ interface AppProps {}
 
 const App: FC<AppProps> = () => {
   const loginStatus = useSelector((state: RootState) => state.storedUser);
-  console.log(loginStatus, 'rendered app');
 
   if (loginStatus.sub) {
     return (
