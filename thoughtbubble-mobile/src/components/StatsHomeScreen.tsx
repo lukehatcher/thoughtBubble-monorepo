@@ -34,16 +34,17 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
     dp1: isDarkMode ? darkMode.dp1 : lightMode.background,
   };
 
-  const parseOutTime = function (dateTime: string) {
-    // takes a parsed date+time of format: Mon Apr 12 2021 20:32:19 GMT-0700 (PDT)
-    // returns shorter, timeless format: Mon Apr 12, 2021
-    const s = dateTime.split(' ');
-    return s.slice(0, 3).join(' ') + `, ${s[3]}`;
+  /**
+   * @param lastUpdatedDate from db of the form `2021-05-04T21:34:08.689Z`
+   * @returns of the form `Mon Apr 12, 2021`
+   */
+  const parseOutTime = function (lastUpdatedDate: string) {
+    const dateTime = new Date(lastUpdatedDate).toString().split(' ');
+    return dateTime.slice(0, 3).join(' ') + `, ${dateTime[3]}`;
   };
 
   return (
     <ThemeProvider theme={theme}>
-      {console.log('rendered stats page')}
       <MainContainer>
         <HorizontalScrollView
           horizontal
@@ -60,9 +61,9 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
                 <CarouselCardHeaderText>{proj.projectName}</CarouselCardHeaderText>
                 <CarouselCardText># of thoughts: {proj.projectThoughts.length}</CarouselCardText>
                 <CarouselCardText>created:</CarouselCardText>
-                <CarouselCardText>{parseOutTime(new Date(proj.createdDate).toString())}</CarouselCardText>
+                <CarouselCardText>{parseOutTime(proj.lastUpdatedDate)}</CarouselCardText>
                 <CarouselCardText>last updated:</CarouselCardText>
-                <CarouselCardText>{parseOutTime(new Date(proj.lastUpdatedDate).toString())}</CarouselCardText>
+                <CarouselCardText>{parseOutTime(proj.lastUpdatedDate)}</CarouselCardText>
               </CarouselCard>
             ))}
           </CarouselContainer>
