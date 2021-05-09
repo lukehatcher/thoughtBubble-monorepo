@@ -1,24 +1,17 @@
 import { Request, Response } from 'express';
-import { getConnection } from 'typeorm';
+import { Connection, getConnection } from 'typeorm';
 import { Thought } from '../entities/Thought';
 import { Project } from '../entities/Project';
+import { Activity } from '../entities/Activity';
+import { ControllerHelper } from './controllerHelper';
 
-class ThoughtsController {
+class ThoughtsController extends ControllerHelper {
   private readonly location: string;
 
   constructor() {
+    super();
     this.location = '@thoughtControllers.ts: ';
   }
-
-  /**
-   * on thought addition, completion, or project addition
-   * @param thoughtId
-   * @param projectId
-   * @param thoughtId
-   */
-  private storeActivity = async function (thoughtId: string, projectId: string, userId?: string) {
-    // update
-  };
 
   /**
    * on thought addition, deletion, edit, or tag edit
@@ -41,6 +34,8 @@ class ThoughtsController {
 
       // update datetime stamp for most recent activity for that project
       await this.updateLastUpdatedDate(projectId);
+      // record the users activity
+      await this.recordActivity(userSub, projectId);
 
       res.send(newThought); // maybe just send the id
     } catch (err) {

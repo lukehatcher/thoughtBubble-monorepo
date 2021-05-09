@@ -4,23 +4,15 @@ import { getConnection, getRepository } from 'typeorm';
 import { Project } from '../entities/Project';
 import { Thought } from '../entities/Thought';
 import { User } from '../entities/User';
+import { ControllerHelper } from './controllerHelper';
 
-class ProjectsController {
+class ProjectsController extends ControllerHelper {
   private readonly location: string;
 
   constructor() {
+    super();
     this.location = '@projectControllers.ts: ';
   }
-
-  /**
-   * on thought addition, completion, or project addition
-   * @param thoughtId
-   * @param projectId
-   * @param thoughtId
-   */
-  private storeActivity = async function (thoughtId: string, projectId: string, thoughtId: string) {
-    // update
-  };
 
   public fetchProjects = async (req: Request, res: Response): Promise<void> => {
     const userSub = req.query.userSub as string;
