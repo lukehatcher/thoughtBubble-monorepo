@@ -24,6 +24,10 @@ export class Thought extends BaseEntity {
   @Column('boolean', { default: false })
   completed!: boolean;
 
+  @Column('boolean', { default: false })
+  // limits activity for a thought's status change to be limited to one
+  completedYet!: boolean;
+
   @Column('text', { nullable: true })
   tag!: string;
 

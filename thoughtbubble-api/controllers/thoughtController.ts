@@ -94,7 +94,7 @@ class ThoughtsController extends ControllerHelper {
       // update datetime stamp for most recent activity for that project
       await this.updateLastUpdatedDate(projectId);
       // record the users activity
-      await this.recordActivity(userSub, projectId);
+      await this.recordActivity(userSub, projectId, thoughtId);
 
       res.sendStatus(200);
     } catch (err) {
