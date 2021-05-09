@@ -10,8 +10,21 @@ class ThoughtsController {
     this.location = '@thoughtControllers.ts: ';
   }
 
+  /**
+   * on thought addition, completion, or project addition
+   * @param thoughtId
+   * @param projectId
+   * @param thoughtId
+   */
+  private storeActivity = async function (thoughtId: string, projectId: string, thoughtId: string) {
+    // update
+  };
+
+  /**
+   * on thought addition, deletion, edit, or tag edit
+   * @param projectId
+   */
   private updateLastUpdatedDate = async function (projectId: string) {
-    // on thought addition, deletion, edit, or tag edit
     await getConnection()
       .createQueryBuilder()
       .update(Project)

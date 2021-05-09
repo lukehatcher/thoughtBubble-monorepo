@@ -12,6 +12,16 @@ class ProjectsController {
     this.location = '@projectControllers.ts: ';
   }
 
+  /**
+   * on thought addition, completion, or project addition
+   * @param thoughtId
+   * @param projectId
+   * @param thoughtId
+   */
+  private storeActivity = async function (thoughtId: string, projectId: string, thoughtId: string) {
+    // update
+  };
+
   public fetchProjects = async (req: Request, res: Response): Promise<void> => {
     const userSub = req.query.userSub as string;
     try {
