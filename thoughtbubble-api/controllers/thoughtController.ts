@@ -36,12 +36,6 @@ class ThoughtsController {
     }
   };
 
-  // create
-  // delete
-  // tag
-  // change status
-  // edit
-
   public deleteThought = async (req: Request, res: Response): Promise<void> => {
     const { userSub, projectId, thoughtId } = req.query;
     try {

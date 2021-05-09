@@ -61,7 +61,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
                 <CarouselCardHeaderText>{proj.projectName}</CarouselCardHeaderText>
                 <CarouselCardText># of thoughts: {proj.projectThoughts.length}</CarouselCardText>
                 <CarouselCardText>created:</CarouselCardText>
-                <CarouselCardText>{parseOutTime(proj.lastUpdatedDate)}</CarouselCardText>
+                <CarouselCardText>{parseOutTime(proj.createdDate)}</CarouselCardText>
                 <CarouselCardText>last updated:</CarouselCardText>
                 <CarouselCardText>{parseOutTime(proj.lastUpdatedDate)}</CarouselCardText>
               </CarouselCard>
