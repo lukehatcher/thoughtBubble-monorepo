@@ -1,15 +1,16 @@
 FROM node:14.15.1-alpine
 
-RUN mkdir -p /src/app
+RUN mkdir -p /api
 
-WORKDIR /src/app
+WORKDIR /api
 
-COPY . /src/app
+COPY package*.json /api
+RUN npm install --only=prod --silent
 
-RUN npm install --only=prod
+COPY . /api
 
 EXPOSE 3001
 
-RUN echo 'thoughtbubble service running'
+RUN echo 'thoughtbubble API running'
 
-CMD ["npm", "start"]
+CMD ["npm", "server"]

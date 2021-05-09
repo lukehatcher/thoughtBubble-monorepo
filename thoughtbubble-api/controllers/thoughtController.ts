@@ -16,7 +16,7 @@ class ThoughtsController {
    * @param projectId
    * @param thoughtId
    */
-  private storeActivity = async function (thoughtId: string, projectId: string, thoughtId: string) {
+  private storeActivity = async function (thoughtId: string, projectId: string, userId?: string) {
     // update
   };
 
