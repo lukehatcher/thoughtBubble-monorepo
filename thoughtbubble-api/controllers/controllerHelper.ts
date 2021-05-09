@@ -14,37 +14,29 @@ export class ControllerHelper {
     this.fname = '@controllerHelper.ts: ';
   }
 
-  // private markThoughtAsCompletedYet = async function(thoughtId: string) {
-  // 	await getConnection()
-  // 	.createQueryBuilder()
-  // 	.update(Thought)
-  // 	.set({ completedYet: true })
-  // 	.where('id = :id', { id: thoughtId })
-  // 	.execute();
-  // }
-
-  // private saveActivity = async()
+  private saveActivity = async function (userSub: string, projectId: string) {
+    const activity = new Activity();
+    activity.activityDate = new Date();
+    activity.user = (await User.findOne({ githubId: userSub }))!;
+    activity.project = (await Project.findOne({ id: projectId }))!;
+    getConnection().manager.save(activity);
+  };
 
   /**
-   * on thought addition, completion, or project addition
-   * (coming soon) should only register on first time a thought is completed to avoid abuse
+   * Activity is recorded on thought addition, completion, or project addition.
+   * Activity for thought completion is only counted the first time if the thought is toggled.
    * @param userSub ex: `github|12345678`
    * @param projectId uuid
    */
   public recordActivity = async (userSub: string, projectId: string, thoughtId?: string): Promise<void> => {
     try {
       if (thoughtId) {
-        // if the thought has had it's status changes to completed before, don't count its second status change to completed
         const thought = await Thought.findOne({ id: thoughtId });
+        // if the thought has been completed before, don't record activity
         if (thought?.completedYet) return;
+        // record activity
         else {
-          // record activity
-          const activity = new Activity();
-          activity.activityDate = new Date();
-          activity.user = (await User.findOne({ githubId: userSub }))!;
-          activity.project = (await Project.findOne({ id: projectId }))!;
-          getConnection().manager.save(activity);
-
+          this.saveActivity(userSub, projectId);
           // mark thought's completeYet to true to prevent double recording
           if (!thought?.completedYet) {
             await getConnection()
@@ -56,11 +48,8 @@ export class ControllerHelper {
           }
         }
       } else {
-        const activity = new Activity();
-        activity.activityDate = new Date();
-        activity.user = (await User.findOne({ githubId: userSub }))!;
-        activity.project = (await Project.findOne({ id: projectId }))!;
-        getConnection().manager.save(activity);
+        // record all project creation activity
+        this.saveActivity(userSub, projectId);
       }
     } catch (err) {
       console.error(this.fname, err);

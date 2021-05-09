@@ -62,6 +62,7 @@ class ProjectsController extends ControllerHelper {
     try {
       // cascade delete takse care of thoughts
       await Project.delete({ id: projectId?.toString() });
+      await this.recordActivity(userSub as string, projectId as string);
       res.sendStatus(200);
     } catch (err) {
       console.error(this.location, err);
