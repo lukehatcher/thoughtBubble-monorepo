@@ -8,6 +8,7 @@ import {
   OneToMany,
   CreateDateColumn,
 } from 'typeorm';
+import { Activity } from './Activity';
 import { Thought } from './Thought';
 import { User } from './User';
 // import { Thought } from './Thought';
@@ -46,4 +47,7 @@ export class Project extends BaseEntity {
 
   @OneToMany(() => Thought, (thought) => thought.projectId)
   thoughts!: Promise<Thought[]>;
+
+  @OneToMany(() => Activity, (activity) => activity.project)
+  activity!: Promise<Activity[]>;
 }

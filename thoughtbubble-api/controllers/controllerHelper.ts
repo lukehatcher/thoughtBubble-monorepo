@@ -17,7 +17,7 @@ export class ControllerHelper {
    * on thought addition, completion, or project addition
    * (coming soon) should only register on first time a thought is completed to avoid abuse
    * @param userSub ex: `github|12345678`
-   * @param projectId
+   * @param projectId uuid
    */
   public recordActivity = async (userSub: string, projectId: string): Promise<void> => {
     try {

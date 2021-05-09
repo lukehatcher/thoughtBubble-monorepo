@@ -84,7 +84,7 @@ class ThoughtsController extends ControllerHelper {
     try {
       const thought = await Thought.findOne({ id: thoughtId });
       const currBool = thought?.completed;
-      await getConnection() //
+      await getConnection()
         .createQueryBuilder()
         .update(Thought)
         .set({ completed: !currBool })
