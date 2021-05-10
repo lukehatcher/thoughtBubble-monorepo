@@ -7,6 +7,7 @@ import { StatsHomeScreenProps } from '../interfaces/componentProps';
 import { fetchProjectDataAction } from '../actions/fetchProjectDataAction';
 import { useFocusEffect } from '@react-navigation/native';
 import { useDarkCheck } from '../hooks/useDarkCheck';
+import { VictoryLine, VictoryChart, VictoryTheme, VictoryBar, VictoryLabel, VictoryAxis } from 'victory-native';
 
 const { darkMode, lightMode } = colors;
 
@@ -32,6 +33,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
     secondary: isDarkMode ? darkMode.secondary : lightMode.secondary,
     textOnBackground: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground,
     dp1: isDarkMode ? darkMode.dp1 : lightMode.background,
+    cardBorder: isDarkMode ? darkMode.dp1 : 'black',
   };
 
   /**
@@ -43,14 +45,37 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
     return dateTime.slice(0, 3).join(' ') + `, ${dateTime[3]}`;
   };
 
+  const activityDataWeek = [
+    { x: 0, y: 2 },
+    { x: 1, y: 3 },
+    { x: 2, y: 5 },
+    { x: 3, y: 4 },
+    { x: 4, y: 7 },
+    { x: 5, y: 13 },
+    { x: 6, y: 5 },
+    { x: 7, y: 22 },
+  ];
+
   return (
     <ThemeProvider theme={theme}>
       <MainContainer>
-        <HorizontalScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          // contentContainerStyle={{ 'flex-direction': 'row', margin: 15, background: 'green' }}
-        >
+        <GraphContainer>
+          <VictoryChart theme={VictoryTheme.material}>
+            <VictoryBar
+              // labelComponent={<VictoryLabel x={10} y={200} angle={-90} text="ghsafjkl" />}
+              style={{ data: { fill: isDarkMode ? darkMode.primary : lightMode.primary } }}
+              data={activityDataWeek}
+              height={300}
+              cornerRadius={{ topLeft: 2, topRight: 2 }}
+              animate={{
+                duration: 2000,
+                onLoad: { duration: 1000 },
+              }}
+              // barRatio={0.2}
+            />
+          </VictoryChart>
+        </GraphContainer>
+        <HorizontalScrollView horizontal showsHorizontalScrollIndicator={false}>
           <CarouselContainer>
             {userProjectsData.map((proj) => (
               <CarouselCard
@@ -81,13 +106,19 @@ const MainContainer = styled.View`
   justify-content: center; */
 `;
 
+const GraphContainer = styled.View`
+  border: 2px solid blue;
+  /* height: 100px; */
+`;
+
 const HorizontalScrollView = styled.ScrollView`
   background: ${(props) => props.theme.background};
+  border: 1px solid green;
   /* margin: 15px; */
-  height: 100px;
+  /* height: 100px; */
   /* width: 100px; */
-  margin-bottom: 500px;
-  display: flex;
+  /* margin-bottom: 500px; */
+  /* display: flex; */
 `;
 
 const CarouselContainer = styled.View`
@@ -96,7 +127,7 @@ const CarouselContainer = styled.View`
 `;
 
 const CarouselCard = styled.TouchableOpacity`
-  border: 1px solid black;
+  border: ${(props) => props.theme.cardBorder};
   padding: 10px;
   border-radius: 10px;
   height: 160px;
