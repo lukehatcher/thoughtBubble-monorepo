@@ -17,4 +17,4 @@ router // api/thought/tag
   .route('/tag')
   .put(ThoughtsController.editTag);
 
-export default router;
+export { router };

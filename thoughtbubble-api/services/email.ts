@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 import { google } from 'googleapis';
-import config from '../config/enviroment';
+import { config } from '../config/enviroment';
 
 export const sendEmail = async function (destination: string, subject: string, html: string) {
   const oauth2Client = new google.auth.OAuth2(

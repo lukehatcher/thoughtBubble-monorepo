@@ -16,4 +16,4 @@ router
   .route('/init') //
   .post(ProjectsController.initProjects);
 
-export default router;
+export { router };

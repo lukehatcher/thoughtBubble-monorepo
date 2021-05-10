@@ -3,7 +3,7 @@ dotenv.config();
 
 // purpose is to have intellisense for my env vars
 
-export default {
+export const config = {
   port: process.env.PORT,
   node_env: process.env.NODE_ENV,
   email: {
