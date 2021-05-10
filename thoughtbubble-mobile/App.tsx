@@ -17,6 +17,7 @@ import { fetchProjectDataAction } from './src/actions/fetchProjectDataAction';
 import { RootState } from './src/reducers/rootReducer'; // type
 import store from './src/store';
 import { fetchUserInfoAction } from './src/actions/userInfoActions';
+import { fetchActivityDataAction } from './src/actions/fetchActivityAction';
 
 interface AppProps {}
 
@@ -46,6 +47,7 @@ checkForIdToken().then(async (res) => {
     await store.dispatch(storeUserAction(res)); // store idToken in redux store if theres an idToken in asyncstorage
     await store.dispatch(fetchProjectDataAction(res.sub)); // populate the redux store with the user's projects
     await store.dispatch(fetchUserInfoAction()); // fetch users personal settings/info etc
+    await store.dispatch(fetchActivityDataAction()); // fetch user's activity data
   }
 });
 

@@ -1,5 +1,5 @@
 import React, { FC, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { colors } from '../constants/colors';
 import { RootState } from '../reducers/rootReducer';
 import styled, { ThemeProvider } from 'styled-components/native';
@@ -8,6 +8,8 @@ import { fetchProjectDataAction } from '../actions/fetchProjectDataAction';
 import { useFocusEffect } from '@react-navigation/native';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { VictoryLine, VictoryChart, VictoryTheme, VictoryBar, VictoryLabel, VictoryAxis } from 'victory-native';
+import { fetchActivityDataAction } from '../actions/fetchActivityAction';
+import equal from 'deep-equal';
 
 const { darkMode, lightMode } = colors;
 
@@ -15,13 +17,16 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
   const isDarkMode = useDarkCheck();
   const dispatch = useDispatch();
   const userSub = useSelector((state: RootState) => state.storedUser.sub); // need a hook for this
-  const userProjectsData = useSelector((state: RootState) => state.userProjectData);
+  const userProjectsData = useSelector((state: RootState) => state.userProjectData, equal);
+  const userActivityData = useSelector((state: RootState) => state.activity, equal);
 
   useFocusEffect(
     // need to update proj array, due to the fact that if a thought was edited in any way...
     // ...the 'lastUpdateDate' value would change
     useCallback(() => {
+      // some extra renders going on atm
       dispatch(fetchProjectDataAction(userSub));
+      dispatch(fetchActivityDataAction());
     }, []),
   );
 
