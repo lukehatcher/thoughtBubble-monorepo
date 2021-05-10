@@ -19,4 +19,4 @@ router // api/userinfo/email
   .route('/darkmode')
   .put(ProjectsController.toggleDarkMode);
 
-export default router;
+export { router };

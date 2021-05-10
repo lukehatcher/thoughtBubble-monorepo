@@ -47,8 +47,9 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
     dispatch(deleteThoughtAction(projectId, thoughtId));
   };
 
-  const handleThoughtStatusChange = (thoughtId: string) => {
+  const handleThoughtStatusChange = (thoughtId: string, rowMap: any, rowKey: string) => {
     dispatch(thoughtStatusChangeAction(projectId, thoughtId));
+    closeRow(rowMap, rowKey);
   };
 
   const closeRow = (rowMap, rowKey) => {
@@ -73,7 +74,7 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
       </View>
       <TouchableOpacity
         style={[useTheme('backRightBtn'), useTheme('backRightBtnRight')]}
-        onPress={() => handleThoughtStatusChange(data.item.id)}
+        onPress={() => handleThoughtStatusChange(data.item.id, rowMap, data.item.key)}
       >
         <MaterialCommunityIcons name="checkbox-marked-outline" size={25} color="white" />
       </TouchableOpacity>

@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToMany, JoinColumn } from 'typeorm';
+import { Activity } from './Activity';
 import { Project } from './Project';
 
 @Entity()
@@ -28,4 +29,7 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Project, (project) => project.user)
   projects!: Promise<Project[]>;
+
+  @OneToMany(() => Activity, (activity) => activity.user)
+  activity!: Promise<Activity[]>;
 }

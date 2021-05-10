@@ -1,14 +1,16 @@
 import 'reflect-metadata';
 import { Request, Response } from 'express';
-import { getConnection, getRepository } from 'typeorm';
+import { getRepository } from 'typeorm';
 import { Project } from '../entities/Project';
 import { Thought } from '../entities/Thought';
 import { User } from '../entities/User';
+import { ControllerHelper } from './controllerHelper';
 
-class ProjectsController {
+class ProjectsController extends ControllerHelper {
   private readonly location: string;
 
   constructor() {
+    super();
     this.location = '@projectControllers.ts: ';
   }
 
@@ -48,6 +50,7 @@ class ProjectsController {
       const user = await User.findOne({ githubId: userSub }); // wack naming
       const userId = user?.id;
       const newProject = await Project.create({ projectName, userId, creationLocation }).save();
+      await this.recordActivity(userSub, newProject.id);
       res.send(newProject); // maybe just send the id
     } catch (err) {
       console.error(this.location, err);

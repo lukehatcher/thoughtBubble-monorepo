@@ -1,17 +1,23 @@
 import { Request, Response } from 'express';
-import { getConnection } from 'typeorm';
+import { Connection, getConnection } from 'typeorm';
 import { Thought } from '../entities/Thought';
 import { Project } from '../entities/Project';
+import { Activity } from '../entities/Activity';
+import { ControllerHelper } from './controllerHelper';
 
-class ThoughtsController {
+class ThoughtsController extends ControllerHelper {
   private readonly location: string;
 
   constructor() {
+    super();
     this.location = '@thoughtControllers.ts: ';
   }
 
+  /**
+   * on thought addition, deletion, edit, or tag edit
+   * @param projectId
+   */
   private updateLastUpdatedDate = async function (projectId: string) {
-    // on thought addition, deletion, edit, or tag edit
     await getConnection()
       .createQueryBuilder()
       .update(Project)
@@ -28,6 +34,8 @@ class ThoughtsController {
 
       // update datetime stamp for most recent activity for that project
       await this.updateLastUpdatedDate(projectId);
+      // record the users activity
+      await this.recordActivity(userSub, projectId);
 
       res.send(newThought); // maybe just send the id
     } catch (err) {
@@ -35,12 +43,6 @@ class ThoughtsController {
       res.sendStatus(400);
     }
   };
-
-  // create
-  // delete
-  // tag
-  // change status
-  // edit
 
   public deleteThought = async (req: Request, res: Response): Promise<void> => {
     const { userSub, projectId, thoughtId } = req.query;
@@ -82,7 +84,7 @@ class ThoughtsController {
     try {
       const thought = await Thought.findOne({ id: thoughtId });
       const currBool = thought?.completed;
-      await getConnection() //
+      await getConnection()
         .createQueryBuilder()
         .update(Thought)
         .set({ completed: !currBool })
@@ -91,6 +93,8 @@ class ThoughtsController {
 
       // update datetime stamp for most recent activity for that project
       await this.updateLastUpdatedDate(projectId);
+      // record the users activity
+      await this.recordActivity(userSub, projectId, thoughtId);
 
       res.sendStatus(200);
     } catch (err) {

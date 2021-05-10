@@ -1,13 +1,14 @@
 import 'reflect-metadata';
-import cors from 'cors';
-import morgan from 'morgan';
 import { createConnection } from 'typeorm';
-import { join } from 'path';
 import express from 'express';
-import projectRouter from './routes/projects';
-import thoughtRouter from './routes/thoughts';
-import userInfoRouter from './routes/userInfo';
-import config from './config/enviroment';
+import morgan from 'morgan';
+import cors from 'cors';
+import { join } from 'path';
+import { router as projectRouter } from './routes/projects';
+import { router as thoughtRouter } from './routes/thoughts';
+import { router as userInfoRouter } from './routes/userInfo';
+import { router as activityRouter } from './routes/activity';
+import { config } from './config/enviroment';
 
 (async function () {
   try {
@@ -29,5 +30,6 @@ import config from './config/enviroment';
   app.use('/api/projects', projectRouter);
   app.use('/api/thoughts', thoughtRouter);
   app.use('/api/userinfo', userInfoRouter);
-  app.listen(config.port, () => console.log(`✅ listening on port ${config.port}`));
+  app.use('/api/activity', activityRouter);
+  app.listen(config.port, () => console.log(`✅ 🚀 listening on port ${config.port}`));
 })();
