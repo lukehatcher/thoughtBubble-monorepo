@@ -50,6 +50,7 @@ class ProjectsController extends ControllerHelper {
       const user = await User.findOne({ githubId: userSub }); // wack naming
       const userId = user?.id;
       const newProject = await Project.create({ projectName, userId, creationLocation }).save();
+      await this.recordActivity(userSub, newProject.id);
       res.send(newProject); // maybe just send the id
     } catch (err) {
       console.error(this.location, err);
@@ -62,7 +63,6 @@ class ProjectsController extends ControllerHelper {
     try {
       // cascade delete takse care of thoughts
       await Project.delete({ id: projectId?.toString() });
-      await this.recordActivity(userSub as string, projectId as string);
       res.sendStatus(200);
     } catch (err) {
       console.error(this.location, err);

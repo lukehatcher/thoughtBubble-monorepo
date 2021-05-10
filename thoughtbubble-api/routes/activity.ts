@@ -5,6 +5,6 @@ const router = express.Router();
 
 router // api/activity
   .route('/')
-  .get();
+  .get(ActivityController.fetchUserActivity);
 
 export { router };

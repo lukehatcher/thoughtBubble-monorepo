@@ -31,5 +31,5 @@ import { config } from './config/enviroment';
   app.use('/api/thoughts', thoughtRouter);
   app.use('/api/userinfo', userInfoRouter);
   app.use('/api/activity', activityRouter);
-  app.listen(config.port, () => console.log(`✅ listening on port ${config.port}`));
+  app.listen(config.port, () => console.log(`✅ 🚀 listening on port ${config.port}`));
 })();
