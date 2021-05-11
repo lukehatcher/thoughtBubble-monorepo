@@ -1,7 +1,9 @@
 export enum FilterActionTypes {
-  ADD = 'filters/addTag',
-  REMOVE = 'filters/removeTag',
-  UPDATE = 'filters/updateStatus',
+  INIT = 'filters/initialize',
+  ADD_PROJ = 'filters/addProject',
+  DEL_PROJ = 'filters/deleteProject',
+  UPDATE = 'filters/update',
+  CLEAR = 'filters/clearTags',
 }
 
 export enum ActivityActionTypes {

@@ -1,7 +1,9 @@
+import { FilterActionTypes } from '../constants/actionTypes';
+
 export const updateFiltersAction = function (projectId: string, typeOfFilter: string) {
-  return { type: 'filters/update', payload: { typeOfFilter, projectId } };
+  return { type: FilterActionTypes.UPDATE, payload: { typeOfFilter, projectId } };
 };
 
 export const clearTagsAction = function (projectId: string) {
-  return { type: 'filters/clearTags', payload: projectId };
+  return { type: FilterActionTypes.CLEAR, payload: projectId };
 };
