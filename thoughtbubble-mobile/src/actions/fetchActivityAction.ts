@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { ActivityActionTypes } from '../constants/actionTypes';
 
 export const fetchActivityDataAction = function () {
   return async (dispatch, getState) => {
@@ -9,7 +10,7 @@ export const fetchActivityDataAction = function () {
           userSub,
         },
       });
-      dispatch({ type: 'activity/fetch', payload: response.data });
+      dispatch({ type: ActivityActionTypes.FETCH, payload: response.data });
     } catch (err) {
       console.error('@fetchDataAction.ts: ', err);
     }

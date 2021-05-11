@@ -1,5 +1,9 @@
-export const enum FilterActionTypes {
-  ADD_TAG = 'filters/addTag',
-  REMOVE_TAG = 'filters/removeTag',
-  UPDATE_STATUS = 'filters/updateStatus',
+export enum FilterActionTypes {
+  ADD = 'filters/addTag',
+  REMOVE = 'filters/removeTag',
+  UPDATE = 'filters/updateStatus',
+}
+
+export enum ActivityActionTypes {
+  FETCH = 'activity/fetch',
 }
