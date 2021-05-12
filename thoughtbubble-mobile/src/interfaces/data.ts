@@ -1,4 +1,4 @@
-type Locations = 'mobile' | 'vscode';
+import { Locations } from './stringLiteralTypes';
 
 export interface ThoughtShape {
   id: string;

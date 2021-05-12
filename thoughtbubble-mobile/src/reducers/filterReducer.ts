@@ -1,8 +1,6 @@
 import { FilterActionTypes } from '../constants/actionTypes';
-
-// need to export these constants
-type StatusFilters = 'all' | 'incomplete' | 'completed';
-const statusFilters = ['all', 'incomplete', 'completed'];
+import { StatusFilters } from '../interfaces/stringLiteralTypes';
+import { statusFilters } from '../constants/filters';
 
 const initialState: ProjectFilters[] = [];
 

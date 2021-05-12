@@ -8,9 +8,9 @@ import { SortThoughtModalProps } from '../interfaces/componentProps';
 import { RootState } from '../reducers/rootReducer';
 import { clearTagsAction, updateFiltersAction } from '../actions/filterActions';
 import { useDarkCheck } from '../hooks/useDarkCheck';
+import { StatusFilters } from '../interfaces/stringLiteralTypes';
 
 const { darkMode, lightMode } = colors;
-type StatusFilters = 'all' | 'incomplete' | 'completed'; // need to export this
 
 export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId, sortModalView, setSortModalView }) {
   const dispatch = useDispatch();
