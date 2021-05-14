@@ -18,11 +18,11 @@ export class Activity extends BaseEntity {
   // @JoinColumn()
   // project!: Project; // typeorm api turns project -> projectId
 
-  @ManyToOne(() => User, (user) => user.activity)
+  @ManyToOne(() => User, (user) => user.activity, { onDelete: 'CASCADE' })
   // @JoinColumn({ name: 'userId' })
   user!: User;
 
-  @ManyToOne(() => Project, (project) => project.activity)
+  @ManyToOne(() => Project, (project) => project.activity, { onDelete: 'CASCADE' })
   // @JoinColumn({ name: 'userId' })
   project!: Project;
 }
