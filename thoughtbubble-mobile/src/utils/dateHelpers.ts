@@ -40,5 +40,12 @@ export class DateHelper {
     return dateTime.slice(0, 3).join(' ') + `, ${dateTime[3]}`;
   };
 
-  // static mapActivityDates
+  /**
+   * map day # to 365
+   * @param day
+   * @returns
+   */
+  static dayToMMDD = function (day: string): string {
+    return '';
+  };
 }

@@ -64,24 +64,30 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
     cardBorder: isDarkMode ? darkMode.dp1 : 'black',
   };
 
+  const gridlessGraphTheme = VictoryTheme.material;
+  // remove colored grid
+  gridlessGraphTheme.axis.style.grid.stroke = 'transparent';
+
   return (
     <ThemeProvider theme={theme}>
       <MainContainer>
         <GraphContainer>
-          <VictoryChart theme={VictoryTheme.material} domainPadding={10}>
+          <VictoryChart theme={gridlessGraphTheme} domainPadding={{ x: 15 }}>
             <VictoryBar
-              // categories={{ x: ['dogs', 'cats', 'mice'] }}
               // labelComponent={<VictoryLabel x={10} y={200} angle={-90} text="ghsafjkl" />}
               style={{ data: { fill: isDarkMode ? darkMode.primary : lightMode.primary } }}
               data={generateXY()}
               height={300}
-              labels={({ datum }) => `date: ${datum.x}`}
+              labels={({ datum }) => {
+                if (!datum.y) return '';
+                return `day: ${datum.x}`;
+              }}
               cornerRadius={{ topLeft: 2, topRight: 2 }}
               animate={{
                 duration: 2000,
                 onLoad: { duration: 1000 },
               }}
-              // barRatio={0.2}
+              barRatio={0.8}
             />
           </VictoryChart>
         </GraphContainer>
@@ -108,7 +114,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
   );
 };
 
-const MainContainer = styled.View`
+const MainContainer = styled.ScrollView`
   background: ${(props) => props.theme.background};
   flex: 1;
   /* display: flex;
@@ -119,6 +125,7 @@ const MainContainer = styled.View`
 const GraphContainer = styled.View`
   border: 2px solid blue;
   /* height: 100px; */
+  /* padding: 10px; */
 `;
 
 const HorizontalScrollView = styled.ScrollView`
