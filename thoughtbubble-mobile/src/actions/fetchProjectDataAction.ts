@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { FilterActionTypes } from '../constants/actionTypes';
 
 export const fetchProjectDataAction = function (userSub: string) {
   return async (dispatch, getState) => {
@@ -9,7 +10,7 @@ export const fetchProjectDataAction = function (userSub: string) {
         },
       });
       dispatch({ type: 'fetchData', payload: response.data });
-      dispatch({ type: 'filters/initialize', payload: response.data });
+      dispatch({ type: FilterActionTypes.INIT, payload: response.data });
     } catch (err) {
       console.error('@fetchDataAction.ts: ', err);
     }

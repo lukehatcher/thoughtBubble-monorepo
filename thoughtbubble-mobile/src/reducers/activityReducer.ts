@@ -1,3 +1,5 @@
+import { ActivityActionTypes } from '../constants/actionTypes';
+
 const initialState = [];
 
 interface Activity {
@@ -13,7 +15,7 @@ interface Activity {
 
 export const activityReducer = (state = initialState, action): Activity[] => {
   switch (action.type) {
-    case 'activity/fetch':
+    case ActivityActionTypes.FETCH:
       return action.payload;
     default:
       return state;
