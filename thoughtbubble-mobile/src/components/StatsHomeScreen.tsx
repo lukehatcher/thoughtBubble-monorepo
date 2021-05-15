@@ -1,5 +1,5 @@
 import React, { FC, useCallback } from 'react';
-import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { colors } from '../constants/colors';
 import { RootState } from '../reducers/rootReducer';
 import styled, { ThemeProvider } from 'styled-components/native';
@@ -10,6 +10,7 @@ import { useDarkCheck } from '../hooks/useDarkCheck';
 import { VictoryLine, VictoryChart, VictoryTheme, VictoryBar, VictoryLabel, VictoryAxis } from 'victory-native';
 import { fetchActivityDataAction } from '../actions/fetchActivityAction';
 import equal from 'deep-equal';
+import { DateHelper } from '../utils/dateHelpers';
 
 const { darkMode, lightMode } = colors;
 
@@ -19,6 +20,28 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
   const userSub = useSelector((state: RootState) => state.storedUser.sub); // need a hook for this
   const userProjectsData = useSelector((state: RootState) => state.userProjectData, equal);
   const userActivityData = useSelector((state: RootState) => state.activity, equal);
+
+  const map = DateHelper.getLast7DaysOutOf365();
+
+  const generateXY = function () {
+    for (let i = 0; i < userActivityData.length; i++) {
+      const day = DateHelper.getDayOutOf365(userActivityData[i].activityDate);
+      if (map.has(day)) {
+        map.set(day, map.get(day) + 1);
+      }
+    }
+    const dataXY = [];
+    map.forEach((val, key) => {
+      dataXY.push({ x: key, y: val });
+    });
+    return dataXY;
+  };
+
+  // const activityDataWeek = [
+  //   { x: 0, y: 2 },
+  //   { x: 1, y: 3 },
+  //   { x: 2, y: 5 },
+  // ];
 
   useFocusEffect(
     // need to update proj array, due to the fact that if a thought was edited in any way...
@@ -41,36 +64,18 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
     cardBorder: isDarkMode ? darkMode.dp1 : 'black',
   };
 
-  /**
-   * @param lastUpdatedDate from db of the form `2021-05-04T21:34:08.689Z`
-   * @returns of the form `Mon Apr 12, 2021`
-   */
-  const parseOutTime = function (lastUpdatedDate: string) {
-    const dateTime = new Date(lastUpdatedDate).toString().split(' ');
-    return dateTime.slice(0, 3).join(' ') + `, ${dateTime[3]}`;
-  };
-
-  const activityDataWeek = [
-    { x: 0, y: 2 },
-    { x: 1, y: 3 },
-    { x: 2, y: 5 },
-    { x: 3, y: 4 },
-    { x: 4, y: 7 },
-    { x: 5, y: 13 },
-    { x: 6, y: 5 },
-    { x: 7, y: 22 },
-  ];
-
   return (
     <ThemeProvider theme={theme}>
       <MainContainer>
         <GraphContainer>
-          <VictoryChart theme={VictoryTheme.material}>
+          <VictoryChart theme={VictoryTheme.material} domainPadding={10}>
             <VictoryBar
+              // categories={{ x: ['dogs', 'cats', 'mice'] }}
               // labelComponent={<VictoryLabel x={10} y={200} angle={-90} text="ghsafjkl" />}
               style={{ data: { fill: isDarkMode ? darkMode.primary : lightMode.primary } }}
-              data={activityDataWeek}
+              data={generateXY()}
               height={300}
+              labels={({ datum }) => `date: ${datum.x}`}
               cornerRadius={{ topLeft: 2, topRight: 2 }}
               animate={{
                 duration: 2000,
@@ -91,9 +96,9 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
                 <CarouselCardHeaderText>{proj.projectName}</CarouselCardHeaderText>
                 <CarouselCardText># of thoughts: {proj.projectThoughts.length}</CarouselCardText>
                 <CarouselCardText>created:</CarouselCardText>
-                <CarouselCardText>{parseOutTime(proj.createdDate)}</CarouselCardText>
+                <CarouselCardText>{DateHelper.parseOutTime(proj.createdDate)}</CarouselCardText>
                 <CarouselCardText>last updated:</CarouselCardText>
-                <CarouselCardText>{parseOutTime(proj.lastUpdatedDate)}</CarouselCardText>
+                <CarouselCardText>{DateHelper.parseOutTime(proj.lastUpdatedDate)}</CarouselCardText>
               </CarouselCard>
             ))}
           </CarouselContainer>

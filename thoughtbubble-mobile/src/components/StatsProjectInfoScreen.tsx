@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { Text } from 'react-native';
 import { useSelector } from 'react-redux';
 import { VictoryPie } from 'victory-native';
 import styled, { ThemeProvider } from 'styled-components/native';
@@ -45,7 +44,6 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
   return (
     <ThemeProvider theme={theme}>
       <MainContainer>
-        {/* <Text>{JSON.stringify(project)}</Text> */}
         <PieChartHeader>where you spend your time</PieChartHeader>
         <VictoryPie
           data={pieChartData}

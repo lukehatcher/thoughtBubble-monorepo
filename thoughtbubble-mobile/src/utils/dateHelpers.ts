@@ -21,15 +21,15 @@ export class DateHelper {
 
   /**
    *
-   * @returns a set contained the day #s out of 365 for the last week
+   * @returns a map contained the day #s out of 365 for the last week
    */
-  static getLast7DaysOutOf365(): Set<number> {
+  static getLast7DaysOutOf365 = function (): Map<number, number> {
     const currentIso = new Date().toISOString();
     let currentDayNumb = this.getDayOutOf365(currentIso);
-    const set = new Set<number>();
-    for (let i = 0; i < 7; i++) set.add(currentDayNumb--);
-    return set;
-  }
+    const map = new Map<number, number>();
+    for (let i = 0; i < 7; i++) map.set(currentDayNumb--, 0);
+    return map;
+  };
 
   /**
    * @param lastUpdatedDate from db in iso format `2021-05-04T21:34:08.689Z`
@@ -39,4 +39,6 @@ export class DateHelper {
     const dateTime = new Date(lastUpdatedDate).toString().split(' ');
     return dateTime.slice(0, 3).join(' ') + `, ${dateTime[3]}`;
   };
+
+  // static mapActivityDates
 }
