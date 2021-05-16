@@ -14,8 +14,8 @@ export type ProjectStackParamList = {
 };
 
 export type StatsStackParamList = {
-  StatsHome: undefined;
-  StatsForProject: {
+  Analytics: undefined;
+  'Project Analytics': {
     projectId: string;
   };
 };

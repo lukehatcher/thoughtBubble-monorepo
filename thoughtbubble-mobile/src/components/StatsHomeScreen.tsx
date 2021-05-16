@@ -98,7 +98,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
               <CarouselCard
                 style={isDarkMode ? null : styles.carouselCard}
                 key={proj.id}
-                onPress={() => navigation.navigate('StatsForProject', { projectId: proj.id })}
+                onPress={() => navigation.navigate('Project Analytics', { projectId: proj.id })}
                 activeOpacity={0.7} // 0.2 default
               >
                 <CarouselCardHeaderText>{proj.projectName}</CarouselCardHeaderText>

@@ -44,10 +44,10 @@ export interface ThoughtScreenProps {
 
 // for stats nav stack
 export interface StatsHomeScreenProps {
-  navigation: StackNavigationProp<StatsStackParamList, 'StatsHome'>;
+  navigation: StackNavigationProp<StatsStackParamList, 'Analytics'>;
 }
 
 export interface StatsProjectInfoScreenProps {
-  route: RouteProp<StatsStackParamList, 'StatsForProject'>;
-  navigation: StackNavigationProp<StatsStackParamList, 'StatsHome'>;
+  route: RouteProp<StatsStackParamList, 'Project Analytics'>;
+  navigation: StackNavigationProp<StatsStackParamList, 'Analytics'>;
 }
