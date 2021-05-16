@@ -1,51 +1,71 @@
+export type activityRanges = '1W' | '1M' | '3M' | '6M' | '1Y';
+
 /**
  * Methods for dealing with dates. Predominantly used in stats screen.
  */
 export class DateHelper {
-  constructor() {}
+  // private static activityRangeMap: Map<string, number>;
+
+  // constructor(public activityRangeMap) {
+  //   this.activityRangeMap = new Map([
+  //     ['1W', 7],
+  //     ['1M', 30],
+  //     ['3M', 91],
+  //     ['6M', 183],
+  //     ['1Y', 365],
+  //   ]);
+  // }
 
   /**
-   * given a date, return which # out of 365(6) it is
+   * given a date in iso format, calculate days from app start date 4/1/2021
    * @param date from db in iso format `2021-05-04T21:34:08.689Z`
+   * @returns date number
    */
-  static getDayOutOf365 = function (isoDate: string): number {
+  static getDayNumber(isoDate: string): number {
     const date = new Date(isoDate);
-    console.log(date.getFullYear());
-    const start = new Date(date.getFullYear(), 0, 0);
+    const start = new Date(2021, 3, 1);
     const diff = (date as any) - (start as any);
     const oneDay = 1000 * 60 * 60 * 24;
     const dayN = Math.floor(diff / oneDay);
-    console.log('Day of year: ' + dayN);
+    // console.log('Day of tB: ' + dayN);
     return dayN;
-  };
+  }
 
   /**
-   *
+   * create map which is used to create activity per day iterable
    * @returns a map contained the day #s out of 365 for the last week
    */
-  static getLast7DaysOutOf365 = function (): Map<number, number> {
+  static getLastNDayNumbers(range: activityRanges): Map<number, number> {
     const currentIso = new Date().toISOString();
-    let currentDayNumb = this.getDayOutOf365(currentIso);
+    let currentDayNumb = this.getDayNumber(currentIso);
+    const activityRangeMap = new Map([
+      ['1W', 7],
+      ['1M', 30],
+      ['3M', 91],
+      ['6M', 183],
+      ['1Y', 365],
+    ]);
+    const N = activityRangeMap.get(range);
     const map = new Map<number, number>();
-    for (let i = 0; i < 7; i++) map.set(currentDayNumb--, 0);
+    for (let i = 0; i < N; i++) map.set(currentDayNumb--, 0);
     return map;
-  };
+  }
 
   /**
    * @param lastUpdatedDate from db in iso format `2021-05-04T21:34:08.689Z`
    * @returns of the form `Mon Apr 12, 2021`
    */
-  static parseOutTime = function (lastUpdatedDate: string): string {
+  static parseOutTime(lastUpdatedDate: string): string {
     const dateTime = new Date(lastUpdatedDate).toString().split(' ');
     return dateTime.slice(0, 3).join(' ') + `, ${dateTime[3]}`;
-  };
+  }
 
   /**
-   * map day # to 365
+   * given day # from start date 4/1/2021, return `mm/dd` format
    * @param day
    * @returns
    */
-  static dayToMMDD = function (day: string): string {
+  static dayToMMDD(day: string): string {
     return '';
-  };
+  }
 }
