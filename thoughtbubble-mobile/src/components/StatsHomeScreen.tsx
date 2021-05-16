@@ -11,6 +11,7 @@ import { VictoryLine, VictoryChart, VictoryTheme, VictoryBar, VictoryLabel, Vict
 import { fetchActivityDataAction } from '../actions/fetchActivityAction';
 import equal from 'deep-equal';
 import { DateHelper } from '../utils/dateHelpers';
+import { StyleSheet } from 'react-native';
 
 const { darkMode, lightMode } = colors;
 
@@ -95,6 +96,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
           <CarouselContainer>
             {userProjectsData.map((proj) => (
               <CarouselCard
+                style={isDarkMode ? null : styles.carouselCard}
                 key={proj.id}
                 onPress={() => navigation.navigate('StatsForProject', { projectId: proj.id })}
                 activeOpacity={0.7} // 0.2 default
@@ -144,7 +146,7 @@ const CarouselContainer = styled.View`
 `;
 
 const CarouselCard = styled.TouchableOpacity`
-  border: ${(props) => props.theme.cardBorder};
+  /* border: ${(props) => props.theme.cardBorder}; */
   padding: 10px;
   border-radius: 10px;
   height: 160px;
@@ -152,6 +154,19 @@ const CarouselCard = styled.TouchableOpacity`
   margin: 10px;
   background-color: ${(props) => props.theme.dp1};
 `;
+
+const styles = StyleSheet.create({
+  carouselCard: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
+  },
+});
 
 const CarouselCardHeaderText = styled.Text`
   /* text-align: center */
