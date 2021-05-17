@@ -24,33 +24,27 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
   const userSub = useSelector((state: RootState) => state.storedUser.sub);
   const userProjectsData = useSelector((state: RootState) => state.userProjectData, equal);
   const userActivityData = useSelector((state: RootState) => state.activity);
-  const [currRange, setCurrRange] = useState<ActivityRanges>('1W');
-  const [sliceLength, setSliceLength] = useState(7);
+  const [currRange, setCurrRange] = useState(activityRangeMap.get('1W'));
 
   const handle1WClick = () => {
-    // setCurrRange(activityRanges['1W']);
-    // setCurrRange('1W');
-    setSliceLength(7);
+    setCurrRange(7);
+    // setCurrRange(activityRangeMap.get('1W'));
   };
   const handle1MClick = () => {
-    // setCurrRange(activityRanges['1M']);
-    // setCurrRange('1M');
-    setSliceLength(30);
+    setCurrRange(30);
+    // setCurrRange(activityRangeMap.get('1W'));
   };
   const handle3MClick = () => {
-    // setCurrRange(activityRanges['3M']);
-    // setCurrRange('3M');
-    setSliceLength(91);
+    setCurrRange(91);
+    // setCurrRange(activityRangeMap.get('1M'));
   };
   const handle6MClick = () => {
-    // setCurrRange(activityRanges['6M']);
-    // setCurrRange('6M');
-    setSliceLength(183);
+    // setCurrRange(activityRangeMap.get('3M'));
+    setCurrRange(183);
   };
   const handle1YClick = () => {
-    // setCurrRange(activityRanges['1Y']);
-    // setCurrRange('1Y');
-    setSliceLength(365);
+    // setCurrRange(activityRangeMap.get('1Y'));
+    setCurrRange(365);
   };
 
   // useEffect(() => {
@@ -98,8 +92,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
               // labelComponent={<VictoryLabel x={20} y={200} angle={-90} text="activity" />}
               labelComponent={<VictoryLabel x={205} y={45} text={`account activity`} />}
               style={{ data: { fill: isDarkMode ? darkMode.primary : lightMode.secondary } }}
-              data={userActivityData.graphData.slice(-1 * activityRangeMap.get(currRange))}
-              // data={userActivityData.graphData.slice(-1 * sliceLength)}
+              data={userActivityData.graphData.slice(-1 * currRange)}
               height={300}
               labels={({ datum }) => {
                 if (!datum.y) return '';
@@ -120,7 +113,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
             compact
             style={styles.btn}
             // color={isDarkMode ? `${darkMode.primary}32` : lightMode.primary}
-            mode={currRange === '1W' ? 'contained' : 'text'}
+            mode={currRange === activityRangeMap.get('1W') ? 'contained' : 'text'}
             onPress={() => handle1WClick()} // and change currrange
             color={`${darkMode.primary}18`}
             labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary }}
@@ -130,7 +123,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
           <Button
             compact
             style={styles.btn}
-            mode={currRange === '1M' ? 'contained' : 'text'}
+            mode={currRange === activityRangeMap.get('1M') ? 'contained' : 'text'}
             onPress={() => handle1MClick()}
             color={`${darkMode.primary}18`}
             labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary }}
@@ -140,7 +133,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
           <Button
             compact
             style={styles.btn}
-            mode={currRange === '3M' ? 'contained' : 'text'}
+            mode={currRange === activityRangeMap.get('3M') ? 'contained' : 'text'}
             onPress={() => handle3MClick()}
             color={`${darkMode.primary}18`}
             labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary }}
@@ -150,7 +143,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
           <Button
             compact
             style={styles.btn}
-            mode={currRange === '6M' ? 'contained' : 'text'}
+            mode={currRange === activityRangeMap.get('6M') ? 'contained' : 'text'}
             onPress={() => handle6MClick()}
             color={`${darkMode.primary}18`}
             labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary }}
@@ -160,7 +153,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
           <Button
             compact
             style={styles.btn}
-            mode={currRange === '1Y' ? 'contained' : 'text'}
+            mode={currRange === activityRangeMap.get('1Y') ? 'contained' : 'text'}
             onPress={() => handle1YClick()}
             color={`${darkMode.primary}18`}
             labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary }}
@@ -189,7 +182,6 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
           </CarouselContainer>
         </HorizontalScrollView>
       </MainContainer>
-      <Text>{userActivityData.data.length}</Text>
     </ThemeProvider>
   );
 };
