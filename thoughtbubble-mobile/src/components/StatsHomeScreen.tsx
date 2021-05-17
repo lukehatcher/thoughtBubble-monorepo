@@ -13,6 +13,8 @@ import { DateHelper } from '../utils/dateHelpers';
 import { StyleSheet } from 'react-native';
 import { Button, Snackbar } from 'react-native-paper';
 import { activityRangeMap } from '../constants/activityRanges';
+import { transformFileSync } from '@babel/core';
+import { timeStamp } from 'console';
 
 const { darkMode, lightMode } = colors;
 
@@ -59,11 +61,17 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
       <MainContainer>
         <SnackBarContainer>
           <Snackbar
-            style={styles.snackbar}
+            theme={{
+              colors: {
+                surface: isDarkMode ? darkMode.textOnSurface : lightMode.textOnSurface,
+              },
+            }}
+            style={{ backgroundColor: isDarkMode ? darkMode.dp1 : 'white' }}
             visible={snackbarVisable}
             onDismiss={() => setSnackbarVisable(false)}
+            duration={5000} // 7 default
             action={{
-              label: 'CLOSE',
+              label: 'close',
               onPress: () => setSnackbarVisable(false),
             }}
           >
@@ -241,10 +249,6 @@ const styles = StyleSheet.create({
     marginTop: 0,
     color: lightMode.primary,
   },
-  snackbar: {
-    zIndex: 100,
-    // marginTop: 300,
-  },
 });
 
 const ChangeGraphRangeContainer = styled.View`
@@ -276,5 +280,5 @@ const SnackBarContainer = styled.View`
   width: 100%;
   z-index: 1;
   /* bottom: 0; */
-  top: 60px;
+  top: 65px;
 `;
