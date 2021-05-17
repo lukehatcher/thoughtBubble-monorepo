@@ -39,13 +39,6 @@ export class DateHelper {
   static getLastNDayNumbers(range: ActivityRanges): Map<number, number> {
     const currentIso = new Date().toISOString();
     let currentDayNumb = this.getDayNumber(currentIso);
-    // const activityRangeMap = new Map([
-    //   ['1W', 7],
-    //   ['1M', 30],
-    //   ['3M', 91],
-    //   ['6M', 183],
-    //   ['1Y', 365],
-    // ]);
     const N = activityRangeMap.get(range);
     const map = new Map<number, number>();
     for (let i = 0; i < N; i++) map.set(currentDayNumb--, 0);
@@ -62,11 +55,12 @@ export class DateHelper {
   }
 
   /**
-   * given day # from start date 4/1/2021, return `mm/dd` format
-   * @param day
-   * @returns
+   * @param day # from start date 4/1/2021
+   * @returns date object of the date #
    */
-  static dayToMMDD(day: string): string {
-    return '';
+  static dayNToDate(dayN: number): Date {
+    const result = new Date(2021, 3, 1);
+    result.setDate(result.getDate() + dayN);
+    return result;
   }
 }

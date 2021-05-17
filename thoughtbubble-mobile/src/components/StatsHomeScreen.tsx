@@ -8,63 +8,34 @@ import { colors } from '../constants/colors';
 import { RootState } from '../reducers/rootReducer';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { StatsHomeScreenProps } from '../interfaces/componentProps';
-import { fetchProjectDataAction } from '../actions/fetchProjectDataAction';
 import { fetchActivityDataAction } from '../actions/fetchActivityAction';
 import { DateHelper } from '../utils/dateHelpers';
 import { StyleSheet } from 'react-native';
-import { Button, Text } from 'react-native-paper';
-import { activityRanges, activityRangeMap } from '../constants/activityRanges';
-import { ActivityRanges } from '../interfaces/stringLiteralTypes';
+import { Button, Snackbar } from 'react-native-paper';
+import { activityRangeMap } from '../constants/activityRanges';
 
 const { darkMode, lightMode } = colors;
 
 export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
   const isDarkMode = useDarkCheck();
   const dispatch = useDispatch();
-  const userSub = useSelector((state: RootState) => state.storedUser.sub);
   const userProjectsData = useSelector((state: RootState) => state.userProjectData, equal);
-  const userActivityData = useSelector((state: RootState) => state.activity);
+  const userActivityData = useSelector((state: RootState) => state.activity, equal);
   const [currRange, setCurrRange] = useState(activityRangeMap.get('1W'));
+  const [snackbarVisable, setSnackbarVisable] = useState(false);
+  const [snackbarText, setSnackbarText] = useState('');
 
-  const handle1WClick = () => {
-    setCurrRange(7);
-    // setCurrRange(activityRangeMap.get('1W'));
-  };
-  const handle1MClick = () => {
-    setCurrRange(30);
-    // setCurrRange(activityRangeMap.get('1W'));
-  };
-  const handle3MClick = () => {
-    setCurrRange(91);
-    // setCurrRange(activityRangeMap.get('1M'));
-  };
-  const handle6MClick = () => {
-    // setCurrRange(activityRangeMap.get('3M'));
-    setCurrRange(183);
-  };
-  const handle1YClick = () => {
-    // setCurrRange(activityRangeMap.get('1Y'));
-    setCurrRange(365);
-  };
-
-  // useEffect(() => {
-  //   // on first page load
-  //   setGraphData(userActivityData.graphData.slice(-7));
-  // }, []);
+  const handle1WClick = () => setCurrRange(activityRangeMap.get('1W'));
+  const handle1MClick = () => setCurrRange(activityRangeMap.get('1M'));
+  const handle3MClick = () => setCurrRange(activityRangeMap.get('3M'));
+  const handle6MClick = () => setCurrRange(activityRangeMap.get('6M'));
+  const handle1YClick = () => setCurrRange(activityRangeMap.get('1Y'));
 
   useFocusEffect(
-    // subsequent page loads
-    // need to update proj array, due to the fact that if a thought was edited in any way...
-    // ...the 'lastUpdateDate' value would change
     useCallback(() => {
-      // const wrapper = async () => {
-      //   await dispatch(fetchProjectDataAction(userSub));
-      //   await dispatch(fetchActivityDataAction());
-      //   generateXY(currRange);
-      // };
-      // wrapper();
-      dispatch(fetchProjectDataAction(userSub)); // works
-      dispatch(fetchActivityDataAction()); // does not work with graph
+      // refetch data and update store only on page load
+      // dispatch(fetchProjectDataAction(userSub));
+      dispatch(fetchActivityDataAction());
     }, []),
   );
 
@@ -86,23 +57,51 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
   return (
     <ThemeProvider theme={theme}>
       <MainContainer>
+        <SnackBarContainer>
+          <Snackbar
+            style={styles.snackbar}
+            visible={snackbarVisable}
+            onDismiss={() => setSnackbarVisable(false)}
+            action={{
+              label: 'CLOSE',
+              onPress: () => setSnackbarVisable(false),
+            }}
+          >
+            {snackbarText}
+          </Snackbar>
+        </SnackBarContainer>
         <GraphContainer>
-          <VictoryChart theme={gridlessGraphTheme} domainPadding={{ x: 15 }}>
+          <VictoryChart theme={gridlessGraphTheme} domainPadding={{ x: 25 }} width={450}>
             <VictoryBar
+              events={[
+                {
+                  target: 'data',
+                  eventHandlers: {
+                    onPress: (_, clickedProps) => {
+                      const activityDate = DateHelper.dayNToDate(clickedProps.datum.x);
+                      const formatActivityDate = DateHelper.parseOutTime(activityDate.toISOString());
+                      setSnackbarText(formatActivityDate);
+                      setSnackbarVisable(true);
+                      return null; // api expects a return
+                    },
+                  },
+                },
+              ]}
               // labelComponent={<VictoryLabel x={20} y={200} angle={-90} text="activity" />}
-              labelComponent={<VictoryLabel x={205} y={45} text={`account activity`} />}
+              // labelComponent={<VictoryLabel x={205} y={45} text={`account activity`} />}
+              // labelComponent={<VictoryLabel x={165} y={35} text={`account activity`} />}
               style={{ data: { fill: isDarkMode ? darkMode.primary : lightMode.secondary } }}
               data={userActivityData.graphData.slice(-1 * currRange)}
               height={300}
-              labels={({ datum }) => {
-                if (!datum.y) return '';
-                return `day: ${datum.x}`;
-              }}
-              cornerRadius={{ topLeft: 2, topRight: 2 }}
-              // animate={{
-              //   duration: 1000,
-              //   onLoad: { duration: 500 },
+              // labels={({ datum }) => {
+              //   if (!datum.y) return '';
+              //   return `day: ${datum.x}`;
               // }}
+              cornerRadius={{ topLeft: 2, topRight: 2 }}
+              animate={{
+                duration: 500,
+                onLoad: { duration: 250 },
+              }}
               barRatio={0.8}
             />
           </VictoryChart>
@@ -195,19 +194,15 @@ const MainContainer = styled.ScrollView`
 `;
 
 const GraphContainer = styled.View`
-  /* border: 2px solid blue; */
-  /* height: 100px; */
-  /* padding: 10px; */
+  align-items: center;
+  justify-content: center;
+  margin-left: 15px;
+  /* margin-bottom: 0px; */
 `;
 
 const HorizontalScrollView = styled.ScrollView`
   background: ${(props) => props.theme.background};
-  border: 1px solid green;
-  /* margin: 15px; */
-  /* height: 100px; */
-  /* width: 100px; */
-  /* margin-bottom: 500px; */
-  /* display: flex; */
+  /* border: 1px solid green; */
 `;
 
 const CarouselContainer = styled.View`
@@ -246,6 +241,10 @@ const styles = StyleSheet.create({
     marginTop: 0,
     color: lightMode.primary,
   },
+  snackbar: {
+    zIndex: 100,
+    // marginTop: 300,
+  },
 });
 
 const ChangeGraphRangeContainer = styled.View`
@@ -253,8 +252,9 @@ const ChangeGraphRangeContainer = styled.View`
   align-items: center;
   display: flex;
   flex-direction: row;
-  border: pink;
-  height: 50px;
+  /* border: pink; */
+  height: 35px;
+  margin: 0px;
 `;
 
 const CarouselCardHeaderText = styled.Text`
@@ -267,4 +267,14 @@ const CarouselCardHeaderText = styled.Text`
 const CarouselCardText = styled.Text`
   /* text-align: center */
   color: ${(props) => props.theme.textOnBackground};
+`;
+
+const SnackBarContainer = styled.View`
+  border: 1px solid red;
+  /* height: 60px; */
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+  /* bottom: 0; */
+  top: 60px;
 `;

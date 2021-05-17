@@ -8,6 +8,7 @@ import { colors } from '../constants/colors';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { locations } from '../constants/locations';
 import { DateHelper } from '../utils/dateHelpers';
+import { Snackbar } from 'react-native-paper';
 
 const { darkMode, lightMode } = colors;
 
@@ -44,7 +45,19 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
 
   return (
     <ThemeProvider theme={theme}>
-      {DateHelper.getDayNumber('2021-05-04T21:34:08.689Z')}
+      <Snackbar
+        // style={styles.snackbar}
+        visible={true}
+        onDismiss={() => console.log('snackbar dismiss')}
+        action={{
+          label: 'Undo',
+          onPress: () => {
+            // Do something
+          },
+        }}
+      >
+        Hey there! I'm a Snackbar.
+      </Snackbar>
       <MainContainer>
         <PieChartHeader>where you spend your time</PieChartHeader>
         <VictoryPie
