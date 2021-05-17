@@ -1,4 +1,5 @@
-export type activityRanges = '1W' | '1M' | '3M' | '6M' | '1Y';
+import { activityRangeMap } from '../constants/activityRanges';
+import { ActivityRanges } from '../interfaces/stringLiteralTypes';
 
 /**
  * Methods for dealing with dates. Predominantly used in stats screen.
@@ -35,16 +36,16 @@ export class DateHelper {
    * create map which is used to create activity per day iterable
    * @returns a map contained the day #s out of 365 for the last week
    */
-  static getLastNDayNumbers(range: activityRanges): Map<number, number> {
+  static getLastNDayNumbers(range: ActivityRanges): Map<number, number> {
     const currentIso = new Date().toISOString();
     let currentDayNumb = this.getDayNumber(currentIso);
-    const activityRangeMap = new Map([
-      ['1W', 7],
-      ['1M', 30],
-      ['3M', 91],
-      ['6M', 183],
-      ['1Y', 365],
-    ]);
+    // const activityRangeMap = new Map([
+    //   ['1W', 7],
+    //   ['1M', 30],
+    //   ['3M', 91],
+    //   ['6M', 183],
+    //   ['1Y', 365],
+    // ]);
     const N = activityRangeMap.get(range);
     const map = new Map<number, number>();
     for (let i = 0; i < N; i++) map.set(currentDayNumb--, 0);

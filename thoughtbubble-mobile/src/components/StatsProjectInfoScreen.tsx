@@ -7,6 +7,7 @@ import { RootState } from '../reducers/rootReducer';
 import { colors } from '../constants/colors';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { locations } from '../constants/locations';
+import { DateHelper } from '../utils/dateHelpers';
 
 const { darkMode, lightMode } = colors;
 
@@ -43,6 +44,7 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
 
   return (
     <ThemeProvider theme={theme}>
+      {DateHelper.getDayNumber('2021-05-04T21:34:08.689Z')}
       <MainContainer>
         <PieChartHeader>where you spend your time</PieChartHeader>
         <VictoryPie

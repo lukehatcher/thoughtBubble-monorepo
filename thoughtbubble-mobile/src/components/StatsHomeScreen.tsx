@@ -1,56 +1,76 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import styled, { ThemeProvider } from 'styled-components/native';
+import { useFocusEffect } from '@react-navigation/native';
+import { VictoryChart, VictoryTheme, VictoryBar, VictoryLabel } from 'victory-native';
+import equal from 'deep-equal';
 import { colors } from '../constants/colors';
 import { RootState } from '../reducers/rootReducer';
-import styled, { ThemeProvider } from 'styled-components/native';
+import { useDarkCheck } from '../hooks/useDarkCheck';
 import { StatsHomeScreenProps } from '../interfaces/componentProps';
 import { fetchProjectDataAction } from '../actions/fetchProjectDataAction';
-import { useFocusEffect } from '@react-navigation/native';
-import { useDarkCheck } from '../hooks/useDarkCheck';
-import { VictoryLine, VictoryChart, VictoryTheme, VictoryBar, VictoryLabel, VictoryAxis } from 'victory-native';
 import { fetchActivityDataAction } from '../actions/fetchActivityAction';
-import equal from 'deep-equal';
 import { DateHelper } from '../utils/dateHelpers';
 import { StyleSheet } from 'react-native';
+import { Button, Text } from 'react-native-paper';
+import { activityRanges, activityRangeMap } from '../constants/activityRanges';
+import { ActivityRanges } from '../interfaces/stringLiteralTypes';
 
 const { darkMode, lightMode } = colors;
 
 export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
   const isDarkMode = useDarkCheck();
   const dispatch = useDispatch();
-  const userSub = useSelector((state: RootState) => state.storedUser.sub); // need a hook for this
+  const userSub = useSelector((state: RootState) => state.storedUser.sub);
   const userProjectsData = useSelector((state: RootState) => state.userProjectData, equal);
-  const userActivityData = useSelector((state: RootState) => state.activity, equal);
+  const userActivityData = useSelector((state: RootState) => state.activity);
+  const [currRange, setCurrRange] = useState<ActivityRanges>('1W');
+  const [sliceLength, setSliceLength] = useState(7);
 
-  const map = DateHelper.getLast7DaysOutOf365();
-
-  const generateXY = function () {
-    for (let i = 0; i < userActivityData.length; i++) {
-      const day = DateHelper.getDayOutOf365(userActivityData[i].activityDate);
-      if (map.has(day)) {
-        map.set(day, map.get(day) + 1);
-      }
-    }
-    const dataXY = [];
-    map.forEach((val, key) => {
-      dataXY.push({ x: key, y: val });
-    });
-    return dataXY;
+  const handle1WClick = () => {
+    // setCurrRange(activityRanges['1W']);
+    // setCurrRange('1W');
+    setSliceLength(7);
+  };
+  const handle1MClick = () => {
+    // setCurrRange(activityRanges['1M']);
+    // setCurrRange('1M');
+    setSliceLength(30);
+  };
+  const handle3MClick = () => {
+    // setCurrRange(activityRanges['3M']);
+    // setCurrRange('3M');
+    setSliceLength(91);
+  };
+  const handle6MClick = () => {
+    // setCurrRange(activityRanges['6M']);
+    // setCurrRange('6M');
+    setSliceLength(183);
+  };
+  const handle1YClick = () => {
+    // setCurrRange(activityRanges['1Y']);
+    // setCurrRange('1Y');
+    setSliceLength(365);
   };
 
-  // const activityDataWeek = [
-  //   { x: 0, y: 2 },
-  //   { x: 1, y: 3 },
-  //   { x: 2, y: 5 },
-  // ];
+  // useEffect(() => {
+  //   // on first page load
+  //   setGraphData(userActivityData.graphData.slice(-7));
+  // }, []);
 
   useFocusEffect(
+    // subsequent page loads
     // need to update proj array, due to the fact that if a thought was edited in any way...
     // ...the 'lastUpdateDate' value would change
     useCallback(() => {
-      // some extra renders going on atm
-      dispatch(fetchProjectDataAction(userSub));
-      dispatch(fetchActivityDataAction());
+      // const wrapper = async () => {
+      //   await dispatch(fetchProjectDataAction(userSub));
+      //   await dispatch(fetchActivityDataAction());
+      //   generateXY(currRange);
+      // };
+      // wrapper();
+      dispatch(fetchProjectDataAction(userSub)); // works
+      dispatch(fetchActivityDataAction()); // does not work with graph
     }, []),
   );
 
@@ -75,23 +95,80 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
         <GraphContainer>
           <VictoryChart theme={gridlessGraphTheme} domainPadding={{ x: 15 }}>
             <VictoryBar
-              // labelComponent={<VictoryLabel x={10} y={200} angle={-90} text="ghsafjkl" />}
-              style={{ data: { fill: isDarkMode ? darkMode.primary : lightMode.primary } }}
-              data={generateXY()}
+              // labelComponent={<VictoryLabel x={20} y={200} angle={-90} text="activity" />}
+              labelComponent={<VictoryLabel x={205} y={45} text={`account activity`} />}
+              style={{ data: { fill: isDarkMode ? darkMode.primary : lightMode.secondary } }}
+              data={userActivityData.graphData.slice(-1 * activityRangeMap.get(currRange))}
+              // data={userActivityData.graphData.slice(-1 * sliceLength)}
               height={300}
               labels={({ datum }) => {
                 if (!datum.y) return '';
                 return `day: ${datum.x}`;
               }}
               cornerRadius={{ topLeft: 2, topRight: 2 }}
-              animate={{
-                duration: 2000,
-                onLoad: { duration: 1000 },
-              }}
+              // animate={{
+              //   duration: 1000,
+              //   onLoad: { duration: 500 },
+              // }}
               barRatio={0.8}
             />
           </VictoryChart>
         </GraphContainer>
+
+        <ChangeGraphRangeContainer>
+          <Button
+            compact
+            style={styles.btn}
+            // color={isDarkMode ? `${darkMode.primary}32` : lightMode.primary}
+            mode={currRange === '1W' ? 'contained' : 'text'}
+            onPress={() => handle1WClick()} // and change currrange
+            color={`${darkMode.primary}18`}
+            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary }}
+          >
+            1W
+          </Button>
+          <Button
+            compact
+            style={styles.btn}
+            mode={currRange === '1M' ? 'contained' : 'text'}
+            onPress={() => handle1MClick()}
+            color={`${darkMode.primary}18`}
+            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary }}
+          >
+            1M
+          </Button>
+          <Button
+            compact
+            style={styles.btn}
+            mode={currRange === '3M' ? 'contained' : 'text'}
+            onPress={() => handle3MClick()}
+            color={`${darkMode.primary}18`}
+            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary }}
+          >
+            3M
+          </Button>
+          <Button
+            compact
+            style={styles.btn}
+            mode={currRange === '6M' ? 'contained' : 'text'}
+            onPress={() => handle6MClick()}
+            color={`${darkMode.primary}18`}
+            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary }}
+          >
+            6M
+          </Button>
+          <Button
+            compact
+            style={styles.btn}
+            mode={currRange === '1Y' ? 'contained' : 'text'}
+            onPress={() => handle1YClick()}
+            color={`${darkMode.primary}18`}
+            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary }}
+          >
+            1Y
+          </Button>
+        </ChangeGraphRangeContainer>
+
         <HorizontalScrollView horizontal showsHorizontalScrollIndicator={false}>
           <CarouselContainer>
             {userProjectsData.map((proj) => (
@@ -112,6 +189,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
           </CarouselContainer>
         </HorizontalScrollView>
       </MainContainer>
+      <Text>{userActivityData.data.length}</Text>
     </ThemeProvider>
   );
 };
@@ -125,7 +203,7 @@ const MainContainer = styled.ScrollView`
 `;
 
 const GraphContainer = styled.View`
-  border: 2px solid blue;
+  /* border: 2px solid blue; */
   /* height: 100px; */
   /* padding: 10px; */
 `;
@@ -166,7 +244,26 @@ const styles = StyleSheet.create({
     shadowRadius: 2.22,
     elevation: 3,
   },
+  btn: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 33,
+    width: 40,
+    marginRight: 10,
+    marginLeft: 10,
+    marginTop: 0,
+    color: lightMode.primary,
+  },
 });
+
+const ChangeGraphRangeContainer = styled.View`
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  border: pink;
+  height: 50px;
+`;
 
 const CarouselCardHeaderText = styled.Text`
   /* text-align: center */
