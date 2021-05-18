@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styled, { ThemeProvider } from 'styled-components/native';
 import { useFocusEffect } from '@react-navigation/native';
@@ -10,10 +10,11 @@ import { useDarkCheck } from '../hooks/useDarkCheck';
 import { StatsHomeScreenProps } from '../interfaces/componentProps';
 import { fetchActivityDataAction } from '../actions/fetchActivityAction';
 import { DateHelper } from '../utils/dateHelpers';
-import { StyleSheet } from 'react-native';
-import { Button, IconButton, Snackbar } from 'react-native-paper';
+import { Modal, StyleSheet, Linking } from 'react-native';
+import { Button, IconButton, Snackbar, Paragraph } from 'react-native-paper';
 import { activityRangeMap } from '../constants/activityRanges';
 import { Activity } from '../interfaces/data';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const { darkMode, lightMode } = colors;
 
@@ -25,6 +26,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
   const [currRange, setCurrRange] = useState(activityRangeMap.get('1W'));
   const [snackbarVisable, setSnackbarVisable] = useState(false);
   const [snackbarText, setSnackbarText] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
 
   const handle1WClick = () => setCurrRange(activityRangeMap.get('1W'));
   const handle1MClick = () => setCurrRange(activityRangeMap.get('1M'));
@@ -54,13 +56,12 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
   const gridlessGraphTheme = VictoryTheme.material;
   // remove colored grid
   // gridlessGraphTheme.axis.style.grid.stroke = 'transparent';
-  gridlessGraphTheme.axis.style.grid.stroke = isDarkMode ? '#FFFFFF15' : '#00000010';
+  gridlessGraphTheme.axis.style.grid.stroke = isDarkMode ? '#FFFFFF15' : '#00000015';
 
   const generateXaxisLabel = (): string => {
-    // x label for graph "mm/dd/yyyy to mm/dd/yyyy"
+    // x label for graph "mm/dd/yyyy -> mm/dd/yyyy"
     const xys = userActivityData.graphData.slice(-1 * currRange);
     const first = DateHelper.dateToMMDDYYY(DateHelper.dayNToDate(xys[0].x));
-    console.log(first, 'first');
     const last = DateHelper.dateToMMDDYYY(DateHelper.dayNToDate(xys[xys.length - 1].x));
     return `${first}  →  ${last}`;
   };
@@ -88,7 +89,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
             icon="information-outline"
             color={isDarkMode ? darkMode.secondary : lightMode.secondary}
             size={30}
-            onPress={() => console.log('Pressed')}
+            onPress={() => setModalVisible(true)}
             style={{ marginRight: 15, marginLeft: 'auto' }}
           />
         </StreakHeader>
@@ -105,9 +106,9 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
             style={{ backgroundColor: isDarkMode ? darkMode.dp1 : 'white' }}
             visible={snackbarVisable}
             onDismiss={() => setSnackbarVisable(false)}
-            duration={5000} // 7 default
+            duration={5000} // 7k default
             action={{
-              label: 'close',
+              label: '✕', // or CLOSE
               onPress: () => setSnackbarVisable(false),
             }}
           >
@@ -124,13 +125,6 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
           >
             <VictoryAxis
               // y-axis
-              style={
-                {
-                  // axis: { stroke: 'transparent' },
-                  // ticks: { stroke: 'transparent' },
-                  // tickLabels: { fill: 'transparent' },
-                }
-              }
               dependentAxis
             />
             <VictoryAxis
@@ -155,9 +149,6 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
                   },
                 },
               ]}
-              // labelComponent={<VictoryLabel x={20} y={200} angle={-90} text="activity" />}
-              // labelComponent={<VictoryLabel x={205} y={45} text={`account activity`} />}
-              // labelComponent={<VictoryLabel x={165} y={35} text={`account activity`} />}
               style={{ data: { fill: isDarkMode ? darkMode.primary : lightMode.secondary } }}
               data={userActivityData.graphData.slice(-1 * currRange)}
               height={300}
@@ -248,17 +239,119 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
             ))}
           </CarouselContainer>
         </HorizontalScrollView>
+        {modalVisible ? <Overlay /> : <></>}
+        <Modal visible={modalVisible} animationType="slide" transparent>
+          <InfoModalContainer>
+            <InfoModalTextContainer>
+              <MaterialCommunityIcons
+                name="cellphone-information"
+                size={30}
+                color={isDarkMode ? darkMode.primaryVariant : lightMode.primaryVariant}
+              />
+              <InfoModalText>
+                Activity is recorded on project and thought creation as well as on marking a thought as completed.
+              </InfoModalText>
+            </InfoModalTextContainer>
+            <InfoModalTextContainer>
+              <MaterialCommunityIcons
+                name="github"
+                size={30}
+                color={isDarkMode ? darkMode.primaryVariant : lightMode.primaryVariant}
+              />
+              <InfoModalText>
+                Have a statistic you'd like to see here? Stop by our GitHub and start a discussion or open an issue!
+              </InfoModalText>
+            </InfoModalTextContainer>
+            <Button
+              mode="contained"
+              icon="open-in-new"
+              color={isDarkMode ? darkMode.secondary : lightMode.primary}
+              onPress={() => Linking.openURL('https://github.com/lukehatcher/thoughtBubble-monorepo')}
+              style={{ position: 'absolute', bottom: 40 }}
+            >
+              open GitHub repo
+            </Button>
+            <IconButton
+              icon="close"
+              color={isDarkMode ? darkMode.secondary : lightMode.secondary}
+              size={37}
+              onPress={() => setModalVisible(false)}
+              style={{ position: 'absolute', right: 4, top: 4 }}
+            />
+          </InfoModalContainer>
+        </Modal>
       </MainContainer>
     </ThemeProvider>
   );
 };
 
+const styles = StyleSheet.create({
+  carouselCard: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
+  },
+  btn: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 33,
+    width: 40,
+    marginRight: 10,
+    marginLeft: 10,
+    marginTop: 0,
+    color: lightMode.primary,
+  },
+});
+
+const InfoModalTextContainer = styled.View`
+  /* border: 1px solid grey; */
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  /* padding: 15px; */
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-bottom: 20px; // HELP
+`;
+
+const InfoModalText = styled.Text`
+  /* border: 1px solid green; */
+  margin: 15px;
+  margin-right: 19px;
+  font-size: 14px;
+  color: ${(props) => props.theme.textOnBackground};
+`;
+
+const Overlay = styled.View`
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  height: 723px;
+  background-color: #00000095;
+  z-index: 999;
+`;
+
+const InfoModalContainer = styled.View`
+  align-items: center;
+  justify-content: center;
+  /* background-color: black; */
+  background-color: ${(props) => props.theme.background};
+  margin-top: auto;
+  margin-bottom: 0px;
+  height: 300px;
+  /* height: 275px; */
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+`;
+
 const MainContainer = styled.ScrollView`
   background: ${(props) => props.theme.background};
-  flex: 1;
-  /* display: flex;
-  align-items: center;
-  justify-content: center; */
 `;
 
 const GraphContainer = styled.View`
@@ -286,29 +379,6 @@ const CarouselCard = styled.TouchableOpacity`
   margin: 10px;
   background-color: ${(props) => props.theme.dp1};
 `;
-
-const styles = StyleSheet.create({
-  carouselCard: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 3,
-  },
-  btn: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 33,
-    width: 40,
-    marginRight: 10,
-    marginLeft: 10,
-    marginTop: 0,
-    color: lightMode.primary,
-  },
-});
 
 const ChangeGraphRangeContainer = styled.View`
   justify-content: center;
