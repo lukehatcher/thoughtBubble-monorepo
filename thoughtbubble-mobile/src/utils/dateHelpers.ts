@@ -63,4 +63,12 @@ export class DateHelper {
     result.setDate(result.getDate() + dayN);
     return result;
   }
+
+  static dateToMMDDYYY(date: Date): string {
+    // from SO
+    let year = date.getFullYear();
+    let month = (1 + date.getMonth()).toString().padStart(2, '0');
+    let day = date.getDate().toString().padStart(2, '0');
+    return month + '/' + day + '/' + year;
+  }
 }

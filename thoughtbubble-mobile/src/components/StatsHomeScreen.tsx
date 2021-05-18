@@ -2,7 +2,7 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styled, { ThemeProvider } from 'styled-components/native';
 import { useFocusEffect } from '@react-navigation/native';
-import { VictoryChart, VictoryTheme, VictoryBar, VictoryLabel } from 'victory-native';
+import { VictoryChart, VictoryTheme, VictoryBar, VictoryLabel, VictoryAxis } from 'victory-native';
 import equal from 'deep-equal';
 import { colors } from '../constants/colors';
 import { RootState } from '../reducers/rootReducer';
@@ -13,8 +13,6 @@ import { DateHelper } from '../utils/dateHelpers';
 import { StyleSheet } from 'react-native';
 import { Button, Snackbar } from 'react-native-paper';
 import { activityRangeMap } from '../constants/activityRanges';
-import { transformFileSync } from '@babel/core';
-import { timeStamp } from 'console';
 
 const { darkMode, lightMode } = colors;
 
@@ -52,6 +50,15 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
     cardBorder: isDarkMode ? darkMode.dp1 : 'black',
   };
 
+  const generateXaxisLabel = (): string => {
+    // x label for graph "mm/dd/yyyy to mm/dd/yyyy"
+    const xys = userActivityData.graphData.slice(-1 * currRange);
+    const first = DateHelper.dateToMMDDYYY(DateHelper.dayNToDate(xys[0].x));
+    console.log(first, 'first');
+    const last = DateHelper.dateToMMDDYYY(DateHelper.dayNToDate(xys[xys.length - 1].x));
+    return `${first}  →  ${last}`;
+  };
+
   const gridlessGraphTheme = VictoryTheme.material;
   // remove colored grid
   gridlessGraphTheme.axis.style.grid.stroke = 'transparent';
@@ -80,6 +87,24 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
         </SnackBarContainer>
         <GraphContainer>
           <VictoryChart theme={gridlessGraphTheme} domainPadding={{ x: 25 }} width={450}>
+            <VictoryAxis
+              // y-axis
+              style={
+                {
+                  // axis: { stroke: 'transparent' },
+                  // ticks: { stroke: 'transparent' },
+                  // tickLabels: { fill: 'transparent' },
+                }
+              }
+              dependentAxis
+            />
+            <VictoryAxis
+              // x-axis
+              tickFormat={() => ''}
+              offsetY={50}
+              axisLabelComponent={<VictoryLabel dy={16} />}
+              label={generateXaxisLabel()}
+            />
             <VictoryBar
               events={[
                 {
