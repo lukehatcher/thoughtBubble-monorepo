@@ -1,33 +1,11 @@
 import { ActivityActionTypes } from '../constants/actionTypes';
 import { DateHelper } from '../utils/dateHelpers';
-
-// const initialState = [];
+import { Activity } from '../interfaces/data';
 
 const initialState = {
   data: [],
   graphData: [],
 };
-
-interface Activity {
-  data: Array<{
-    id: string;
-    activityDate: string; // Date string
-    userId?: string; // not showing up for now
-    projectId?: string; // not showing up for now
-  }>;
-  graphData: Array<{ x: number; y: number }>;
-}
-
-// interface Activity {
-//   id: string;
-//   activityDate: string; // Date string
-//   userId: string;
-//   projectId: string;
-// }
-
-// enum activityActionTypes {
-// 	FETCH = 'activity/fetch',
-// }
 
 export const activityReducer = (state = initialState, action): Activity => {
   const { type, payload } = action;

@@ -11,8 +11,9 @@ import { StatsHomeScreenProps } from '../interfaces/componentProps';
 import { fetchActivityDataAction } from '../actions/fetchActivityAction';
 import { DateHelper } from '../utils/dateHelpers';
 import { StyleSheet } from 'react-native';
-import { Button, Snackbar } from 'react-native-paper';
+import { Button, IconButton, Snackbar } from 'react-native-paper';
 import { activityRangeMap } from '../constants/activityRanges';
+import { Activity } from '../interfaces/data';
 
 const { darkMode, lightMode } = colors;
 
@@ -20,7 +21,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
   const isDarkMode = useDarkCheck();
   const dispatch = useDispatch();
   const userProjectsData = useSelector((state: RootState) => state.userProjectData, equal);
-  const userActivityData = useSelector((state: RootState) => state.activity, equal);
+  const userActivityData: Activity = useSelector((state: RootState) => state.activity, equal);
   const [currRange, setCurrRange] = useState(activityRangeMap.get('1W'));
   const [snackbarVisable, setSnackbarVisable] = useState(false);
   const [snackbarText, setSnackbarText] = useState('');
@@ -50,6 +51,11 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
     cardBorder: isDarkMode ? darkMode.dp1 : 'black',
   };
 
+  const gridlessGraphTheme = VictoryTheme.material;
+  // remove colored grid
+  // gridlessGraphTheme.axis.style.grid.stroke = 'transparent';
+  gridlessGraphTheme.axis.style.grid.stroke = isDarkMode ? '#FFFFFF15' : '#00000010';
+
   const generateXaxisLabel = (): string => {
     // x label for graph "mm/dd/yyyy to mm/dd/yyyy"
     const xys = userActivityData.graphData.slice(-1 * currRange);
@@ -59,13 +65,36 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
     return `${first}  →  ${last}`;
   };
 
-  const gridlessGraphTheme = VictoryTheme.material;
-  // remove colored grid
-  gridlessGraphTheme.axis.style.grid.stroke = 'transparent';
+  const calculateStreak = (): number => {
+    const graphData = [...userActivityData.graphData];
+    graphData.sort((a, b) => b.x - a.x);
+    let streakCount = 0;
+    for (let i = 0; i < graphData.length; i++) {
+      if (graphData[i].y === 0) {
+        return streakCount;
+      } else {
+        streakCount++;
+      }
+    }
+    return streakCount;
+  };
 
   return (
     <ThemeProvider theme={theme}>
       <MainContainer>
+        <StreakHeader>
+          <StreakText>streak: {calculateStreak()}🔥</StreakText>
+          <IconButton
+            icon="information-outline"
+            color={isDarkMode ? darkMode.secondary : lightMode.secondary}
+            size={30}
+            onPress={() => console.log('Pressed')}
+            style={{ marginRight: 15, marginLeft: 'auto' }}
+          />
+        </StreakHeader>
+        <GraphTitleContainer>
+          <GraphTitleText>activity overview</GraphTitleText>
+        </GraphTitleContainer>
         <SnackBarContainer>
           <Snackbar
             theme={{
@@ -86,7 +115,13 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
           </Snackbar>
         </SnackBarContainer>
         <GraphContainer>
-          <VictoryChart theme={gridlessGraphTheme} domainPadding={{ x: 25 }} width={450}>
+          <VictoryChart
+            theme={gridlessGraphTheme}
+            domainPadding={{ x: 25 }}
+            width={450}
+            padding={{ top: 10, bottom: 50, left: 55, right: 30 }} // 50 is default
+            height={300}
+          >
             <VictoryAxis
               // y-axis
               style={
@@ -229,8 +264,7 @@ const MainContainer = styled.ScrollView`
 const GraphContainer = styled.View`
   align-items: center;
   justify-content: center;
-  margin-left: 15px;
-  /* margin-bottom: 0px; */
+  /* border: 1px solid red; */
 `;
 
 const HorizontalScrollView = styled.ScrollView`
@@ -299,11 +333,35 @@ const CarouselCardText = styled.Text`
 `;
 
 const SnackBarContainer = styled.View`
-  border: 1px solid red;
+  /* border: 1px solid red; */
   /* height: 60px; */
   position: absolute;
   width: 100%;
   z-index: 1;
   /* bottom: 0; */
-  top: 65px;
+  top: 70px;
+`;
+
+const StreakHeader = styled.View`
+  height: 65px;
+  /* border: 1px solid grey; */
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
+
+const StreakText = styled.Text`
+  color: ${(props) => props.theme.textOnBackground};
+  font-size: 20px;
+  margin-left: 15px;
+`;
+
+const GraphTitleContainer = styled.View`
+  height: 30px;
+`;
+
+const GraphTitleText = styled.Text`
+  font-size: 15px;
+  color: ${(props) => props.theme.textOnBackground};
+  text-align: center;
 `;

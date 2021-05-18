@@ -25,3 +25,13 @@ export interface ProjectShape {
   completed: boolean;
   key?: string; // used later for -> https://github.com/jemise111/react-native-swipe-list-view#usage
 }
+
+export interface Activity {
+  data: Array<{
+    id: string;
+    activityDate: string; // Date string
+    userId?: string; // not showing up for now
+    projectId?: string; // not showing up for now
+  }>;
+  graphData: Array<{ x: number; y: number }>;
+}
