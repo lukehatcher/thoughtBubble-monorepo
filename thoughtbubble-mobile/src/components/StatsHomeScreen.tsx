@@ -89,7 +89,6 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
 
   const gridlessGraphTheme = VictoryTheme.material;
   // remove colored grid
-  // gridlessGraphTheme.axis.style.grid.stroke = 'transparent';
   gridlessGraphTheme.axis.style.grid.stroke = isDarkMode ? '#FFFFFF15' : '#00000015';
 
   const generateXaxisLabel = (): string => {
@@ -117,6 +116,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
 
   return (
     <ThemeProvider theme={theme}>
+      {console.log(userActivityData)}
       <MainContainer>
         <AccountTotalsContainer>
           <AccountTotalsCard>
@@ -488,20 +488,6 @@ const SnackBarContainer = styled.View`
   /* bottom: 0; */
   top: 70px;
 `;
-
-const StreakHeader = styled.View`
-  height: 65px;
-  /* border: 1px solid grey; */
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-`;
-
-// const StreakText = styled.Text`
-//   color: ${(props) => props.theme.textOnBackground};
-//   font-size: 20px;
-//   margin-left: 15px;
-// `;
 
 const GraphTitleContainer = styled.View`
   height: 30px;

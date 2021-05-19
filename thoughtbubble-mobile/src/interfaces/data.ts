@@ -31,7 +31,7 @@ export interface Activity {
     id: string;
     activityDate: string; // Date string
     userId?: string; // not showing up for now
-    projectId?: string; // not showing up for now
+    projectId: string; // not showing up for now
   }>;
-  graphData: Array<{ x: number; y: number }>;
+  graphData: Array<{ x: number; y: number }>; // data or all projects
 }
