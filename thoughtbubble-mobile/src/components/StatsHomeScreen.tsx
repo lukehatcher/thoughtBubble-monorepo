@@ -18,11 +18,12 @@ import { useDarkCheck } from '../hooks/useDarkCheck';
 import { StatsHomeScreenProps } from '../interfaces/componentProps';
 import { fetchActivityDataAction } from '../actions/fetchActivityAction';
 import { DateHelper } from '../utils/dateHelpers';
-import { Modal, StyleSheet, Linking, Text, TouchableOpacity } from 'react-native';
-import { Button, IconButton, Snackbar, Paragraph, Divider, ProgressBar } from 'react-native-paper';
+import { Modal, StyleSheet, Linking, Text } from 'react-native';
+import { Button, IconButton, Snackbar, ProgressBar } from 'react-native-paper';
 import { activityRangeMap } from '../constants/activityRanges';
 import { Activity, ProjectShape } from '../interfaces/data';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+// folder, folder-information-outline, calender, thought-bubble
 
 const { darkMode, lightMode } = colors;
 
@@ -61,6 +62,14 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
   useLayoutEffect(() => {
     // add icons in header
     navigation.setOptions({
+      // headerStyle: { backgroundColor: 'transparent' },
+      headerStyle: {
+        // backgroundColor: isDarkMode ? darkMode.background : lightMode.background,
+        // // remove shadow
+        // elevation: 0,
+        // shadowOpacity: 0,
+        // borderBottomWidth: 0,
+      },
       headerRight: () => (
         <IconButton
           icon="information-outline"
@@ -261,11 +270,16 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
                 activeOpacity={0.7} // 0.2 default
               >
                 <CarouselCardHeaderText>{proj.projectName}</CarouselCardHeaderText>
-                <CarouselCardText># of thoughts: {proj.projectThoughts.length}</CarouselCardText>
-                {/* <CarouselCardText>created:</CarouselCardText>
-                <CarouselCardText>{DateHelper.parseOutTime(proj.createdDate)}</CarouselCardText> */}
-                <CarouselCardText>last updated:</CarouselCardText>
-                <CarouselCardText>{DateHelper.parseOutTime(proj.lastUpdatedDate)}</CarouselCardText>
+                <MaterialCommunityIcons
+                  name="account-circle"
+                  size={40}
+                  color={isDarkMode ? darkMode.primary : lightMode.primary}
+                  style={{ position: 'absolute', marginTop: 60 }}
+                />
+                <CarouselCardTextLastUpdateContainer>
+                  <CarouselCardText>last update:</CarouselCardText>
+                  <CarouselCardText>{DateHelper.parseOutTime(proj.lastUpdatedDate)}</CarouselCardText>
+                </CarouselCardTextLastUpdateContainer>
               </CarouselCard>
             ))}
           </CarouselContainer>
@@ -436,20 +450,6 @@ const HorizontalScrollView = styled.ScrollView`
   /* border: 1px solid green; */
 `;
 
-const CarouselContainer = styled.View`
-  flex-direction: row;
-  margin: 15px;
-`;
-
-const CarouselCard = styled.TouchableOpacity`
-  padding: 10px;
-  border-radius: 10px;
-  height: 160px;
-  width: 150px;
-  margin: 10px;
-  background-color: ${(props) => props.theme.dp1};
-`;
-
 const ChangeGraphRangeContainer = styled.View`
   justify-content: center;
   align-items: center;
@@ -459,25 +459,11 @@ const ChangeGraphRangeContainer = styled.View`
   margin: 0px;
 `;
 
-const CarouselCardHeaderText = styled.Text`
-  /* color: ${(props) => props.theme.primary}; */
-  margin-bottom: 5px;
-  color: ${(props) => props.theme.cardHeader};
-  font-size: 20px;
-`;
-
-const CarouselCardText = styled.Text`
-  /* text-align: center */
-  color: ${(props) => props.theme.textOnBackground};
-`;
-
 const SnackBarContainer = styled.View`
   /* border: 1px solid red; */
-  /* height: 60px; */
   position: absolute;
   width: 100%;
   z-index: 1;
-  /* bottom: 0; */
   top: 70px;
 `;
 
@@ -487,6 +473,42 @@ const GraphTitleContainer = styled.View`
 
 const GraphTitleText = styled.Text`
   font-size: 15px;
+  color: ${(props) => props.theme.textOnBackground};
+  text-align: center;
+`;
+
+const CarouselContainer = styled.View`
+  flex-direction: row;
+  margin: 15px;
+`;
+
+const CarouselCard = styled.TouchableOpacity`
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
+  height: 160px;
+  width: 150px;
+  margin: 10px;
+  background-color: ${(props) => props.theme.dp1};
+`;
+
+const CarouselCardHeaderText = styled.Text`
+  margin-left: 0px;
+  margin-right: auto;
+  margin-bottom: 10px;
+  color: ${(props) => props.theme.cardHeader};
+  font-size: 20px;
+`;
+
+const CarouselCardTextLastUpdateContainer = styled.View`
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: 12px;
+`;
+
+const CarouselCardText = styled.Text`
+  font-size: 13px;
   color: ${(props) => props.theme.textOnBackground};
   text-align: center;
 `;

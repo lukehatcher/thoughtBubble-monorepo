@@ -50,7 +50,10 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
 
   useLayoutEffect(() => {
     // set screen title
-    navigation.setOptions({ title: userProjectsData.find((proj) => proj.id === projectId).projectName });
+    navigation.setOptions({
+      title: userProjectsData.find((proj) => proj.id === projectId).projectName,
+      // headerStyle: { backgroundColor: isDarkMode ? darkMode.background : lightMode.background },
+    });
   });
 
   useFocusEffect(
