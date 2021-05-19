@@ -16,6 +16,10 @@ export const ProjectsStackNavigator: FC<ProjectsStackNavigatorProps> = () => {
   const dynamicScreenOptions = {
     headerStyle: {
       backgroundColor: theme ? colors.darkMode.dp1 : colors.lightMode.primary,
+      // remove shadow
+      elevation: 0,
+      shadowOpacity: 0,
+      borderBottomWidth: 0,
     },
     headerTintColor: theme ? colors.darkMode.primary : colors.lightMode.textOnPrimary,
     headerTitleStyle: { color: 'white' }, // constant
