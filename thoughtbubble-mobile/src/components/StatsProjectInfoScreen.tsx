@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useLayoutEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { VictoryAxis, VictoryBar, VictoryChart, VictoryLabel, VictoryPie, VictoryTheme } from 'victory-native';
 import styled, { ThemeProvider } from 'styled-components/native';
@@ -22,8 +22,14 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
   const project = userProjectsData.find((proj) => proj.id === projectId);
   const userActivityData: Activity = useSelector((state: RootState) => state.activity);
 
+  useLayoutEffect(() => {
+    // set screen title
+    navigation.setOptions({ title: userProjectsData.find((proj) => proj.id === projectId).projectName });
+  });
+
   useFocusEffect(
     useCallback(() => {
+      // allow for dynamic reload of graph data
       dispatch(fetchActivityDataAction());
     }, []),
   );
@@ -40,7 +46,7 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
 
   // tally up the number of thoughts added via vscode and mobile
   const count = userProjectsData
-    .find((i) => i.id === projectId)
+    .find((proj) => proj.id === projectId)
     .projectThoughts.reduce(
       (acc, curr) => {
         if (curr.creationLocation === locations.MOBILE) acc.mobile += 1;
