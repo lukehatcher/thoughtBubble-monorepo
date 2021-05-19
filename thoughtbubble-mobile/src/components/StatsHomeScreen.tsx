@@ -1,8 +1,16 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useLayoutEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styled, { ThemeProvider } from 'styled-components/native';
 import { useFocusEffect } from '@react-navigation/native';
-import { VictoryChart, VictoryTheme, VictoryBar, VictoryLabel, VictoryAxis } from 'victory-native';
+import {
+  VictoryChart,
+  VictoryTheme,
+  VictoryBar,
+  VictoryLabel,
+  VictoryAxis,
+  VictoryArea,
+  VictoryPolarAxis,
+} from 'victory-native';
 import equal from 'deep-equal';
 import { colors } from '../constants/colors';
 import { RootState } from '../reducers/rootReducer';
@@ -10,10 +18,10 @@ import { useDarkCheck } from '../hooks/useDarkCheck';
 import { StatsHomeScreenProps } from '../interfaces/componentProps';
 import { fetchActivityDataAction } from '../actions/fetchActivityAction';
 import { DateHelper } from '../utils/dateHelpers';
-import { Modal, StyleSheet, Linking } from 'react-native';
-import { Button, IconButton, Snackbar, Paragraph } from 'react-native-paper';
+import { Modal, StyleSheet, Linking, Text, TouchableOpacity } from 'react-native';
+import { Button, IconButton, Snackbar, Paragraph, Divider, ProgressBar } from 'react-native-paper';
 import { activityRangeMap } from '../constants/activityRanges';
-import { Activity } from '../interfaces/data';
+import { Activity, ProjectShape } from '../interfaces/data';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const { darkMode, lightMode } = colors;
@@ -21,12 +29,20 @@ const { darkMode, lightMode } = colors;
 export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
   const isDarkMode = useDarkCheck();
   const dispatch = useDispatch();
-  const userProjectsData = useSelector((state: RootState) => state.userProjectData, equal);
+  const userProjectsData: ProjectShape[] = useSelector((state: RootState) => state.userProjectData, equal);
   const userActivityData: Activity = useSelector((state: RootState) => state.activity, equal);
   const [currRange, setCurrRange] = useState(activityRangeMap.get('1W'));
   const [snackbarVisable, setSnackbarVisable] = useState(false);
   const [snackbarText, setSnackbarText] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
+
+  const totalThoughts = userProjectsData.reduce((acc, curr) => (acc += curr.projectThoughts.length), 0);
+  const totalCompletedThoughts = userProjectsData.reduce((acc, curr) => {
+    for (let i = 0; i < curr.projectThoughts.length; i++) {
+      if (curr.projectThoughts[i].completed) acc++;
+    }
+    return acc;
+  }, 0);
 
   const handle1WClick = () => setCurrRange(activityRangeMap.get('1W'));
   const handle1MClick = () => setCurrRange(activityRangeMap.get('1M'));
@@ -42,6 +58,24 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
     }, []),
   );
 
+  useLayoutEffect(() => {
+    // add icons in header
+    navigation.setOptions({
+      headerRight: () => (
+        <IconButton
+          icon="information-outline"
+          color={isDarkMode ? darkMode.secondary : lightMode.textOnPrimary}
+          size={30}
+          onPress={() => setModalVisible(true)}
+          style={{ marginRight: 15, marginBottom: 10 }}
+        />
+      ),
+      headerLeft: () => (
+        <Text style={{ color: 'white', fontSize: 17, marginLeft: 16 }}>streak: {calculateStreak()}🔥</Text>
+      ),
+    });
+  }, [navigation, isDarkMode]);
+
   const theme = {
     // for styled-components ThemeProvider
     background: isDarkMode ? darkMode.background : lightMode.background,
@@ -50,7 +84,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
     secondary: isDarkMode ? darkMode.secondary : lightMode.secondary,
     textOnBackground: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground,
     dp1: isDarkMode ? darkMode.dp1 : lightMode.background,
-    cardBorder: isDarkMode ? darkMode.dp1 : 'black',
+    cardHeader: isDarkMode ? darkMode.secondary : lightMode.primary,
   };
 
   const gridlessGraphTheme = VictoryTheme.material;
@@ -67,6 +101,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
   };
 
   const calculateStreak = (): number => {
+    // given a set of xy graph coords
     const graphData = [...userActivityData.graphData];
     graphData.sort((a, b) => b.x - a.x);
     let streakCount = 0;
@@ -83,16 +118,25 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
   return (
     <ThemeProvider theme={theme}>
       <MainContainer>
-        <StreakHeader>
-          <StreakText>streak: {calculateStreak()}🔥</StreakText>
-          <IconButton
-            icon="information-outline"
-            color={isDarkMode ? darkMode.secondary : lightMode.secondary}
-            size={30}
-            onPress={() => setModalVisible(true)}
-            style={{ marginRight: 15, marginLeft: 'auto' }}
-          />
-        </StreakHeader>
+        <AccountTotalsContainer>
+          <AccountTotalsCard>
+            <TotalNumberText>{userProjectsData.length}</TotalNumberText>
+            <TotalNumberSubText>total projects</TotalNumberSubText>
+          </AccountTotalsCard>
+          <AccountTotalsCard>
+            <TotalNumberText>{totalThoughts}</TotalNumberText>
+            <TotalNumberSubText>total thoughts</TotalNumberSubText>
+          </AccountTotalsCard>
+          <AccountTotalsCard>
+            <TotalNumberText>{totalCompletedThoughts}</TotalNumberText>
+            <TotalNumberSubText>completed thoughts</TotalNumberSubText>
+          </AccountTotalsCard>
+        </AccountTotalsContainer>
+        <ProgressBar
+          progress={totalCompletedThoughts / totalThoughts}
+          color={isDarkMode ? darkMode.primary : lightMode.primary}
+          style={{ margin: 20 }}
+        />
         <GraphTitleContainer>
           <GraphTitleText>activity overview</GraphTitleText>
         </GraphTitleContainer>
@@ -152,10 +196,6 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
               style={{ data: { fill: isDarkMode ? darkMode.primary : lightMode.secondary } }}
               data={userActivityData.graphData.slice(-1 * currRange)}
               height={300}
-              // labels={({ datum }) => {
-              //   if (!datum.y) return '';
-              //   return `day: ${datum.x}`;
-              // }}
               cornerRadius={{ topLeft: 2, topRight: 2 }}
               animate={{
                 duration: 500,
@@ -170,7 +210,6 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
           <Button
             compact
             style={styles.btn}
-            // color={isDarkMode ? `${darkMode.primary}32` : lightMode.primary}
             mode={currRange === activityRangeMap.get('1W') ? 'contained' : 'text'}
             onPress={() => handle1WClick()} // and change currrange
             color={`${darkMode.primary}18`}
@@ -231,8 +270,8 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
               >
                 <CarouselCardHeaderText>{proj.projectName}</CarouselCardHeaderText>
                 <CarouselCardText># of thoughts: {proj.projectThoughts.length}</CarouselCardText>
-                <CarouselCardText>created:</CarouselCardText>
-                <CarouselCardText>{DateHelper.parseOutTime(proj.createdDate)}</CarouselCardText>
+                {/* <CarouselCardText>created:</CarouselCardText>
+                <CarouselCardText>{DateHelper.parseOutTime(proj.createdDate)}</CarouselCardText> */}
                 <CarouselCardText>last updated:</CarouselCardText>
                 <CarouselCardText>{DateHelper.parseOutTime(proj.lastUpdatedDate)}</CarouselCardText>
               </CarouselCard>
@@ -280,6 +319,19 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
             />
           </InfoModalContainer>
         </Modal>
+        {/* =================== */}
+        <VictoryChart polar theme={VictoryTheme.material}>
+          <VictoryArea
+            data={[
+              { x: 1, y: 9 },
+              { x: 2, y: 3 },
+              { x: 3, y: 6 },
+              { x: 4, y: 8 },
+              { x: 5, y: 11 },
+            ]}
+          />
+          <VictoryPolarAxis />
+        </VictoryChart>
       </MainContainer>
     </ThemeProvider>
   );
@@ -307,6 +359,33 @@ const styles = StyleSheet.create({
     color: lightMode.primary,
   },
 });
+
+const AccountTotalsContainer = styled.View`
+  margin-top: 15px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+`;
+
+const AccountTotalsCard = styled.View`
+  /* color: ${(props) => props.theme.textOnBackground}; */
+  /* border: 1px solid black; */
+  /* margin: 15px; */
+  width: 130px;
+  height: 65px;
+`;
+
+const TotalNumberText = styled.Text`
+  text-align: center;
+  font-size: 40px;
+  color: ${(props) => props.theme.textOnBackground};
+`;
+
+const TotalNumberSubText = styled.Text`
+  text-align: center;
+  font-size: 11px;
+  color: ${(props) => props.theme.textOnBackground};
+`;
 
 const InfoModalTextContainer = styled.View`
   /* border: 1px solid grey; */
@@ -371,7 +450,6 @@ const CarouselContainer = styled.View`
 `;
 
 const CarouselCard = styled.TouchableOpacity`
-  /* border: ${(props) => props.theme.cardBorder}; */
   padding: 10px;
   border-radius: 10px;
   height: 160px;
@@ -385,15 +463,14 @@ const ChangeGraphRangeContainer = styled.View`
   align-items: center;
   display: flex;
   flex-direction: row;
-  /* border: pink; */
   height: 35px;
   margin: 0px;
 `;
 
 const CarouselCardHeaderText = styled.Text`
-  /* text-align: center */
+  /* color: ${(props) => props.theme.primary}; */
   margin-bottom: 5px;
-  color: ${(props) => props.theme.textOnBackground};
+  color: ${(props) => props.theme.cardHeader};
   font-size: 20px;
 `;
 
@@ -420,11 +497,11 @@ const StreakHeader = styled.View`
   justify-content: center;
 `;
 
-const StreakText = styled.Text`
-  color: ${(props) => props.theme.textOnBackground};
-  font-size: 20px;
-  margin-left: 15px;
-`;
+// const StreakText = styled.Text`
+//   color: ${(props) => props.theme.textOnBackground};
+//   font-size: 20px;
+//   margin-left: 15px;
+// `;
 
 const GraphTitleContainer = styled.View`
   height: 30px;

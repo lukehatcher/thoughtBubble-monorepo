@@ -8,13 +8,16 @@ import { colors } from '../constants/colors';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { locations } from '../constants/locations';
 import { DateHelper } from '../utils/dateHelpers';
-import { Snackbar } from 'react-native-paper';
+import { Text } from 'react-native';
 
 const { darkMode, lightMode } = colors;
 
 export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function ({ route, navigation }) {
   const { projectId } = route.params;
   const isDarkMode = useDarkCheck();
+  const userProjectsData = useSelector((state: RootState) => state.userProjectData);
+  const project = userProjectsData.find((proj) => proj.id === projectId);
+
   const theme = {
     // for styled-components ThemeProvider
     background: isDarkMode ? darkMode.background : lightMode.background,
@@ -24,7 +27,6 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
     textOnBackground: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground,
     dp1: isDarkMode ? darkMode.dp1 : lightMode.background,
   };
-  const userProjectsData = useSelector((state: RootState) => state.userProjectData);
 
   // tally up the number of thoughts added via vscode and mobile
   const count = userProjectsData
@@ -45,19 +47,6 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
 
   return (
     <ThemeProvider theme={theme}>
-      <Snackbar
-        // style={styles.snackbar}
-        visible={true}
-        onDismiss={() => console.log('snackbar dismiss')}
-        action={{
-          label: 'Undo',
-          onPress: () => {
-            // Do something
-          },
-        }}
-      >
-        Hey there! I'm a Snackbar.
-      </Snackbar>
       <MainContainer>
         <PieChartHeader>where you spend your time</PieChartHeader>
         <VictoryPie
@@ -72,6 +61,7 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
           height={350}
           colorScale={'heatmap'}
         />
+        <Text>{DateHelper.parseOutTime(project.createdDate)}</Text>
       </MainContainer>
     </ThemeProvider>
   );
