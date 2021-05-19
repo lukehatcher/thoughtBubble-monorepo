@@ -18,8 +18,17 @@ import { StyleSheet } from 'react-native';
 const { darkMode, lightMode } = colors;
 
 export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function ({ route, navigation }) {
-  const { projectId } = route.params;
   const isDarkMode = useDarkCheck();
+  const theme = {
+    // for styled-components ThemeProvider
+    background: isDarkMode ? darkMode.background : lightMode.background,
+    primary: isDarkMode ? darkMode.primary : lightMode.primary,
+    primaryVariant: isDarkMode ? darkMode.primaryVariant : lightMode.primaryVariant,
+    secondary: isDarkMode ? darkMode.secondary : lightMode.secondary,
+    textOnBackground: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground,
+    dp1: isDarkMode ? darkMode.dp1 : lightMode.background,
+  };
+  const { projectId } = route.params;
   const dispatch = useDispatch();
   const userProjectsData = useSelector((state: RootState) => state.userProjectData);
   const project = userProjectsData.find((proj) => proj.id === projectId);
@@ -50,16 +59,6 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
       dispatch(fetchActivityDataAction());
     }, []),
   );
-
-  const theme = {
-    // for styled-components ThemeProvider
-    background: isDarkMode ? darkMode.background : lightMode.background,
-    primary: isDarkMode ? darkMode.primary : lightMode.primary,
-    primaryVariant: isDarkMode ? darkMode.primaryVariant : lightMode.primaryVariant,
-    secondary: isDarkMode ? darkMode.secondary : lightMode.secondary,
-    textOnBackground: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground,
-    dp1: isDarkMode ? darkMode.dp1 : lightMode.background,
-  };
 
   // tally up the number of thoughts added via vscode and mobile
   const count = userProjectsData
@@ -120,7 +119,7 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
               tickFormat={() => ''}
               offsetY={50}
               axisLabelComponent={<VictoryLabel dy={16} />}
-              // label={generateXaxisLabel()}
+              label={DateHelper.generateXaxisDateLabel(userActivityData.graphData, currRange)}
             />
             <VictoryBar
               // events={[

@@ -91,14 +91,6 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
   // remove colored grid
   gridlessGraphTheme.axis.style.grid.stroke = isDarkMode ? '#FFFFFF15' : '#00000015';
 
-  const generateXaxisLabel = (): string => {
-    // x label for graph "mm/dd/yyyy -> mm/dd/yyyy"
-    const xys = userActivityData.graphData.slice(-1 * currRange);
-    const first = DateHelper.dateToMMDDYYY(DateHelper.dayNToDate(xys[0].x));
-    const last = DateHelper.dateToMMDDYYY(DateHelper.dayNToDate(xys[xys.length - 1].x));
-    return `${first}  →  ${last}`;
-  };
-
   const calculateStreak = (): number => {
     // given a set of xy graph coords
     const graphData = [...userActivityData.graphData];
@@ -176,7 +168,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
               tickFormat={() => ''}
               offsetY={50}
               axisLabelComponent={<VictoryLabel dy={16} />}
-              label={generateXaxisLabel()}
+              label={DateHelper.generateXaxisDateLabel(userActivityData.graphData, currRange)}
             />
             <VictoryBar
               events={[

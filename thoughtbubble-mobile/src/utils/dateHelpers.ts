@@ -5,18 +5,6 @@ import { ActivityRanges } from '../interfaces/stringLiteralTypes';
  * Methods for dealing with dates. Predominantly used in stats screen.
  */
 export class DateHelper {
-  // private static activityRangeMap: Map<string, number>;
-
-  // constructor(public activityRangeMap) {
-  //   this.activityRangeMap = new Map([
-  //     ['1W', 7],
-  //     ['1M', 30],
-  //     ['3M', 91],
-  //     ['6M', 183],
-  //     ['1Y', 365],
-  //   ]);
-  // }
-
   /**
    * given a date in iso format, calculate days from app start date 4/1/2021
    * @param date from db in iso format `2021-05-04T21:34:08.689Z`
@@ -70,5 +58,18 @@ export class DateHelper {
     let month = (1 + date.getMonth()).toString().padStart(2, '0');
     let day = date.getDate().toString().padStart(2, '0');
     return month + '/' + day + '/' + year;
+  }
+
+  /**
+   * given array of x, y coords generate x label of the form "mm/dd/yyyy -> mm/dd/yyyy"
+   * @param graphData xy, pairs for victorychart
+   * @param currRange 7, 30, 91 etc...
+   * @returns "mm/dd/yyyy -> mm/dd/yyyy"
+   */
+  static generateXaxisDateLabel(graphData: Array<{ x: number; y: number }>, currRange: number): string {
+    const xys = graphData.slice(-1 * currRange);
+    const first = this.dateToMMDDYYY(this.dayNToDate(xys[0].x));
+    const last = this.dateToMMDDYYY(this.dayNToDate(xys[xys.length - 1].x));
+    return `${first}  →  ${last}`;
   }
 }
