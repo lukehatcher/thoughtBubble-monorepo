@@ -1,5 +1,5 @@
 {
-  "editor.minimap.enabled": false,
+  // "editor.minimap.enabled": false,
   "editor.insertSpaces": false,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true
