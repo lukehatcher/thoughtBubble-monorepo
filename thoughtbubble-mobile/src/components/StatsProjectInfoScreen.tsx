@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useLayoutEffect } from 'react';
+import React, { FC, useCallback, useLayoutEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { VictoryAxis, VictoryBar, VictoryChart, VictoryLabel, VictoryPie, VictoryTheme } from 'victory-native';
 import styled, { ThemeProvider } from 'styled-components/native';
@@ -11,6 +11,9 @@ import { DateHelper } from '../utils/dateHelpers';
 import { Activity } from '../interfaces/data';
 import { useFocusEffect } from '@react-navigation/native';
 import { fetchActivityDataAction } from '../actions/fetchActivityAction';
+import { Button, ProgressBar } from 'react-native-paper';
+import { activityRangeMap } from '../constants/activityRanges';
+import { StyleSheet } from 'react-native';
 
 const { darkMode, lightMode } = colors;
 
@@ -21,6 +24,20 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
   const userProjectsData = useSelector((state: RootState) => state.userProjectData);
   const project = userProjectsData.find((proj) => proj.id === projectId);
   const userActivityData: Activity = useSelector((state: RootState) => state.activity);
+  const [currRange, setCurrRange] = useState(activityRangeMap.get('1W'));
+
+  const handle1WClick = () => setCurrRange(activityRangeMap.get('1W'));
+  const handle1MClick = () => setCurrRange(activityRangeMap.get('1M'));
+  const handle3MClick = () => setCurrRange(activityRangeMap.get('3M'));
+  const handle6MClick = () => setCurrRange(activityRangeMap.get('6M'));
+  const handle1YClick = () => setCurrRange(activityRangeMap.get('1Y'));
+
+  // lib
+  const totalThoughts = project.projectThoughts.length;
+  const totalCompletedThoughts = project.projectThoughts.reduce((acc, curr) => {
+    if (curr.completed) acc++;
+    return acc;
+  }, 0);
 
   useLayoutEffect(() => {
     // set screen title
@@ -68,6 +85,24 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
   return (
     <ThemeProvider theme={theme}>
       <MainContainer>
+        <AccountTotalsContainer>
+          <AccountTotalsCard>
+            <TotalNumberText>{totalThoughts}</TotalNumberText>
+            <TotalNumberSubText>total thoughts</TotalNumberSubText>
+          </AccountTotalsCard>
+          <AccountTotalsCard>
+            <TotalNumberText>{totalCompletedThoughts}</TotalNumberText>
+            <TotalNumberSubText>completed thoughts</TotalNumberSubText>
+          </AccountTotalsCard>
+        </AccountTotalsContainer>
+        <ProgressBar
+          progress={totalCompletedThoughts / totalThoughts}
+          color={isDarkMode ? darkMode.primary : lightMode.primary}
+          style={{ margin: 20 }}
+        />
+        <GraphTitleContainer>
+          <GraphTitleText>activity overview</GraphTitleText>
+        </GraphTitleContainer>
         <GraphContainer>
           <VictoryChart
             theme={gridlessGraphTheme}
@@ -103,7 +138,7 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
               //   },
               // ]}
               style={{ data: { fill: isDarkMode ? darkMode.primary : lightMode.secondary } }}
-              data={userActivityData.graphDataPerProject[projectId].slice(-1 * 7)}
+              data={userActivityData.graphDataPerProject[projectId].slice(-1 * currRange)}
               height={300}
               cornerRadius={{ topLeft: 2, topRight: 2 }}
               animate={{
@@ -114,6 +149,59 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
             />
           </VictoryChart>
         </GraphContainer>
+        {/* ======================== */}
+        <ChangeGraphRangeContainer>
+          <Button
+            compact
+            style={styles.btn}
+            mode={currRange === activityRangeMap.get('1W') ? 'contained' : 'text'}
+            onPress={() => handle1WClick()} // and change currrange
+            color={`${darkMode.primary}18`}
+            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary }}
+          >
+            1W
+          </Button>
+          <Button
+            compact
+            style={styles.btn}
+            mode={currRange === activityRangeMap.get('1M') ? 'contained' : 'text'}
+            onPress={() => handle1MClick()}
+            color={`${darkMode.primary}18`}
+            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary }}
+          >
+            1M
+          </Button>
+          <Button
+            compact
+            style={styles.btn}
+            mode={currRange === activityRangeMap.get('3M') ? 'contained' : 'text'}
+            onPress={() => handle3MClick()}
+            color={`${darkMode.primary}18`}
+            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary }}
+          >
+            3M
+          </Button>
+          <Button
+            compact
+            style={styles.btn}
+            mode={currRange === activityRangeMap.get('6M') ? 'contained' : 'text'}
+            onPress={() => handle6MClick()}
+            color={`${darkMode.primary}18`}
+            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary }}
+          >
+            6M
+          </Button>
+          <Button
+            compact
+            style={styles.btn}
+            mode={currRange === activityRangeMap.get('1Y') ? 'contained' : 'text'}
+            onPress={() => handle1YClick()}
+            color={`${darkMode.primary}18`}
+            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary }}
+          >
+            1Y
+          </Button>
+        </ChangeGraphRangeContainer>
         <PieChartTitle>where you spend your time</PieChartTitle>
         <VictoryPie
           data={pieChartData}
@@ -133,9 +221,59 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
   );
 };
 
-const MainContainer = styled.View`
+const styles = StyleSheet.create({
+  btn: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 33,
+    width: 40,
+    marginRight: 10,
+    marginLeft: 10,
+    marginTop: 0,
+    color: lightMode.primary,
+  },
+});
+
+const MainContainer = styled.ScrollView`
   flex: 1;
   background-color: ${(props) => props.theme.background};
+`;
+
+const AccountTotalsContainer = styled.View`
+  margin-top: 15px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+`;
+
+const AccountTotalsCard = styled.View`
+  /* color: ${(props) => props.theme.textOnBackground}; */
+  /* border: 1px solid black; */
+  /* margin: 15px; */
+  width: 130px;
+  height: 65px;
+`;
+
+const TotalNumberText = styled.Text`
+  text-align: center;
+  font-size: 40px;
+  color: ${(props) => props.theme.textOnBackground};
+`;
+
+const TotalNumberSubText = styled.Text`
+  text-align: center;
+  font-size: 11px;
+  color: ${(props) => props.theme.textOnBackground};
+`;
+
+const GraphTitleContainer = styled.View`
+  height: 30px;
+`;
+
+const GraphTitleText = styled.Text`
+  font-size: 15px;
+  color: ${(props) => props.theme.textOnBackground};
+  text-align: center;
 `;
 
 const GraphContainer = styled.View`
@@ -143,10 +281,21 @@ const GraphContainer = styled.View`
   justify-content: center;
 `;
 
+const ChangeGraphRangeContainer = styled.View`
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  height: 35px;
+  margin: 0px;
+`;
+
 const PieChartTitle = styled.Text`
+  text-align: center;
   color: ${(prop) => prop.theme.textOnBackground};
 `;
 
 const CreatedDateText = styled.Text`
+  text-align: center;
   color: ${(props) => props.theme.textOnBackground};
 `;
