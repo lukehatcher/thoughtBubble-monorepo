@@ -89,7 +89,7 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
               //   },
               // ]}
               style={{ data: { fill: isDarkMode ? darkMode.primary : lightMode.secondary } }}
-              data={userActivityData.graphData.slice(-1 * 7)}
+              data={userActivityData.graphDataPerProject[projectId].slice(-1 * 7)}
               height={300}
               cornerRadius={{ topLeft: 2, topRight: 2 }}
               animate={{
