@@ -10,8 +10,11 @@ export class Activity extends BaseEntity {
   @Column()
   activityDate!: Date;
 
+  @Column()
+  userId!: string;
+
   @ManyToOne(() => User, (user) => user.activity, { onDelete: 'CASCADE' })
-  // @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: 'userId' })
   user!: User;
 
   @Column()
