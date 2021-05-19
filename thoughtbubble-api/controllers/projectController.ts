@@ -36,7 +36,6 @@ class ProjectsController extends ControllerHelper {
         const projectThoughts2 = projectThoughts as any[];
         data[i].projectThoughts = projectThoughts2; // thoughts is a keyword
       }
-
       res.send(data).status(200);
     } catch (err) {
       console.error(this.location, err);
