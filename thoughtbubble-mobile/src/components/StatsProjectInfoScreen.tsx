@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
-import { useSelector } from 'react-redux';
+import React, { FC, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { VictoryAxis, VictoryBar, VictoryChart, VictoryLabel, VictoryPie, VictoryTheme } from 'victory-native';
 import styled, { ThemeProvider } from 'styled-components/native';
 import { StatsProjectInfoScreenProps } from '../interfaces/componentProps';
@@ -9,16 +9,24 @@ import { useDarkCheck } from '../hooks/useDarkCheck';
 import { locations } from '../constants/locations';
 import { DateHelper } from '../utils/dateHelpers';
 import { Activity } from '../interfaces/data';
+import { useFocusEffect } from '@react-navigation/native';
+import { fetchActivityDataAction } from '../actions/fetchActivityAction';
 
 const { darkMode, lightMode } = colors;
 
 export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function ({ route, navigation }) {
   const { projectId } = route.params;
   const isDarkMode = useDarkCheck();
+  const dispatch = useDispatch();
   const userProjectsData = useSelector((state: RootState) => state.userProjectData);
   const project = userProjectsData.find((proj) => proj.id === projectId);
   const userActivityData: Activity = useSelector((state: RootState) => state.activity);
-  // const projectGraphData = userActivityData; // WIP
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(fetchActivityDataAction());
+    }, []),
+  );
 
   const theme = {
     // for styled-components ThemeProvider
