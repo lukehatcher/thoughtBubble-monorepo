@@ -17,9 +17,10 @@ class ActivityController {
       const userIdx = user?.id;
       const userActivity = await getRepository(Activity)
         .createQueryBuilder('activity')
+        // .leftJoinAndSelect('activity.project', 'project')
         .where('activity.user = :user', { user: userIdx })
         .getMany();
-
+      // console.log(JSON.stringify(userActivity));
       res.send(JSON.stringify(userActivity));
     } catch (err) {
       console.error(this.location, err);

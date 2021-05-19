@@ -20,8 +20,8 @@ export function StatsStackNavigator() {
   };
   return (
     <Stack.Navigator screenOptions={dynamicScreenOptions}>
-      <Stack.Screen name="StatsHome" component={StatsHomeScreen} />
-      <Stack.Screen name="StatsForProject" component={StatsProjectInfoScreen} />
+      <Stack.Screen name="Analytics" component={StatsHomeScreen} />
+      <Stack.Screen name="Project Analytics" component={StatsProjectInfoScreen} />
     </Stack.Navigator>
   );
 }
