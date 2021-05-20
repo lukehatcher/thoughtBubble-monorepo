@@ -1,21 +1,22 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatsHomeScreen } from '../StatsHomeScreen';
 import { StatsProjectInfoScreen } from '../StatsProjectInfoScreen';
 import { StatsStackParamList } from '../../interfaces/navigation';
 import { colors } from '../../constants/colors';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../reducers/rootReducer';
+import { useDarkCheck } from '../../hooks/useDarkCheck';
 
+const { darkMode, lightMode } = colors;
 const Stack = createStackNavigator<StatsStackParamList>();
 
-export function StatsStackNavigator() {
-  const theme = useSelector((state: RootState) => state.userInfo.darkMode);
+export const StatsStackNavigator: FC = function () {
+  const isDarkMode = useDarkCheck();
   const dynamicScreenOptions = {
     headerStyle: {
-      backgroundColor: theme ? colors.darkMode.dp1 : colors.lightMode.primary,
+      backgroundColor: isDarkMode ? darkMode.dp1 : lightMode.primary,
+      // remove shadow did not work here
     },
-    headerTintColor: theme ? colors.darkMode.primary : colors.lightMode.textOnPrimary,
+    headerTintColor: isDarkMode ? darkMode.primary : lightMode.textOnPrimary,
     headerTitleStyle: { color: 'white' }, // constant
   };
   return (
@@ -24,4 +25,4 @@ export function StatsStackNavigator() {
       <Stack.Screen name="Project Analytics" component={StatsProjectInfoScreen} />
     </Stack.Navigator>
   );
-}
+};

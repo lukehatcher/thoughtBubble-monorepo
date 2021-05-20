@@ -6,22 +6,23 @@ import { ProjectsStackNavigator } from './ProjectsStackNavigator';
 import { StatsStackNavigator } from './StatsStackNavigator';
 import { TabsParamList } from '../../interfaces/navigation';
 import { AppNavTabsProps } from '../../interfaces/componentProps';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../reducers/rootReducer';
 import { colors } from '../../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useDarkCheck } from '../../hooks/useDarkCheck';
 
+const { darkMode, lightMode } = colors;
 const Tab = createBottomTabNavigator<TabsParamList>();
 
 export const AppTabsNavigator: FC<AppNavTabsProps> = () => {
-  const theme = useSelector((state: RootState) => state.userInfo.darkMode);
+  const isDarkMode = useDarkCheck();
 
   const dynamicTabBarOptions = {
-    activeTintColor: theme ? colors.darkMode.primary : colors.lightMode.secondary,
-    inactiveTintColor: theme ? colors.darkMode.textOnSurface : colors.lightMode.textOnPrimary,
+    activeTintColor: isDarkMode ? darkMode.primary : lightMode.secondary,
+    inactiveTintColor: isDarkMode ? darkMode.textOnSurface : lightMode.textOnPrimary,
     showLabel: false,
     style: {
-      backgroundColor: theme ? colors.darkMode.dp1 : colors.lightMode.primary,
+      // remove shadow not working here
+      backgroundColor: isDarkMode ? darkMode.dp1 : lightMode.primary,
     },
   };
 
