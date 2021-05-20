@@ -13,6 +13,7 @@ import { SortThoughtModal } from './SortThoughtModal';
 import { AddThoughtModal } from './AddThoughtModal';
 import { FAB } from 'react-native-paper';
 import { useDarkCheck } from '../hooks/useDarkCheck';
+import { StackBackButton } from './StackBackButton';
 
 export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) => {
   const [addThoughtModalView, setAddThoughtModalView] = useState(false); // plus modal
@@ -40,6 +41,7 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
           />
         </TouchableOpacity>
       ),
+      headerLeft: () => <StackBackButton location="Projects" />,
     });
   }, [navigation, theme]);
 

@@ -9,6 +9,7 @@ import { AppNavTabsProps } from '../../interfaces/componentProps';
 import { colors } from '../../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useDarkCheck } from '../../hooks/useDarkCheck';
+// import { StatusBar } from 'react-native';
 
 const { darkMode, lightMode } = colors;
 const Tab = createBottomTabNavigator<TabsParamList>();
@@ -27,33 +28,38 @@ export const AppTabsNavigator: FC<AppNavTabsProps> = () => {
   };
 
   return (
-    <NavigationContainer>
-      <Tab.Navigator initialRouteName="Projects" tabBarOptions={dynamicTabBarOptions}>
-        <Tab.Screen
-          name="Settings"
-          component={SettingsScreen}
-          options={{
-            title: 'Settings',
-            tabBarIcon: ({ color }) => <MaterialCommunityIcons name="cog" size={30} color={color} />,
-          }}
-        />
-        <Tab.Screen
-          name="Projects"
-          component={ProjectsStackNavigator} // projects stack
-          options={{
-            title: 'Projects',
-            tabBarIcon: ({ color }) => <MaterialCommunityIcons name="format-list-bulleted" size={30} color={color} />,
-          }}
-        />
-        <Tab.Screen
-          name="Stats"
-          component={StatsStackNavigator}
-          options={{
-            title: 'Stats',
-            tabBarIcon: ({ color }) => <MaterialCommunityIcons name="chart-timeline-variant" size={30} color={color} />,
-          }}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <>
+      {/* <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} /> */}
+      <NavigationContainer>
+        <Tab.Navigator initialRouteName="Projects" tabBarOptions={dynamicTabBarOptions}>
+          <Tab.Screen
+            name="Settings"
+            component={SettingsScreen}
+            options={{
+              title: 'Settings',
+              tabBarIcon: ({ color }) => <MaterialCommunityIcons name="cog" size={30} color={color} />,
+            }}
+          />
+          <Tab.Screen
+            name="Projects"
+            component={ProjectsStackNavigator} // projects stack
+            options={{
+              title: 'Projects',
+              tabBarIcon: ({ color }) => <MaterialCommunityIcons name="format-list-bulleted" size={30} color={color} />,
+            }}
+          />
+          <Tab.Screen
+            name="Stats"
+            component={StatsStackNavigator}
+            options={{
+              title: 'Stats',
+              tabBarIcon: ({ color }) => (
+                <MaterialCommunityIcons name="chart-timeline-variant" size={30} color={color} />
+              ),
+            }}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </>
   );
 };
