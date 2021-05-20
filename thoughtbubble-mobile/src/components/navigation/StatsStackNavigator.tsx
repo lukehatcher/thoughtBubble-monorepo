@@ -13,11 +13,14 @@ export const StatsStackNavigator: FC = function () {
   const isDarkMode = useDarkCheck();
   const dynamicScreenOptions = {
     headerStyle: {
-      backgroundColor: isDarkMode ? darkMode.dp1 : lightMode.primary,
-      // remove shadow did not work here
+      backgroundColor: isDarkMode ? darkMode.background : lightMode.background,
+      //   // // remove shadow
+      elevation: 0,
+      shadowOpacity: 0,
+      borderBottomWidth: 0,
     },
-    headerTintColor: isDarkMode ? darkMode.primary : lightMode.textOnPrimary,
-    headerTitleStyle: { color: 'white' }, // constant
+    headerTintColor: isDarkMode ? darkMode.primary : lightMode.primary, // stack backarrow
+    headerTitleStyle: { color: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground },
   };
   return (
     <Stack.Navigator screenOptions={dynamicScreenOptions}>

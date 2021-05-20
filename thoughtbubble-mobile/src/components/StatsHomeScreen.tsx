@@ -62,25 +62,25 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
   useLayoutEffect(() => {
     // add icons in header
     navigation.setOptions({
-      // headerStyle: { backgroundColor: 'transparent' },
-      headerStyle: {
-        // backgroundColor: isDarkMode ? darkMode.background : lightMode.background,
-        // // remove shadow
-        // elevation: 0,
-        // shadowOpacity: 0,
-        // borderBottomWidth: 0,
-      },
       headerRight: () => (
         <IconButton
           icon="information-outline"
-          color={isDarkMode ? darkMode.secondary : lightMode.textOnPrimary}
+          color={isDarkMode ? darkMode.secondary : lightMode.textOnBackground}
           size={30}
           onPress={() => setModalVisible(true)}
           style={{ marginRight: 15, marginBottom: 10 }}
         />
       ),
       headerLeft: () => (
-        <Text style={{ color: 'white', fontSize: 17, marginLeft: 16 }}>streak: {calculateStreak()}🔥</Text>
+        <Text
+          style={{
+            color: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground,
+            fontSize: 17,
+            marginLeft: 16,
+          }}
+        >
+          streak: {calculateStreak()}🔥
+        </Text>
       ),
     });
   }, [navigation, isDarkMode]);
@@ -117,7 +117,6 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
 
   return (
     <ThemeProvider theme={theme}>
-      {console.log(userActivityData)}
       <MainContainer>
         <AccountTotalsContainer>
           <AccountTotalsCard>
