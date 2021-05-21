@@ -24,9 +24,9 @@ interface AppProps {}
 
 const App: FC<AppProps> = () => {
   const loginStatus = useSelector((state: RootState) => state.storedUser);
+  const isDarkMode = useDarkCheck();
 
   if (loginStatus.sub) {
-    const isDarkMode = useDarkCheck();
     return (
       <>
         <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />

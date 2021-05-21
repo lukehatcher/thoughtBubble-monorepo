@@ -37,7 +37,7 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
           <MaterialCommunityIcons
             name="sort-variant"
             size={40}
-            color={theme ? colors.darkMode.primary : colors.lightMode.textOnPrimary}
+            color={theme ? colors.darkMode.primary : colors.lightMode.primary}
           />
         </TouchableOpacity>
       ),
