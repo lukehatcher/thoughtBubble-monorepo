@@ -2,75 +2,92 @@ import React, { FC, forwardRef } from 'react';
 import { Animated, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { colors } from '../constants/colors';
-import { useDarkCheck } from '../hooks/useDarkCheck';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import styled from 'styled-components/native';
+import { ProjectShape } from '../interfaces/data';
+import { deleteProjectAction } from '../actions/projectActions';
+import { useDispatch } from 'react-redux';
 
 interface ProjectListProps {
-  userProjectsData: any[];
+  userProjectsData: ProjectShape[];
   handleScroll: any;
+  isDarkMode: boolean;
 }
 
 const SwipeListViewAnimated = Animated.createAnimatedComponent(SwipeListView);
 
-export class ProjectList extends React.Component<ProjectListProps> {
-  constructor(props) {
-    super(props);
-  }
+export const ProjectList: FC<ProjectListProps> = ({ userProjectsData, handleScroll, isDarkMode }) => {
+  const useTheme = (name: string) => (isDarkMode ? stylesDark[name] : stylesLight[name]);
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const firstItem = userProjectsData[0].id;
 
-  // private isDarkMode = useDarkCheck();
-  private isDarkMode = true;
-  private useTheme = (name: string) => (this.isDarkMode ? stylesDark[name] : stylesLight[name]);
-  // private navigation = useNavigation();
+  const handleProjectDeletion = function (projectId: string) {
+    dispatch(deleteProjectAction(projectId));
+  };
 
-  private renderItem = (data) => (
+  // const closeRow = (rowMap, rowKey) => {
+  //   // for slidables
+  //   if (rowMap[rowKey]) {
+  //     rowMap[rowKey].closeRow();
+  //   }
+  // };
+
+  const renderItem = (data) => (
     // for slidables
-    <TouchableHighlight
-      // onPress={() => this.navigation.navigate('Thoughts', { projectId: data.item.id })}
-      style={this.useTheme('rowFront')}
-      underlayColor={'grey'}
-    >
-      <View style={sharedStyles.chevronContainer}>
-        <TextStyled>{data.item.projectName}</TextStyled>
-        <MaterialCommunityIcons
-          name="chevron-right"
-          size={40}
-          color={this.isDarkMode ? colors.darkMode.primary : colors.lightMode.primary}
-        />
-      </View>
-    </TouchableHighlight>
-  );
-
-  private renderHiddenItem = (data, _rowMap) => (
-    // for slidables
-    <View
-      style={{
-        ...this.useTheme('rowFront'),
-        backgroundColor: this.isDarkMode ? colors.darkMode.error : colors.lightMode.error,
-      }}
-    >
-      {/* to match height of back view to the dynamic front view height,
-      add random view below with same text (but invisable) to get same height */}
-      <View>
-        {console.log('hihihi')}
-        <Text style={this.useTheme('hiddenBackText')}>{data.item.projectName}</Text>
-      </View>
-      <TouchableOpacity
-        style={[this.useTheme('backRightBtn'), this.useTheme('backRightBtnRight')]}
-        // onPress={() => handleProjectDeletion(data.item.id)}
+    <>
+      {data.item.id === firstItem ? <PaddingView /> : <></>}
+      <TouchableHighlight
+        onPress={() => navigation.navigate('Thoughts', { projectId: data.item.id })}
+        style={useTheme('rowFront')}
+        underlayColor={'grey'}
       >
-        <MaterialCommunityIcons name="trash-can-outline" size={25} color="white" />
-      </TouchableOpacity>
-    </View>
+        <View style={sharedStyles.chevronContainer}>
+          <TextStyled>{data.item.projectName}</TextStyled>
+          <MaterialCommunityIcons
+            name="chevron-right"
+            size={40}
+            color={isDarkMode ? colors.darkMode.primary : colors.lightMode.primary}
+          />
+        </View>
+      </TouchableHighlight>
+    </>
   );
 
-  render() {
-    return (
+  const renderHiddenItem = (data, _rowMap) => (
+    // for slidables
+    <>
+      {/* add padding to the top of the scrollview */}
+      {data.item.id === firstItem ? <PaddingView /> : <></>}
+      <View
+        style={{
+          ...useTheme('rowFront'),
+          backgroundColor: isDarkMode ? colors.darkMode.error : colors.lightMode.error,
+        }}
+      >
+        {/* to match height of back view to the dynamic front view height,
+      add random view below with same text (but invisable) to get same height */}
+        <View>
+          <Text style={useTheme('hiddenBackText')}>{data.item.projectName}</Text>
+        </View>
+        <TouchableOpacity
+          style={[useTheme('backRightBtn'), useTheme('backRightBtnRight')]}
+          onPress={() => handleProjectDeletion(data.item.id)}
+        >
+          <MaterialCommunityIcons name="trash-can-outline" size={25} color="white" />
+        </TouchableOpacity>
+      </View>
+    </>
+  );
+
+  return (
+    <>
+      {/* <PaddingView /> */}
       <SwipeListViewAnimated
-        data={this.props.userProjectsData.map((i) => ({ ...i, key: i.id }))} // swipeviewlist api requires key prop
-        renderItem={this.renderItem}
-        renderHiddenItem={this.renderHiddenItem}
+        data={userProjectsData.map((i) => ({ ...i, key: i.id }))} // swipeviewlist api requires key prop
+        renderItem={renderItem}
+        renderHiddenItem={renderHiddenItem}
         recalculateHiddenLayout
         disableRightSwipe
         closeOnScroll
@@ -78,13 +95,17 @@ export class ProjectList extends React.Component<ProjectListProps> {
         closeOnRowPress
         rightOpenValue={-150}
         previewOpenValue={-40}
-        onScroll={this.props.handleScroll}
+        onScroll={handleScroll}
         scrollEventThrottle={1}
-        style={{ flex: 1, paddingTop: 130 }}
+        style={{ flex: 1 }}
       />
-    );
-  }
-}
+    </>
+  );
+};
+
+const PaddingView = styled.View`
+  height: 120px;
+`;
 
 const sharedStyles = StyleSheet.create({
   fab: {
@@ -135,7 +156,6 @@ const stylesDark = StyleSheet.create({
   },
   hiddenBackText: {
     fontSize: 20,
-    flex: 1,
     padding: 15,
     color: 'rgba(0, 0, 0, 0)',
   },
@@ -178,7 +198,6 @@ const stylesLight = StyleSheet.create({
   },
   hiddenBackText: {
     fontSize: 20,
-    flex: 1,
     padding: 15,
     color: 'rgba(0, 0, 0, 0)',
   },

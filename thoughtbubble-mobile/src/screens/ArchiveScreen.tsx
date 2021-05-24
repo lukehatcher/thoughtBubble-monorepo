@@ -23,24 +23,24 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
   };
 
   const data = [];
-  for (let i = 0; i < 5; i++) data.push(Math.random());
+  for (let i = 0; i < 25; i++) data.push(Math.random());
 
   // ============================== + showTitle useState
-  const scrolling = useRef(new Animated.Value(0)).current;
+  const scrollY = useRef(new Animated.Value(0)).current;
   const animationOpacity = useRef(new Animated.Value(0)).current; // for the fading in small title
-  const translation = scrolling.interpolate({
+  const translation = scrollY.interpolate({
     inputRange: [10, 130], // wayyy smoother start from 10 than from 100
     outputRange: [0, -50],
     extrapolate: 'clamp',
   });
 
-  const titleOpacity = scrolling.interpolate({
+  const titleOpacity = scrollY.interpolate({
     // for the big title
     inputRange: [10, 130],
     outputRange: [1, 0],
     extrapolate: 'clamp',
   });
-  const borderOpacity = scrolling.interpolate({
+  const borderOpacity = scrollY.interpolate({
     // for the bottom header border
     inputRange: [10, 130],
     outputRange: [0, 1],
@@ -56,19 +56,18 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
   }, [animationOpacity, showTitle]);
 
   useEffect(() => {
-    const listener = scrolling?.addListener(({ value }) => {
+    const listener = scrollY?.addListener(({ value }) => {
       setShowTitle(value > 130);
     });
 
     return () => {
-      scrolling?.removeListener(listener);
+      scrollY?.removeListener(listener);
     };
   });
   // ==============================
 
   return (
     <ThemeProvider theme={theme}>
-      {console.log('rerender D:')}
       <MainContainer>
         <Animated.View // header
           style={{
@@ -125,7 +124,7 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
               {
                 nativeEvent: {
                   contentOffset: {
-                    y: scrolling, // "state" variable
+                    y: scrollY, // "state" variable
                   },
                 },
               },
