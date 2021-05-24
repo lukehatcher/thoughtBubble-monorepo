@@ -1,7 +1,6 @@
 import React, { FC, useRef, useState, useEffect } from 'react';
 import { View, Text, Animated, StyleSheet, ScrollView } from 'react-native';
 import styled, { ThemeProvider } from 'styled-components/native';
-import { BlurView } from '@react-native-community/blur';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { colors } from '../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -22,6 +21,10 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
     textOnBackground: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground,
     dp1: isDarkMode ? darkMode.dp1 : lightMode.background,
   };
+
+  const data = [];
+  for (let i = 0; i < 25; i++) data.push(Math.random());
+
   const scrolling = useRef(new Animated.Value(0)).current;
   const animationOpacity = useRef(new Animated.Value(0)).current; // for the fading in small title
   const translation = scrolling.interpolate({
@@ -34,6 +37,12 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
     // for the big title
     inputRange: [10, 130],
     outputRange: [1, 0],
+    extrapolate: 'clamp',
+  });
+  const borderOpacity = scrolling.interpolate({
+    // for the bottom header border
+    inputRange: [10, 130],
+    outputRange: [0, 1],
     extrapolate: 'clamp',
   });
 
@@ -58,19 +67,19 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
   return (
     <ThemeProvider theme={theme}>
       <MainContainer>
-        <Animated.View
+        <Animated.View // header
           style={{
             position: 'absolute',
             top: 0,
             left: 0,
             right: 0,
             height: 120,
-            backgroundColor: isDarkMode ? darkMode.dp1 : lightMode.primaryVariant,
+            backgroundColor: isDarkMode ? darkMode.background : lightMode.background,
             transform: [{ translateY: translation }],
-            zIndex: 999,
+            zIndex: 9,
           }}
         >
-          <Animated.View // big title + cloud
+          <Animated.View // big title + cloud container
             style={{
               opacity: titleOpacity,
               display: 'flex',
@@ -80,14 +89,31 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
               alignItems: 'center',
             }}
           >
-            <MaterialCommunityIcons name="thought-bubble" size={30} color="white" />
-            <Text style={{ fontSize: 30, color: 'white' }}>Archive</Text>
+            <MaterialCommunityIcons
+              name="thought-bubble"
+              size={30}
+              color={isDarkMode ? darkMode.primary : lightMode.primary}
+            />
+            <Text style={{ fontSize: 30, color: isDarkMode ? 'white' : 'black' }}>Archive</Text>
           </Animated.View>
           <Animated.Text
-            style={{ position: 'absolute', right: 0, bottom: 0, color: 'white', opacity: animationOpacity }}
+            style={[
+              styles.animationText,
+              { opacity: animationOpacity, color: isDarkMode ? darkMode.textOnBackground : 'black' },
+            ]}
           >
-            animation here
+            Archive
           </Animated.Text>
+          <Animated.View
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              height: 0.5,
+              width: '100%',
+              backgroundColor: isDarkMode ? 'white' : 'black',
+              opacity: borderOpacity,
+            }}
+          ></Animated.View>
         </Animated.View>
 
         <Animated.ScrollView
@@ -103,14 +129,16 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
             ],
             { useNativeDriver: true },
           )}
-          // onScroll will be fired every 16ms
           scrollEventThrottle={4}
-          // contentContainerStyle={{ zIndex: 999 }}
           style={{ flex: 1 }}
         >
-          <View style={{ flex: 1, height: 1000 }} />
-          {/* <View style={{ flex: 1, height: 500 }} /> */}
-          {/* <HeaderText>Archive</HeaderText> */}
+          {/* padding view */}
+          <View style={{ flex: 1, height: 130 }} />
+          {data.map((i) => (
+            <View key={i} style={{ margin: 10, borderBottomColor: isDarkMode ? 'white' : 'black', borderWidth: 1 }}>
+              <Text style={{ color: isDarkMode ? 'white' : 'black' }}>hello world</Text>
+            </View>
+          ))}
         </Animated.ScrollView>
       </MainContainer>
     </ThemeProvider>
@@ -118,16 +146,11 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
 };
 
 const styles = StyleSheet.create({
-  topPaddingView: {
-    flex: 1,
-    height: 200,
-    borderColor: 'green',
-    borderWidth: 1,
-  },
-  animatedScrollView: {
-    // flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+  animationText: {
+    position: 'absolute',
+    width: '100%',
+    textAlign: 'center',
+    bottom: 10,
   },
 });
 
