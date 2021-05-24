@@ -1,15 +1,15 @@
 import React, { FC } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { SettingsScreen } from '../../screens/SettingsScreen';
+import { SettingsScreen } from '../screens/SettingsScreen';
 import { ProjectsStackNavigator } from './ProjectsStackNavigator';
 import { StatsStackNavigator } from './StatsStackNavigator';
-import { TabsParamList } from '../../interfaces/navigation';
-import { AppNavTabsProps } from '../../interfaces/componentProps';
-import { colors } from '../../constants/colors';
+import { TabsParamList } from '../interfaces/navigation';
+import { AppNavTabsProps } from '../interfaces/componentProps';
+import { colors } from '../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useDarkCheck } from '../../hooks/useDarkCheck';
-import { ArchiveScreen } from '../../screens/ArchiveScreen';
+import { useDarkCheck } from '../hooks/useDarkCheck';
+import { ArchiveScreen } from '../screens/ArchiveScreen';
 // import { StatusBar } from 'react-native';
 
 const { darkMode, lightMode } = colors;

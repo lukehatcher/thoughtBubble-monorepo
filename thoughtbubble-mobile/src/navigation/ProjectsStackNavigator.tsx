@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { ProjectsScreen } from '../../screens/ProjectsScreen';
-import { ThoughtsScreen } from '../../screens/ThoughtsScreen';
-import { ProjectStackParamList } from '../../interfaces/navigation';
-import { ProjectsStackNavigatorProps } from '../../interfaces/componentProps';
-import { colors } from '../../constants/colors';
-import { useDarkCheck } from '../../hooks/useDarkCheck';
+import { ProjectsScreen } from '../screens/ProjectsScreen';
+import { ThoughtsScreen } from '../screens/ThoughtsScreen';
+import { ProjectStackParamList } from '../interfaces/navigation';
+import { ProjectsStackNavigatorProps } from '../interfaces/componentProps';
+import { colors } from '../constants/colors';
+import { useDarkCheck } from '../hooks/useDarkCheck';
 import { BlurView } from '@react-native-community/blur';
 import { View } from 'react-native';
 

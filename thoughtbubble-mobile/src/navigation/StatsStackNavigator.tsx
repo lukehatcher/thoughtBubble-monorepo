@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { StatsHomeScreen } from '../../screens/StatsHomeScreen';
-import { StatsProjectInfoScreen } from '../../screens/StatsProjectInfoScreen';
-import { StatsStackParamList } from '../../interfaces/navigation';
-import { colors } from '../../constants/colors';
-import { useDarkCheck } from '../../hooks/useDarkCheck';
+import { StatsHomeScreen } from '../screens/StatsHomeScreen';
+import { StatsProjectInfoScreen } from '../screens/StatsProjectInfoScreen';
+import { StatsStackParamList } from '../interfaces/navigation';
+import { colors } from '../constants/colors';
+import { useDarkCheck } from '../hooks/useDarkCheck';
 
 const { darkMode, lightMode } = colors;
 const Stack = createStackNavigator<StatsStackParamList>();
