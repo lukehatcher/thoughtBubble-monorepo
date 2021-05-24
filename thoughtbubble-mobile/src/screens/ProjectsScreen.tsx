@@ -8,7 +8,7 @@ import { RootState } from '../reducers/rootReducer'; // type
 import { ProjectsScreenProps } from '../interfaces/componentProps'; // type
 import { deleteProjectAction } from '../actions/projectActions';
 import { colors } from '../constants/colors';
-import { AddProjectModal } from './AddProjectModal';
+import { AddProjectModal } from '../components/AddProjectModal';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 
 export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) => {
@@ -88,6 +88,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
             closeOnRowPress
             rightOpenValue={-150}
             previewOpenValue={-40}
+            // style={{ paddingTop: 90 }} // used for the blur 2/3
           />
         ) : (
           // if user has no projects, this message + icon pops up

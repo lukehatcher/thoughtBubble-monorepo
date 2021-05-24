@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { Provider as ReduxProvider } from 'react-redux';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { AppTabsNavigator } from './src/components/navigation/AppTabsNavigator';
-import { LoginScreen } from './src/components/LoginScreen';
+import { LoginScreen } from './src/screens/LoginScreen';
 import { checkForIdToken } from './src/utils/asyncStorage';
 import { storeUserAction } from './src/actions/storeUserAction';
 import { fetchProjectDataAction } from './src/actions/fetchProjectDataAction';

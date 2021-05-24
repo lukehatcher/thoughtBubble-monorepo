@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { SettingsScreen } from '../SettingsScreen';
+import { SettingsScreen } from '../../screens/SettingsScreen';
 import { ProjectsStackNavigator } from './ProjectsStackNavigator';
 import { StatsStackNavigator } from './StatsStackNavigator';
 import { TabsParamList } from '../../interfaces/navigation';
@@ -9,6 +9,7 @@ import { AppNavTabsProps } from '../../interfaces/componentProps';
 import { colors } from '../../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useDarkCheck } from '../../hooks/useDarkCheck';
+import { ArchiveScreen } from '../../screens/ArchiveScreen';
 // import { StatusBar } from 'react-native';
 
 const { darkMode, lightMode } = colors;
@@ -46,6 +47,14 @@ export const AppTabsNavigator: FC<AppNavTabsProps> = () => {
             options={{
               title: 'Projects',
               tabBarIcon: ({ color }) => <MaterialCommunityIcons name="format-list-bulleted" size={30} color={color} />,
+            }}
+          />
+          <Tab.Screen
+            name="Archive"
+            component={ArchiveScreen} // projects stack
+            options={{
+              title: 'Archive',
+              tabBarIcon: ({ color }) => <MaterialCommunityIcons name="clock-outline" size={30} color={color} />,
             }}
           />
           <Tab.Screen

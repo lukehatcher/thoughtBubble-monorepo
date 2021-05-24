@@ -6,14 +6,14 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import { RootState } from '../reducers/rootReducer'; // type
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { deleteThoughtAction, thoughtStatusChangeAction } from '../actions/thoughtActions';
-import { MoreModal } from './MoreModal';
+import { MoreModal } from '../components/MoreModal';
 import { ThoughtScreenProps } from '../interfaces/componentProps'; // type
 import { colors } from '../constants/colors';
-import { SortThoughtModal } from './SortThoughtModal';
-import { AddThoughtModal } from './AddThoughtModal';
+import { SortThoughtModal } from '../components/SortThoughtModal';
+import { AddThoughtModal } from '../components/AddThoughtModal';
 import { FAB } from 'react-native-paper';
 import { useDarkCheck } from '../hooks/useDarkCheck';
-import { StackBackButton } from './StackBackButton';
+import { StackBackButton } from '../components/StackBackButton';
 
 export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) => {
   const [addThoughtModalView, setAddThoughtModalView] = useState(false); // plus modal
@@ -141,6 +141,7 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
             closeOnRowPress
             rightOpenValue={-150}
             previewOpenValue={-40}
+            // style={{ paddingTop: 90 }} // used for the blur 1/3
           />
         ) : (
           // if user has no thoughts in this proj, this message + icon pops up

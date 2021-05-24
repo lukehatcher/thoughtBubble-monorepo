@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { StatsHomeScreen } from '../StatsHomeScreen';
-import { StatsProjectInfoScreen } from '../StatsProjectInfoScreen';
+import { StatsHomeScreen } from '../../screens/StatsHomeScreen';
+import { StatsProjectInfoScreen } from '../../screens/StatsProjectInfoScreen';
 import { StatsStackParamList } from '../../interfaces/navigation';
 import { colors } from '../../constants/colors';
 import { useDarkCheck } from '../../hooks/useDarkCheck';

@@ -16,7 +16,7 @@ import { activityRangeMap } from '../constants/activityRanges';
 import { StyleSheet } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { HeaderBackButton } from '@react-navigation/stack';
-import { StackBackButton } from './StackBackButton';
+import { StackBackButton } from '../components/StackBackButton';
 
 const { darkMode, lightMode } = colors;
 
