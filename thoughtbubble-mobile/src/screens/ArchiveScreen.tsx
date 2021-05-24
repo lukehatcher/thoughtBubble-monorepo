@@ -23,8 +23,9 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
   };
 
   const data = [];
-  for (let i = 0; i < 25; i++) data.push(Math.random());
+  for (let i = 0; i < 5; i++) data.push(Math.random());
 
+  // ============================== + showTitle useState
   const scrolling = useRef(new Animated.Value(0)).current;
   const animationOpacity = useRef(new Animated.Value(0)).current; // for the fading in small title
   const translation = scrolling.interpolate({
@@ -63,9 +64,11 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
       scrolling?.removeListener(listener);
     };
   });
+  // ==============================
 
   return (
     <ThemeProvider theme={theme}>
+      {console.log('rerender D:')}
       <MainContainer>
         <Animated.View // header
           style={{
@@ -136,7 +139,8 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
           <View style={{ flex: 1, height: 130 }} />
           {data.map((i) => (
             <View key={i} style={{ margin: 10, borderBottomColor: isDarkMode ? 'white' : 'black', borderWidth: 1 }}>
-              <Text style={{ color: isDarkMode ? 'white' : 'black' }}>hello world</Text>
+              {console.log('dtatat')}
+              <Text style={{ color: isDarkMode ? 'white' : 'black' }}>hello world {i}</Text>
             </View>
           ))}
         </Animated.ScrollView>
