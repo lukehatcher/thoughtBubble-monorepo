@@ -29,6 +29,14 @@ export class Project extends BaseEntity {
   @CreateDateColumn({ nullable: true })
   lastUpdatedDate!: Date;
 
+  // archive data
+  @Column('boolean', { default: false })
+  archived!: boolean;
+
+  @Column({ nullable: true })
+  archivedDate!: Date;
+  // ============
+
   @Column('text', { nullable: true })
   tag!: string;
 

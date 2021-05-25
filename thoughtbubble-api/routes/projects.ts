@@ -10,6 +10,16 @@ router
   .post(ProjectsController.createProject)
   .delete(ProjectsController.deleteProject);
 
+// api/projects/archive
+router
+  .route('/archive') //
+  .put(ProjectsController.archiveProject);
+
+// // api/projects/unarchive
+// router
+//   .route('/unarchive') //
+//   .put(ProjectsController.unarchiveProject);
+
 // api/projects/init
 // not tested
 router

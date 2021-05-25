@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { Request, Response } from 'express';
-import { getRepository } from 'typeorm';
+import { getConnection, getRepository } from 'typeorm';
 import { Project } from '../entities/Project';
 import { Thought } from '../entities/Thought';
 import { User } from '../entities/User';
@@ -49,7 +49,11 @@ class ProjectsController extends ControllerHelper {
       const user = await User.findOne({ githubId: userSub }); // wack naming
       const userId = user?.id;
       const newProject = await Project.create({ projectName, userId, creationLocation }).save();
-      await this.recordActivity(userSub, newProject.id);
+      try {
+        await this.recordActivity(userSub, newProject.id);
+      } catch (err) {
+        console.error('fuck2', err);
+      }
       res.send(newProject); // maybe just send the id
     } catch (err) {
       console.error(this.location, err);
@@ -63,6 +67,41 @@ class ProjectsController extends ControllerHelper {
       // cascade delete takse care of thoughts
       await Project.delete({ id: projectId?.toString() });
       res.sendStatus(200);
+    } catch (err) {
+      console.error(this.location, err);
+      res.sendStatus(400);
+    }
+  };
+
+  /**
+   * handles BOTH archive AND unarchive
+   */
+  public archiveProject = async (req: Request, res: Response): Promise<void> => {
+    const { projectId } = req.body;
+
+    try {
+      // set archived status and update date
+      const project = await Project.findOne({ id: projectId });
+      const currBool = project?.archived;
+      const newDate = currBool ? new Date() : undefined;
+      await getConnection()
+        .createQueryBuilder()
+        .update(Project)
+        .set({ archived: !currBool, archivedDate: newDate })
+        .where('id = :id', { id: projectId })
+        .execute();
+
+      const projectThoughts = await getRepository(Thought)
+        .createQueryBuilder('thought')
+        .where('thought.projectId = :projectId', { projectId: projectId })
+        .orderBy('thought.createdDate', 'ASC')
+        .getMany();
+
+      // return the updated project with its thoughts
+      const updatedProject = await Project.findOne({ id: projectId });
+      const data = updatedProject as any;
+      data.projectThoughts = projectThoughts;
+      res.status(200).send(data);
     } catch (err) {
       console.error(this.location, err);
       res.sendStatus(400);
