@@ -186,7 +186,8 @@ const sharedStyles = StyleSheet.create({
   fab: {
     position: 'absolute',
     right: 0,
-    bottom: 0,
+    // bottom: 0,
+    bottom: 80,
     margin: 16,
   },
   nothingHere: {

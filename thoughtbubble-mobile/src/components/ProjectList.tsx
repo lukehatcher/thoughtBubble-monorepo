@@ -1,4 +1,4 @@
-import React, { FC, forwardRef } from 'react';
+import React, { FC } from 'react';
 import { Animated, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { colors } from '../constants/colors';
@@ -15,6 +15,7 @@ interface ProjectListProps {
   isDarkMode: boolean;
 }
 
+const { darkMode, lightMode } = colors;
 const SwipeListViewAnimated = Animated.createAnimatedComponent(SwipeListView);
 
 export const ProjectList: FC<ProjectListProps> = ({ userProjectsData, handleScroll, isDarkMode }) => {
@@ -22,6 +23,7 @@ export const ProjectList: FC<ProjectListProps> = ({ userProjectsData, handleScro
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const firstItem = userProjectsData[0].id;
+  const lastItem = userProjectsData[userProjectsData.length - 1].id;
 
   const handleProjectDeletion = function (projectId: string) {
     dispatch(deleteProjectAction(projectId));
@@ -52,6 +54,8 @@ export const ProjectList: FC<ProjectListProps> = ({ userProjectsData, handleScro
           />
         </View>
       </TouchableHighlight>
+      {/* add padding to the end of the scrollview */}
+      {data.item.id === lastItem ? <PaddingViewBottom /> : <></>}
     </>
   );
 
@@ -78,12 +82,13 @@ export const ProjectList: FC<ProjectListProps> = ({ userProjectsData, handleScro
           <MaterialCommunityIcons name="trash-can-outline" size={25} color="white" />
         </TouchableOpacity>
       </View>
+      {/* add padding to the end of the scrollview */}
+      {data.item.id === lastItem ? <PaddingViewBottom /> : <></>}
     </>
   );
 
   return (
     <>
-      {/* <PaddingView /> */}
       <SwipeListViewAnimated
         data={userProjectsData.map((i) => ({ ...i, key: i.id }))} // swipeviewlist api requires key prop
         renderItem={renderItem}
@@ -106,25 +111,22 @@ export const ProjectList: FC<ProjectListProps> = ({ userProjectsData, handleScro
 const PaddingView = styled.View`
   height: 120px;
 `;
+const PaddingViewBottom = styled.View`
+  margin-top: 10px;
+  height: 78px;
+`;
 
 const sharedStyles = StyleSheet.create({
-  fab: {
-    position: 'absolute',
-    right: 0,
-    bottom: 0,
-    margin: 16,
-  },
   chevronContainer: {
     flex: 1,
     alignItems: 'center',
     flexDirection: 'row',
-    // backgroundColor: 'grey',
   },
 });
 
 const stylesDark = StyleSheet.create({
   rowFront: {
-    backgroundColor: colors.darkMode.dp1,
+    backgroundColor: darkMode.dp1,
     alignItems: 'center',
     justifyContent: 'center',
     height: 'auto', // !!!!!!!!!
@@ -144,7 +146,7 @@ const stylesDark = StyleSheet.create({
   },
   backRightBtnRight: {
     // change colors to see why all these styles are necesary
-    backgroundColor: colors.darkMode.error,
+    backgroundColor: darkMode.error,
     right: 0,
     borderBottomRightRadius: 10,
     borderTopRightRadius: 10,
@@ -158,7 +160,7 @@ const stylesDark = StyleSheet.create({
 
 const stylesLight = StyleSheet.create({
   rowFront: {
-    backgroundColor: colors.lightMode.background,
+    backgroundColor: lightMode.background,
     alignItems: 'center',
     justifyContent: 'center',
     height: 'auto', // !!!!!!!!!
@@ -186,7 +188,7 @@ const stylesLight = StyleSheet.create({
     width: 155,
   },
   backRightBtnRight: {
-    backgroundColor: colors.lightMode.error,
+    backgroundColor: lightMode.error,
     right: 0,
     borderBottomRightRadius: 10,
     borderTopRightRadius: 10,

@@ -29,6 +29,7 @@ const Container = styled.View`
   margin-top: 75px;
   flex: 1;
   align-items: center;
+  padding-top: 100px; // added
 `;
 
 const TextNothingHere = styled.Text`

@@ -27,7 +27,8 @@ export const ThoughtsList: FC<ThoughtsListProps> = function ({
   handleThoughtDelete,
   handleScroll,
 }) {
-  const useTheme = (name: string) => (theme ? stylesDark[name] : stylesLight[name]);
+  const useTheme = (name: string) => (isDarkMode ? stylesDark[name] : stylesLight[name]);
+
   const theme = {
     // for styled-components ThemeProvider
     background: isDarkMode ? darkMode.background : lightMode.background,
@@ -39,6 +40,7 @@ export const ThoughtsList: FC<ThoughtsListProps> = function ({
     dp1: isDarkMode ? darkMode.dp1 : lightMode.background,
   };
   const firstItem = thoughts[0].id;
+  const lastItem = thoughts[thoughts.length - 1].id;
 
   const closeRow = (rowMap, rowKey) => {
     // for slidables
@@ -80,6 +82,8 @@ export const ThoughtsList: FC<ThoughtsListProps> = function ({
           <MaterialCommunityIcons name="trash-can-outline" size={25} color="white" />
         </TouchableOpacity>
       </View>
+      {/* add padding to the end of the scrollview */}
+      {data.item.id === lastItem ? <PaddingViewBottom /> : <></>}
     </>
   );
 
@@ -112,6 +116,8 @@ export const ThoughtsList: FC<ThoughtsListProps> = function ({
           </TouchableOpacity>
         </>
       </TouchableHighlight>
+      {/* add padding to the end of the scrollview */}
+      {data.item.id === lastItem ? <PaddingViewBottom /> : <></>}
     </>
   );
 
@@ -140,14 +146,12 @@ const PaddingView = styled.View`
   height: 120px;
 `;
 
+const PaddingViewBottom = styled.View`
+  margin-top: 10px;
+  height: 78px;
+`;
+
 const sharedStyles = StyleSheet.create({
-  // styles not effected by light/dark mode
-  fab: {
-    position: 'absolute',
-    right: 0,
-    bottom: 0,
-    margin: 16,
-  },
   hiddenBackText: {
     // see notes in code
     fontSize: 20,
@@ -172,17 +176,17 @@ const sharedStyles = StyleSheet.create({
 const stylesDark = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: colors.darkMode.background,
+    backgroundColor: darkMode.background,
   },
   text: {
     fontSize: 20,
     flex: 1,
     padding: 15,
     paddingEnd: 35,
-    color: colors.darkMode.textOnSurface,
+    color: darkMode.textOnSurface,
   },
   textNothingHere: {
-    color: `${colors.darkMode.textOnBackground}40`,
+    color: `${darkMode.textOnBackground}40`,
     fontSize: 20,
     marginTop: 20,
   },
@@ -190,13 +194,13 @@ const stylesDark = StyleSheet.create({
     textDecorationLine: 'line-through',
     padding: 15,
     paddingEnd: 35,
-    color: `${colors.darkMode.textOnSurface}50`,
+    color: `${darkMode.textOnSurface}50`,
     fontSize: 20,
     flex: 1,
   },
   // === SwipeListView styles ===
   rowFront: {
-    backgroundColor: colors.darkMode.dp1,
+    backgroundColor: darkMode.dp1,
     flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'center',
@@ -215,7 +219,7 @@ const stylesDark = StyleSheet.create({
     width: 50,
   },
   backRightBtnLeft: {
-    backgroundColor: colors.darkMode.error,
+    backgroundColor: darkMode.error,
     flex: 1,
     alignItems: 'flex-end',
     paddingRight: 20,
@@ -223,7 +227,7 @@ const stylesDark = StyleSheet.create({
     width: 100,
   },
   backRightBtnRight: {
-    backgroundColor: colors.darkMode.secondary,
+    backgroundColor: darkMode.secondary,
     right: 0,
     borderBottomRightRadius: 10,
     borderTopRightRadius: 10,
@@ -235,17 +239,17 @@ const stylesDark = StyleSheet.create({
 const stylesLight = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: colors.lightMode.background,
+    backgroundColor: lightMode.background,
   },
   text: {
     fontSize: 20,
     flex: 1,
     padding: 15,
     paddingEnd: 35,
-    color: colors.lightMode.textOnSurface,
+    color: lightMode.textOnSurface,
   },
   textNothingHere: {
-    color: `${colors.lightMode.textOnBackground}40`,
+    color: `${lightMode.textOnBackground}40`,
     fontSize: 20,
     marginTop: 20,
   },
@@ -253,13 +257,13 @@ const stylesLight = StyleSheet.create({
     textDecorationLine: 'line-through',
     padding: 15,
     paddingEnd: 35,
-    color: `${colors.lightMode.textOnSurface}50`,
+    color: `${lightMode.textOnSurface}50`,
     fontSize: 20,
     flex: 1,
   },
   // === SwipeListView styles ===
   rowFront: {
-    backgroundColor: colors.lightMode.background,
+    backgroundColor: lightMode.background,
     flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'center',
@@ -286,7 +290,7 @@ const stylesLight = StyleSheet.create({
     width: 50,
   },
   backRightBtnLeft: {
-    backgroundColor: colors.lightMode.error,
+    backgroundColor: lightMode.error,
     flex: 1,
     alignItems: 'flex-end',
     paddingRight: 20,
@@ -294,7 +298,7 @@ const stylesLight = StyleSheet.create({
     width: 100,
   },
   backRightBtnRight: {
-    backgroundColor: colors.lightMode.secondary,
+    backgroundColor: lightMode.secondary,
     right: 0,
     borderBottomRightRadius: 10,
     borderTopRightRadius: 10,
