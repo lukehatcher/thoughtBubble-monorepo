@@ -11,9 +11,12 @@ import { DateHelper } from '../utils/dateHelpers';
 import { Activity } from '../interfaces/data';
 import { useFocusEffect } from '@react-navigation/native';
 import { fetchActivityDataAction } from '../actions/fetchActivityAction';
-import { Button, ProgressBar } from 'react-native-paper';
+import { Button, IconButton, ProgressBar } from 'react-native-paper';
 import { activityRangeMap } from '../constants/activityRanges';
 import { StyleSheet } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { HeaderBackButton } from '@react-navigation/stack';
+import { StackBackButton } from '../components/StackBackButton';
 
 const { darkMode, lightMode } = colors;
 
@@ -52,7 +55,7 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
     // set screen title
     navigation.setOptions({
       title: userProjectsData.find((proj) => proj.id === projectId).projectName,
-      // headerStyle: { backgroundColor: isDarkMode ? darkMode.background : lightMode.background },
+      headerLeft: () => <StackBackButton location="Analytics" shadeBackground />,
     });
   });
 

@@ -9,8 +9,8 @@ import { ActivityIndicator, StatusBar } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Provider as ReduxProvider } from 'react-redux';
 import { Provider as PaperProvider } from 'react-native-paper';
-import { AppTabsNavigator } from './src/components/navigation/AppTabsNavigator';
-import { LoginScreen } from './src/components/LoginScreen';
+import { AppTabsNavigator } from './src/navigation/AppTabsNavigator';
+import { LoginScreen } from './src/screens/LoginScreen';
 import { checkForIdToken } from './src/utils/asyncStorage';
 import { storeUserAction } from './src/actions/storeUserAction';
 import { fetchProjectDataAction } from './src/actions/fetchProjectDataAction';
@@ -18,16 +18,18 @@ import { RootState } from './src/reducers/rootReducer'; // type
 import store from './src/store';
 import { fetchUserInfoAction } from './src/actions/userInfoActions';
 import { fetchActivityDataAction } from './src/actions/fetchActivityAction';
+import { useDarkCheck } from './src/hooks/useDarkCheck';
 
 interface AppProps {}
 
 const App: FC<AppProps> = () => {
   const loginStatus = useSelector((state: RootState) => state.storedUser);
+  const isDarkMode = useDarkCheck();
 
   if (loginStatus.sub) {
     return (
       <>
-        <StatusBar barStyle="light-content" />
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
         <AppTabsNavigator />
       </>
     );

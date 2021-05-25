@@ -4,6 +4,7 @@ export type TabsParamList = {
   Settings: undefined;
   Projects: undefined;
   Stats: undefined;
+  Archive: undefined;
 };
 
 export type ProjectStackParamList = {
