@@ -118,7 +118,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
           </Animated.View>
           <Animated.Text
             style={[
-              sharedStyles.animationText,
+              headerStyles.animationText,
               { opacity: animationOpacity, color: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground },
             ]}
           >
@@ -174,6 +174,12 @@ const headerStyles = StyleSheet.create({
     bottom: 10,
     alignItems: 'center',
   },
+  animationText: {
+    position: 'absolute',
+    width: '100%',
+    textAlign: 'center',
+    bottom: 10,
+  },
 });
 
 const sharedStyles = StyleSheet.create({
@@ -192,11 +198,5 @@ const sharedStyles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     flexDirection: 'row',
-  },
-  animationText: {
-    position: 'absolute',
-    width: '100%',
-    textAlign: 'center',
-    bottom: 10,
   },
 });

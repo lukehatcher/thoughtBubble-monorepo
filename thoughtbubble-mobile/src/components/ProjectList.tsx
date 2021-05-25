@@ -114,11 +114,6 @@ const sharedStyles = StyleSheet.create({
     bottom: 0,
     margin: 16,
   },
-  nothingHere: {
-    marginTop: 75,
-    flex: 1,
-    alignItems: 'center',
-  },
   chevronContainer: {
     flex: 1,
     alignItems: 'center',

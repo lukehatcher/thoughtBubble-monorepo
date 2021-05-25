@@ -8,9 +8,10 @@ const { darkMode, lightMode } = colors;
 
 interface StackBackButtonProps {
   location: 'Projects' | 'Analytics';
+  shadeBackground?: boolean;
 }
 
-export const StackBackButton: FC<StackBackButtonProps> = function ({ location }) {
+export const StackBackButton: FC<StackBackButtonProps> = function ({ location, shadeBackground }) {
   const isDarkMode = useDarkCheck();
   const navigation = useNavigation();
   return (
@@ -19,7 +20,14 @@ export const StackBackButton: FC<StackBackButtonProps> = function ({ location })
       color={isDarkMode ? darkMode.secondary : lightMode.textOnBackground}
       size={35}
       onPress={() => navigation.navigate(`${location}`)}
-      style={{ marginLeft: 10, marginBottom: 10, width: 35, height: 35, borderRadius: 10 }}
+      style={{
+        marginLeft: 10,
+        marginBottom: 10,
+        width: 35,
+        height: 35,
+        borderRadius: 10,
+        backgroundColor: shadeBackground ? darkMode.dp1 : null,
+      }}
       animated={true}
     />
   );

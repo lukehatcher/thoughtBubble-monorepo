@@ -1,16 +1,15 @@
-import React, { useState, useLayoutEffect, FC } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TouchableHighlight, LogBox } from 'react-native';
+import React, { useState, useLayoutEffect, FC, useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, TouchableHighlight, LogBox, Animated } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { RootState } from '../reducers/rootReducer'; // type
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { deleteThoughtAction, thoughtStatusChangeAction } from '../actions/thoughtActions';
 import { MoreModal } from '../components/MoreModal';
 import { ThoughtScreenProps } from '../interfaces/componentProps'; // type
 import { colors } from '../constants/colors';
 import { SortThoughtModal } from '../components/SortThoughtModal';
 import { AddThoughtModal } from '../components/AddThoughtModal';
-import { FAB } from 'react-native-paper';
+import { FAB, IconButton } from 'react-native-paper';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { StackBackButton } from '../components/StackBackButton';
 import { ThoughtsList } from '../components/ThoughtsList';
@@ -31,8 +30,6 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
   let thoughts = useSelector(thoughtsSelector); // retrive thoughts for the project we're on
 
   const isDarkMode = useDarkCheck();
-  const useTheme = (name: string) => (isDarkMode ? stylesDark[name] : stylesLight[name]);
-
   const theme = {
     // for styled-components ThemeProvider
     background: isDarkMode ? darkMode.background : lightMode.background,
@@ -44,21 +41,59 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
     dp1: isDarkMode ? darkMode.dp1 : lightMode.background,
   };
 
-  // useLayoutEffect(() => {
-  //   // adds the sort button to the stack header
-  //   navigation.setOptions({
-  //     headerRight: () => (
-  //       <TouchableOpacity style={{ marginRight: 30, marginBottom: 2 }} onPress={() => setSortModalView(true)}>
-  //         <MaterialCommunityIcons
-  //           name="sort-variant"
-  //           size={40}
-  //           color={theme ? colors.darkMode.primary : colors.lightMode.primary}
-  //         />
-  //       </TouchableOpacity>
-  //     ),
-  //     headerLeft: () => <StackBackButton location="Projects" />,
-  //   });
-  // }, [navigation, theme]);
+  const [showTitle, setShowTitle] = useState(false); // title to the left with the icon
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const animationOpacity = useRef(new Animated.Value(0)).current; // for the fading in small title
+
+  const handleScroll = Animated.event(
+    [
+      {
+        nativeEvent: {
+          contentOffset: {
+            y: scrollY, // "state" variable
+          },
+        },
+      },
+    ],
+    { useNativeDriver: true },
+  );
+
+  const translation = scrollY.interpolate({
+    inputRange: [10, 130], // wayyy smoother start from 10 than from 100
+    outputRange: [0, -50],
+    extrapolate: 'clamp',
+  });
+
+  const titleOpacity = scrollY.interpolate({
+    // for the big title
+    inputRange: [10, 130],
+    outputRange: [1, 0],
+    extrapolate: 'clamp',
+  });
+  const borderOpacity = scrollY.interpolate({
+    // for the bottom header border
+    inputRange: [10, 130],
+    outputRange: [0, 1],
+    extrapolate: 'clamp',
+  });
+
+  useEffect(() => {
+    Animated.timing(animationOpacity, {
+      toValue: showTitle ? 1 : 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  }, [animationOpacity, showTitle]);
+
+  useEffect(() => {
+    const listener = scrollY?.addListener(({ value }) => {
+      setShowTitle(value > 130);
+    });
+
+    return () => {
+      scrollY?.removeListener(listener);
+    };
+  });
 
   const handleThoughtDelete = (thoughtId: string) => {
     dispatch(deleteThoughtAction(projectId, thoughtId));
@@ -69,74 +104,10 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
     // closeRow(rowMap, rowKey); // move to thought list component
   };
 
-  // const closeRow = (rowMap, rowKey) => {
-  //   // for slidables
-  //   if (rowMap[rowKey]) {
-  //     rowMap[rowKey].closeRow();
-  //   }
-  // };
-
-  // const renderHiddenItem = (data, rowMap) => (
-  //   // for slidables
-  //   <View
-  //     style={{
-  //       ...useTheme('rowFront'),
-  //       backgroundColor: theme ? colors.darkMode.error : colors.lightMode.error,
-  //     }}
-  //   >
-  //     {/* to match height of back view to the dynamic front view height,
-  //     add random view below with same text (but invisable) to get same height */}
-  //     <View>
-  //       <Text style={sharedStyles.hiddenBackText}>{data.item.text}</Text>
-  //     </View>
-  //     <TouchableOpacity
-  //       style={[useTheme('backRightBtn'), useTheme('backRightBtnRight')]}
-  //       onPress={() => handleThoughtStatusChange(data.item.id, rowMap, data.item.key)}
-  //     >
-  //       <MaterialCommunityIcons name="checkbox-marked-outline" size={25} color="white" />
-  //     </TouchableOpacity>
-
-  //     <TouchableOpacity
-  //       style={[useTheme('backRightBtn'), useTheme('backRightBtnLeft')]}
-  //       onPress={() => handleThoughtDelete(data.item.id)}
-  //     >
-  //       <MaterialCommunityIcons name="trash-can-outline" size={25} color="white" />
-  //     </TouchableOpacity>
-  //   </View>
-  // );
-
   const renderModal = (thoughtId: string) => {
     setFocusedId(thoughtId);
     setMoreModalView(true);
   };
-
-  // const renderItem = (data) => (
-  //   // for slidables
-  //   // thought is data.item.text
-  //   <TouchableHighlight style={useTheme('rowFront')} underlayColor={'grey'}>
-  //     <>
-  //       <Text style={data.item.completed ? useTheme('textCompleted') : useTheme('text')}>{data.item.text}</Text>
-  //       {data.item.tag ? (
-  //         <TouchableOpacity style={sharedStyles.tagIcon} onPress={() => renderModal(data.item.key)}>
-  //           {data.item.tag !== 'star' ? (
-  //             <MaterialCommunityIcons name="tag" size={25} color={data.item.tag} />
-  //           ) : (
-  //             <MaterialCommunityIcons name="star" size={25} color="#D4AF37" />
-  //           )}
-  //         </TouchableOpacity>
-  //       ) : (
-  //         <></>
-  //       )}
-  //       <TouchableOpacity style={sharedStyles.moreBtn} onPress={() => renderModal(data.item.key)}>
-  //         <MaterialIcons
-  //           name="more-vert"
-  //           size={35}
-  //           color={theme ? colors.darkMode.primary : colors.lightMode.primary}
-  //         />
-  //       </TouchableOpacity>
-  //     </>
-  //   </TouchableHighlight>
-  // );
 
   // https://github.com/jemise111/react-native-swipe-list-view/issues/388
   LogBox.ignoreLogs(["Sending 'onAnimatedValueUpdate' with no listeners registered"]);
@@ -145,6 +116,66 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
     <>
       <ThemeProvider theme={theme}>
         <MainContainer>
+          <Animated.View // header
+            style={[
+              headerStyles.header,
+              {
+                backgroundColor: isDarkMode ? darkMode.background : lightMode.background,
+                transform: [{ translateY: translation }],
+              },
+            ]}
+          >
+            {/* main title container view */}
+            <Animated.View style={[headerStyles.titleContainer, { opacity: titleOpacity }]}>
+              <MaterialCommunityIcons
+                name="thought-bubble"
+                size={30}
+                color={isDarkMode ? darkMode.primary : lightMode.primary}
+              />
+              <Text
+                style={{ fontSize: 30, color: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground }}
+              >
+                Thoughts
+              </Text>
+            </Animated.View>
+            <Animated.Text
+              style={[
+                headerStyles.animationText,
+                {
+                  opacity: animationOpacity,
+                  color: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground,
+                },
+              ]}
+            >
+              Thoughts
+            </Animated.Text>
+            {/* back button */}
+            <View style={{ position: 'absolute', bottom: -9, right: 60 }}>
+              <StackBackButton location="Projects" />
+            </View>
+            {/* sort modal button */}
+            <IconButton
+              icon="sort-variant"
+              onPress={() => setSortModalView(true)}
+              size={35}
+              color={theme ? colors.darkMode.primary : colors.lightMode.textOnPrimary}
+              style={{
+                position: 'absolute',
+                bottom: -5,
+                right: 10,
+                // backgroundColor: darkMode.dp1,
+                borderRadius: 10,
+                width: 35,
+                height: 35,
+              }}
+            />
+            <Animated.View
+              style={[
+                headerStyles.bottomBorder,
+                { backgroundColor: isDarkMode ? darkMode.background : '#EEE', opacity: borderOpacity },
+              ]}
+            ></Animated.View>
+          </Animated.View>
           {thoughts.length ? (
             <ThoughtsList
               isDarkMode={isDarkMode}
@@ -152,6 +183,7 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
               renderModal={renderModal}
               handleThoughtStatusChange={handleThoughtStatusChange}
               handleThoughtDelete={handleThoughtDelete}
+              handleScroll={handleScroll}
             />
           ) : (
             // if user has no thoughts in this proj, this message + icon pops up
@@ -185,6 +217,36 @@ const MainContainer = styled.View`
   background-color: ${(props) => props.theme.background};
 `;
 
+const headerStyles = StyleSheet.create({
+  header: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 120,
+    zIndex: 9,
+  },
+  bottomBorder: {
+    position: 'absolute',
+    bottom: 0,
+    height: 1,
+    width: '100%',
+  },
+  titleContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    position: 'absolute',
+    bottom: 10,
+    alignItems: 'center',
+  },
+  animationText: {
+    position: 'absolute',
+    width: '100%',
+    textAlign: 'center',
+    bottom: 10,
+  },
+});
+
 const sharedStyles = StyleSheet.create({
   // styles not effected by light/dark mode
   fab: {
@@ -207,119 +269,5 @@ const sharedStyles = StyleSheet.create({
   tagIcon: {
     position: 'absolute',
     right: 30,
-  },
-});
-
-const stylesDark = StyleSheet.create({
-  text: {
-    fontSize: 20,
-    flex: 1,
-    padding: 15,
-    paddingEnd: 35,
-    color: colors.darkMode.textOnSurface,
-  },
-  textCompleted: {
-    textDecorationLine: 'line-through',
-    padding: 15,
-    paddingEnd: 35,
-    color: `${colors.darkMode.textOnSurface}50`,
-    fontSize: 20,
-    flex: 1,
-  },
-  // === SwipeListView styles ===
-  rowFront: {
-    backgroundColor: colors.darkMode.dp1,
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 'auto',
-    marginTop: 15,
-    marginHorizontal: 10,
-    borderRadius: 10,
-  },
-  backRightBtn: {
-    backgroundColor: 'pink',
-    alignItems: 'center',
-    bottom: 0,
-    justifyContent: 'center',
-    position: 'absolute',
-    top: 0,
-    width: 50,
-  },
-  backRightBtnLeft: {
-    backgroundColor: colors.darkMode.error,
-    flex: 1,
-    alignItems: 'flex-end',
-    paddingRight: 20,
-    right: 50,
-    width: 100,
-  },
-  backRightBtnRight: {
-    backgroundColor: colors.darkMode.secondary,
-    right: 0,
-    borderBottomRightRadius: 10,
-    borderTopRightRadius: 10,
-  },
-});
-
-// ============================================================================
-
-const stylesLight = StyleSheet.create({
-  text: {
-    fontSize: 20,
-    flex: 1,
-    padding: 15,
-    paddingEnd: 35,
-    color: colors.lightMode.textOnSurface,
-  },
-  textCompleted: {
-    textDecorationLine: 'line-through',
-    padding: 15,
-    paddingEnd: 35,
-    color: `${colors.lightMode.textOnSurface}50`,
-    fontSize: 20,
-    flex: 1,
-  },
-  // === SwipeListView styles ===
-  rowFront: {
-    backgroundColor: colors.lightMode.background,
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 'auto',
-    marginTop: 15,
-    marginHorizontal: 10,
-    borderRadius: 10,
-    shadowColor: '#000',
-    // shadow
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 3,
-  },
-  backRightBtn: {
-    alignItems: 'center',
-    bottom: 0,
-    justifyContent: 'center',
-    position: 'absolute',
-    top: 0,
-    width: 50,
-  },
-  backRightBtnLeft: {
-    backgroundColor: colors.lightMode.error,
-    flex: 1,
-    alignItems: 'flex-end',
-    paddingRight: 20,
-    right: 50,
-    width: 100,
-  },
-  backRightBtnRight: {
-    backgroundColor: colors.lightMode.secondary,
-    right: 0,
-    borderBottomRightRadius: 10,
-    borderTopRightRadius: 10,
   },
 });

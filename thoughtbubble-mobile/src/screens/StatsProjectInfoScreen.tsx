@@ -55,16 +55,7 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
     // set screen title
     navigation.setOptions({
       title: userProjectsData.find((proj) => proj.id === projectId).projectName,
-      // headerLeft: () => (
-      //   <IconButton
-      //     icon="chevron-left"
-      //     color={isDarkMode ? darkMode.secondary : lightMode.textOnBackground}
-      //     size={35}
-      //     onPress={() => navigation.navigate('Analytics')}
-      //     style={{ marginRight: 15, marginBottom: 10 }}
-      //   />
-      // ),
-      headerLeft: () => <StackBackButton location="Analytics" />,
+      headerLeft: () => <StackBackButton location="Analytics" shadeBackground />,
     });
   });
 
