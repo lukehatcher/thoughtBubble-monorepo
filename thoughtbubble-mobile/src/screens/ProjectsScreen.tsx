@@ -128,7 +128,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
           <Animated.View
             style={[
               headerStyles.bottomBorder,
-              { backgroundColor: isDarkMode ? 'white' : 'black', opacity: borderOpacity },
+              { backgroundColor: isDarkMode ? darkMode.background : '#EEE', opacity: borderOpacity },
             ]}
           ></Animated.View>
         </Animated.View>
@@ -178,7 +178,7 @@ const headerStyles = StyleSheet.create({
   bottomBorder: {
     position: 'absolute',
     bottom: 0,
-    height: 0.5,
+    height: 1,
     width: '100%',
   },
   titleContainer: {
