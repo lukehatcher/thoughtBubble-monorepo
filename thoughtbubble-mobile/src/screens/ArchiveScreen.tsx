@@ -77,7 +77,6 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
       scrollY?.removeListener(listener);
     };
   });
-  // ==============================
 
   return (
     <ThemeProvider theme={theme}>

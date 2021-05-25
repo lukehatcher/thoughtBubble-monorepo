@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
-import { Animated, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
+import React, { FC, useState } from 'react';
+import { Animated, Modal, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { colors } from '../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -8,33 +8,53 @@ import styled from 'styled-components/native';
 import { ProjectShape } from '../interfaces/data';
 import { deleteProjectAction } from '../actions/projectActions';
 import { useDispatch } from 'react-redux';
+import { ArchiveDeleteModal } from './ArchiveDeleteModal';
 
 interface ProjectListProps {
   userProjectsData: ProjectShape[];
   handleScroll: any;
   isDarkMode: boolean;
+  // renderArchiveDeleteModal: (projectId: string) => void;
 }
 
 const { darkMode, lightMode } = colors;
 const SwipeListViewAnimated = Animated.createAnimatedComponent(SwipeListView);
 
-export const ProjectList: FC<ProjectListProps> = ({ userProjectsData, handleScroll, isDarkMode }) => {
+export const ProjectList: FC<ProjectListProps> = ({
+  userProjectsData,
+  handleScroll,
+  isDarkMode,
+  // renderArchiveDeleteModal,
+}) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [focusedProjectId, setFocusedProjectId] = useState('');
+  const [focusedRowMap, setFocusedRowMap] = useState(null); // needs better typeing
+  const [focusedRowKey, setFocusedRowKey] = useState(''); // needs better typeing
   const useTheme = (name: string) => (isDarkMode ? stylesDark[name] : stylesLight[name]);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const firstItem = userProjectsData[0].id;
   const lastItem = userProjectsData[userProjectsData.length - 1].id;
 
-  const handleProjectDeletion = function (projectId: string) {
-    dispatch(deleteProjectAction(projectId));
+  const handleProjectDeletion = function (projectId: string, rowMap: any, rowKey: string) {
+    // setModalVisible(true);
+    renderArchiveDeleteModal(projectId, rowMap, rowKey);
+    // dispatch(deleteProjectAction(projectId));
   };
 
-  // const closeRow = (rowMap, rowKey) => {
-  //   // for slidables
-  //   if (rowMap[rowKey]) {
-  //     rowMap[rowKey].closeRow();
-  //   }
-  // };
+  const renderArchiveDeleteModal = (projectId: string, rowMap: any, rowKey: string) => {
+    setFocusedProjectId(projectId);
+    setFocusedRowMap(rowMap);
+    setFocusedRowKey(rowKey);
+    setModalVisible(true);
+  };
+
+  const closeRow = (rowMap, rowKey) => {
+    // for slidables
+    if (rowMap[rowKey]) {
+      rowMap[rowKey].closeRow();
+    }
+  };
 
   const renderItem = (data) => (
     // for slidables
@@ -59,7 +79,7 @@ export const ProjectList: FC<ProjectListProps> = ({ userProjectsData, handleScro
     </>
   );
 
-  const renderHiddenItem = (data, _rowMap) => (
+  const renderHiddenItem = (data, rowMap) => (
     // for slidables
     <>
       {/* add padding to the top of the scrollview */}
@@ -77,7 +97,7 @@ export const ProjectList: FC<ProjectListProps> = ({ userProjectsData, handleScro
         </View>
         <TouchableOpacity
           style={[useTheme('backRightBtn'), useTheme('backRightBtnRight')]}
-          onPress={() => handleProjectDeletion(data.item.id)}
+          onPress={() => handleProjectDeletion(data.item.id, rowMap, data.item.key)}
         >
           <MaterialCommunityIcons name="trash-can-outline" size={25} color="white" />
         </TouchableOpacity>
@@ -103,6 +123,14 @@ export const ProjectList: FC<ProjectListProps> = ({ userProjectsData, handleScro
         onScroll={handleScroll}
         scrollEventThrottle={1}
         style={{ flex: 1 }}
+      />
+      <ArchiveDeleteModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        focusedProjectId={focusedProjectId}
+        focusedRowMap={focusedRowMap}
+        focusedRowKey={focusedRowKey}
+        closeRow={closeRow}
       />
     </>
   );
