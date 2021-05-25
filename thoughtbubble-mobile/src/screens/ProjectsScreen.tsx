@@ -11,8 +11,7 @@ import { AddProjectModal } from '../components/AddProjectModal';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import styled, { ThemeProvider } from 'styled-components/native';
 import { ProjectList } from '../components/ProjectList';
-import { stylesDark } from './SettingsScreen';
-import { Background } from 'victory-core';
+import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
 
 const ProjectListMemo = memo(ProjectList);
 
@@ -139,14 +138,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
           </>
         ) : (
           // if user has no projects, this message + icon pops up
-          <View style={sharedStyles.nothingHere}>
-            <MaterialCommunityIcons
-              name="thought-bubble"
-              size={125}
-              color={isDarkMode ? `${colors.darkMode.textOnBackground}20` : `${colors.lightMode.textOnBackground}20`}
-            />
-            <TextNothingHere>oops, theres nothing to see here... yet</TextNothingHere>
-          </View>
+          <EmptyPlaceholder isDarkMode={isDarkMode} theme={theme} />
         )}
       </MainContainer>
       <AddProjectModal addProjModalView={addProjModalView} setAddProjModalView={setAddProjModalView} />
@@ -158,12 +150,6 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
 const MainContainer = styled.View`
   flex: 1;
   background-color: ${(props) => props.theme.background};
-`;
-
-const TextNothingHere = styled.Text`
-  color: ${(props) => `${props.theme.textOnBackground}40`};
-  font-size: 20px;
-  margin-top: 20px;
 `;
 
 const headerStyles = StyleSheet.create({

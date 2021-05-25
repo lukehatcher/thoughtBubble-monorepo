@@ -2,7 +2,6 @@ import React, { useState, useLayoutEffect, FC } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TouchableHighlight, LogBox } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { SwipeListView } from 'react-native-swipe-list-view';
 import { RootState } from '../reducers/rootReducer'; // type
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { deleteThoughtAction, thoughtStatusChangeAction } from '../actions/thoughtActions';
@@ -14,6 +13,11 @@ import { AddThoughtModal } from '../components/AddThoughtModal';
 import { FAB } from 'react-native-paper';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { StackBackButton } from '../components/StackBackButton';
+import { ThoughtsList } from '../components/ThoughtsList';
+import styled, { ThemeProvider } from 'styled-components/native';
+import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
+
+const { darkMode, lightMode } = colors;
 
 export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) => {
   const [addThoughtModalView, setAddThoughtModalView] = useState(false); // plus modal
@@ -25,156 +29,161 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
   const thoughtsSelector = (state: RootState) =>
     state.userProjectData.find((proj) => proj.id === projectId).projectThoughts;
   let thoughts = useSelector(thoughtsSelector); // retrive thoughts for the project we're on
-  const theme = useDarkCheck();
 
-  const useTheme = (name: string) => (theme ? stylesDark[name] : stylesLight[name]);
+  const isDarkMode = useDarkCheck();
+  const useTheme = (name: string) => (isDarkMode ? stylesDark[name] : stylesLight[name]);
 
-  useLayoutEffect(() => {
-    // adds the sort button to the stack header
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity style={{ marginRight: 30, marginBottom: 2 }} onPress={() => setSortModalView(true)}>
-          <MaterialCommunityIcons
-            name="sort-variant"
-            size={40}
-            color={theme ? colors.darkMode.primary : colors.lightMode.primary}
-          />
-        </TouchableOpacity>
-      ),
-      headerLeft: () => <StackBackButton location="Projects" />,
-    });
-  }, [navigation, theme]);
+  const theme = {
+    // for styled-components ThemeProvider
+    background: isDarkMode ? darkMode.background : lightMode.background,
+    primary: isDarkMode ? darkMode.primary : lightMode.primary,
+    primaryVariant: isDarkMode ? darkMode.primaryVariant : lightMode.primaryVariant,
+    secondary: isDarkMode ? darkMode.secondary : lightMode.secondary,
+    textOnBackground: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground,
+    textOnSurface: isDarkMode ? darkMode.textOnSurface : lightMode.textOnSurface,
+    dp1: isDarkMode ? darkMode.dp1 : lightMode.background,
+  };
+
+  // useLayoutEffect(() => {
+  //   // adds the sort button to the stack header
+  //   navigation.setOptions({
+  //     headerRight: () => (
+  //       <TouchableOpacity style={{ marginRight: 30, marginBottom: 2 }} onPress={() => setSortModalView(true)}>
+  //         <MaterialCommunityIcons
+  //           name="sort-variant"
+  //           size={40}
+  //           color={theme ? colors.darkMode.primary : colors.lightMode.primary}
+  //         />
+  //       </TouchableOpacity>
+  //     ),
+  //     headerLeft: () => <StackBackButton location="Projects" />,
+  //   });
+  // }, [navigation, theme]);
 
   const handleThoughtDelete = (thoughtId: string) => {
     dispatch(deleteThoughtAction(projectId, thoughtId));
   };
 
-  const handleThoughtStatusChange = (thoughtId: string, rowMap: any, rowKey: string) => {
+  const handleThoughtStatusChange = (thoughtId: string) => {
     dispatch(thoughtStatusChangeAction(projectId, thoughtId));
-    closeRow(rowMap, rowKey);
+    // closeRow(rowMap, rowKey); // move to thought list component
   };
 
-  const closeRow = (rowMap, rowKey) => {
-    // for slidables
-    if (rowMap[rowKey]) {
-      rowMap[rowKey].closeRow();
-    }
-  };
+  // const closeRow = (rowMap, rowKey) => {
+  //   // for slidables
+  //   if (rowMap[rowKey]) {
+  //     rowMap[rowKey].closeRow();
+  //   }
+  // };
 
-  const renderHiddenItem = (data, rowMap) => (
-    // for slidables
-    <View
-      style={{
-        ...useTheme('rowFront'),
-        backgroundColor: theme ? colors.darkMode.error : colors.lightMode.error,
-      }}
-    >
-      {/* to match height of back view to the dynamic front view height,
-      add random view below with same text (but invisable) to get same height */}
-      <View>
-        <Text style={sharedStyles.hiddenBackText}>{data.item.text}</Text>
-      </View>
-      <TouchableOpacity
-        style={[useTheme('backRightBtn'), useTheme('backRightBtnRight')]}
-        onPress={() => handleThoughtStatusChange(data.item.id, rowMap, data.item.key)}
-      >
-        <MaterialCommunityIcons name="checkbox-marked-outline" size={25} color="white" />
-      </TouchableOpacity>
+  // const renderHiddenItem = (data, rowMap) => (
+  //   // for slidables
+  //   <View
+  //     style={{
+  //       ...useTheme('rowFront'),
+  //       backgroundColor: theme ? colors.darkMode.error : colors.lightMode.error,
+  //     }}
+  //   >
+  //     {/* to match height of back view to the dynamic front view height,
+  //     add random view below with same text (but invisable) to get same height */}
+  //     <View>
+  //       <Text style={sharedStyles.hiddenBackText}>{data.item.text}</Text>
+  //     </View>
+  //     <TouchableOpacity
+  //       style={[useTheme('backRightBtn'), useTheme('backRightBtnRight')]}
+  //       onPress={() => handleThoughtStatusChange(data.item.id, rowMap, data.item.key)}
+  //     >
+  //       <MaterialCommunityIcons name="checkbox-marked-outline" size={25} color="white" />
+  //     </TouchableOpacity>
 
-      <TouchableOpacity
-        style={[useTheme('backRightBtn'), useTheme('backRightBtnLeft')]}
-        onPress={() => handleThoughtDelete(data.item.id)}
-      >
-        <MaterialCommunityIcons name="trash-can-outline" size={25} color="white" />
-      </TouchableOpacity>
-    </View>
-  );
+  //     <TouchableOpacity
+  //       style={[useTheme('backRightBtn'), useTheme('backRightBtnLeft')]}
+  //       onPress={() => handleThoughtDelete(data.item.id)}
+  //     >
+  //       <MaterialCommunityIcons name="trash-can-outline" size={25} color="white" />
+  //     </TouchableOpacity>
+  //   </View>
+  // );
 
   const renderModal = (thoughtId: string) => {
-    setFocusedId(thoughtId); // working
+    setFocusedId(thoughtId);
     setMoreModalView(true);
   };
 
-  const renderItem = (data) => (
-    // for slidables
-    // thought is data.item.text
-    <TouchableHighlight style={useTheme('rowFront')} underlayColor={'grey'}>
-      <>
-        <Text style={data.item.completed ? useTheme('textCompleted') : useTheme('text')}>{data.item.text}</Text>
-        {data.item.tag ? (
-          <TouchableOpacity style={sharedStyles.tagIcon} onPress={() => renderModal(data.item.key)}>
-            {data.item.tag !== 'star' ? (
-              <MaterialCommunityIcons name="tag" size={25} color={data.item.tag} />
-            ) : (
-              <MaterialCommunityIcons name="star" size={25} color="#D4AF37" />
-            )}
-          </TouchableOpacity>
-        ) : (
-          <></>
-        )}
-        <TouchableOpacity style={sharedStyles.moreBtn} onPress={() => renderModal(data.item.key)}>
-          <MaterialIcons
-            name="more-vert"
-            size={35}
-            color={theme ? colors.darkMode.primary : colors.lightMode.primary}
-          />
-        </TouchableOpacity>
-      </>
-    </TouchableHighlight>
-  );
+  // const renderItem = (data) => (
+  //   // for slidables
+  //   // thought is data.item.text
+  //   <TouchableHighlight style={useTheme('rowFront')} underlayColor={'grey'}>
+  //     <>
+  //       <Text style={data.item.completed ? useTheme('textCompleted') : useTheme('text')}>{data.item.text}</Text>
+  //       {data.item.tag ? (
+  //         <TouchableOpacity style={sharedStyles.tagIcon} onPress={() => renderModal(data.item.key)}>
+  //           {data.item.tag !== 'star' ? (
+  //             <MaterialCommunityIcons name="tag" size={25} color={data.item.tag} />
+  //           ) : (
+  //             <MaterialCommunityIcons name="star" size={25} color="#D4AF37" />
+  //           )}
+  //         </TouchableOpacity>
+  //       ) : (
+  //         <></>
+  //       )}
+  //       <TouchableOpacity style={sharedStyles.moreBtn} onPress={() => renderModal(data.item.key)}>
+  //         <MaterialIcons
+  //           name="more-vert"
+  //           size={35}
+  //           color={theme ? colors.darkMode.primary : colors.lightMode.primary}
+  //         />
+  //       </TouchableOpacity>
+  //     </>
+  //   </TouchableHighlight>
+  // );
 
   // https://github.com/jemise111/react-native-swipe-list-view/issues/388
   LogBox.ignoreLogs(["Sending 'onAnimatedValueUpdate' with no listeners registered"]);
 
   return (
     <>
-      <View style={useTheme('mainContainer')}>
-        {thoughts.length ? (
-          <SwipeListView
-            data={thoughts.map((i) => ({ ...i, key: i.id }))} // swipeviewlist api requires key prop
-            renderItem={renderItem}
-            renderHiddenItem={renderHiddenItem}
-            recalculateHiddenLayout
-            disableRightSwipe
-            closeOnScroll
-            closeOnRowBeginSwipe
-            closeOnRowPress
-            rightOpenValue={-150}
-            previewOpenValue={-40}
-            // style={{ paddingTop: 90 }} // used for the blur 1/3
+      <ThemeProvider theme={theme}>
+        <MainContainer>
+          {thoughts.length ? (
+            <ThoughtsList
+              isDarkMode={isDarkMode}
+              thoughts={thoughts}
+              renderModal={renderModal}
+              handleThoughtStatusChange={handleThoughtStatusChange}
+              handleThoughtDelete={handleThoughtDelete}
+            />
+          ) : (
+            // if user has no thoughts in this proj, this message + icon pops up
+            <EmptyPlaceholder isDarkMode={isDarkMode} theme={theme} />
+          )}
+        </MainContainer>
+        {moreModalView ? (
+          <MoreModal
+            moreModalView={moreModalView}
+            setMoreModalView={setMoreModalView}
+            projectId={projectId}
+            thoughtId={focusedId}
           />
         ) : (
-          // if user has no thoughts in this proj, this message + icon pops up
-          <View style={sharedStyles.nothingHere}>
-            <MaterialCommunityIcons
-              name="thought-bubble"
-              size={125}
-              color={theme ? `${colors.darkMode.textOnBackground}20` : `${colors.lightMode.textOnBackground}20`}
-            />
-            <Text style={useTheme('textNothingHere')}>oops, theres nothing to see here... yet</Text>
-          </View>
+          <></>
         )}
-      </View>
-      {moreModalView ? (
-        <MoreModal
-          moreModalView={moreModalView}
-          setMoreModalView={setMoreModalView}
+        <AddThoughtModal
           projectId={projectId}
-          thoughtId={focusedId}
+          addThoughtModalView={addThoughtModalView}
+          setAddThoughtModalView={setAddThoughtModalView}
         />
-      ) : (
-        <></>
-      )}
-      <AddThoughtModal
-        projectId={projectId}
-        addThoughtModalView={addThoughtModalView}
-        setAddThoughtModalView={setAddThoughtModalView}
-      />
-      <SortThoughtModal projectId={projectId} sortModalView={sortModalView} setSortModalView={setSortModalView} />
-      <FAB style={sharedStyles.fab} icon="plus" onPress={() => setAddThoughtModalView(true)} label="new thought" />
+        <SortThoughtModal projectId={projectId} sortModalView={sortModalView} setSortModalView={setSortModalView} />
+        <FAB style={sharedStyles.fab} icon="plus" onPress={() => setAddThoughtModalView(true)} label="new thought" />
+      </ThemeProvider>
     </>
   );
 };
+
+const MainContainer = styled.View`
+  flex: 1;
+  background-color: ${(props) => props.theme.background};
+`;
 
 const sharedStyles = StyleSheet.create({
   // styles not effected by light/dark mode
@@ -199,29 +208,15 @@ const sharedStyles = StyleSheet.create({
     position: 'absolute',
     right: 30,
   },
-  nothingHere: {
-    marginTop: 75,
-    flex: 1,
-    alignItems: 'center',
-  },
 });
 
 const stylesDark = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    backgroundColor: colors.darkMode.background,
-  },
   text: {
     fontSize: 20,
     flex: 1,
     padding: 15,
     paddingEnd: 35,
     color: colors.darkMode.textOnSurface,
-  },
-  textNothingHere: {
-    color: `${colors.darkMode.textOnBackground}40`,
-    fontSize: 20,
-    marginTop: 20,
   },
   textCompleted: {
     textDecorationLine: 'line-through',
@@ -270,21 +265,12 @@ const stylesDark = StyleSheet.create({
 // ============================================================================
 
 const stylesLight = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    backgroundColor: colors.lightMode.background,
-  },
   text: {
     fontSize: 20,
     flex: 1,
     padding: 15,
     paddingEnd: 35,
     color: colors.lightMode.textOnSurface,
-  },
-  textNothingHere: {
-    color: `${colors.lightMode.textOnBackground}40`,
-    fontSize: 20,
-    marginTop: 20,
   },
   textCompleted: {
     textDecorationLine: 'line-through',
