@@ -1,12 +1,11 @@
 import React, { FC, useState } from 'react';
-import { Animated, Modal, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
-import { SwipeListView, RowMap } from 'react-native-swipe-list-view';
+import { Animated, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
+import { SwipeListView } from 'react-native-swipe-list-view';
 import { colors } from '../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import styled from 'styled-components/native';
 import { ProjectShape } from '../interfaces/data';
-import { useDispatch } from 'react-redux';
 import { ArchiveDeleteModal } from './ArchiveDeleteModal';
 
 interface ProjectListProps {
@@ -25,7 +24,6 @@ export const ProjectList: FC<ProjectListProps> = ({ userProjectsData, handleScro
   const [focusedRowKey, setFocusedRowKey] = useState('');
   const useTheme = (name: string) => (isDarkMode ? stylesDark[name] : stylesLight[name]);
   const navigation = useNavigation();
-  const dispatch = useDispatch();
   const firstItem = userProjectsData[0].id;
   const lastItem = userProjectsData[userProjectsData.length - 1].id;
 
@@ -35,7 +33,6 @@ export const ProjectList: FC<ProjectListProps> = ({ userProjectsData, handleScro
     setFocusedRowMap(rowMap);
     setFocusedRowKey(rowKey);
     setModalVisible(true);
-    // dispatch(deleteProjectAction(projectId));
   };
 
   const closeRow = (rowMap, rowKey) => {

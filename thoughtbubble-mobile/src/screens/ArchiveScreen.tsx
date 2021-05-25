@@ -4,12 +4,15 @@ import styled, { ThemeProvider } from 'styled-components/native';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { colors } from '../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { RootState } from '../reducers/rootReducer';
+import { useSelector } from 'react-redux';
 
 const { darkMode, lightMode } = colors;
 
 interface ArchiveScreenProps {}
 
 export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
+  const userArchiveData = useSelector((state: RootState) => state.archive);
   const [showTitle, setShowTitle] = useState(false);
   const isDarkMode = useDarkCheck();
   const theme = {
@@ -21,9 +24,6 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
     textOnBackground: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground,
     dp1: isDarkMode ? darkMode.dp1 : lightMode.background,
   };
-
-  const data = [];
-  for (let i = 0; i < 25; i++) data.push(Math.random());
 
   // ============================== + showTitle useState
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -120,9 +120,12 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
         <Animated.ScrollView onScroll={handleScroll} scrollEventThrottle={4} style={{ flex: 1 }}>
           {/* padding view */}
           <View style={{ flex: 1, height: 130 }} />
-          {data.map((i) => (
-            <View key={i} style={{ margin: 10, borderBottomColor: isDarkMode ? 'white' : 'black', borderWidth: 1 }}>
-              <Text style={{ color: isDarkMode ? 'white' : 'black' }}>hello world {i}</Text>
+          {userArchiveData.map((proj) => (
+            <View
+              key={proj.id}
+              style={{ margin: 10, borderBottomColor: isDarkMode ? 'white' : 'black', borderWidth: 1 }}
+            >
+              <Text style={{ color: isDarkMode ? 'white' : 'black' }}>{JSON.stringify(proj)}</Text>
             </View>
           ))}
           {/* bottom padding view */}

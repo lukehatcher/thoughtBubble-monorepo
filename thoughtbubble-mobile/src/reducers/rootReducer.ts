@@ -4,6 +4,7 @@ import { UserProjectDataReducer } from './userProjectDataReducer';
 import { userInfoReducer } from './userInfoReducer';
 import { filterReducer } from './filterReducer';
 import { activityReducer } from './activityReducer';
+import { archiveReducer } from './archiveReducer';
 
 const appReducer = combineReducers({
   storedUser: storeUserReducer,
@@ -11,6 +12,7 @@ const appReducer = combineReducers({
   userInfo: userInfoReducer,
   filters: filterReducer,
   activity: activityReducer,
+  archive: archiveReducer,
 });
 
 export const rootReducer = (state, action) => {

@@ -3,12 +3,13 @@ import { Modal, Text } from 'react-native';
 import { Button } from 'react-native-paper';
 import styled from 'styled-components/native';
 import { useDispatch } from 'react-redux';
-import { deleteProjectAction } from '../actions/projectActions';
+import { archiveProjectAction, deleteProjectAction } from '../actions/projectActions';
 
 // TODO:
 // close row ✅
-// delete project
+// delete project ✅
 // archive
+// style it
 
 interface ArchiveDeleteModalProps {
   modalVisible: boolean;
@@ -29,9 +30,14 @@ export const ArchiveDeleteModal: FC<ArchiveDeleteModalProps> = function ({
 }) {
   const dispatch = useDispatch();
 
-  const handleProjectDeletion = function (projectId: string) {
+  const handleProjectDeletion = function () {
     setModalVisible(false);
-    dispatch(deleteProjectAction(projectId));
+    dispatch(deleteProjectAction(focusedProjectId));
+  };
+
+  const handleProjectArchive = function () {
+    setModalVisible(false);
+    dispatch(archiveProjectAction(focusedProjectId));
   };
 
   return (
@@ -50,10 +56,10 @@ export const ArchiveDeleteModal: FC<ArchiveDeleteModalProps> = function ({
           >
             cancel
           </Button>
-          <Button mode="contained" icon="trash-can-outline" onPress={() => handleProjectDeletion(focusedProjectId)}>
+          <Button mode="contained" icon="trash-can-outline" onPress={() => handleProjectDeletion()}>
             delete
           </Button>
-          <Button mode="contained" icon="clock" onPress={() => setModalVisible(false)}>
+          <Button mode="contained" icon="clock" onPress={() => handleProjectArchive()}>
             archive
           </Button>
         </InfoModalContainer>

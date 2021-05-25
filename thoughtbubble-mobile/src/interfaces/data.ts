@@ -19,6 +19,8 @@ export interface ProjectShape {
   createdDate: string;
   lastUpdatedDate: string;
   creationLocation: Locations;
+  archived: boolean;
+  archivedDate: string; // actually a date...
   userId: string;
   projectName: string;
   projectThoughts: ThoughtShape[];
