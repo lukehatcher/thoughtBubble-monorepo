@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, memo } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TouchableHighlight, LogBox, Animated } from 'react-native';
-import { SwipeListView } from 'react-native-swipe-list-view';
+import { Text, StyleSheet, LogBox, Animated } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { FAB } from 'react-native-paper';
@@ -189,11 +188,6 @@ const sharedStyles = StyleSheet.create({
     // bottom: 0,
     bottom: 80,
     margin: 16,
-  },
-  nothingHere: {
-    marginTop: 75,
-    flex: 1,
-    alignItems: 'center',
   },
   chevronContainer: {
     flex: 1,

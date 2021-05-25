@@ -6,6 +6,9 @@ import { addThoughtAction } from '../actions/thoughtActions';
 import { colors } from '../constants/colors';
 import { AddThoughtModalProps } from '../interfaces/componentProps';
 import { useDarkCheck } from '../hooks/useDarkCheck';
+import styled from 'styled-components/native';
+
+const { darkMode, lightMode } = colors;
 
 export const AddThoughtModal: FC<AddThoughtModalProps> = function ({
   projectId,
@@ -14,110 +17,86 @@ export const AddThoughtModal: FC<AddThoughtModalProps> = function ({
 }) {
   const dispatch = useDispatch();
   const [input, setInput] = useState('');
-  const theme = useDarkCheck();
+  const isDarkMode = useDarkCheck();
 
-  const useTheme = (name: string) => (theme ? stylesDark[name] : stylesLight[name]);
-
-  const handleThoughtAddition = (thought: string) => {
-    setInput('');
-    if (!thought) {
-      Alert.alert('invalid input');
+  const handleThoughtAddition = (): void => {
+    const newThought = input.trim();
+    if (!newThought) {
       return;
     }
-    dispatch(addThoughtAction(projectId, thought));
+    setInput('');
+    setAddThoughtModalView(false);
+    dispatch(addThoughtAction(projectId, newThought));
   };
 
   return (
     <>
       <Modal animationType="slide" visible={addThoughtModalView}>
-        <View style={useTheme('modal')}>
+        <ModalContainer>
           <TextInput
             mode="outlined"
-            label="new project"
+            label="new thought"
             value={input}
             onChangeText={(input) => setInput(input)}
-            placeholder="Add a new project"
             multiline
-            style={useTheme('textInput')}
+            keyboardAppearance="dark"
+            style={[
+              styles.textInput,
+              {
+                color: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground,
+                backgroundColor: isDarkMode ? darkMode.background : lightMode.background,
+              },
+            ]}
             theme={{
               colors: {
-                primary: theme ? colors.darkMode.primary : colors.lightMode.primary,
-                text: theme ? colors.darkMode.textOnSurface : colors.lightMode.textOnBackground,
-                placeholder: theme ? `${colors.darkMode.textOnSurface}87` : `${colors.lightMode.textOnBackground}87`,
+                primary: isDarkMode ? darkMode.primary : lightMode.primary,
+                text: isDarkMode ? darkMode.textOnSurface : lightMode.textOnBackground,
+                placeholder: isDarkMode ? `${darkMode.textOnSurface}87` : `${lightMode.textOnBackground}87`,
               },
             }}
-            keyboardAppearance="dark"
           />
 
           <Button
             mode="contained"
             icon="file-upload"
-            color={theme ? colors.darkMode.primary : colors.lightMode.primary}
-            onPress={() => {
-              setAddThoughtModalView(false);
-              handleThoughtAddition(input.trim());
-            }}
-            style={useTheme('btn')}
+            color={isDarkMode ? darkMode.primary : lightMode.primary}
+            onPress={() => handleThoughtAddition()}
+            style={styles.btn}
           >
             add thought
           </Button>
           <IconButton
             icon="close"
             size={50}
-            color={theme ? colors.darkMode.primary : colors.lightMode.primary}
-            style={sharedStyles.closeBtn}
+            color={isDarkMode ? darkMode.primary : lightMode.primary}
+            style={styles.closeBtn}
             onPress={() => {
               setAddThoughtModalView(false);
               setInput('');
             }}
           />
-        </View>
+        </ModalContainer>
       </Modal>
     </>
   );
 };
 
-const sharedStyles = StyleSheet.create({
+const ModalContainer = styled.View`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  background-color: ${(props) => props.theme.background};
+`;
+
+const styles = StyleSheet.create({
+  textInput: {
+    width: 250,
+    marginBottom: 10,
+  },
   closeBtn: {
     position: 'absolute',
     top: 50,
     right: 16,
   },
-});
-
-const stylesDark = StyleSheet.create({
-  modal: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: colors.darkMode.background,
-  },
-  textInput: {
-    color: 'white',
-    backgroundColor: colors.darkMode.dp1,
-    width: 250,
-    marginBottom: 10,
-  },
-  btn: {
-    marginBottom: 10,
-    // width: 250,
-  },
-});
-
-const stylesLight = StyleSheet.create({
-  modal: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: colors.lightMode.background,
-  },
-  textInput: {
-    backgroundColor: colors.lightMode.background,
-    width: 250,
-    marginBottom: 10,
-  },
-  btn: {
-    marginBottom: 10,
-    // width: 250,
-  },
+  btn: { marginTop: 10 },
 });
