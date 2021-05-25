@@ -1,12 +1,11 @@
 import React, { FC, useState } from 'react';
 import { Animated, Modal, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
-import { SwipeListView } from 'react-native-swipe-list-view';
+import { SwipeListView, RowMap } from 'react-native-swipe-list-view';
 import { colors } from '../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import styled from 'styled-components/native';
 import { ProjectShape } from '../interfaces/data';
-import { deleteProjectAction } from '../actions/projectActions';
 import { useDispatch } from 'react-redux';
 import { ArchiveDeleteModal } from './ArchiveDeleteModal';
 
@@ -14,39 +13,29 @@ interface ProjectListProps {
   userProjectsData: ProjectShape[];
   handleScroll: any;
   isDarkMode: boolean;
-  // renderArchiveDeleteModal: (projectId: string) => void;
 }
 
 const { darkMode, lightMode } = colors;
 const SwipeListViewAnimated = Animated.createAnimatedComponent(SwipeListView);
 
-export const ProjectList: FC<ProjectListProps> = ({
-  userProjectsData,
-  handleScroll,
-  isDarkMode,
-  // renderArchiveDeleteModal,
-}) => {
+export const ProjectList: FC<ProjectListProps> = ({ userProjectsData, handleScroll, isDarkMode }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [focusedProjectId, setFocusedProjectId] = useState('');
-  const [focusedRowMap, setFocusedRowMap] = useState(null); // needs better typeing
-  const [focusedRowKey, setFocusedRowKey] = useState(''); // needs better typeing
+  const [focusedRowMap, setFocusedRowMap] = useState(null); // needs better typing
+  const [focusedRowKey, setFocusedRowKey] = useState('');
   const useTheme = (name: string) => (isDarkMode ? stylesDark[name] : stylesLight[name]);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const firstItem = userProjectsData[0].id;
   const lastItem = userProjectsData[userProjectsData.length - 1].id;
 
-  const handleProjectDeletion = function (projectId: string, rowMap: any, rowKey: string) {
-    // setModalVisible(true);
-    renderArchiveDeleteModal(projectId, rowMap, rowKey);
-    // dispatch(deleteProjectAction(projectId));
-  };
-
-  const renderArchiveDeleteModal = (projectId: string, rowMap: any, rowKey: string) => {
+  const handleProjectDeletionPress = function (projectId: string, rowMap: any, rowKey: string) {
+    // on press, want to render modal to give user option to archive, delete, or cancel
     setFocusedProjectId(projectId);
     setFocusedRowMap(rowMap);
     setFocusedRowKey(rowKey);
     setModalVisible(true);
+    // dispatch(deleteProjectAction(projectId));
   };
 
   const closeRow = (rowMap, rowKey) => {
@@ -97,7 +86,7 @@ export const ProjectList: FC<ProjectListProps> = ({
         </View>
         <TouchableOpacity
           style={[useTheme('backRightBtn'), useTheme('backRightBtnRight')]}
-          onPress={() => handleProjectDeletion(data.item.id, rowMap, data.item.key)}
+          onPress={() => handleProjectDeletionPress(data.item.id, rowMap, data.item.key)}
         >
           <MaterialCommunityIcons name="trash-can-outline" size={25} color="white" />
         </TouchableOpacity>

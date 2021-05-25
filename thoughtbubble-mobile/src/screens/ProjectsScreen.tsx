@@ -96,11 +96,6 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
   const [modalVisible, setModalVisible] = useState(false);
   const [focusedId, setFocusedId] = useState('');
 
-  // const renderArchiveDeleteModal = (projectId: string) => {
-  //   setFocusedId(projectId);
-  //   setModalVisible(true);
-  // };
-
   return (
     <ThemeProvider theme={theme}>
       <MainContainer>
@@ -155,7 +150,6 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
         )}
       </MainContainer>
       <AddProjectModal addProjModalView={addProjModalView} setAddProjModalView={setAddProjModalView} />
-      {/* <ArchiveDeleteModal modalVisible={modalVisible} setModalVisible={setModalVisible} focusedId={focusedId} /> */}
       <FAB style={sharedStyles.fab} icon="plus" onPress={() => setAddProjModalView(true)} label="new project" />
     </ThemeProvider>
   );

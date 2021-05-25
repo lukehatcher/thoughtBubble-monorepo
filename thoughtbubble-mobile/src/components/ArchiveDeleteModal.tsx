@@ -2,6 +2,13 @@ import React, { FC } from 'react';
 import { Modal, Text } from 'react-native';
 import { Button } from 'react-native-paper';
 import styled from 'styled-components/native';
+import { useDispatch } from 'react-redux';
+import { deleteProjectAction } from '../actions/projectActions';
+
+// TODO:
+// close row ✅
+// delete project
+// archive
 
 interface ArchiveDeleteModalProps {
   modalVisible: boolean;
@@ -12,7 +19,7 @@ interface ArchiveDeleteModalProps {
   closeRow: (rowMap: any, rowKey: string) => void;
 }
 
-export const ArchiveDeleteModal: React.FC<ArchiveDeleteModalProps> = function ({
+export const ArchiveDeleteModal: FC<ArchiveDeleteModalProps> = function ({
   modalVisible,
   setModalVisible,
   focusedProjectId,
@@ -20,10 +27,13 @@ export const ArchiveDeleteModal: React.FC<ArchiveDeleteModalProps> = function ({
   focusedRowKey,
   closeRow,
 }) {
-  // TODO:
-  // close row ✅
-  // delete project
-  // archive
+  const dispatch = useDispatch();
+
+  const handleProjectDeletion = function (projectId: string) {
+    setModalVisible(false);
+    dispatch(deleteProjectAction(projectId));
+  };
+
   return (
     <>
       {modalVisible ? <Overlay /> : <></>}
@@ -38,9 +48,9 @@ export const ArchiveDeleteModal: React.FC<ArchiveDeleteModalProps> = function ({
               closeRow(focusedRowMap, focusedRowKey);
             }}
           >
-            close
+            cancel
           </Button>
-          <Button mode="contained" icon="trash-can-outline" onPress={() => setModalVisible(false)}>
+          <Button mode="contained" icon="trash-can-outline" onPress={() => handleProjectDeletion(focusedProjectId)}>
             delete
           </Button>
           <Button mode="contained" icon="clock" onPress={() => setModalVisible(false)}>
@@ -52,7 +62,6 @@ export const ArchiveDeleteModal: React.FC<ArchiveDeleteModalProps> = function ({
   );
 };
 
-// modal styles
 const Overlay = styled.View`
   position: absolute;
   top: 0px;
@@ -75,4 +84,3 @@ const InfoModalContainer = styled.View`
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 `;
-// ========
