@@ -119,21 +119,19 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
             ]}
           ></Animated.View>
         </Animated.View>
-        {/* if theres no archived projects, show placeholder icon */}
+        {/* check if theres any archived projects, if not show placeholder icon */}
         {userArchiveData.length ? (
           <Animated.ScrollView onScroll={handleScroll} scrollEventThrottle={1} contentContainerStyle={{ flexGrow: 1 }}>
             <TopPaddingView />
-            {userArchiveData.map((proj, _index) => {
-              return (
-                <ExpandableListItem
-                  key={proj.id}
-                  projectId={proj.id}
-                  projectName={proj.projectName}
-                  projectThoughts={proj.projectThoughts}
-                />
-              );
-            })}
-            {/* 
+            {userArchiveData.map((proj, _index) => (
+              <ExpandableListItem
+                key={proj.id}
+                projectId={proj.id}
+                projectName={proj.projectName}
+                projectThoughts={proj.projectThoughts}
+              />
+            ))}
+            {/* notes on styling used here:
           1.) LayoutAnimation fade-in of text beats the view slide down and covers whatever is below
           unless a View(s) of equal height is below it. To fix this the BottomPaddingView has a height of 100% and
           `contentContainerStyle={{ flexGrow: 1 }}` was added to the parent Animated.ScrollView.
@@ -142,7 +140,12 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
             <BottomPaddingView />
           </Animated.ScrollView>
         ) : (
-          <EmptyPlaceholder isDarkMode={isDarkMode} theme={theme} />
+          <EmptyPlaceholder
+            isDarkMode={isDarkMode}
+            theme={theme}
+            displayTextLine1={'Your project archive is currently empty...'}
+            displayTextLine2={'Swipe left on a project to archive it!'}
+          />
         )}
       </MainContainer>
     </ThemeProvider>

@@ -7,14 +7,14 @@ import { colors } from '../constants/colors';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { useDispatch } from 'react-redux';
 import { unarchiveProjectAction } from '../actions/projectActions';
-import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
+import { ThoughtShape } from '../interfaces/data';
 
 const { darkMode, lightMode } = colors;
 
 interface ExpandableListItemProps {
   projectId: string;
-  projectName: string; // need better typing
-  projectThoughts: any[];
+  projectName: string;
+  projectThoughts: ThoughtShape[];
 }
 
 export const ExpandableListItem: FC<ExpandableListItemProps> = function ({ projectId, projectName, projectThoughts }) {
@@ -30,7 +30,6 @@ export const ExpandableListItem: FC<ExpandableListItemProps> = function ({ proje
 
   const handleChevronPress = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    // LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
     setExpanded(!expanded);
   };
 
