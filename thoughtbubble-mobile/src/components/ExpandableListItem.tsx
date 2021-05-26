@@ -1,12 +1,13 @@
 import React, { FC, useState } from 'react';
-import { LayoutAnimation, Platform, StyleSheet, Text, UIManager, View } from 'react-native';
-import { Button, IconButton, List } from 'react-native-paper';
+import { LayoutAnimation, Platform, StyleSheet, UIManager } from 'react-native';
+import { Button, IconButton } from 'react-native-paper';
 import styled from 'styled-components/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors } from '../constants/colors';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { useDispatch } from 'react-redux';
 import { unarchiveProjectAction } from '../actions/projectActions';
+import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
 
 const { darkMode, lightMode } = colors;
 
@@ -66,7 +67,6 @@ export const ExpandableListItem: FC<ExpandableListItemProps> = function ({ proje
         </AccordianHeader>
         {expanded && (
           <>
-            {/* <PaddingView></PaddingView> */}
             <Button
               mode="contained"
               onPress={() => handleUnArchive()}
@@ -81,11 +81,9 @@ export const ExpandableListItem: FC<ExpandableListItemProps> = function ({ proje
                 <AccordianItemText>{thought.text}</AccordianItemText>
               </AccordianItem>
             ))}
-            {/* <PaddingView /> */}
           </>
         )}
       </AccordianContainer>
-      {/* <View style={{ height: 30, backgroundColor: 'red' }}></View> */}
     </>
   );
 };

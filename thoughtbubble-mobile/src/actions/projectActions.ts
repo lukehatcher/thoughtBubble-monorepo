@@ -61,8 +61,6 @@ export const archiveProjectAction = function (projectId: string) {
   return async (dispatch, _getState) => {
     try {
       const response = await axios.put('http://localhost:3001/api/projects/archive', { projectId });
-
-      console.log(response.data);
       dispatch({ type: ArchiveActionTypes.ADD_TO_ARCHIVE, payload: response.data }); // add project to archive
       dispatch({ type: ProjectActionTypes.ARCHIVE, payload: projectId }); // filter project out of main user project data
       dispatch({ type: FilterActionTypes.DEL_PROJ, payload: projectId }); // fitler project out of master filters state

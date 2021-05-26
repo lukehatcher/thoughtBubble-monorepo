@@ -8,6 +8,7 @@ import { RootState } from '../reducers/rootReducer';
 import { useSelector } from 'react-redux';
 import { ExpandableListItem } from '../components/ExpandableListItem';
 import { stylesLight } from './SettingsScreen';
+import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
 
 const { darkMode, lightMode } = colors;
 
@@ -118,27 +119,31 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
             ]}
           ></Animated.View>
         </Animated.View>
-
-        <Animated.ScrollView onScroll={handleScroll} scrollEventThrottle={1} contentContainerStyle={{ flexGrow: 1 }}>
-          <TopPaddingView />
-          {userArchiveData.map((proj, _index) => {
-            return (
-              <ExpandableListItem
-                key={proj.id}
-                projectId={proj.id}
-                projectName={proj.projectName}
-                projectThoughts={proj.projectThoughts}
-              />
-            );
-          })}
-          {/* 
+        {/* if theres no archived projects, show placeholder icon */}
+        {userArchiveData.length ? (
+          <Animated.ScrollView onScroll={handleScroll} scrollEventThrottle={1} contentContainerStyle={{ flexGrow: 1 }}>
+            <TopPaddingView />
+            {userArchiveData.map((proj, _index) => {
+              return (
+                <ExpandableListItem
+                  key={proj.id}
+                  projectId={proj.id}
+                  projectName={proj.projectName}
+                  projectThoughts={proj.projectThoughts}
+                />
+              );
+            })}
+            {/* 
           1.) LayoutAnimation fade-in of text beats the view slide down and covers whatever is below
           unless a View(s) of equal height is below it. To fix this the BottomPaddingView has a height of 100% and
           `contentContainerStyle={{ flexGrow: 1 }}` was added to the parent Animated.ScrollView.
           2.) min-height of 80px is left to keep scrollview content above nav tab bar, same as all other screens 
           */}
-          <BottomPaddingView />
-        </Animated.ScrollView>
+            <BottomPaddingView />
+          </Animated.ScrollView>
+        ) : (
+          <EmptyPlaceholder isDarkMode={isDarkMode} theme={theme} />
+        )}
       </MainContainer>
     </ThemeProvider>
   );

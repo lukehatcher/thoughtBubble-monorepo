@@ -14,7 +14,6 @@ export const archiveReducer = (state = initialState, action): ProjectShape[] => 
     case ArchiveActionTypes.ADD_TO_ARCHIVE:
       return [...state, payload];
     case ArchiveActionTypes.REMOVE_FROM_UNARCHIVE:
-      console.log(payload, 'remove from archive');
       return state.filter((proj) => proj.id !== payload);
     default:
       return state;
