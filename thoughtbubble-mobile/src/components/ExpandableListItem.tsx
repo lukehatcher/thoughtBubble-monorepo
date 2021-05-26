@@ -29,6 +29,7 @@ export const ExpandableListItem: FC<ExpandableListItemProps> = function ({ proje
 
   const handleChevronPress = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    // LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
     setExpanded(!expanded);
   };
 
@@ -98,6 +99,7 @@ const styles = StyleSheet.create({
     marginLeft: 24,
   },
   unarchiveBtn: {
+    // height: 35, default height is 35
     borderRadius: 15,
     width: 115,
     marginRight: 10,
@@ -126,11 +128,12 @@ const AccordianHeaderText = styled.Text`
 
 const AccordianItem = styled.View`
   padding: 16px;
-  /* background-color: #eee; */
   margin-left: 60px;
+  z-index: -999;
 `;
 
 const AccordianItemText = styled.Text`
+  /* position: absolute; */
   color: ${(props) => props.theme.textOnBackground};
   font-size: 16px;
 `;
