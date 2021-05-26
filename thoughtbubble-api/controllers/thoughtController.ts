@@ -13,19 +13,6 @@ class ThoughtsController extends ControllerHelper {
     this.location = '@thoughtControllers.ts: ';
   }
 
-  /**
-   * on thought addition, deletion, edit, or tag edit
-   * @param projectId
-   */
-  private updateLastUpdatedDate = async function (projectId: string) {
-    await getConnection()
-      .createQueryBuilder()
-      .update(Project)
-      .set({ lastUpdatedDate: new Date() })
-      .where('id = :id', { id: projectId })
-      .execute();
-  };
-
   public createThought = async (req: Request, res: Response): Promise<void> => {
     // correctly throws error is project id is not in db project table
     const { userSub, projectId, thought, creationLocation } = req.body;

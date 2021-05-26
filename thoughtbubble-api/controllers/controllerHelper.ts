@@ -55,4 +55,17 @@ export class ControllerHelper {
       console.error(this.fname, err);
     }
   };
+
+  /**
+   * on thought addition, deletion, edit, tag edit or project archive
+   * @param projectId
+   */
+  public updateLastUpdatedDate = async function (projectId: string) {
+    await getConnection()
+      .createQueryBuilder()
+      .update(Project)
+      .set({ lastUpdatedDate: new Date() })
+      .where('id = :id', { id: projectId })
+      .execute();
+  };
 }

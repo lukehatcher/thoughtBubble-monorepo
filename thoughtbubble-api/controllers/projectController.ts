@@ -22,7 +22,7 @@ class ProjectsController extends ControllerHelper {
       const usersProjects = await getRepository(Project) //
         .createQueryBuilder('project')
         .where('project.userId = :userId', { userId: userIdx })
-        .orderBy('project.createdDate', 'ASC')
+        .orderBy('project.lastUpdatedDate', 'DESC')
         .getMany();
 
       let data: any[] = usersProjects as any[];
@@ -49,11 +49,7 @@ class ProjectsController extends ControllerHelper {
       const user = await User.findOne({ githubId: userSub }); // wack naming
       const userId = user?.id;
       const newProject = await Project.create({ projectName, userId, creationLocation }).save();
-      try {
-        await this.recordActivity(userSub, newProject.id);
-      } catch (err) {
-        console.error('fuck2', err);
-      }
+      await this.recordActivity(userSub, newProject.id);
       res.send(newProject); // maybe just send the id
     } catch (err) {
       console.error(this.location, err);
@@ -96,6 +92,9 @@ class ProjectsController extends ControllerHelper {
         .where('thought.projectId = :projectId', { projectId: projectId })
         .orderBy('thought.createdDate', 'ASC')
         .getMany();
+
+      // update datetime stamp for most recent activity for that project
+      await this.updateLastUpdatedDate(projectId);
 
       // return the updated project with its thoughts
       const updatedProject = await Project.findOne({ id: projectId });
