@@ -6,6 +6,7 @@ import { colors } from '../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { RootState } from '../reducers/rootReducer';
 import { useSelector } from 'react-redux';
+import { ExpandableListItem } from '../components/ExpandableListItem';
 
 const { darkMode, lightMode } = colors;
 
@@ -120,14 +121,15 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
         <Animated.ScrollView onScroll={handleScroll} scrollEventThrottle={4} style={{ flex: 1 }}>
           {/* padding view */}
           <View style={{ flex: 1, height: 130 }} />
-          {userArchiveData.map((proj) => (
+          <ExpandableListItem />
+          {/* {userArchiveData.map((proj) => (
             <View
               key={proj.id}
               style={{ margin: 10, borderBottomColor: isDarkMode ? 'white' : 'black', borderWidth: 1 }}
             >
               <Text style={{ color: isDarkMode ? 'white' : 'black' }}>{JSON.stringify(proj)}</Text>
             </View>
-          ))}
+          ))} */}
           {/* bottom padding view */}
           <View style={{ flex: 1, height: 70 }} />
         </Animated.ScrollView>
