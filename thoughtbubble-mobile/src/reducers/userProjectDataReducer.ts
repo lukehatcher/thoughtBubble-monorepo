@@ -17,7 +17,8 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
     case ProjectActionTypes.ARCHIVE:
       return state.filter((proj) => proj.id !== payload);
     case ProjectActionTypes.UNARCHIVE:
-      return [...state, payload];
+      // move to front because by default projects are shown in lastUpdated order
+      return [payload, ...state];
     // =======================
     case 'addThought':
       return state.map((item) => {
