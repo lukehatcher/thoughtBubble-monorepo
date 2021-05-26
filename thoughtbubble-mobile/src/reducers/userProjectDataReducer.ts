@@ -12,14 +12,13 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
     case 'addProject':
       return [...state, payload];
     case 'deleteProject':
-      return state.filter((projects) => projects.id !== payload);
-    // ==== new archive cases ====
+      return state.filter((proj) => proj.id !== payload);
+    // ==== archive cases ====
     case ProjectActionTypes.ARCHIVE:
-      console.log('archived :D');
-      return state.filter((projects) => projects.id !== payload);
-    // case ProjectActionTypes.UNARCHIVE:
-    //   return [...state, payload];
-    // ===========================
+      return state.filter((proj) => proj.id !== payload);
+    case ProjectActionTypes.UNARCHIVE:
+      return [...state, payload];
+    // =======================
     case 'addThought':
       return state.map((item) => {
         if (item.id !== payload.projectId) {

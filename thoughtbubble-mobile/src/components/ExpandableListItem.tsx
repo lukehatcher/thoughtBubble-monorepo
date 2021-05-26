@@ -1,16 +1,22 @@
 import React, { FC, useState } from 'react';
 import { LayoutAnimation, Platform, StyleSheet, Text, UIManager, View } from 'react-native';
-import { IconButton, List } from 'react-native-paper';
+import { Button, IconButton, List } from 'react-native-paper';
 import styled from 'styled-components/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors } from '../constants/colors';
 import { useDarkCheck } from '../hooks/useDarkCheck';
+import { useDispatch } from 'react-redux';
+import { unarchiveProjectAction } from '../actions/projectActions';
 
 const { darkMode, lightMode } = colors;
 
-interface ExpandableListItemProps {}
+interface ExpandableListItemProps {
+  projectId: string;
+  projectName: string; // need better typing
+  projectThoughts: any[];
+}
 
-export const ExpandableListItem: FC<ExpandableListItemProps> = function () {
+export const ExpandableListItem: FC<ExpandableListItemProps> = function ({ projectId, projectName, projectThoughts }) {
   if (Platform.OS === 'android') {
     if (UIManager.setLayoutAnimationEnabledExperimental) {
       UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -18,27 +24,20 @@ export const ExpandableListItem: FC<ExpandableListItemProps> = function () {
   }
 
   const [expanded, setExpanded] = useState(false);
-  const [expandedDemo, setExpandedDemo] = useState(false);
   const isDarkMode = useDarkCheck();
-  const handlePress = () => {
+  const dispatch = useDispatch();
+
+  const handleChevronPress = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setExpanded(!expanded);
   };
 
+  const handleUnArchive = function () {
+    dispatch(unarchiveProjectAction(projectId));
+  };
+
   return (
     <>
-      <List.Section title="hello there" style={{ backgroundColor: '#eee' }}>
-        <List.Accordion
-          title="project name here"
-          left={(props) => <List.Icon {...props} icon="folder" />}
-          expanded={expandedDemo}
-          onPress={() => setExpandedDemo(!expandedDemo)}
-        >
-          <List.Item title="First item" />
-          <List.Item title="Second item" />
-        </List.Accordion>
-      </List.Section>
-      <View style={{ height: 30, backgroundColor: 'red' }}></View>
       <AccordianContainer>
         <AccordianHeader>
           <MaterialCommunityIcons
@@ -48,34 +47,44 @@ export const ExpandableListItem: FC<ExpandableListItemProps> = function () {
             color={
               isDarkMode
                 ? expanded
-                  ? lightMode.primary
+                  ? darkMode.primary
                   : `${darkMode.textOnBackground}87`
                 : expanded
                 ? lightMode.primary
                 : `${lightMode.textOnBackground}87`
             }
           />
-          <AccordianHeaderText expanded={expanded}>project name here</AccordianHeaderText>
+          <AccordianHeaderText expanded={expanded}>{projectName}</AccordianHeaderText>
           <IconButton
             icon={expanded ? 'chevron-up' : 'chevron-down'}
             size={25}
-            color="black"
+            color={isDarkMode ? `${darkMode.textOnBackground}87` : `${lightMode.textOnBackground}87`}
             style={styles.accordianBtn}
-            onPress={handlePress}
+            onPress={handleChevronPress}
           />
         </AccordianHeader>
         {expanded && (
           <>
-            <AccordianItem>
-              <AccordianItemText>First item</AccordianItemText>
-            </AccordianItem>
-            <AccordianItem>
-              <AccordianItemText>Second item</AccordianItemText>
-            </AccordianItem>
+            {/* <PaddingView></PaddingView> */}
+            <Button
+              mode="contained"
+              onPress={() => handleUnArchive()}
+              style={styles.unarchiveBtn}
+              uppercase={false}
+              labelStyle={{}}
+            >
+              un-archive
+            </Button>
+            {projectThoughts.map((thought) => (
+              <AccordianItem key={thought.id}>
+                <AccordianItemText>{thought.text}</AccordianItemText>
+              </AccordianItem>
+            ))}
+            {/* <PaddingView /> */}
           </>
         )}
       </AccordianContainer>
-      <View style={{ height: 30, backgroundColor: 'red' }}></View>
+      {/* <View style={{ height: 30, backgroundColor: 'red' }}></View> */}
     </>
   );
 };
@@ -88,10 +97,20 @@ const styles = StyleSheet.create({
   accordianHeaderIcon: {
     marginLeft: 24,
   },
+  unarchiveBtn: {
+    borderRadius: 15,
+    width: 115,
+    marginRight: 10,
+    marginLeft: 'auto',
+  },
 });
 
+const PaddingView = styled.View`
+  height: 20px;
+`;
+
 const AccordianContainer = styled.View`
-  background-color: #eee;
+  background-color: ${(props) => props.theme.dp1};
 `;
 
 const AccordianHeader = styled.View`
@@ -102,12 +121,12 @@ const AccordianHeader = styled.View`
 const AccordianHeaderText = styled.Text`
   margin-left: 25px;
   font-size: 15px;
-  color: ${(props) => (props.expanded ? props.theme.primaryVariant : props.theme.textOnBackground)};
+  color: ${(props) => (props.expanded ? props.theme.primary : props.theme.textOnBackground)};
 `;
 
 const AccordianItem = styled.View`
   padding: 16px;
-  background-color: #eee;
+  /* background-color: #eee; */
   margin-left: 60px;
 `;
 

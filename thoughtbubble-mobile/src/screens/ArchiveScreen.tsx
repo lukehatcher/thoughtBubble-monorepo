@@ -1,5 +1,5 @@
 import React, { FC, useRef, useState, useEffect } from 'react';
-import { View, Text, Animated, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Animated, StyleSheet } from 'react-native';
 import styled, { ThemeProvider } from 'styled-components/native';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { colors } from '../constants/colors';
@@ -118,20 +118,21 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
           ></Animated.View>
         </Animated.View>
 
-        <Animated.ScrollView onScroll={handleScroll} scrollEventThrottle={4} style={{ flex: 1 }}>
+        <Animated.ScrollView onScroll={handleScroll} scrollEventThrottle={1} style={{ flex: 1 }}>
           {/* padding view */}
-          <View style={{ flex: 1, height: 130 }} />
-          <ExpandableListItem />
-          {/* {userArchiveData.map((proj) => (
-            <View
+          <View style={{ height: 130 }} />
+          {userArchiveData.map((proj) => (
+            <ExpandableListItem
               key={proj.id}
-              style={{ margin: 10, borderBottomColor: isDarkMode ? 'white' : 'black', borderWidth: 1 }}
-            >
-              <Text style={{ color: isDarkMode ? 'white' : 'black' }}>{JSON.stringify(proj)}</Text>
-            </View>
-          ))} */}
-          {/* bottom padding view */}
-          <View style={{ flex: 1, height: 70 }} />
+              projectId={proj.id}
+              projectName={proj.projectName}
+              projectThoughts={proj.projectThoughts}
+            />
+          ))}
+
+          {/* bottom padding view, needs height to allow rows to sit abovebottom tabs when full, 
+          and needs color to have the layout animation happen under the view (not show up early) */}
+          <View style={{ height: 70, backgroundColor: isDarkMode ? darkMode.background : lightMode.background }} />
         </Animated.ScrollView>
       </MainContainer>
     </ThemeProvider>

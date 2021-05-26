@@ -72,16 +72,16 @@ export const archiveProjectAction = function (projectId: string) {
   };
 };
 
-// export const unarchiveProjectAction = function (projectId: string) {
-//   return async (dispatch, _getState) => {
-//     try {
-//       const response = await axios.put('http://localhost:3001/api/projects/archive', { projectId });
+export const unarchiveProjectAction = function (projectId: string) {
+  return async (dispatch, _getState) => {
+    try {
+      const response = await axios.put('http://localhost:3001/api/projects/archive', { projectId });
 
-//       dispatch({ type: ArchiveActionTypes.REMOVE_FROM_UNARCHIVE, payload: projectId }); // filter project out of archive
-//       dispatch({ type: ProjectActionTypes.UNARCHIVE, payload: response.data }); // add project back to main user project data
-//       dispatch({ type: FilterActionTypes.ADD_PROJ, payload: response.data }); // add/re-initialize project to master filters state
-//     } catch (err) {
-//       console.error('@projectActions.ts: ', err);
-//     }
-//   };
-// };
+      dispatch({ type: ArchiveActionTypes.REMOVE_FROM_UNARCHIVE, payload: projectId }); // filter project out of archive
+      dispatch({ type: ProjectActionTypes.UNARCHIVE, payload: response.data }); // add project back to main user project data
+      dispatch({ type: FilterActionTypes.ADD_PROJ, payload: response.data }); // add/re-initialize project to master filters state
+    } catch (err) {
+      console.error('@projectActions.ts: ', err);
+    }
+  };
+};
