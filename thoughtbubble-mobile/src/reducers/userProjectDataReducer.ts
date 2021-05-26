@@ -1,16 +1,25 @@
 import { ProjectShape } from '../interfaces/data';
+import { ProjectActionTypes } from '../constants/actionTypes';
 
 const initialState: ProjectShape[] = [];
 
 export const UserProjectDataReducer = (state = initialState, action): ProjectShape[] => {
+  // should always filter out projects that have no
   const { type, payload } = action;
   switch (type) {
     case 'fetchData':
-      return payload;
+      return payload.filter((proj) => !proj.archived);
     case 'addProject':
-      return [...state, payload];
+      return [payload, ...state];
     case 'deleteProject':
-      return state.filter((projects) => projects.id !== payload);
+      return state.filter((proj) => proj.id !== payload);
+    // ==== archive cases ====
+    case ProjectActionTypes.ARCHIVE:
+      return state.filter((proj) => proj.id !== payload);
+    case ProjectActionTypes.UNARCHIVE:
+      // move to front because by default projects are shown in lastUpdated order
+      return [payload, ...state];
+    // =======================
     case 'addThought':
       return state.map((item) => {
         if (item.id !== payload.projectId) {
@@ -85,7 +94,6 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
       // payload has all userProjectData, projectId and filters[] props on it, filters has id, status and tags[] on each object
       return payload.data.map((project) => {
         let { status, tags } = payload.filters.find((proj) => proj.id === payload.projectId);
-        console.log(status, tags);
         if (status === 'all') {
           if (project.id === payload.projectId) {
             if (!tags.length) return project; // if no tags

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, memo } from 'react';
-import { Text, StyleSheet, LogBox, Animated } from 'react-native';
+import { Text, StyleSheet, LogBox, Animated, Modal } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { FAB } from 'react-native-paper';
@@ -11,6 +11,7 @@ import { useDarkCheck } from '../hooks/useDarkCheck';
 import styled, { ThemeProvider } from 'styled-components/native';
 import { ProjectList } from '../components/ProjectList';
 import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
+import { ArchiveDeleteModal } from '../components/ArchiveDeleteModal';
 
 const ProjectListMemo = memo(ProjectList);
 
@@ -92,6 +93,9 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
   // https://github.com/jemise111/react-native-swipe-list-view/issues/388
   LogBox.ignoreLogs(["Sending 'onAnimatedValueUpdate' with no listeners registered"]);
 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [focusedId, setFocusedId] = useState('');
+
   return (
     <ThemeProvider theme={theme}>
       <MainContainer>
@@ -133,7 +137,12 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
         {userProjectsData.length ? (
           <>
             {/* <Animated.View style={{ height: 120, backgroundColor: 'transparent' }} /> */}
-            <ProjectListMemo userProjectsData={userProjectsData} handleScroll={handleScroll} isDarkMode={isDarkMode} />
+            <ProjectListMemo
+              userProjectsData={userProjectsData}
+              handleScroll={handleScroll}
+              isDarkMode={isDarkMode}
+              // renderArchiveDeleteModal={renderArchiveDeleteModal}
+            />
           </>
         ) : (
           // if user has no projects, this message + icon pops up

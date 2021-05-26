@@ -1,15 +1,21 @@
 import React, { FC, useRef, useState, useEffect } from 'react';
-import { View, Text, Animated, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Animated, StyleSheet } from 'react-native';
 import styled, { ThemeProvider } from 'styled-components/native';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { colors } from '../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { RootState } from '../reducers/rootReducer';
+import { useSelector } from 'react-redux';
+import { ExpandableListItem } from '../components/ExpandableListItem';
+import { stylesLight } from './SettingsScreen';
+import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
 
 const { darkMode, lightMode } = colors;
 
 interface ArchiveScreenProps {}
 
 export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
+  const userArchiveData = useSelector((state: RootState) => state.archive);
   const [showTitle, setShowTitle] = useState(false);
   const isDarkMode = useDarkCheck();
   const theme = {
@@ -21,9 +27,6 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
     textOnBackground: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground,
     dp1: isDarkMode ? darkMode.dp1 : lightMode.background,
   };
-
-  const data = [];
-  for (let i = 0; i < 25; i++) data.push(Math.random());
 
   // ============================== + showTitle useState
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -47,6 +50,19 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
     extrapolate: 'clamp',
   });
 
+  const handleScroll = Animated.event(
+    [
+      {
+        nativeEvent: {
+          contentOffset: {
+            y: scrollY, // "state" variable
+          },
+        },
+      },
+    ],
+    { useNativeDriver: true },
+  );
+
   useEffect(() => {
     Animated.timing(animationOpacity, {
       toValue: showTitle ? 1 : 0,
@@ -64,91 +80,115 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
       scrollY?.removeListener(listener);
     };
   });
-  // ==============================
 
   return (
     <ThemeProvider theme={theme}>
       <MainContainer>
         <Animated.View // header
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 120,
-            backgroundColor: isDarkMode ? darkMode.background : lightMode.background,
-            transform: [{ translateY: translation }],
-            zIndex: 9,
-          }}
+          style={[
+            headerStyles.header,
+            {
+              backgroundColor: isDarkMode ? darkMode.background : lightMode.background,
+              transform: [{ translateY: translation }],
+            },
+          ]}
         >
-          <Animated.View // big title + cloud container
-            style={{
-              opacity: titleOpacity,
-              display: 'flex',
-              flexDirection: 'row',
-              position: 'absolute',
-              bottom: 10,
-              alignItems: 'center',
-            }}
-          >
+          {/* main title container view */}
+          <Animated.View style={[headerStyles.titleContainer, { opacity: titleOpacity }]}>
             <MaterialCommunityIcons
               name="thought-bubble"
               size={30}
               color={isDarkMode ? darkMode.primary : lightMode.primary}
             />
-            <Text style={{ fontSize: 30, color: isDarkMode ? 'white' : 'black' }}>Archive</Text>
+            <Text style={{ fontSize: 30, color: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground }}>
+              Archive
+            </Text>
           </Animated.View>
           <Animated.Text
             style={[
-              styles.animationText,
-              { opacity: animationOpacity, color: isDarkMode ? darkMode.textOnBackground : 'black' },
+              headerStyles.animationText,
+              { opacity: animationOpacity, color: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground },
             ]}
           >
             Archive
           </Animated.Text>
           <Animated.View
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              height: 0.5,
-              width: '100%',
-              backgroundColor: isDarkMode ? 'white' : 'black',
-              opacity: borderOpacity,
-            }}
+            style={[
+              headerStyles.bottomBorder,
+              { backgroundColor: isDarkMode ? darkMode.background : '#EEE', opacity: borderOpacity },
+            ]}
           ></Animated.View>
         </Animated.View>
-
-        <Animated.ScrollView
-          onScroll={Animated.event(
-            [
-              {
-                nativeEvent: {
-                  contentOffset: {
-                    y: scrollY, // "state" variable
-                  },
-                },
-              },
-            ],
-            { useNativeDriver: true },
-          )}
-          scrollEventThrottle={4}
-          style={{ flex: 1 }}
-        >
-          {/* padding view */}
-          <View style={{ flex: 1, height: 130 }} />
-          {data.map((i) => (
-            <View key={i} style={{ margin: 10, borderBottomColor: isDarkMode ? 'white' : 'black', borderWidth: 1 }}>
-              {console.log('dtatat')}
-              <Text style={{ color: isDarkMode ? 'white' : 'black' }}>hello world {i}</Text>
-            </View>
-          ))}
-        </Animated.ScrollView>
+        {/* check if theres any archived projects, if not show placeholder icon */}
+        {userArchiveData.length ? (
+          <Animated.ScrollView onScroll={handleScroll} scrollEventThrottle={1} contentContainerStyle={{ flexGrow: 1 }}>
+            <TopPaddingView />
+            {userArchiveData.map((proj, _index) => (
+              <ExpandableListItem
+                key={proj.id}
+                projectId={proj.id}
+                projectName={proj.projectName}
+                projectThoughts={proj.projectThoughts}
+              />
+            ))}
+            {/* notes on styling used here:
+          1.) LayoutAnimation fade-in of text beats the view slide down and covers whatever is below
+          unless a View(s) of equal height is below it. To fix this the BottomPaddingView has a height of 100% and
+          `contentContainerStyle={{ flexGrow: 1 }}` was added to the parent Animated.ScrollView.
+          2.) min-height of 80px is left to keep scrollview content above nav tab bar, same as all other screens 
+          */}
+            <BottomPaddingView />
+          </Animated.ScrollView>
+        ) : (
+          <EmptyPlaceholder
+            isDarkMode={isDarkMode}
+            theme={theme}
+            displayTextLine1={'Your project archive is currently empty...'}
+            displayTextLine2={'Swipe left on a project to archive it!'}
+          />
+        )}
       </MainContainer>
     </ThemeProvider>
   );
 };
 
-const styles = StyleSheet.create({
+const MainContainer = styled.View`
+  flex: 1;
+  background-color: ${(props) => props.theme.background};
+`;
+
+const BottomPaddingView = styled.View`
+  min-height: 80px;
+  height: 100%;
+  background-color: ${(props) => props.theme.background};
+`;
+
+const TopPaddingView = styled.View`
+  height: 130px;
+`;
+
+const headerStyles = StyleSheet.create({
+  header: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 120,
+    zIndex: 9,
+  },
+  bottomBorder: {
+    position: 'absolute',
+    bottom: 0,
+    height: 1,
+    width: '100%',
+  },
+  titleContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    position: 'absolute',
+    bottom: 10,
+    alignItems: 'center',
+  },
   animationText: {
     position: 'absolute',
     width: '100%',
@@ -156,21 +196,3 @@ const styles = StyleSheet.create({
     bottom: 10,
   },
 });
-
-const MainContainer = styled.View`
-  flex: 1;
-  background-color: ${(props) => props.theme.background};
-`;
-
-const AnimatedViewText = styled.Text`
-  color: ${(props) => props.theme.textOnBackground};
-  position: absolute;
-  font-size: 30px;
-  bottom: 10px;
-  left: 50px;
-  opacity: ${(props) => props.opacity};
-`;
-
-const HeaderText = styled.Text`
-  color: ${(props) => props.theme.textOnBackground};
-`;

@@ -8,9 +8,16 @@ const { darkMode, lightMode } = colors;
 interface EmptyPlaceholderProps {
   isDarkMode: boolean;
   theme: any; // obj with many conditional style props
+  displayTextLine1?: string;
+  displayTextLine2?: string;
 }
 
-export const EmptyPlaceholder: FC<EmptyPlaceholderProps> = function ({ isDarkMode, theme }) {
+export const EmptyPlaceholder: FC<EmptyPlaceholderProps> = function ({
+  isDarkMode,
+  theme,
+  displayTextLine1,
+  displayTextLine2,
+}) {
   return (
     <ThemeProvider theme={theme}>
       <Container>
@@ -19,7 +26,10 @@ export const EmptyPlaceholder: FC<EmptyPlaceholderProps> = function ({ isDarkMod
           size={125}
           color={isDarkMode ? `${darkMode.textOnBackground}20` : `${lightMode.textOnBackground}20`}
         />
-        <TextNothingHere>oops, theres nothing to see here... yet</TextNothingHere>
+        <TextNothingHere>
+          {displayTextLine1 ? displayTextLine1 : "Oops, there's nothing to see here... yet"}
+        </TextNothingHere>
+        <TextNothingHere>{displayTextLine2 ? displayTextLine2 : ''}</TextNothingHere>
       </Container>
     </ThemeProvider>
   );
@@ -35,5 +45,5 @@ const Container = styled.View`
 const TextNothingHere = styled.Text`
   color: ${(props) => `${props.theme.textOnBackground}40`};
   font-size: 20px;
-  margin-top: 20px;
+  margin-top: 15px;
 `;

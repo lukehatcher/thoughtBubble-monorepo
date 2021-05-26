@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { locations } from '../constants/locations';
-import { FilterActionTypes } from '../constants/actionTypes';
+import { FilterActionTypes, ProjectActionTypes, ArchiveActionTypes } from '../constants/actionTypes';
 
 export const addProjectAction = function (projectName: string) {
   return async (dispatch, getState) => {
@@ -14,7 +14,6 @@ export const addProjectAction = function (projectName: string) {
       .then((res) => {
         const newProject = res.data;
         newProject.projectThoughts = []; // does not come with query entity
-        console.log(res.data);
         dispatch({ type: 'addProject', payload: newProject });
         dispatch({ type: FilterActionTypes.ADD_PROJ, payload: newProject });
       })
@@ -50,7 +49,35 @@ export const filterProjectAction = function (projectId: string, filters: any) {
         },
       });
       // this action type pertains to the project and its thoughts not the filters stored in memory
+      // the filter param is the filters stored in memory though
       dispatch({ type: 'filterData', payload: { data: response.data, filters, projectId } });
+    } catch (err) {
+      console.error('@projectActions.ts: ', err);
+    }
+  };
+};
+
+export const archiveProjectAction = function (projectId: string) {
+  return async (dispatch, _getState) => {
+    try {
+      const response = await axios.put('http://localhost:3001/api/projects/archive', { projectId });
+      dispatch({ type: ArchiveActionTypes.ADD_TO_ARCHIVE, payload: response.data }); // add project to archive
+      dispatch({ type: ProjectActionTypes.ARCHIVE, payload: projectId }); // filter project out of main user project data
+      dispatch({ type: FilterActionTypes.DEL_PROJ, payload: projectId }); // fitler project out of master filters state
+    } catch (err) {
+      console.error('@projectActions.ts: ', err);
+    }
+  };
+};
+
+export const unarchiveProjectAction = function (projectId: string) {
+  return async (dispatch, _getState) => {
+    try {
+      const response = await axios.put('http://localhost:3001/api/projects/archive', { projectId });
+
+      dispatch({ type: ArchiveActionTypes.REMOVE_FROM_UNARCHIVE, payload: projectId }); // filter project out of archive
+      dispatch({ type: ProjectActionTypes.UNARCHIVE, payload: response.data }); // add project back to main user project data
+      dispatch({ type: FilterActionTypes.ADD_PROJ, payload: response.data }); // add/re-initialize project to master filters state
     } catch (err) {
       console.error('@projectActions.ts: ', err);
     }

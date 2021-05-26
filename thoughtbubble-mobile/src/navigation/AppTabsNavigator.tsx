@@ -78,6 +78,7 @@ export const AppTabsNavigator: FC<AppNavTabsProps> = () => {
             options={{
               title: 'Projects',
               tabBarIcon: ({ color }) => <MaterialCommunityIcons name="format-list-bulleted" size={30} color={color} />,
+              // tabBarIcon: ({ color }) => <MaterialCommunityIcons name="menu" size={30} color={color} />,
             }}
           />
           <Tab.Screen
@@ -85,7 +86,7 @@ export const AppTabsNavigator: FC<AppNavTabsProps> = () => {
             component={ArchiveScreen} // projects stack
             options={{
               title: 'Archive',
-              tabBarIcon: ({ color }) => <MaterialCommunityIcons name="clock-outline" size={30} color={color} />,
+              tabBarIcon: ({ color }) => <MaterialCommunityIcons name="archive" size={30} color={color} />,
             }}
           />
           <Tab.Screen
@@ -94,7 +95,10 @@ export const AppTabsNavigator: FC<AppNavTabsProps> = () => {
             options={{
               title: 'Stats',
               tabBarIcon: ({ color }) => (
-                <MaterialCommunityIcons name="chart-timeline-variant" size={30} color={color} />
+                // <MaterialCommunityIcons name="chart-timeline-variant" size={30} color={color} />
+                // <MaterialCommunityIcons name="chart-bar-stacked" size={30} color={color} />
+                <MaterialCommunityIcons name="equalizer" size={30} color={color} />
+                // <MaterialCommunityIcons name="poll" size={30} color={color} />
               ),
             }}
           />
