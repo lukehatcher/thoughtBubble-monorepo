@@ -89,7 +89,7 @@ const stylesShared = StyleSheet.create({
 
 // ==================== darkmode styles ====================
 
-export const stylesDark = StyleSheet.create({
+const stylesDark = StyleSheet.create({
   topView: {
     flex: 0.25,
     justifyContent: 'center',
@@ -168,7 +168,7 @@ export const stylesDark = StyleSheet.create({
 
 // ==================== lightmode styles ====================
 
-export const stylesLight = StyleSheet.create({
+const stylesLight = StyleSheet.create({
   topView: {
     flex: 0.25,
     justifyContent: 'center',

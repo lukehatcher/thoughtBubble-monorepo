@@ -85,7 +85,7 @@ export const ProjectList: FC<ProjectListProps> = ({ userProjectsData, handleScro
           style={[useTheme('backRightBtn'), useTheme('backRightBtnRight')]}
           onPress={() => handleProjectDeletionPress(data.item.id, rowMap, data.item.key)}
         >
-          <MaterialCommunityIcons name="trash-can-outline" size={25} color="white" />
+          <MaterialCommunityIcons name="minus-circle-outline" size={25} color="white" />
         </TouchableOpacity>
       </View>
       {/* add padding to the end of the scrollview */}
