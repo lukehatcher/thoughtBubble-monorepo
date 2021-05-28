@@ -1,15 +1,12 @@
 import React, { FC } from 'react';
-import { Modal, Text } from 'react-native';
-import { Button } from 'react-native-paper';
+import { Modal, StyleSheet } from 'react-native';
+import { Button, IconButton } from 'react-native-paper';
 import styled from 'styled-components/native';
 import { useDispatch } from 'react-redux';
 import { archiveProjectAction, deleteProjectAction } from '../actions/projectActions';
-
-// TODO:
-// close row ✅
-// delete project ✅
-// archive
-// style it
+import { useDarkCheck } from '../hooks/useDarkCheck';
+import { colors } from '../constants/colors';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface ArchiveDeleteModalProps {
   modalVisible: boolean;
@@ -29,6 +26,7 @@ export const ArchiveDeleteModal: FC<ArchiveDeleteModalProps> = function ({
   closeRow,
 }) {
   const dispatch = useDispatch();
+  const isDarkMode = useDarkCheck();
 
   const handleProjectDeletion = function () {
     setModalVisible(false);
@@ -45,48 +43,92 @@ export const ArchiveDeleteModal: FC<ArchiveDeleteModalProps> = function ({
       {modalVisible ? <Overlay /> : <></>}
       <Modal visible={modalVisible} animationType="slide" transparent>
         <InfoModalContainer>
-          <Text style={{ color: 'white' }}>{focusedProjectId}</Text>
-          <Button
-            mode="contained"
+          <IconButton
             icon="close"
+            color={isDarkMode ? colors.darkMode.secondary : colors.lightMode.secondary}
+            size={35}
             onPress={() => {
               setModalVisible(false);
               closeRow(focusedRowMap, focusedRowKey);
             }}
-          >
-            cancel
-          </Button>
-          <Button mode="contained" icon="trash-can-outline" onPress={() => handleProjectDeletion()}>
-            delete
-          </Button>
-          <Button mode="contained" icon="clock" onPress={() => handleProjectArchive()}>
-            archive
-          </Button>
+            style={styles.modalCloseIconBtn}
+          />
+          <ActionsContainer>
+            <ModalActionContainer onPress={() => handleProjectDeletion()}>
+              <>
+                <MaterialCommunityIcons
+                  name="trash-can-outline"
+                  size={40}
+                  // color={isDarkMode ? colors.darkMode.primary : colors.lightMode.primary}
+                  color="#808080"
+                  style={styles.modalActionIcon}
+                />
+                <ModalActionText>Delete</ModalActionText>
+              </>
+            </ModalActionContainer>
+            <ModalActionContainer onPress={() => handleProjectArchive()}>
+              <>
+                <MaterialCommunityIcons
+                  name="archive"
+                  size={40}
+                  // color={isDarkMode ? colors.darkMode.primary : colors.lightMode.primary}
+                  color="#F8D775"
+                  style={styles.modalActionIcon}
+                />
+                <ModalActionText>Archive</ModalActionText>
+              </>
+            </ModalActionContainer>
+          </ActionsContainer>
         </InfoModalContainer>
       </Modal>
     </>
   );
 };
 
+const styles = StyleSheet.create({
+  modalCloseIconBtn: {
+    position: 'absolute',
+    top: 6,
+    right: 6,
+  },
+  modalActionIcon: {
+    marginLeft: 10,
+  },
+});
+
+const ActionsContainer = styled.View`
+  position: absolute;
+  bottom: 35px;
+`;
+
+const ModalActionContainer = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+  padding: 5px;
+  padding-right: 25px;
+`;
+
+const ModalActionText = styled.Text`
+  color: ${(props) => props.theme.textOnSurface};
+  font-size: 20px;
+  padding-left: 20px;
+`;
+
 const Overlay = styled.View`
   position: absolute;
+  height: 1000px;
   top: 0px;
   right: 0px;
   left: 0px;
-  height: 723px;
   background-color: #00000095;
-  z-index: 999;
+  z-index: 999999;
 `;
 
 const InfoModalContainer = styled.View`
-  align-items: center;
-  justify-content: center;
-  /* background-color: black; */
+  height: 180px;
   background-color: ${(props) => props.theme.background};
   margin-top: auto;
   margin-bottom: 0px;
-  height: 300px;
-  /* height: 275px; */
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 `;
