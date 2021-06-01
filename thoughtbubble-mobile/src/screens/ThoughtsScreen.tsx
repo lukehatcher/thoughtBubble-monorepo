@@ -129,14 +129,10 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
             <Animated.View style={[headerStyles.titleContainer, { opacity: titleOpacity }]}>
               <MaterialCommunityIcons
                 name="thought-bubble"
-                size={30}
+                size={40}
                 color={isDarkMode ? darkMode.primary : lightMode.primary}
               />
-              <Text
-                style={{ fontSize: 30, color: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground }}
-              >
-                Thoughts
-              </Text>
+              <HeaderTitleText>Thoughts</HeaderTitleText>
             </Animated.View>
             <Animated.Text
               style={[
@@ -206,7 +202,7 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
           setAddThoughtModalView={setAddThoughtModalView}
         />
         <SortThoughtModal projectId={projectId} sortModalView={sortModalView} setSortModalView={setSortModalView} />
-        <FAB style={sharedStyles.fab} icon="plus" onPress={() => setAddThoughtModalView(true)} label="new thought" />
+        <FAB style={styles.fab} icon="plus" onPress={() => setAddThoughtModalView(true)} label="new thought" />
       </ThemeProvider>
     </>
   );
@@ -215,6 +211,12 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
 const MainContainer = styled.View`
   flex: 1;
   background-color: ${(props) => props.theme.background};
+`;
+
+const HeaderTitleText = styled.Text`
+  font-size: 22px;
+  color: ${(props) => props.theme.textOnBackground};
+  margin-left: 15px;
 `;
 
 const headerStyles = StyleSheet.create({
@@ -238,6 +240,7 @@ const headerStyles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     alignItems: 'center',
+    marginLeft: 30,
   },
   animationText: {
     position: 'absolute',
@@ -247,27 +250,11 @@ const headerStyles = StyleSheet.create({
   },
 });
 
-const sharedStyles = StyleSheet.create({
-  // styles not effected by light/dark mode
+const styles = StyleSheet.create({
   fab: {
     position: 'absolute',
     right: 0,
     bottom: 80,
     margin: 16,
-  },
-  hiddenBackText: {
-    // see notes in code
-    fontSize: 20,
-    flex: 1,
-    padding: 15,
-    color: 'rgba(0, 0, 0, 0)',
-  },
-  moreBtn: {
-    position: 'absolute',
-    right: 0,
-  },
-  tagIcon: {
-    position: 'absolute',
-    right: 30,
   },
 });

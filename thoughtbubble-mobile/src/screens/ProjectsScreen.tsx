@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, memo } from 'react';
-import { Text, StyleSheet, LogBox, Animated, Modal } from 'react-native';
+import { Text, StyleSheet, LogBox, Animated } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { FAB } from 'react-native-paper';
@@ -11,7 +11,6 @@ import { useDarkCheck } from '../hooks/useDarkCheck';
 import styled, { ThemeProvider } from 'styled-components/native';
 import { ProjectList } from '../components/ProjectList';
 import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
-import { ArchiveDeleteModal } from '../components/ArchiveDeleteModal';
 
 const ProjectListMemo = memo(ProjectList);
 
@@ -21,7 +20,6 @@ for (let i = 0; i < 5; i++) data.push(Math.random());
 
 export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) => {
   const [addProjModalView, setAddProjModalView] = useState(false);
-  const dispatch = useDispatch();
   const isDarkMode = useDarkCheck();
   let userProjectsData = useSelector((state: RootState) => state.userProjectData);
 
@@ -93,9 +91,6 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
   // https://github.com/jemise111/react-native-swipe-list-view/issues/388
   LogBox.ignoreLogs(["Sending 'onAnimatedValueUpdate' with no listeners registered"]);
 
-  const [modalVisible, setModalVisible] = useState(false);
-  const [focusedId, setFocusedId] = useState('');
-
   return (
     <ThemeProvider theme={theme}>
       <MainContainer>
@@ -112,12 +107,10 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
           <Animated.View style={[headerStyles.titleContainer, { opacity: titleOpacity }]}>
             <MaterialCommunityIcons
               name="thought-bubble"
-              size={30}
+              size={40}
               color={isDarkMode ? darkMode.primary : lightMode.primary}
             />
-            <Text style={{ fontSize: 30, color: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground }}>
-              Projects
-            </Text>
+            <HeaderTitleText>Projects</HeaderTitleText>
           </Animated.View>
           <Animated.Text
             style={[
@@ -150,7 +143,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
         )}
       </MainContainer>
       <AddProjectModal addProjModalView={addProjModalView} setAddProjModalView={setAddProjModalView} />
-      <FAB style={sharedStyles.fab} icon="plus" onPress={() => setAddProjModalView(true)} label="new project" />
+      <FAB style={styles.fab} icon="plus" onPress={() => setAddProjModalView(true)} label="new project" />
     </ThemeProvider>
   );
 };
@@ -158,6 +151,12 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
 const MainContainer = styled.View`
   flex: 1;
   background-color: ${(props) => props.theme.background};
+`;
+
+const HeaderTitleText = styled.Text`
+  font-size: 22px;
+  color: ${(props) => props.theme.textOnBackground};
+  margin-left: 15px;
 `;
 
 const headerStyles = StyleSheet.create({
@@ -181,6 +180,7 @@ const headerStyles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     alignItems: 'center',
+    marginLeft: 30,
   },
   animationText: {
     position: 'absolute',
@@ -190,17 +190,12 @@ const headerStyles = StyleSheet.create({
   },
 });
 
-const sharedStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   fab: {
     position: 'absolute',
     right: 0,
     // bottom: 0,
     bottom: 80,
     margin: 16,
-  },
-  chevronContainer: {
-    flex: 1,
-    alignItems: 'center',
-    flexDirection: 'row',
   },
 });

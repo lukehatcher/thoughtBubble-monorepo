@@ -98,12 +98,10 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
           <Animated.View style={[headerStyles.titleContainer, { opacity: titleOpacity }]}>
             <MaterialCommunityIcons
               name="thought-bubble"
-              size={30}
+              size={40}
               color={isDarkMode ? darkMode.primary : lightMode.primary}
             />
-            <Text style={{ fontSize: 30, color: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground }}>
-              Archive
-            </Text>
+            <HeaderTitleText>Archive</HeaderTitleText>
           </Animated.View>
           <Animated.Text
             style={[
@@ -158,6 +156,12 @@ const MainContainer = styled.View`
   background-color: ${(props) => props.theme.background};
 `;
 
+const HeaderTitleText = styled.Text`
+  font-size: 22px;
+  color: ${(props) => props.theme.textOnBackground};
+  margin-left: 15px;
+`;
+
 const BottomPaddingView = styled.View`
   min-height: 80px;
   height: 100%;
@@ -189,6 +193,7 @@ const headerStyles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     alignItems: 'center',
+    marginLeft: 30,
   },
   animationText: {
     position: 'absolute',
