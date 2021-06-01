@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, memo } from 'react';
 import { Animated, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { colors } from '../constants/colors';
@@ -17,7 +17,7 @@ interface ProjectListProps {
 const { darkMode, lightMode } = colors;
 const SwipeListViewAnimated = Animated.createAnimatedComponent(SwipeListView);
 
-export const ProjectList: FC<ProjectListProps> = ({ userProjectsData, handleScroll, isDarkMode }) => {
+export const ProjectList: FC<ProjectListProps> = memo(({ userProjectsData, handleScroll, isDarkMode }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [focusedProjectId, setFocusedProjectId] = useState('');
   const [focusedRowMap, setFocusedRowMap] = useState(null); // needs better typing
@@ -120,7 +120,7 @@ export const ProjectList: FC<ProjectListProps> = ({ userProjectsData, handleScro
       />
     </>
   );
-};
+});
 
 const PaddingView = styled.View`
   height: 120px;

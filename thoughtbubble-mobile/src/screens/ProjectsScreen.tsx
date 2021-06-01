@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, memo } from 'react';
+import React, { useState, useEffect, useRef, memo, useCallback } from 'react';
 import { Text, StyleSheet, LogBox, Animated } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -12,7 +12,7 @@ import styled, { ThemeProvider } from 'styled-components/native';
 import { ProjectList } from '../components/ProjectList';
 import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
 
-const ProjectListMemo = memo(ProjectList);
+// const ProjectListMemo = memo(ProjectList);
 
 const { darkMode, lightMode } = colors;
 const data = [];
@@ -38,17 +38,20 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
   const scrollY = useRef(new Animated.Value(0)).current;
   const animationOpacity = useRef(new Animated.Value(0)).current; // for the fading in small title
 
-  const handleScroll = Animated.event(
-    [
-      {
-        nativeEvent: {
-          contentOffset: {
-            y: scrollY, // "state" variable
+  const handleScroll = useCallback(
+    Animated.event(
+      [
+        {
+          nativeEvent: {
+            contentOffset: {
+              y: scrollY, // "state" variable
+            },
           },
         },
-      },
-    ],
-    { useNativeDriver: true },
+      ],
+      { useNativeDriver: true },
+    ),
+    [scrollY],
   );
 
   const translation = scrollY.interpolate({
@@ -88,7 +91,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
     };
   });
 
-  // https://github.com/jemise111/react-native-swipe-list-view/issues/388
+  // for dev https://github.com/jemise111/react-native-swipe-list-view/issues/388
   LogBox.ignoreLogs(["Sending 'onAnimatedValueUpdate' with no listeners registered"]);
 
   return (
@@ -128,15 +131,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
           ></Animated.View>
         </Animated.View>
         {userProjectsData.length ? (
-          <>
-            {/* <Animated.View style={{ height: 120, backgroundColor: 'transparent' }} /> */}
-            <ProjectListMemo
-              userProjectsData={userProjectsData}
-              handleScroll={handleScroll}
-              isDarkMode={isDarkMode}
-              // renderArchiveDeleteModal={renderArchiveDeleteModal}
-            />
-          </>
+          <ProjectList userProjectsData={userProjectsData} handleScroll={handleScroll} isDarkMode={isDarkMode} />
         ) : (
           // if user has no projects, this message + icon pops up
           <EmptyPlaceholder isDarkMode={isDarkMode} theme={theme} />
@@ -194,7 +189,6 @@ const styles = StyleSheet.create({
   fab: {
     position: 'absolute',
     right: 0,
-    // bottom: 0,
     bottom: 80,
     margin: 16,
   },
