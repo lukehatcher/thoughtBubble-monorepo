@@ -1,5 +1,5 @@
 import React, { FC, useRef, useState, useEffect } from 'react';
-import { View, Text, Animated, StyleSheet } from 'react-native';
+import { Text, Animated, StyleSheet } from 'react-native';
 import styled, { ThemeProvider } from 'styled-components/native';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { colors } from '../constants/colors';
@@ -7,7 +7,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { RootState } from '../reducers/rootReducer';
 import { useSelector } from 'react-redux';
 import { ExpandableListItem } from '../components/ExpandableListItem';
-import { stylesLight } from './SettingsScreen';
 import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
 
 const { darkMode, lightMode } = colors;
@@ -26,6 +25,8 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
     secondary: isDarkMode ? darkMode.secondary : lightMode.secondary,
     textOnBackground: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground,
     dp1: isDarkMode ? darkMode.dp1 : lightMode.background,
+    textOnError: isDarkMode ? darkMode.textOnError : lightMode.textOnError,
+    error: isDarkMode ? darkMode.error : lightMode.error,
   };
 
   // ============================== + showTitle useState

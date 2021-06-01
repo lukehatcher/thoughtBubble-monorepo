@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
-import { LayoutAnimation, Platform, StyleSheet, UIManager } from 'react-native';
-import { Button, IconButton } from 'react-native-paper';
+import { LayoutAnimation, Platform, StyleSheet, Text, TouchableOpacity, UIManager } from 'react-native';
+import { IconButton } from 'react-native-paper';
 import styled from 'styled-components/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors } from '../constants/colors';
@@ -66,15 +66,12 @@ export const ExpandableListItem: FC<ExpandableListItemProps> = function ({ proje
         </AccordianHeader>
         {expanded && (
           <>
-            <Button
-              mode="contained"
+            <UnarchiveBtn
               onPress={() => handleUnArchive()}
-              style={styles.unarchiveBtn}
-              uppercase={false}
-              labelStyle={{}}
+              underlayColor={isDarkMode ? `${darkMode.error}87` : `${lightMode.error}87`}
             >
-              un-archive
-            </Button>
+              <UnarchiveBtnText>un-archive</UnarchiveBtnText>
+            </UnarchiveBtn>
             {projectThoughts.map((thought) => (
               <AccordianItem key={thought.id}>
                 <AccordianItemText>{thought.text}</AccordianItemText>
@@ -99,13 +96,26 @@ const styles = StyleSheet.create({
     // height: 35, default height is 35
     borderRadius: 15,
     width: 115,
-    marginRight: 10,
-    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginLeft: 25,
+    height: 30,
   },
 });
 
-const PaddingView = styled.View`
-  height: 20px;
+const UnarchiveBtn = styled.TouchableHighlight`
+  margin: 10px;
+  background-color: ${(props) => props.theme.error};
+  padding: 3px;
+  width: 100px;
+  margin-left: 70px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+`;
+
+const UnarchiveBtnText = styled.Text`
+  color: ${(props) => props.theme.textOnError};
+  /* font-weight: bold; */
 `;
 
 const AccordianContainer = styled.View`
