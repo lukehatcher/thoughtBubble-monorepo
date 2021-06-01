@@ -84,6 +84,7 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
 
   return (
     <ThemeProvider theme={theme}>
+      {/* {console.log('archive screen rendered')} */}
       <MainContainer>
         <Animated.View // header
           style={[

@@ -1,5 +1,5 @@
-import React, { FC, useState } from 'react';
-import { LayoutAnimation, Platform, StyleSheet, Text, TouchableOpacity, UIManager } from 'react-native';
+import React, { FC, useState, memo } from 'react';
+import { LayoutAnimation, Platform, StyleSheet, UIManager } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import styled from 'styled-components/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -17,7 +17,11 @@ interface ExpandableListItemProps {
   projectThoughts: ThoughtShape[];
 }
 
-export const ExpandableListItem: FC<ExpandableListItemProps> = function ({ projectId, projectName, projectThoughts }) {
+export const ExpandableListItem: FC<ExpandableListItemProps> = memo(function ({
+  projectId,
+  projectName,
+  projectThoughts,
+}) {
   if (Platform.OS === 'android') {
     if (UIManager.setLayoutAnimationEnabledExperimental) {
       UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -83,7 +87,7 @@ export const ExpandableListItem: FC<ExpandableListItemProps> = function ({ proje
       </AccordianContainer>
     </>
   );
-};
+});
 
 const styles = StyleSheet.create({
   accordianBtn: {

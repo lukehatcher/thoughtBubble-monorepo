@@ -15,6 +15,7 @@ import { StackBackButton } from '../components/StackBackButton';
 import { ThoughtsList } from '../components/ThoughtsList';
 import styled, { ThemeProvider } from 'styled-components/native';
 import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
+import equal from 'deep-equal';
 
 const { darkMode, lightMode } = colors;
 
@@ -27,7 +28,7 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
   const { projectId } = route.params;
   const thoughtsSelector = (state: RootState) =>
     state.userProjectData.find((proj) => proj.id === projectId).projectThoughts;
-  let thoughts = useSelector(thoughtsSelector); // retrive thoughts for the project we're on
+  let thoughts = useSelector(thoughtsSelector, equal); // retrive thoughts for the project we're on
 
   const isDarkMode = useDarkCheck();
   const theme = {
@@ -122,6 +123,7 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
 
   return (
     <>
+      {/* {console.log('thoughts screen rendered')} */}
       <ThemeProvider theme={theme}>
         <MainContainer>
           <Animated.View // header

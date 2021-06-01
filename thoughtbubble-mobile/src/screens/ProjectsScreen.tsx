@@ -96,6 +96,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
 
   return (
     <ThemeProvider theme={theme}>
+      {/* {console.log('project screen rerender')} */}
       <MainContainer>
         <Animated.View // header
           style={[
