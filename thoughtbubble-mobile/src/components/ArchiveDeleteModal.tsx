@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Modal, StyleSheet } from 'react-native';
+import { Modal, StyleSheet, Alert } from 'react-native';
 import { Button, IconButton } from 'react-native-paper';
 import styled from 'styled-components/native';
 import { useDispatch } from 'react-redux';
@@ -28,14 +28,38 @@ export const ArchiveDeleteModal: FC<ArchiveDeleteModalProps> = function ({
   const dispatch = useDispatch();
   const isDarkMode = useDarkCheck();
 
-  const handleProjectDeletion = function () {
-    setModalVisible(false);
-    dispatch(deleteProjectAction(focusedProjectId));
-  };
-
   const handleProjectArchive = function () {
     setModalVisible(false);
     dispatch(archiveProjectAction(focusedProjectId));
+  };
+
+  const closeBottomSheetAndRow = function () {
+    setModalVisible(false);
+    closeRow(focusedRowMap, focusedRowKey);
+  };
+
+  const handleProjectDeletion = function () {
+    // alert color syncs with iphone dark/lightmode setting
+    Alert.alert(
+      'Are you sure you want to delete this project?',
+      '',
+      [
+        {
+          text: 'Confirm',
+          onPress: () => {
+            dispatch(deleteProjectAction(focusedProjectId));
+            closeBottomSheetAndRow();
+          },
+          style: 'default',
+        },
+        {
+          text: 'Cancel',
+          onPress: () => closeBottomSheetAndRow(),
+          style: 'cancel',
+        },
+      ],
+      { cancelable: false }, // android option
+    );
   };
 
   return (
@@ -47,10 +71,7 @@ export const ArchiveDeleteModal: FC<ArchiveDeleteModalProps> = function ({
             icon="close"
             color={isDarkMode ? colors.darkMode.secondary : colors.lightMode.secondary}
             size={35}
-            onPress={() => {
-              setModalVisible(false);
-              closeRow(focusedRowMap, focusedRowKey);
-            }}
+            onPress={() => closeBottomSheetAndRow()}
             style={styles.modalCloseIconBtn}
           />
           <ActionsContainer>
