@@ -8,6 +8,7 @@ interface ColorVersion {
   textOnBackground: string;
   textOnBackground87: string;
   textOnSurface: string;
+  textOnError: string;
   error: string;
   onError: string;
   dp1?: string;
@@ -25,6 +26,7 @@ export const colors: { darkMode: ColorVersion; lightMode: ColorVersion } = {
     textOnBackground: '#FFFFFF', // 87 opacity
     textOnBackground87: '#FFFFFF87',
     textOnSurface: '#FFFFFF',
+    textOnError: '#FFFFFF',
     error: '#CF6679',
     onError: '#000000',
     dp1: '#1e1e1e',
@@ -39,6 +41,7 @@ export const colors: { darkMode: ColorVersion; lightMode: ColorVersion } = {
     textOnSecondary: '#000000',
     textOnBackground: '#000000',
     textOnBackground87: '#00000087',
+    textOnError: '#FFFFFF',
     textOnSurface: '#000000',
     onError: '#FFFFFF',
     error: '#B00020',
