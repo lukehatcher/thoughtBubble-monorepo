@@ -1,5 +1,5 @@
-import React, { useState, useLayoutEffect, FC, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TouchableHighlight, LogBox, Animated } from 'react-native';
+import React, { useState, FC, useEffect, useRef, useCallback } from 'react';
+import { View, StyleSheet, LogBox, Animated } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { RootState } from '../reducers/rootReducer'; // type
@@ -45,17 +45,20 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
   const scrollY = useRef(new Animated.Value(0)).current;
   const animationOpacity = useRef(new Animated.Value(0)).current; // for the fading in small title
 
-  const handleScroll = Animated.event(
-    [
-      {
-        nativeEvent: {
-          contentOffset: {
-            y: scrollY, // "state" variable
+  const handleScroll = useCallback(
+    Animated.event(
+      [
+        {
+          nativeEvent: {
+            contentOffset: {
+              y: scrollY, // "state" variable
+            },
           },
         },
-      },
-    ],
-    { useNativeDriver: true },
+      ],
+      { useNativeDriver: true },
+    ),
+    [scrollY],
   );
 
   const translation = scrollY.interpolate({
@@ -95,21 +98,26 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
     };
   });
 
-  const handleThoughtDelete = (thoughtId: string) => {
-    dispatch(deleteThoughtAction(projectId, thoughtId));
-  };
+  const handleThoughtDelete = useCallback(
+    (thoughtId: string) => {
+      dispatch(deleteThoughtAction(projectId, thoughtId));
+    },
+    [projectId],
+  );
 
-  const handleThoughtStatusChange = (thoughtId: string) => {
-    dispatch(thoughtStatusChangeAction(projectId, thoughtId));
-    // closeRow(rowMap, rowKey); // move to thought list component
-  };
+  const handleThoughtStatusChange = useCallback(
+    (thoughtId: string) => {
+      dispatch(thoughtStatusChangeAction(projectId, thoughtId));
+    },
+    [projectId],
+  );
 
-  const renderModal = (thoughtId: string) => {
+  const renderModal = useCallback((thoughtId: string) => {
     setFocusedId(thoughtId);
     setMoreModalView(true);
-  };
+  }, []);
 
-  // https://github.com/jemise111/react-native-swipe-list-view/issues/388
+  // for dev https://github.com/jemise111/react-native-swipe-list-view/issues/388
   LogBox.ignoreLogs(["Sending 'onAnimatedValueUpdate' with no listeners registered"]);
 
   return (

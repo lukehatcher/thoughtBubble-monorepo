@@ -10,14 +10,14 @@ import { ArchiveDeleteModal } from './ArchiveDeleteModal';
 
 interface ProjectListProps {
   userProjectsData: ProjectShape[];
-  handleScroll: any;
+  handleScroll: (...args: any[]) => void;
   isDarkMode: boolean;
 }
 
 const { darkMode, lightMode } = colors;
 const SwipeListViewAnimated = Animated.createAnimatedComponent(SwipeListView);
 
-export const ProjectList: FC<ProjectListProps> = memo(({ userProjectsData, handleScroll, isDarkMode }) => {
+export const ProjectList: FC<ProjectListProps> = memo(function ({ userProjectsData, handleScroll, isDarkMode }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [focusedProjectId, setFocusedProjectId] = useState('');
   const [focusedRowMap, setFocusedRowMap] = useState(null); // needs better typing

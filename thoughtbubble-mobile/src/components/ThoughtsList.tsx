@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import { View, Text, TouchableHighlight, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { colors } from '../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -16,10 +16,10 @@ interface ThoughtsListProps {
   thoughts: ThoughtShape[];
   handleThoughtStatusChange: (thoughtId: string) => void;
   handleThoughtDelete: (thoughtId: string) => void;
-  handleScroll: any;
+  handleScroll: (...args: any[]) => void;
 }
 
-export const ThoughtsList: FC<ThoughtsListProps> = function ({
+export const ThoughtsList: FC<ThoughtsListProps> = memo(function ({
   renderModal,
   isDarkMode,
   thoughts,
@@ -140,7 +140,7 @@ export const ThoughtsList: FC<ThoughtsListProps> = function ({
       />
     </>
   );
-};
+});
 
 const PaddingView = styled.View`
   height: 120px;
