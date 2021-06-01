@@ -74,6 +74,7 @@ export const ExpandableListItem: FC<ExpandableListItemProps> = function ({ proje
             </UnarchiveBtn>
             {projectThoughts.map((thought) => (
               <AccordianItem key={thought.id}>
+                <BulletPoint>{'\u2022'}</BulletPoint>
                 <AccordianItemText>{thought.text}</AccordianItemText>
               </AccordianItem>
             ))}
@@ -135,12 +136,18 @@ const AccordianHeaderText = styled.Text`
 
 const AccordianItem = styled.View`
   padding: 16px;
-  margin-left: 60px;
+  margin-left: 42px;
   z-index: -999;
+  flex-direction: row;
+`;
+
+const BulletPoint = styled.Text`
+  color: ${(props) => props.theme.textOnBackground};
+  margin-right: 15px;
 `;
 
 const AccordianItemText = styled.Text`
-  /* position: absolute; */
+  flex-shrink: 1;
   color: ${(props) => props.theme.textOnBackground};
   font-size: 16px;
 `;
