@@ -7,6 +7,7 @@ import { archiveProjectAction, deleteProjectAction } from '../actions/projectAct
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { colors } from '../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Overlay } from './Overlay';
 
 interface ArchiveDeleteModalProps {
   modalVisible: boolean;
@@ -135,15 +136,15 @@ const ModalActionText = styled.Text`
   padding-left: 20px;
 `;
 
-const Overlay = styled.View`
-  position: absolute;
-  height: 1000px;
-  top: 0px;
-  right: 0px;
-  left: 0px;
-  background-color: #00000095;
-  z-index: 999999;
-`;
+// const Overlay = styled.View`
+//   position: absolute;
+//   height: 1000px;
+//   top: 0px;
+//   right: 0px;
+//   left: 0px;
+//   background-color: #00000095;
+//   z-index: 999999;
+// `;
 
 const InfoModalContainer = styled.View`
   height: 180px;

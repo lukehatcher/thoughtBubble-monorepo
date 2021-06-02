@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef, memo, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Text, StyleSheet, LogBox, Animated } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { FAB } from 'react-native-paper';
+import { FAB, IconButton } from 'react-native-paper';
 import { RootState } from '../reducers/rootReducer'; // type
 import { ProjectsScreenProps } from '../interfaces/componentProps'; // type
 import { colors } from '../constants/colors';
@@ -11,8 +11,7 @@ import { useDarkCheck } from '../hooks/useDarkCheck';
 import styled, { ThemeProvider } from 'styled-components/native';
 import { ProjectList } from '../components/ProjectList';
 import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
-
-// const ProjectListMemo = memo(ProjectList);
+import { ProjectDisplaySettingsModal } from '../components/ProjectDisplaySettingsModal';
 
 const { darkMode, lightMode } = colors;
 const data = [];
@@ -20,6 +19,7 @@ for (let i = 0; i < 5; i++) data.push(Math.random());
 
 export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) => {
   const [addProjModalView, setAddProjModalView] = useState(false);
+  const [projectSettingsModal, setProjectSettingsModal] = useState(false);
   const isDarkMode = useDarkCheck();
   let userProjectsData = useSelector((state: RootState) => state.userProjectData);
 
@@ -91,6 +91,10 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
     };
   });
 
+  const openProjectSettingsModal = useCallback(() => {
+    setProjectSettingsModal(true);
+  }, []);
+
   // for dev https://github.com/jemise111/react-native-swipe-list-view/issues/388
   LogBox.ignoreLogs(["Sending 'onAnimatedValueUpdate' with no listeners registered"]);
 
@@ -124,6 +128,13 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
           >
             Projects
           </Animated.Text>
+          <IconButton
+            icon="tune"
+            onPress={() => openProjectSettingsModal()}
+            size={30}
+            color={theme ? colors.darkMode.primary : colors.lightMode.textOnPrimary}
+            style={styles.tuneIcon}
+          />
           <Animated.View
             style={[
               headerStyles.bottomBorder,
@@ -139,6 +150,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
         )}
       </MainContainer>
       <AddProjectModal addProjModalView={addProjModalView} setAddProjModalView={setAddProjModalView} />
+      <ProjectDisplaySettingsModal modalVisible={projectSettingsModal} setModalVisible={setProjectSettingsModal} />
       <FAB style={styles.fab} icon="plus" onPress={() => setAddProjModalView(true)} label="new project" />
     </ThemeProvider>
   );
@@ -192,5 +204,13 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 80,
     margin: 16,
+  },
+  tuneIcon: {
+    position: 'absolute',
+    bottom: -5,
+    right: 10,
+    borderRadius: 10,
+    width: 35,
+    height: 35,
   },
 });

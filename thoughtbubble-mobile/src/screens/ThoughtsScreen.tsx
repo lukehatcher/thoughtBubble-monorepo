@@ -165,15 +165,7 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
               onPress={() => setSortModalView(true)}
               size={35}
               color={theme ? colors.darkMode.primary : colors.lightMode.textOnPrimary}
-              style={{
-                position: 'absolute',
-                bottom: -5,
-                right: 10,
-                // backgroundColor: darkMode.dp1,
-                borderRadius: 10,
-                width: 35,
-                height: 35,
-              }}
+              style={styles.sortIcon}
             />
             <Animated.View
               style={[
@@ -266,5 +258,13 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 80,
     margin: 16,
+  },
+  sortIcon: {
+    position: 'absolute',
+    bottom: -5,
+    right: 10,
+    borderRadius: 10,
+    width: 35,
+    height: 35,
   },
 });
