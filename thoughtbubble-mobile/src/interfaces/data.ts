@@ -1,4 +1,17 @@
-import { Locations } from './stringLiteralTypes';
+import { Direction, Locations, OrderType } from './stringLiteralTypes';
+
+export interface UserInfoShape {
+  // from query on User entity table
+  id: string;
+  email: string;
+  username: string;
+  githubId: string;
+  dailyEmail: boolean;
+  weeklyEmail: boolean;
+  darkMode: boolean;
+  projectOrder: OrderType;
+  projectDirection: Direction;
+}
 
 export interface ThoughtShape {
   id: string;

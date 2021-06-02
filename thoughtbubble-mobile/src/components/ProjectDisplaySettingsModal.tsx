@@ -6,14 +6,12 @@ import { colors } from '../constants/colors';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Overlay } from './Overlay';
+import { useDispatch } from 'react-redux';
+import { Direction, OrderType } from '../interfaces/stringLiteralTypes';
+import { OrderTypes } from '../constants/orders';
+import { UserInfoActionTypes } from '../constants/actionTypes';
 
-// const { darkMode, lightMode } = colors;
-
-type Order = 'asc' | 'desc';
-enum Orders {
-  ASC = 'asc',
-  DESC = 'desc',
-}
+const { darkMode, lightMode } = colors;
 
 interface ProjectDisplaySettingsModalProps {
   modalVisible: boolean;
@@ -24,8 +22,33 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
   modalVisible,
   setModalVisible,
 }) {
-  const [checked, setChecked] = useState<Order>('asc');
+  const [order, setOrder] = useState<OrderType>('lastUpdated');
+  const [direction, setDirection] = useState<Direction>('asc');
   const isDarkMode = useDarkCheck();
+  const dispatch = useDispatch();
+
+  const handleOrderTypeChange = function (newOrder: OrderType): void {
+    // dispatch an action that changes how the projects are displayed
+    if (order === newOrder) return;
+    setOrder(newOrder);
+    dispatch({
+      type: UserInfoActionTypes.UPDATE_PROJ_DISPLAY,
+      payload: { projectOrder: newOrder, projectDirection: direction },
+    });
+  };
+
+  const handleDirectionChange = function (newDirection: Direction): void {
+    // lol
+    // reverse or not
+  };
+
+  const generateItemColor = function (currOrder: OrderType): string {
+    if (order === currOrder) {
+      return isDarkMode ? darkMode.primary : lightMode.primary;
+    }
+    return '#808080';
+  };
+
   return (
     <>
       {modalVisible ? <Overlay /> : <></>}
@@ -39,38 +62,45 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
             style={styles.modalCloseIconBtn}
           />
           <ModalTitle>project display options</ModalTitle>
+
           <OrderOptionsContainer>
-            <OrderOptionItem>
+            <OrderOptionItem onPress={() => handleOrderTypeChange(OrderTypes.LAST_UPDATED)}>
               <MaterialCommunityIcons
                 name="clock-outline"
                 size={35}
-                color={isDarkMode ? colors.darkMode.primary : colors.lightMode.primary}
+                color={`${generateItemColor(OrderTypes.LAST_UPDATED)}`}
                 style={styles.modalActionIcon}
               />
-              <OrderOptionItemText>last updated (default)</OrderOptionItemText>
+              <OrderOptionItemText style={{ color: `${generateItemColor(OrderTypes.LAST_UPDATED)}` }}>
+                last updated (default)
+              </OrderOptionItemText>
             </OrderOptionItem>
-            <OrderOptionItem>
+            <OrderOptionItem onPress={() => handleOrderTypeChange(OrderTypes.SIZE)}>
               <MaterialCommunityIcons
                 name="sort-reverse-variant"
                 size={35}
-                color={isDarkMode ? colors.darkMode.primary : colors.lightMode.primary}
+                color={`${generateItemColor(OrderTypes.SIZE)}`}
                 style={styles.modalActionIcon}
               />
-              <OrderOptionItemText>by size</OrderOptionItemText>
+              <OrderOptionItemText style={{ color: `${generateItemColor(OrderTypes.SIZE)}` }}>
+                by size
+              </OrderOptionItemText>
             </OrderOptionItem>
-            <OrderOptionItem>
+            <OrderOptionItem onPress={() => handleOrderTypeChange(OrderTypes.ALPHABETICAL)}>
               <MaterialCommunityIcons
                 // name="sort-alphabetical-ascending-variant"
                 name="alphabetical-variant"
                 size={35}
-                color={isDarkMode ? colors.darkMode.primary : colors.lightMode.primary}
+                color={`${generateItemColor(OrderTypes.ALPHABETICAL)}`}
                 style={styles.modalActionIcon}
               />
-              <OrderOptionItemText>alphabetical</OrderOptionItemText>
+              <OrderOptionItemText style={{ color: `${generateItemColor(OrderTypes.ALPHABETICAL)}` }}>
+                alphabetical
+              </OrderOptionItemText>
             </OrderOptionItem>
 
             <RadioButtonContainer>
-              <RadioButton.Group onValueChange={(checked) => setChecked(checked as Order)} value={checked}>
+              <RadioButton.Group onValueChange={(direction) => setDirection(direction as Direction)} value={direction}>
                 <RadioBtnItemContainer>
                   <MaterialCommunityIcons
                     name="chevron-up"
@@ -134,7 +164,7 @@ const InfoModalContainer = styled.View`
 
 const ModalTitle = styled.Text`
   /* border: 1px solid red; */
-  color: grey;
+  color: ${(props) => props.theme.secondary};
   width: 250px;
   font-size: 20px;
   margin: 10px;
@@ -155,7 +185,6 @@ const OrderOptionItem = styled.TouchableOpacity`
 `;
 
 const OrderOptionItemText = styled.Text`
-  color: ${(props) => props.theme.textOnSurface};
   margin-left: 12px;
 `;
 

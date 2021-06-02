@@ -1,13 +1,6 @@
-interface UserInfoShape {
-  // from query on User entity table
-  id: string;
-  email: string;
-  username: string;
-  githubId: string;
-  dailyEmail: boolean;
-  weeklyEmail: boolean;
-  darkMode: boolean;
-}
+import { UserInfoShape } from '../interfaces/data';
+import { Directions, OrderTypes } from '../constants/orders';
+import { UserInfoActionTypes } from '../constants/actionTypes';
 
 const initialState: UserInfoShape = {
   id: '',
@@ -17,12 +10,15 @@ const initialState: UserInfoShape = {
   dailyEmail: true,
   weeklyEmail: true,
   darkMode: true,
+  projectOrder: OrderTypes.LAST_UPDATED,
+  projectDirection: Directions.DESC,
 };
 
 export const userInfoReducer = (state = initialState, action): UserInfoShape => {
-  switch (action.type) {
+  const { payload, type } = action;
+  switch (type) {
     case 'fetchUserInfo':
-      return action.payload;
+      return payload;
     case 'toggleDailyEmail':
       return {
         ...state,
@@ -38,6 +34,14 @@ export const userInfoReducer = (state = initialState, action): UserInfoShape => 
         ...state,
         darkMode: !state.darkMode,
       };
+    // new bois
+    // payload: { orderType: type, direction: direction }
+    case UserInfoActionTypes.UPDATE_PROJ_DISPLAY:
+      return { ...state, projectOrder: payload.projectOrder, projectDirection: payload.projectDirection };
+    // case UserInfoActionTypes.UPDATE_PROJ_ORDER:
+    //   return { ...state, projectOrder: payload };
+    // case UserInfoActionTypes.UPDATE_PROJ_DIRECTION:
+    //   return { ...state, projectDirection: payload };
     default:
       return state;
   }

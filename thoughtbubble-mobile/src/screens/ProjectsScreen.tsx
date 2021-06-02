@@ -1,27 +1,27 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Text, StyleSheet, LogBox, Animated } from 'react-native';
+import { StyleSheet, LogBox, Animated } from 'react-native';
 import { useSelector } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { FAB, IconButton } from 'react-native-paper';
+import styled, { ThemeProvider } from 'styled-components/native';
+
 import { RootState } from '../reducers/rootReducer'; // type
 import { ProjectsScreenProps } from '../interfaces/componentProps'; // type
 import { colors } from '../constants/colors';
 import { AddProjectModal } from '../components/AddProjectModal';
 import { useDarkCheck } from '../hooks/useDarkCheck';
-import styled, { ThemeProvider } from 'styled-components/native';
+import { useOrderProjects } from '../hooks/useOrderProjects';
 import { ProjectList } from '../components/ProjectList';
 import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
 import { ProjectDisplaySettingsModal } from '../components/ProjectDisplaySettingsModal';
 
 const { darkMode, lightMode } = colors;
-const data = [];
-for (let i = 0; i < 5; i++) data.push(Math.random());
 
 export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) => {
   const [addProjModalView, setAddProjModalView] = useState(false);
   const [projectSettingsModal, setProjectSettingsModal] = useState(false);
   const isDarkMode = useDarkCheck();
-  let userProjectsData = useSelector((state: RootState) => state.userProjectData);
+  let userProjectsData = useOrderProjects();
 
   const theme = {
     // for styled-components ThemeProvider
