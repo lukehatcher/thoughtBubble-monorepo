@@ -15,7 +15,7 @@ class userInfoController {
     const userSub = req.query.userSub as string;
     try {
       const user = await User.findOne({ githubId: userSub });
-      // return user item without projects, cannot just delete projs cause of ts2790
+      // return user obj without projects arr, cannot just delete projs arr cause of ts2790
       const userInfo = {
         id: user?.id,
         username: user?.username,
@@ -24,6 +24,8 @@ class userInfoController {
         dailyEmail: user?.dailyEmail,
         weeklyEmail: user?.weeklyEmail,
         darkMode: user?.darkMode,
+        projectOrder: user?.projectOrder,
+        projectDirection: user?.projectDirection,
       };
       res.send(userInfo);
     } catch (err) {
