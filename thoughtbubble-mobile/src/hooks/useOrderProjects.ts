@@ -15,13 +15,13 @@ export const useOrderProjects = function (): ProjectShape[] {
 
   if (projectOrder === OrderTypes.LAST_UPDATED) {
     // sort by last update (api returns this by default)
-    userProjectsData = [...userProjectsData.sort((a, b) => a.lastUpdatedDate.localeCompare(b.lastUpdatedDate))]; // oldest at top
+    userProjectsData = [...userProjectsData.sort((a, b) => b.lastUpdatedDate.localeCompare(a.lastUpdatedDate))]; // oldest at top
   } else if (projectOrder === OrderTypes.ALPHABETICAL) {
     // sort projects alphabetically
-    userProjectsData = [...userProjectsData.sort((a, b) => b.projectName.localeCompare(a.projectName))];
+    userProjectsData = [...userProjectsData.sort((a, b) => a.projectName.localeCompare(b.projectName))];
   } else {
     // sort projects by size (number or thoughts in them)
-    userProjectsData = [...userProjectsData.sort((a, b) => a.projectThoughts.length - b.projectThoughts.length)];
+    userProjectsData = [...userProjectsData.sort((a, b) => b.projectThoughts.length - a.projectThoughts.length)];
   }
   // format in ascending or descending order
   return projectDirection === Directions.ASC ? userProjectsData.reverse() : userProjectsData;

@@ -8,7 +8,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { Overlay } from './Overlay';
 import { useDispatch } from 'react-redux';
 import { Direction, OrderType } from '../interfaces/stringLiteralTypes';
-import { OrderTypes } from '../constants/orders';
+import { Directions, OrderTypes } from '../constants/orders';
 import { UserInfoActionTypes } from '../constants/actionTypes';
 
 const { darkMode, lightMode } = colors;
@@ -23,13 +23,13 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
   setModalVisible,
 }) {
   const [order, setOrder] = useState<OrderType>('lastUpdated');
-  const [direction, setDirection] = useState<Direction>('asc');
+  const [direction, setDirection] = useState<Direction>(Directions.DESC);
   const isDarkMode = useDarkCheck();
   const dispatch = useDispatch();
 
   const handleOrderTypeChange = function (newOrder: OrderType): void {
     // dispatch an action that changes how the projects are displayed
-    if (order === newOrder) return;
+    if (newOrder === order) return;
     setOrder(newOrder);
     dispatch({
       type: UserInfoActionTypes.UPDATE_PROJ_DISPLAY,
@@ -37,9 +37,13 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
     });
   };
 
-  const handleDirectionChange = function (newDirection: Direction): void {
-    // lol
-    // reverse or not
+  const handleDirectionChange = function (): void {
+    const newDirection = direction === Directions.DESC ? Directions.ASC : Directions.DESC;
+    setDirection(newDirection);
+    dispatch({
+      type: UserInfoActionTypes.UPDATE_PROJ_DISPLAY,
+      payload: { projectOrder: order, projectDirection: newDirection },
+    });
   };
 
   const generateItemColor = function (currOrder: OrderType): string {
@@ -100,7 +104,7 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
             </OrderOptionItem>
 
             <RadioButtonContainer>
-              <RadioButton.Group onValueChange={(direction) => setDirection(direction as Direction)} value={direction}>
+              <RadioButton.Group onValueChange={() => handleDirectionChange()} value={direction}>
                 <RadioBtnItemContainer>
                   <MaterialCommunityIcons
                     name="chevron-up"

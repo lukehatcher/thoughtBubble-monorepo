@@ -34,14 +34,8 @@ export const userInfoReducer = (state = initialState, action): UserInfoShape => 
         ...state,
         darkMode: !state.darkMode,
       };
-    // new bois
-    // payload: { orderType: type, direction: direction }
     case UserInfoActionTypes.UPDATE_PROJ_DISPLAY:
       return { ...state, projectOrder: payload.projectOrder, projectDirection: payload.projectDirection };
-    // case UserInfoActionTypes.UPDATE_PROJ_ORDER:
-    //   return { ...state, projectOrder: payload };
-    // case UserInfoActionTypes.UPDATE_PROJ_DIRECTION:
-    //   return { ...state, projectDirection: payload };
     default:
       return state;
   }
