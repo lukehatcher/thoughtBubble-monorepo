@@ -15,7 +15,7 @@ class userInfoController {
     const userSub = req.query.userSub as string;
     try {
       const user = await User.findOne({ githubId: userSub });
-      // return user item without projects, cannot just delete projs cause of ts2790
+      // return user obj without projects arr, cannot just delete projs arr cause of ts2790
       const userInfo = {
         id: user?.id,
         username: user?.username,
@@ -24,6 +24,9 @@ class userInfoController {
         dailyEmail: user?.dailyEmail,
         weeklyEmail: user?.weeklyEmail,
         darkMode: user?.darkMode,
+        projectOrder: user?.projectOrder,
+        projectDirection: user?.projectDirection,
+        saveOrder: user?.saveOrder,
       };
       res.send(userInfo);
     } catch (err) {
@@ -79,7 +82,7 @@ class userInfoController {
         res.sendStatus(400);
       }
     }
-    await getConnection() //
+    await getConnection()
       .createQueryBuilder()
       .update(User)
       .set({ dailyEmail: !dailyEmailSetting })
@@ -124,6 +127,59 @@ class userInfoController {
       .where('githubId = :githubId', { githubId: userSub })
       .execute();
     res.sendStatus(200);
+  };
+
+  public updateProjectOrder = async (req: Request, res: Response) => {
+    const { userSub, projectOrder } = req.body;
+    const user = await User.findOne({ githubId: userSub });
+    try {
+      await getConnection()
+        .createQueryBuilder()
+        .update(User)
+        .set({ projectOrder: projectOrder })
+        .where('githubId = :githubId', { githubId: userSub })
+        .execute();
+      res.sendStatus(200);
+    } catch (err) {
+      console.error(this.location, err);
+      res.sendStatus(400);
+    }
+  };
+
+  public updateProjectDirection = async (req: Request, res: Response) => {
+    const { userSub, projectDirection } = req.body;
+    const user = await User.findOne({ githubId: userSub });
+    try {
+      await getConnection()
+        .createQueryBuilder()
+        .update(User)
+        .set({ projectDirection: projectDirection })
+        .where('githubId = :githubId', { githubId: userSub })
+        .execute();
+      res.sendStatus(200);
+    } catch (err) {
+      console.error(this.location, err);
+      res.sendStatus(400);
+    }
+  };
+
+  public toggleProjectOrderSetting = async (req: Request, res: Response) => {
+    const { userSub, projectOrder, projectDirection } = req.body;
+    console.log(projectOrder, projectDirection);
+    const user = await User.findOne({ githubId: userSub });
+    const currSetting = user?.saveOrder;
+    try {
+      await getConnection()
+        .createQueryBuilder()
+        .update(User)
+        .set({ saveOrder: !currSetting, projectOrder, projectDirection })
+        .where('githubId = :githubId', { githubId: userSub })
+        .execute();
+      res.sendStatus(200);
+    } catch (err) {
+      console.error(this.location, err);
+      res.sendStatus(400);
+    }
   };
 }
 
