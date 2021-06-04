@@ -80,7 +80,7 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
     if (order === currOrder) {
       return isDarkMode ? darkMode.primary : lightMode.primary;
     }
-    return '#808080'; // TODO: add and expand light grey const colors
+    return isDarkMode ? '#808080' : lightMode.textOnBackground; // TODO: add and expand light grey const colors
   };
 
   return (
@@ -146,6 +146,7 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
                   />
                   <RadioButton.Item
                     label="Low to High"
+                    labelStyle={{ color: `${isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground}` }}
                     // position="leading"
                     value="asc"
                     uncheckedColor="grey"
@@ -162,6 +163,7 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
                   />
                   <RadioButton.Item
                     label="High to Low"
+                    labelStyle={{ color: `${isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground}` }}
                     // position="leading"
                     value="desc"
                     uncheckedColor="grey"
