@@ -23,6 +23,7 @@ import { Button, IconButton, Snackbar, ProgressBar } from 'react-native-paper';
 import { activityRangeMap } from '../constants/activityRanges';
 import { Activity, ProjectShape } from '../interfaces/data';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Overlay } from '../components/Overlay';
 // folder, folder-information-outline, calender, thought-bubble
 
 const { darkMode, lightMode } = colors;
@@ -409,16 +410,6 @@ const InfoModalText = styled.Text`
   margin-right: 19px;
   font-size: 14px;
   color: ${(props) => props.theme.textOnBackground};
-`;
-
-const Overlay = styled.View`
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  left: 0px;
-  height: 723px;
-  background-color: #00000095;
-  z-index: 999;
 `;
 
 const InfoModalContainer = styled.View`
