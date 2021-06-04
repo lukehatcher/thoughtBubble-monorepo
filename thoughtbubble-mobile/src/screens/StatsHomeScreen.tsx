@@ -24,7 +24,6 @@ import { activityRangeMap } from '../constants/activityRanges';
 import { Activity, ProjectShape } from '../interfaces/data';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Overlay } from '../components/Overlay';
-// folder, folder-information-outline, calender, thought-bubble
 
 const { darkMode, lightMode } = colors;
 
@@ -37,6 +36,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
   const [snackbarVisable, setSnackbarVisable] = useState(false);
   const [snackbarText, setSnackbarText] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
+  console.log(userActivityData);
 
   const totalThoughts = userProjectsData.reduce((acc, curr) => (acc += curr.projectThoughts.length), 0);
   const totalCompletedThoughts = userProjectsData.reduce((acc, curr) => {
