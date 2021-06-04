@@ -43,12 +43,12 @@ export const ExpandableListItem: FC<ExpandableListItemProps> = memo(function ({
 
   return (
     <>
-      <AccordianContainer>
-        <AccordianHeader>
+      <AccordionContainer>
+        <AccordionHeader>
           <MaterialCommunityIcons
             name="folder"
             size={25}
-            style={styles.accordianHeaderIcon}
+            style={styles.accordionHeaderIcon}
             color={
               isDarkMode
                 ? expanded
@@ -59,15 +59,15 @@ export const ExpandableListItem: FC<ExpandableListItemProps> = memo(function ({
                 : `${lightMode.textOnBackground}87`
             }
           />
-          <AccordianHeaderText expanded={expanded}>{projectName}</AccordianHeaderText>
+          <AccordionHeaderText expanded={expanded}>{projectName}</AccordionHeaderText>
           <IconButton
             icon={expanded ? 'chevron-up' : 'chevron-down'}
             size={25}
             color={isDarkMode ? `${darkMode.textOnBackground}87` : `${lightMode.textOnBackground}87`}
-            style={styles.accordianBtn}
+            style={styles.accordionBtn}
             onPress={handleChevronPress}
           />
-        </AccordianHeader>
+        </AccordionHeader>
         {expanded && (
           <>
             <UnarchiveBtn
@@ -77,24 +77,24 @@ export const ExpandableListItem: FC<ExpandableListItemProps> = memo(function ({
               <UnarchiveBtnText>un-archive</UnarchiveBtnText>
             </UnarchiveBtn>
             {projectThoughts.map((thought) => (
-              <AccordianItem key={thought.id}>
+              <AccordionItem key={thought.id}>
                 <BulletPoint>{'\u2022'}</BulletPoint>
-                <AccordianItemText>{thought.text}</AccordianItemText>
-              </AccordianItem>
+                <AccordionItemText>{thought.text}</AccordionItemText>
+              </AccordionItem>
             ))}
           </>
         )}
-      </AccordianContainer>
+      </AccordionContainer>
     </>
   );
 });
 
 const styles = StyleSheet.create({
-  accordianBtn: {
+  accordionBtn: {
     marginRight: 12,
     marginLeft: 'auto',
   },
-  accordianHeaderIcon: {
+  accordionHeaderIcon: {
     marginLeft: 24,
   },
   unarchiveBtn: {
@@ -123,22 +123,22 @@ const UnarchiveBtnText = styled.Text`
   /* font-weight: bold; */
 `;
 
-const AccordianContainer = styled.View`
+const AccordionContainer = styled.View`
   background-color: ${(props) => props.theme.dp1};
 `;
 
-const AccordianHeader = styled.View`
+const AccordionHeader = styled.View`
   flex-direction: row;
   align-items: center;
 `;
 
-const AccordianHeaderText = styled.Text`
+const AccordionHeaderText = styled.Text`
   margin-left: 25px;
   font-size: 15px;
   color: ${(props) => (props.expanded ? props.theme.primary : props.theme.textOnBackground)};
 `;
 
-const AccordianItem = styled.View`
+const AccordionItem = styled.View`
   padding: 16px;
   margin-left: 42px;
   z-index: -999;
@@ -150,7 +150,7 @@ const BulletPoint = styled.Text`
   margin-right: 15px;
 `;
 
-const AccordianItemText = styled.Text`
+const AccordionItemText = styled.Text`
   flex-shrink: 1;
   color: ${(props) => props.theme.textOnBackground};
   font-size: 16px;
