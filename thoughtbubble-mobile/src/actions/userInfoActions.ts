@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { UserInfoActionTypes } from '../constants/actionTypes';
+import { Direction, OrderType } from '../interfaces/stringLiteralTypes';
 
 export const fetchUserInfoAction = () => {
   return async (dispatch, getState) => {
@@ -51,6 +53,52 @@ export const changeDarkModeAction = () => {
       })
       .then(() => {
         dispatch({ type: 'toggleDarkMode', payload: '' });
+      })
+      .catch((err) => console.error('@userInfoActions.ts: ', err));
+  };
+};
+// ========
+export const changeProjectOrderAction = (projectOrder: OrderType) => {
+  return async (dispatch, getState) => {
+    const userSub = getState().storedUser.sub;
+    axios
+      .put('http://localhost:3001/api/userinfo/projectOrder', {
+        userSub,
+        projectOrder,
+      })
+      .then(() => {
+        dispatch({ type: UserInfoActionTypes.UPDATE_ORDER, payload: projectOrder });
+      })
+      .catch((err) => console.error('@userInfoActions.ts: ', err));
+  };
+};
+
+export const changeProjectDirectionAction = (projectDirection: Direction) => {
+  return async (dispatch, getState) => {
+    const userSub = getState().storedUser.sub;
+    axios
+      .put('http://localhost:3001/api/userinfo/projectDirection', {
+        userSub,
+        projectDirection,
+      })
+      .then(() => {
+        dispatch({ type: UserInfoActionTypes.UPDATE_DIRECTION, payload: projectDirection });
+      })
+      .catch((err) => console.error('@userInfoActions.ts: ', err));
+  };
+};
+
+export const changeSaveOrderSettingAction = (projectOrder: OrderType, projectDirection: Direction) => {
+  return async (dispatch, getState) => {
+    const userSub = getState().storedUser.sub;
+    axios
+      .put('http://localhost:3001/api/userinfo/saveOrder', {
+        userSub,
+        projectOrder,
+        projectDirection,
+      })
+      .then(() => {
+        dispatch({ type: UserInfoActionTypes.UPDATE_SAVE_SETTING });
       })
       .catch((err) => console.error('@userInfoActions.ts: ', err));
   };

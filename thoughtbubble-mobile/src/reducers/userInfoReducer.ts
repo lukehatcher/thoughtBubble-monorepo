@@ -12,6 +12,7 @@ const initialState: UserInfoShape = {
   darkMode: true,
   projectOrder: OrderTypes.LAST_UPDATED,
   projectDirection: Directions.DESC,
+  saveOrder: false,
 };
 
 export const userInfoReducer = (state = initialState, action): UserInfoShape => {
@@ -34,8 +35,12 @@ export const userInfoReducer = (state = initialState, action): UserInfoShape => 
         ...state,
         darkMode: !state.darkMode,
       };
-    case UserInfoActionTypes.UPDATE_PROJ_DISPLAY:
-      return { ...state, projectOrder: payload.projectOrder, projectDirection: payload.projectDirection };
+    case UserInfoActionTypes.UPDATE_ORDER:
+      return { ...state, projectOrder: payload };
+    case UserInfoActionTypes.UPDATE_DIRECTION:
+      return { ...state, projectDirection: payload };
+    case UserInfoActionTypes.UPDATE_SAVE_SETTING:
+      return { ...state, saveOrder: !state.saveOrder };
     default:
       return state;
   }

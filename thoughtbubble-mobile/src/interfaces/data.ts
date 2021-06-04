@@ -11,6 +11,7 @@ export interface UserInfoShape {
   darkMode: boolean;
   projectOrder: OrderType;
   projectDirection: Direction;
+  saveOrder: boolean;
 }
 
 export interface ThoughtShape {

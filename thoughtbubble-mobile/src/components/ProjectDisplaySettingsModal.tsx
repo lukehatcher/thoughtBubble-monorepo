@@ -2,14 +2,21 @@ import React, { FC, memo, useState } from 'react';
 import { Modal, StyleSheet } from 'react-native';
 import { IconButton, Switch, RadioButton } from 'react-native-paper';
 import styled from 'styled-components/native';
+import { useDispatch, useSelector } from 'react-redux';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import { colors } from '../constants/colors';
 import { useDarkCheck } from '../hooks/useDarkCheck';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Overlay } from './Overlay';
-import { useDispatch } from 'react-redux';
-import { Direction, OrderType } from '../interfaces/stringLiteralTypes';
+import { OrderType } from '../interfaces/stringLiteralTypes';
 import { Directions, OrderTypes } from '../constants/orders';
 import { UserInfoActionTypes } from '../constants/actionTypes';
+import { RootState } from '../reducers/rootReducer';
+import {
+  changeProjectDirectionAction,
+  changeProjectOrderAction,
+  changeSaveOrderSettingAction,
+} from '../actions/userInfoActions';
 
 const { darkMode, lightMode } = colors;
 
@@ -22,35 +29,58 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
   modalVisible,
   setModalVisible,
 }) {
-  const [order, setOrder] = useState<OrderType>('lastUpdated');
-  const [direction, setDirection] = useState<Direction>(Directions.DESC);
+  const direction = useSelector((state: RootState) => state.userInfo.projectDirection);
+  const order = useSelector((state: RootState) => state.userInfo.projectOrder);
   const isDarkMode = useDarkCheck();
   const dispatch = useDispatch();
+  const saveOrderSetting = useSelector((state: RootState) => state.userInfo.saveOrder);
 
   const handleOrderTypeChange = function (newOrder: OrderType): void {
     // dispatch an action that changes how the projects are displayed
     if (newOrder === order) return;
-    setOrder(newOrder);
-    dispatch({
-      type: UserInfoActionTypes.UPDATE_PROJ_DISPLAY,
-      payload: { projectOrder: newOrder, projectDirection: direction },
-    });
+    if (saveOrderSetting) {
+      // save setting is ON, so need to update DB + redux store
+      dispatch(changeProjectOrderAction(newOrder));
+    } else {
+      // save setting is OFF so just update redux store and not the DB
+      dispatch({
+        type: UserInfoActionTypes.UPDATE_ORDER,
+        payload: newOrder,
+      });
+    }
   };
 
   const handleDirectionChange = function (): void {
     const newDirection = direction === Directions.DESC ? Directions.ASC : Directions.DESC;
-    setDirection(newDirection);
-    dispatch({
-      type: UserInfoActionTypes.UPDATE_PROJ_DISPLAY,
-      payload: { projectOrder: order, projectDirection: newDirection },
-    });
+    if (saveOrderSetting) {
+      // save setting is ON, so need to update DB + redux store
+      dispatch(changeProjectDirectionAction(newDirection));
+    } else {
+      // save setting is OFF so just update redux store and not the DB
+      dispatch({
+        type: UserInfoActionTypes.UPDATE_DIRECTION,
+        payload: newDirection,
+      });
+    }
+  };
+
+  const handleSwitchToggle = function (): void {
+    if (saveOrderSetting) {
+      // setting getting turned off
+      dispatch(changeSaveOrderSettingAction(OrderTypes.LAST_UPDATED, Directions.DESC)); // defaults
+      // reset db with defaults but keep local order and direction the same, just change the boolean
+    } else {
+      // setting getting turned on
+      dispatch(changeSaveOrderSettingAction(order, direction));
+      // update db with boolean and curr state and action will update local boolean
+    }
   };
 
   const generateItemColor = function (currOrder: OrderType): string {
     if (order === currOrder) {
       return isDarkMode ? darkMode.primary : lightMode.primary;
     }
-    return '#808080';
+    return '#808080'; // TODO: add and expand light grey const colors
   };
 
   return (
@@ -65,45 +95,47 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
             onPress={() => setModalVisible(false)}
             style={styles.modalCloseIconBtn}
           />
-          <ModalTitle>project display options</ModalTitle>
+          <ModalTitle>Order and Sort</ModalTitle>
 
           <OrderOptionsContainer>
+            <SortTitle>SORT</SortTitle>
             <OrderOptionItem onPress={() => handleOrderTypeChange(OrderTypes.LAST_UPDATED)}>
               <MaterialCommunityIcons
                 name="clock-outline"
-                size={35}
+                size={30}
                 color={`${generateItemColor(OrderTypes.LAST_UPDATED)}`}
                 style={styles.modalActionIcon}
               />
               <OrderOptionItemText style={{ color: `${generateItemColor(OrderTypes.LAST_UPDATED)}` }}>
-                last updated (default)
+                Last Updated (default)
               </OrderOptionItemText>
             </OrderOptionItem>
             <OrderOptionItem onPress={() => handleOrderTypeChange(OrderTypes.SIZE)}>
               <MaterialCommunityIcons
-                name="sort-reverse-variant"
-                size={35}
+                // name="sort-reverse-variant"
+                name="weight"
+                size={30}
                 color={`${generateItemColor(OrderTypes.SIZE)}`}
                 style={styles.modalActionIcon}
               />
               <OrderOptionItemText style={{ color: `${generateItemColor(OrderTypes.SIZE)}` }}>
-                by size
+                By Size
               </OrderOptionItemText>
             </OrderOptionItem>
             <OrderOptionItem onPress={() => handleOrderTypeChange(OrderTypes.ALPHABETICAL)}>
               <MaterialCommunityIcons
-                // name="sort-alphabetical-ascending-variant"
                 name="alphabetical-variant"
-                size={35}
+                size={30}
                 color={`${generateItemColor(OrderTypes.ALPHABETICAL)}`}
                 style={styles.modalActionIcon}
               />
               <OrderOptionItemText style={{ color: `${generateItemColor(OrderTypes.ALPHABETICAL)}` }}>
-                alphabetical
+                Alphabetical
               </OrderOptionItemText>
             </OrderOptionItem>
 
             <RadioButtonContainer>
+              <OrderTitle>ORDER</OrderTitle>
               <RadioButton.Group onValueChange={() => handleDirectionChange()} value={direction}>
                 <RadioBtnItemContainer>
                   <MaterialCommunityIcons
@@ -113,7 +145,7 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
                     style={styles.modalActionIcon}
                   />
                   <RadioButton.Item
-                    label="ascending"
+                    label="Low to High"
                     // position="leading"
                     value="asc"
                     uncheckedColor="grey"
@@ -129,7 +161,7 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
                     style={styles.modalActionIcon}
                   />
                   <RadioButton.Item
-                    label="descending"
+                    label="High to Low"
                     // position="leading"
                     value="desc"
                     uncheckedColor="grey"
@@ -142,13 +174,13 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
             <SaveOrderContainer>
               <MaterialCommunityIcons
                 name="cogs"
-                size={35}
+                size={30}
                 // color={isDarkMode ? colors.darkMode.primary : colors.lightMode.primary}
                 color="#808080"
                 style={styles.modalActionIcon}
               />
-              <SaveOrderText>save settings for next time?</SaveOrderText>
-              <Switch value={true} onValueChange={() => {}} style={styles.switch} />
+              <SaveOrderText>Save settings for next time?</SaveOrderText>
+              <Switch value={saveOrderSetting} onValueChange={() => handleSwitchToggle()} style={styles.switch} />
             </SaveOrderContainer>
           </OrderOptionsContainer>
         </InfoModalContainer>
@@ -160,6 +192,7 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
 const InfoModalContainer = styled.View`
   height: 450px;
   background-color: ${(props) => props.theme.background};
+  /* background-color: black; */
   margin-top: auto;
   margin-bottom: 0px;
   border-top-left-radius: 20px;
@@ -168,17 +201,30 @@ const InfoModalContainer = styled.View`
 
 const ModalTitle = styled.Text`
   /* border: 1px solid red; */
-  color: ${(props) => props.theme.secondary};
-  width: 250px;
+  color: ${(props) => props.theme.textOnSurface};
+  /* width: 250px; */
   font-size: 20px;
-  margin: 10px;
+  text-align: center;
   margin-top: 20px;
-  margin-left: 20px;
-  margin-bottom: 30px;
+  margin-left: 70px;
+  margin-right: 70px;
+  margin-bottom: 25px;
 `;
 
 const OrderOptionsContainer = styled.View`
   /* border: 1px solid red; */
+`;
+
+const SortTitle = styled.Text`
+  color: #808080;
+  margin-left: 15px;
+  margin-bottom: 4px;
+`;
+
+const OrderTitle = styled.Text`
+  color: #808080;
+  margin-left: 15px;
+  margin-bottom: 2px;
 `;
 
 const OrderOptionItem = styled.TouchableOpacity`

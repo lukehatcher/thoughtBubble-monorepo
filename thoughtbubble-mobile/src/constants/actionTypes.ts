@@ -22,5 +22,8 @@ export enum ArchiveActionTypes {
 }
 
 export enum UserInfoActionTypes {
-  UPDATE_PROJ_DISPLAY = 'userInfo/updateProjectDisplay',
+  // UPDATE_PROJ_DISPLAY = 'userInfo/updateProjectDisplay',
+  UPDATE_ORDER = 'userInfo/updateOrder',
+  UPDATE_DIRECTION = 'userInfo/updateDirection',
+  UPDATE_SAVE_SETTING = 'userInfo/updateSaveSetting',
 }
