@@ -3,10 +3,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { StatsHomeScreen } from '../screens/StatsHomeScreen';
 import { StatsProjectInfoScreen } from '../screens/StatsProjectInfoScreen';
 import { StatsStackParamList } from '../interfaces/navigation';
-import { colors } from '../constants/colors';
+import { darkMode, lightMode } from '../constants/colors';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 
-const { darkMode, lightMode } = colors;
 const Stack = createStackNavigator<StatsStackParamList>();
 
 export const StatsStackNavigator: FC = function () {
@@ -14,7 +13,7 @@ export const StatsStackNavigator: FC = function () {
   const dynamicScreenOptions = {
     headerStyle: {
       backgroundColor: isDarkMode ? darkMode.background : lightMode.background,
-      //   // // remove shadow
+      // //   // // remove shadow
       elevation: 0,
       shadowOpacity: 0,
       borderBottomWidth: 0,

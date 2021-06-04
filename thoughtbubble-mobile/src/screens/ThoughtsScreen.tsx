@@ -1,12 +1,12 @@
 import React, { useState, FC, useEffect, useRef, useCallback } from 'react';
-import { View, StyleSheet, LogBox, Animated, Alert } from 'react-native';
+import { View, StyleSheet, LogBox, Animated } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { RootState } from '../reducers/rootReducer'; // type
 import { deleteThoughtAction, thoughtStatusChangeAction } from '../actions/thoughtActions';
 import { MoreModal } from '../components/MoreModal';
 import { ThoughtScreenProps } from '../interfaces/componentProps'; // type
-import { colors } from '../constants/colors';
+import { darkMode, lightMode } from '../constants/colors';
 import { SortThoughtModal } from '../components/SortThoughtModal';
 import { AddThoughtModal } from '../components/AddThoughtModal';
 import { FAB, IconButton } from 'react-native-paper';
@@ -16,8 +16,6 @@ import { ThoughtsList } from '../components/ThoughtsList';
 import styled, { ThemeProvider } from 'styled-components/native';
 import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
 import equal from 'deep-equal';
-
-const { darkMode, lightMode } = colors;
 
 export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) => {
   const [addThoughtModalView, setAddThoughtModalView] = useState(false); // plus modal
@@ -164,7 +162,7 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
               icon="sort-variant"
               onPress={() => setSortModalView(true)}
               size={35}
-              color={theme ? colors.darkMode.primary : colors.lightMode.textOnPrimary}
+              color={theme ? darkMode.primary : lightMode.textOnPrimary}
               style={styles.sortIcon}
             />
             <Animated.View

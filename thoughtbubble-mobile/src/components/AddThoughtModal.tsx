@@ -1,14 +1,12 @@
 import React, { useState, FC } from 'react';
-import { Alert, Modal, StyleSheet, View } from 'react-native';
+import { Modal, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { Button, IconButton, TextInput } from 'react-native-paper';
 import { addThoughtAction } from '../actions/thoughtActions';
-import { colors } from '../constants/colors';
+import { darkMode, lightMode } from '../constants/colors';
 import { AddThoughtModalProps } from '../interfaces/componentProps';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import styled from 'styled-components/native';
-
-const { darkMode, lightMode } = colors;
 
 export const AddThoughtModal: FC<AddThoughtModalProps> = function ({
   projectId,

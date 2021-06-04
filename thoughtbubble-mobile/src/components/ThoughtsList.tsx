@@ -1,12 +1,10 @@
 import React, { FC, memo } from 'react';
 import { View, Text, TouchableHighlight, TouchableOpacity, StyleSheet, Animated, Alert } from 'react-native';
-import { colors } from '../constants/colors';
+import { darkMode, lightMode } from '../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { ThoughtShape } from '../interfaces/data';
 import styled from 'styled-components/native';
-
-const { darkMode, lightMode } = colors;
 
 const SwipeListViewAnimated = Animated.createAnimatedComponent(SwipeListView);
 

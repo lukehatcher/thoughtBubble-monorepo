@@ -6,27 +6,16 @@ import { ProjectsStackNavigator } from './ProjectsStackNavigator';
 import { StatsStackNavigator } from './StatsStackNavigator';
 import { TabsParamList } from '../interfaces/navigation';
 import { AppNavTabsProps } from '../interfaces/componentProps';
-import { colors } from '../constants/colors';
+import { darkMode, lightMode } from '../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { ArchiveScreen } from '../screens/ArchiveScreen';
 import { BlurView } from '@react-native-community/blur';
 
-const { darkMode, lightMode } = colors;
 const Tab = createBottomTabNavigator<TabsParamList>();
 
 export const AppTabsNavigator: FC<AppNavTabsProps> = () => {
   const isDarkMode = useDarkCheck();
-
-  // const dynamicTabBarOptions = {
-  //   activeTintColor: isDarkMode ? darkMode.primary : lightMode.secondary,
-  //   inactiveTintColor: isDarkMode ? darkMode.textOnSurface : lightMode.textOnPrimary,
-  //   showLabel: false,
-  //   style: {
-  //     // remove shadow not working here
-  //     backgroundColor: isDarkMode ? darkMode.dp1 : lightMode.primary,
-  //   },
-  // };
 
   const TabBar = (props) => (
     <BlurView
@@ -74,7 +63,7 @@ export const AppTabsNavigator: FC<AppNavTabsProps> = () => {
           />
           <Tab.Screen
             name="Projects"
-            component={ProjectsStackNavigator} // projects stack
+            component={ProjectsStackNavigator}
             options={{
               title: 'Projects',
               tabBarIcon: ({ color }) => <MaterialCommunityIcons name="format-list-bulleted" size={30} color={color} />,
@@ -83,7 +72,7 @@ export const AppTabsNavigator: FC<AppNavTabsProps> = () => {
           />
           <Tab.Screen
             name="Archive"
-            component={ArchiveScreen} // projects stack
+            component={ArchiveScreen}
             options={{
               title: 'Archive',
               tabBarIcon: ({ color }) => <MaterialCommunityIcons name="archive" size={30} color={color} />,
@@ -94,12 +83,7 @@ export const AppTabsNavigator: FC<AppNavTabsProps> = () => {
             component={StatsStackNavigator}
             options={{
               title: 'Stats',
-              tabBarIcon: ({ color }) => (
-                // <MaterialCommunityIcons name="chart-timeline-variant" size={30} color={color} />
-                // <MaterialCommunityIcons name="chart-bar-stacked" size={30} color={color} />
-                <MaterialCommunityIcons name="equalizer" size={30} color={color} />
-                // <MaterialCommunityIcons name="poll" size={30} color={color} />
-              ),
+              tabBarIcon: ({ color }) => <MaterialCommunityIcons name="equalizer" size={30} color={color} />,
             }}
           />
         </Tab.Navigator>

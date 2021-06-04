@@ -1,9 +1,7 @@
 import React, { FC } from 'react';
 import styled, { ThemeProvider } from 'styled-components/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { colors } from '../constants/colors';
-
-const { darkMode, lightMode } = colors;
+import { darkMode, lightMode } from '../constants/colors';
 
 interface EmptyPlaceholderProps {
   isDarkMode: boolean;

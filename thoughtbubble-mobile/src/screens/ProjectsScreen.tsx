@@ -5,15 +5,13 @@ import { FAB, IconButton } from 'react-native-paper';
 import styled, { ThemeProvider } from 'styled-components/native';
 
 import { ProjectsScreenProps } from '../interfaces/componentProps'; // type
-import { colors } from '../constants/colors';
+import { darkMode, lightMode } from '../constants/colors';
 import { AddProjectModal } from '../components/AddProjectModal';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { useOrderProjects } from '../hooks/useOrderProjects';
 import { ProjectList } from '../components/ProjectList';
 import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
 import { ProjectDisplaySettingsModal } from '../components/ProjectDisplaySettingsModal';
-
-const { darkMode, lightMode } = colors;
 
 export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) => {
   const [addProjModalView, setAddProjModalView] = useState(false);

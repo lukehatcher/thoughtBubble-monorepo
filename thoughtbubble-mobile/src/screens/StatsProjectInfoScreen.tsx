@@ -4,7 +4,7 @@ import { VictoryAxis, VictoryBar, VictoryChart, VictoryLabel, VictoryPie, Victor
 import styled, { ThemeProvider } from 'styled-components/native';
 import { StatsProjectInfoScreenProps } from '../interfaces/componentProps';
 import { RootState } from '../reducers/rootReducer';
-import { colors } from '../constants/colors';
+import { darkMode, lightMode } from '../constants/colors';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { locations } from '../constants/locations';
 import { DateHelper } from '../utils/dateHelpers';
@@ -15,8 +15,6 @@ import { Button, ProgressBar, Snackbar } from 'react-native-paper';
 import { activityRangeMap } from '../constants/activityRanges';
 import { StyleSheet } from 'react-native';
 import { StackBackButton } from '../components/StackBackButton';
-
-const { darkMode, lightMode } = colors;
 
 export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function ({ route, navigation }) {
   const isDarkMode = useDarkCheck();

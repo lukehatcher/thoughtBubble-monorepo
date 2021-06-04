@@ -1,15 +1,13 @@
 import React, { FC, useRef, useState, useEffect } from 'react';
-import { Text, Animated, StyleSheet } from 'react-native';
+import { Animated, StyleSheet } from 'react-native';
 import styled, { ThemeProvider } from 'styled-components/native';
-import { useDarkCheck } from '../hooks/useDarkCheck';
-import { colors } from '../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { RootState } from '../reducers/rootReducer';
 import { useSelector } from 'react-redux';
+import { useDarkCheck } from '../hooks/useDarkCheck';
+import { darkMode, lightMode } from '../constants/colors';
+import { RootState } from '../reducers/rootReducer';
 import { ExpandableListItem } from '../components/ExpandableListItem';
 import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
-
-const { darkMode, lightMode } = colors;
 
 interface ArchiveScreenProps {}
 

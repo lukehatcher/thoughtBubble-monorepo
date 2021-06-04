@@ -3,14 +3,12 @@ import { Modal, View, Text, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Chip, IconButton } from 'react-native-paper';
 import { filterProjectAction } from '../actions/projectActions';
-import { colors } from '../constants/colors';
+import { darkMode, lightMode } from '../constants/colors';
 import { SortThoughtModalProps } from '../interfaces/componentProps';
 import { RootState } from '../reducers/rootReducer';
 import { clearTagsAction, updateFiltersAction } from '../actions/filterActions';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { StatusFilters } from '../interfaces/stringLiteralTypes';
-
-const { darkMode, lightMode } = colors;
 
 export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId, sortModalView, setSortModalView }) {
   const dispatch = useDispatch();

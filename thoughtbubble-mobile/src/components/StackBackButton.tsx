@@ -1,10 +1,8 @@
 import React, { FC } from 'react';
 import { IconButton } from 'react-native-paper';
 import { useDarkCheck } from '../hooks/useDarkCheck';
-import { colors } from '../constants/colors';
+import { darkMode, lightMode } from '../constants/colors';
 import { useNavigation } from '@react-navigation/native';
-
-const { darkMode, lightMode } = colors;
 
 interface StackBackButtonProps {
   location: 'Projects' | 'Analytics';

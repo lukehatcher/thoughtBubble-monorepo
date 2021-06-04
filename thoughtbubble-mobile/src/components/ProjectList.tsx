@@ -1,7 +1,7 @@
 import React, { FC, useState, memo } from 'react';
 import { Animated, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
-import { colors } from '../constants/colors';
+import { darkMode, lightMode } from '../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import styled from 'styled-components/native';
@@ -14,7 +14,6 @@ interface ProjectListProps {
   isDarkMode: boolean;
 }
 
-const { darkMode, lightMode } = colors;
 const SwipeListViewAnimated = Animated.createAnimatedComponent(SwipeListView);
 
 export const ProjectList: FC<ProjectListProps> = memo(function ({ userProjectsData, handleScroll, isDarkMode }) {
@@ -56,7 +55,7 @@ export const ProjectList: FC<ProjectListProps> = memo(function ({ userProjectsDa
           <MaterialCommunityIcons
             name="chevron-right"
             size={40}
-            color={isDarkMode ? colors.darkMode.primary : colors.lightMode.primary}
+            color={isDarkMode ? darkMode.primary : lightMode.primary}
           />
         </View>
       </TouchableHighlight>

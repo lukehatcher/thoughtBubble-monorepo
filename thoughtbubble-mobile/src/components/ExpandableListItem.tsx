@@ -3,13 +3,11 @@ import { LayoutAnimation, Platform, StyleSheet, UIManager } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import styled from 'styled-components/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { colors } from '../constants/colors';
+import { darkMode, lightMode } from '../constants/colors';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { useDispatch } from 'react-redux';
 import { unarchiveProjectAction } from '../actions/projectActions';
 import { ThoughtShape } from '../interfaces/data';
-
-const { darkMode, lightMode } = colors;
 
 interface ExpandableListItemProps {
   projectId: string;

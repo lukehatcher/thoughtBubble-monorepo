@@ -1,11 +1,11 @@
-import React, { FC, memo, useState } from 'react';
+import React, { FC, memo } from 'react';
 import { Modal, StyleSheet } from 'react-native';
 import { IconButton, Switch, RadioButton } from 'react-native-paper';
 import styled from 'styled-components/native';
 import { useDispatch, useSelector } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { colors } from '../constants/colors';
+import { darkMode, lightMode } from '../constants/colors';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { Overlay } from './Overlay';
 import { OrderType } from '../interfaces/stringLiteralTypes';
@@ -17,8 +17,6 @@ import {
   changeProjectOrderAction,
   changeSaveOrderSettingAction,
 } from '../actions/userInfoActions';
-
-const { darkMode, lightMode } = colors;
 
 interface ProjectDisplaySettingsModalProps {
   modalVisible: boolean;
@@ -90,7 +88,7 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
         <InfoModalContainer>
           <IconButton
             icon="close"
-            color={isDarkMode ? colors.darkMode.secondary : colors.lightMode.secondary}
+            color={isDarkMode ? darkMode.secondary : lightMode.secondary}
             size={35}
             onPress={() => setModalVisible(false)}
             style={styles.modalCloseIconBtn}
@@ -141,7 +139,7 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
                   <MaterialCommunityIcons
                     name="chevron-up"
                     size={35}
-                    color={isDarkMode ? colors.darkMode.primary : colors.lightMode.primary}
+                    color={isDarkMode ? darkMode.primary : lightMode.primary}
                     style={styles.modalActionIcon}
                   />
                   <RadioButton.Item
@@ -158,7 +156,7 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
                   <MaterialCommunityIcons
                     name="chevron-down"
                     size={35}
-                    color={isDarkMode ? colors.darkMode.primary : colors.lightMode.primary}
+                    color={isDarkMode ? darkMode.primary : lightMode.primary}
                     style={styles.modalActionIcon}
                   />
                   <RadioButton.Item
@@ -177,7 +175,7 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
               <MaterialCommunityIcons
                 name="cogs"
                 size={30}
-                // color={isDarkMode ? colors.darkMode.primary : colors.lightMode.primary}
+                // color={isDarkMode ? darkMode.primary : lightMode.primary}
                 color="#808080"
                 style={styles.modalActionIcon}
               />

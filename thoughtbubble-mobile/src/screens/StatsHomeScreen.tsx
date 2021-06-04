@@ -12,7 +12,7 @@ import {
   VictoryPolarAxis,
 } from 'victory-native';
 import equal from 'deep-equal';
-import { colors } from '../constants/colors';
+import { darkMode, lightMode } from '../constants/colors';
 import { RootState } from '../reducers/rootReducer';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { StatsHomeScreenProps } from '../interfaces/componentProps';
@@ -25,8 +25,6 @@ import { Activity, ProjectShape } from '../interfaces/data';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Overlay } from '../components/Overlay';
 
-const { darkMode, lightMode } = colors;
-
 export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
   const isDarkMode = useDarkCheck();
   const dispatch = useDispatch();
@@ -36,7 +34,6 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
   const [snackbarVisable, setSnackbarVisable] = useState(false);
   const [snackbarText, setSnackbarText] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
-  console.log(userActivityData);
 
   const totalThoughts = userProjectsData.reduce((acc, curr) => (acc += curr.projectThoughts.length), 0);
   const totalCompletedThoughts = userProjectsData.reduce((acc, curr) => {

@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import { Modal, StyleSheet, Alert } from 'react-native';
-import { Button, IconButton } from 'react-native-paper';
+import { IconButton } from 'react-native-paper';
 import styled from 'styled-components/native';
 import { useDispatch } from 'react-redux';
 import { archiveProjectAction, deleteProjectAction } from '../actions/projectActions';
 import { useDarkCheck } from '../hooks/useDarkCheck';
-import { colors } from '../constants/colors';
+import { darkMode, lightMode } from '../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Overlay } from './Overlay';
 
@@ -70,7 +70,7 @@ export const ArchiveDeleteModal: FC<ArchiveDeleteModalProps> = function ({
         <InfoModalContainer>
           <IconButton
             icon="close"
-            color={isDarkMode ? colors.darkMode.secondary : colors.lightMode.secondary}
+            color={isDarkMode ? darkMode.secondary : lightMode.secondary}
             size={35}
             onPress={() => closeBottomSheetAndRow()}
             style={styles.modalCloseIconBtn}
@@ -81,7 +81,7 @@ export const ArchiveDeleteModal: FC<ArchiveDeleteModalProps> = function ({
                 <MaterialCommunityIcons
                   name="trash-can-outline"
                   size={40}
-                  // color={isDarkMode ? colors.darkMode.primary : colors.lightMode.primary}
+                  // color={isDarkMode ? darkMode.primary : lightMode.primary}
                   color="#808080"
                   style={styles.modalActionIcon}
                 />
@@ -93,7 +93,7 @@ export const ArchiveDeleteModal: FC<ArchiveDeleteModalProps> = function ({
                 <MaterialCommunityIcons
                   name="archive"
                   size={40}
-                  // color={isDarkMode ? colors.darkMode.primary : colors.lightMode.primary}
+                  // color={isDarkMode ? darkMode.primary : lightMode.primary}
                   color="#F8D775"
                   style={styles.modalActionIcon}
                 />
