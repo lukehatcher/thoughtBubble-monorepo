@@ -26,6 +26,7 @@ class userInfoController {
         darkMode: user?.darkMode,
         projectOrder: user?.projectOrder,
         projectDirection: user?.projectDirection,
+        saveOrder: user?.saveOrder,
       };
       res.send(userInfo);
     } catch (err) {
