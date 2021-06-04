@@ -1,5 +1,5 @@
 import React, { useState, FC, useEffect, useRef, useCallback } from 'react';
-import { View, StyleSheet, LogBox, Animated } from 'react-native';
+import { View, StyleSheet, LogBox, Animated, Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { RootState } from '../reducers/rootReducer'; // type

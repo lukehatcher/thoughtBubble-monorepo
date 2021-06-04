@@ -1,5 +1,5 @@
 import React, { FC, memo } from 'react';
-import { View, Text, TouchableHighlight, TouchableOpacity, StyleSheet, Animated } from 'react-native';
+import { View, Text, TouchableHighlight, TouchableOpacity, StyleSheet, Animated, Alert } from 'react-native';
 import { colors } from '../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { SwipeListView } from 'react-native-swipe-list-view';
@@ -29,18 +29,31 @@ export const ThoughtsList: FC<ThoughtsListProps> = memo(function ({
 }) {
   const useTheme = (name: string) => (isDarkMode ? stylesDark[name] : stylesLight[name]);
 
-  const theme = {
-    // for styled-components ThemeProvider
-    background: isDarkMode ? darkMode.background : lightMode.background,
-    primary: isDarkMode ? darkMode.primary : lightMode.primary,
-    primaryVariant: isDarkMode ? darkMode.primaryVariant : lightMode.primaryVariant,
-    secondary: isDarkMode ? darkMode.secondary : lightMode.secondary,
-    textOnBackground: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground,
-    textOnSurface: isDarkMode ? darkMode.textOnSurface : lightMode.textOnSurface,
-    dp1: isDarkMode ? darkMode.dp1 : lightMode.background,
-  };
   const firstItem = thoughts[0].id;
   const lastItem = thoughts[thoughts.length - 1].id;
+
+  const confirmDeletion = (thoughtId: string, rowMap: any, rowKey: string) => {
+    Alert.alert(
+      // alert color syncs with iphone dark/lightmode setting
+      'Are you sure you want to delete this thought?',
+      '',
+      [
+        {
+          text: 'Confirm',
+          onPress: () => {
+            handleThoughtDelete(thoughtId);
+          },
+          style: 'default',
+        },
+        {
+          text: 'Cancel',
+          onPress: () => closeRow(rowMap, rowKey),
+          style: 'cancel',
+        },
+      ],
+      { cancelable: false }, // android option
+    );
+  };
 
   const closeRow = (rowMap, rowKey) => {
     // for slidables
@@ -76,7 +89,7 @@ export const ThoughtsList: FC<ThoughtsListProps> = memo(function ({
 
         <TouchableOpacity
           style={[useTheme('backRightBtn'), useTheme('backRightBtnLeft')]}
-          onPress={() => handleThoughtDelete(data.item.id)}
+          onPress={() => confirmDeletion(data.item.id, rowMap, data.item.key)}
         >
           <MaterialCommunityIcons name="trash-can-outline" size={25} color="white" />
         </TouchableOpacity>
