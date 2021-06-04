@@ -143,9 +143,10 @@ const stylesDark = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 'auto', // !!!!!!!!!
-    marginTop: 11.5,
-    marginHorizontal: 10,
     flexWrap: 'wrap',
+    // shape below
+    marginTop: 11.5,
+    marginHorizontal: 15,
     borderRadius: 17.5,
     padding: 10,
   },
@@ -180,9 +181,10 @@ const stylesLight = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 'auto', // !!!!!!!!!
-    marginTop: 10,
-    marginHorizontal: 10,
     flexWrap: 'wrap',
+    // shape below
+    marginTop: 10,
+    marginHorizontal: 15,
     borderRadius: 17.5,
     padding: 10,
     // shadow

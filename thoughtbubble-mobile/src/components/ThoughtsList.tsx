@@ -57,7 +57,6 @@ export const ThoughtsList: FC<ThoughtsListProps> = memo(function ({
       <View
         style={{
           ...useTheme('rowFront'),
-          backgroundColor: theme ? colors.darkMode.error : colors.lightMode.error,
         }}
       >
         {/* to match height of back view to the dynamic front view height,
@@ -111,7 +110,7 @@ export const ThoughtsList: FC<ThoughtsListProps> = memo(function ({
             <MaterialCommunityIcons
               name="dots-vertical"
               size={35}
-              color={theme ? colors.darkMode.primary : colors.lightMode.primary}
+              color={isDarkMode ? darkMode.primary : lightMode.primary}
             />
           </TouchableOpacity>
         </>
@@ -205,9 +204,11 @@ const stylesDark = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 'auto',
-    marginTop: 15,
-    marginHorizontal: 10,
-    borderRadius: 10,
+    // shape below
+    marginHorizontal: 15,
+    padding: 2.5,
+    marginTop: 11.5,
+    borderRadius: 17.5,
   },
   backRightBtn: {
     backgroundColor: 'pink',
@@ -224,17 +225,15 @@ const stylesDark = StyleSheet.create({
     alignItems: 'flex-end',
     paddingRight: 20,
     right: 50,
-    width: 100,
+    width: '82%',
   },
   backRightBtnRight: {
     backgroundColor: darkMode.secondary,
     right: 0,
-    borderBottomRightRadius: 10,
-    borderTopRightRadius: 10,
+    borderBottomRightRadius: 17.5,
+    borderTopRightRadius: 17.5,
   },
 });
-
-// ============================================================================
 
 const stylesLight = StyleSheet.create({
   mainContainer: {
@@ -268,9 +267,11 @@ const stylesLight = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 'auto',
-    marginTop: 15,
-    marginHorizontal: 10,
-    borderRadius: 10,
+    // shape below
+    marginHorizontal: 15,
+    padding: 2.5,
+    marginTop: 11.5,
+    borderRadius: 17.5,
     shadowColor: '#000',
     // shadow
     shadowOffset: {
@@ -300,7 +301,7 @@ const stylesLight = StyleSheet.create({
   backRightBtnRight: {
     backgroundColor: lightMode.secondary,
     right: 0,
-    borderBottomRightRadius: 10,
-    borderTopRightRadius: 10,
+    borderBottomRightRadius: 17.5,
+    borderTopRightRadius: 17.5,
   },
 });
