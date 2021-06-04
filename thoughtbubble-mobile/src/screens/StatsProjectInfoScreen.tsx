@@ -11,7 +11,7 @@ import { DateHelper } from '../utils/dateHelpers';
 import { Activity } from '../interfaces/data';
 import { useFocusEffect } from '@react-navigation/native';
 import { fetchActivityDataAction } from '../actions/fetchActivityAction';
-import { Button, ProgressBar } from 'react-native-paper';
+import { Button, ProgressBar, Snackbar } from 'react-native-paper';
 import { activityRangeMap } from '../constants/activityRanges';
 import { StyleSheet } from 'react-native';
 import { StackBackButton } from '../components/StackBackButton';
@@ -34,6 +34,8 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
   const userProjectsData = useSelector((state: RootState) => state.userProjectData);
   const project = userProjectsData.find((proj) => proj.id === projectId);
   const userActivityData: Activity = useSelector((state: RootState) => state.activity);
+  const [snackbarVisable, setSnackbarVisable] = useState(false);
+  const [snackbarText, setSnackbarText] = useState('');
   const [currRange, setCurrRange] = useState(activityRangeMap.get('1W'));
 
   const handle1WClick = () => setCurrRange(activityRangeMap.get('1W'));
@@ -88,6 +90,25 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
   return (
     <ThemeProvider theme={theme}>
       <MainContainer>
+        <SnackBarContainer>
+          <Snackbar
+            theme={{
+              colors: {
+                surface: isDarkMode ? darkMode.textOnSurface : lightMode.textOnSurface,
+              },
+            }}
+            style={{ backgroundColor: isDarkMode ? darkMode.dp1 : 'white' }}
+            visible={snackbarVisable}
+            onDismiss={() => setSnackbarVisable(false)}
+            duration={5000} // 7k default
+            action={{
+              label: '✕', // or CLOSE
+              onPress: () => setSnackbarVisable(false),
+            }}
+          >
+            {snackbarText}
+          </Snackbar>
+        </SnackBarContainer>
         <AccountTotalsContainer>
           <AccountTotalsCard>
             <TotalNumberText>{totalThoughts}</TotalNumberText>
@@ -126,20 +147,20 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
               label={DateHelper.generateXaxisDateLabel(userActivityData.graphData, currRange)}
             />
             <VictoryBar
-              // events={[
-              //   {
-              //     target: 'data',
-              //     eventHandlers: {
-              //       onPress: (_, clickedProps) => {
-              //         const activityDate = DateHelper.dayNToDate(clickedProps.datum.x);
-              //         const formatActivityDate = DateHelper.parseOutTime(activityDate.toISOString());
-              //         setSnackbarText(formatActivityDate);
-              //         setSnackbarVisable(true);
-              //         return null; // api expects a return
-              //       },
-              //     },
-              //   },
-              // ]}
+              events={[
+                {
+                  target: 'data',
+                  eventHandlers: {
+                    onPress: (_, clickedProps) => {
+                      const activityDate = DateHelper.dayNToDate(clickedProps.datum.x);
+                      const formatActivityDate = DateHelper.parseOutTime(activityDate.toISOString());
+                      setSnackbarText(formatActivityDate);
+                      setSnackbarVisable(true);
+                      return null; // api expects a return
+                    },
+                  },
+                },
+              ]}
               style={{ data: { fill: isDarkMode ? darkMode.primary : lightMode.secondary } }}
               data={userActivityData.graphDataPerProject[projectId].slice(-1 * currRange)}
               height={300}
@@ -236,6 +257,13 @@ const styles = StyleSheet.create({
     color: lightMode.primary,
   },
 });
+
+const SnackBarContainer = styled.View`
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+  top: 70px;
+`;
 
 const MainContainer = styled.ScrollView`
   flex: 1;
