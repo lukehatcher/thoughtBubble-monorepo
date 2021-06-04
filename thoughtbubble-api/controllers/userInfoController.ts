@@ -81,7 +81,7 @@ class userInfoController {
         res.sendStatus(400);
       }
     }
-    await getConnection() //
+    await getConnection()
       .createQueryBuilder()
       .update(User)
       .set({ dailyEmail: !dailyEmailSetting })
@@ -126,6 +126,59 @@ class userInfoController {
       .where('githubId = :githubId', { githubId: userSub })
       .execute();
     res.sendStatus(200);
+  };
+
+  public updateProjectOrder = async (req: Request, res: Response) => {
+    const { userSub, projectOrder } = req.body;
+    const user = await User.findOne({ githubId: userSub });
+    try {
+      await getConnection()
+        .createQueryBuilder()
+        .update(User)
+        .set({ projectOrder: projectOrder })
+        .where('githubId = :githubId', { githubId: userSub })
+        .execute();
+      res.sendStatus(200);
+    } catch (err) {
+      console.error(this.location, err);
+      res.sendStatus(400);
+    }
+  };
+
+  public updateProjectDirection = async (req: Request, res: Response) => {
+    const { userSub, projectDirection } = req.body;
+    const user = await User.findOne({ githubId: userSub });
+    try {
+      await getConnection()
+        .createQueryBuilder()
+        .update(User)
+        .set({ projectDirection: projectDirection })
+        .where('githubId = :githubId', { githubId: userSub })
+        .execute();
+      res.sendStatus(200);
+    } catch (err) {
+      console.error(this.location, err);
+      res.sendStatus(400);
+    }
+  };
+
+  public toggleProjectOrderSetting = async (req: Request, res: Response) => {
+    const { userSub, projectOrder, projectDirection } = req.body;
+    console.log(projectOrder, projectDirection);
+    const user = await User.findOne({ githubId: userSub });
+    const currSetting = user?.saveOrder;
+    try {
+      await getConnection()
+        .createQueryBuilder()
+        .update(User)
+        .set({ saveOrder: !currSetting, projectOrder, projectDirection })
+        .where('githubId = :githubId', { githubId: userSub })
+        .execute();
+      res.sendStatus(200);
+    } catch (err) {
+      console.error(this.location, err);
+      res.sendStatus(400);
+    }
   };
 }
 

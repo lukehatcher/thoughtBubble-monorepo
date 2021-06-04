@@ -43,6 +43,10 @@ export class User extends BaseEntity {
   @Column('text', { default: Directions.DESC })
   projectDirection!: Direction;
 
+  // whether or not the user want to save the order for their next session
+  @Column('boolean', { default: false })
+  saveOrder!: boolean;
+
   @Column('text', { unique: true })
   githubId!: string;
 

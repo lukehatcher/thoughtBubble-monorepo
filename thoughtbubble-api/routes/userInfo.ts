@@ -1,22 +1,34 @@
 import express from 'express';
-import ProjectsController from '../controllers/userInfoController';
+import UserInfoController from '../controllers/userInfoController';
 
 const router = express.Router();
 
 router // api/userinfo
   .route('/')
-  .get(ProjectsController.fetchUserInfo);
+  .get(UserInfoController.fetchUserInfo);
 
 router // api/userinfo/email
   .route('/dailyemail')
-  .put(ProjectsController.toggleDailyEmailSetting);
+  .put(UserInfoController.toggleDailyEmailSetting);
 
 router // api/userinfo/email
   .route('/weeklyemail')
-  .put(ProjectsController.toggleWeeklyEmailSetting);
+  .put(UserInfoController.toggleWeeklyEmailSetting);
 
 router // api/userinfo/email
   .route('/darkmode')
-  .put(ProjectsController.toggleDarkMode);
+  .put(UserInfoController.toggleDarkMode);
+
+router // api/userinfo/
+  .route('/projectOrder')
+  .put(UserInfoController.updateProjectOrder);
+
+router // api/userinfo/
+  .route('/projectDirection')
+  .put(UserInfoController.updateProjectDirection);
+
+router // api/userinfo/
+  .route('/saveOrder')
+  .put(UserInfoController.toggleProjectOrderSetting);
 
 export { router };
