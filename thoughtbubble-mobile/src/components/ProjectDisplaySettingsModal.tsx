@@ -4,7 +4,6 @@ import { IconButton, Switch, RadioButton } from 'react-native-paper';
 import styled from 'styled-components/native';
 import { useDispatch, useSelector } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
 import { darkMode, lightMode } from '../constants/colors';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { Overlay } from './Overlay';
@@ -12,16 +11,12 @@ import { OrderType } from '../interfaces/stringLiteralTypes';
 import { Directions, OrderTypes } from '../constants/orders';
 import { UserInfoActionTypes } from '../constants/actionTypes';
 import { RootState } from '../reducers/rootReducer';
+import { ProjectDisplaySettingsModalProps } from '../interfaces/componentProps';
 import {
   changeProjectDirectionAction,
   changeProjectOrderAction,
   changeSaveOrderSettingAction,
 } from '../actions/userInfoActions';
-
-interface ProjectDisplaySettingsModalProps {
-  modalVisible: boolean;
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-}
 
 export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> = memo(function ({
   modalVisible,

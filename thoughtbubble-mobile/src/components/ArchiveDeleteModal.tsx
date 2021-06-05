@@ -3,20 +3,12 @@ import { Modal, StyleSheet, Alert } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import styled from 'styled-components/native';
 import { useDispatch } from 'react-redux';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { archiveProjectAction, deleteProjectAction } from '../actions/projectActions';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { darkMode, lightMode } from '../constants/colors';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Overlay } from './Overlay';
-
-interface ArchiveDeleteModalProps {
-  modalVisible: boolean;
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  focusedProjectId: string;
-  focusedRowMap: any;
-  focusedRowKey: string;
-  closeRow: (rowMap: any, rowKey: string) => void;
-}
+import { ArchiveDeleteModalProps } from '../interfaces/componentProps';
 
 export const ArchiveDeleteModal: FC<ArchiveDeleteModalProps> = function ({
   modalVisible,

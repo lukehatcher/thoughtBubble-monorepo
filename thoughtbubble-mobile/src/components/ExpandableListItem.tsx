@@ -7,13 +7,7 @@ import { darkMode, lightMode } from '../constants/colors';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { useDispatch } from 'react-redux';
 import { unarchiveProjectAction } from '../actions/projectActions';
-import { ThoughtShape } from '../interfaces/data';
-
-interface ExpandableListItemProps {
-  projectId: string;
-  projectName: string;
-  projectThoughts: ThoughtShape[];
-}
+import { ExpandableListItemProps } from '../interfaces/componentProps';
 
 export const ExpandableListItem: FC<ExpandableListItemProps> = memo(function ({
   projectId,

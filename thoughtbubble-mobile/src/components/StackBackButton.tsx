@@ -3,11 +3,7 @@ import { IconButton } from 'react-native-paper';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { darkMode, lightMode } from '../constants/colors';
 import { useNavigation } from '@react-navigation/native';
-
-interface StackBackButtonProps {
-  location: 'Projects' | 'Analytics';
-  shadeBackground?: boolean;
-}
+import { StackBackButtonProps } from '../interfaces/componentProps';
 
 export const StackBackButton: FC<StackBackButtonProps> = function ({ location, shadeBackground }) {
   const isDarkMode = useDarkCheck();

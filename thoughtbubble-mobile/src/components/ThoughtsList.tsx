@@ -3,19 +3,10 @@ import { View, Text, TouchableHighlight, TouchableOpacity, StyleSheet, Animated,
 import { darkMode, lightMode } from '../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { SwipeListView } from 'react-native-swipe-list-view';
-import { ThoughtShape } from '../interfaces/data';
 import styled from 'styled-components/native';
+import { ThoughtsListProps } from '../interfaces/componentProps';
 
 const SwipeListViewAnimated = Animated.createAnimatedComponent(SwipeListView);
-
-interface ThoughtsListProps {
-  renderModal: (thoughtId: string) => void;
-  isDarkMode: boolean;
-  thoughts: ThoughtShape[];
-  handleThoughtStatusChange: (thoughtId: string) => void;
-  handleThoughtDelete: (thoughtId: string) => void;
-  handleScroll: (...args: any[]) => void;
-}
 
 export const ThoughtsList: FC<ThoughtsListProps> = memo(function ({
   renderModal,
@@ -26,7 +17,6 @@ export const ThoughtsList: FC<ThoughtsListProps> = memo(function ({
   handleScroll,
 }) {
   const useTheme = (name: string) => (isDarkMode ? stylesDark[name] : stylesLight[name]);
-
   const firstItem = thoughts[0].id;
   const lastItem = thoughts[thoughts.length - 1].id;
 

@@ -5,14 +5,8 @@ import { darkMode, lightMode } from '../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import styled from 'styled-components/native';
-import { ProjectShape } from '../interfaces/data';
 import { ArchiveDeleteModal } from './ArchiveDeleteModal';
-
-interface ProjectListProps {
-  userProjectsData: ProjectShape[];
-  handleScroll: (...args: any[]) => void;
-  isDarkMode: boolean;
-}
+import { ProjectListProps } from '../interfaces/componentProps';
 
 const SwipeListViewAnimated = Animated.createAnimatedComponent(SwipeListView);
 
