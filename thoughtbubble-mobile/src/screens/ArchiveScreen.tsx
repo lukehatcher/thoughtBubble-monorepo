@@ -8,8 +8,7 @@ import { darkMode, lightMode } from '../constants/colors';
 import { RootState } from '../reducers/rootReducer';
 import { ExpandableListItem } from '../components/ExpandableListItem';
 import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
-
-interface ArchiveScreenProps {}
+import { ArchiveScreenProps } from '../interfaces/screenProps';
 
 export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
   const userArchiveData = useSelector((state: RootState) => state.archive);

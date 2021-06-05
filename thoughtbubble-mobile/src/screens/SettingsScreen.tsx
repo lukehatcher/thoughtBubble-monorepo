@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Switch } from 'react-native-paper';
 import { RootState } from '../reducers/rootReducer';
 import { _onLogOut } from '../utils/auth';
-import { SettingsScreenProps } from '../interfaces/componentProps';
+import { SettingsScreenProps } from '../interfaces/screenProps';
 import { changeEmailSettingsAction, changeDarkModeAction } from '../actions/userInfoActions';
 import { darkMode, lightMode } from '../constants/colors';
 import { useDarkCheck } from '../hooks/useDarkCheck';

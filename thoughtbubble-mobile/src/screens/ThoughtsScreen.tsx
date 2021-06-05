@@ -2,10 +2,10 @@ import React, { useState, FC, useEffect, useRef, useCallback } from 'react';
 import { View, StyleSheet, LogBox, Animated } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { RootState } from '../reducers/rootReducer'; // type
+import { RootState } from '../reducers/rootReducer';
 import { deleteThoughtAction, thoughtStatusChangeAction } from '../actions/thoughtActions';
 import { MoreModal } from '../components/MoreModal';
-import { ThoughtScreenProps } from '../interfaces/componentProps'; // type
+import { ThoughtScreenProps } from '../interfaces/screenProps';
 import { darkMode, lightMode } from '../constants/colors';
 import { SortThoughtModal } from '../components/SortThoughtModal';
 import { AddThoughtModal } from '../components/AddThoughtModal';

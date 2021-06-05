@@ -2,7 +2,7 @@ import React, { FC, useCallback, useLayoutEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { VictoryAxis, VictoryBar, VictoryChart, VictoryLabel, VictoryPie, VictoryTheme } from 'victory-native';
 import styled, { ThemeProvider } from 'styled-components/native';
-import { StatsProjectInfoScreenProps } from '../interfaces/componentProps';
+import { StatsProjectInfoScreenProps } from '../interfaces/screenProps';
 import { RootState } from '../reducers/rootReducer';
 import { darkMode, lightMode } from '../constants/colors';
 import { useDarkCheck } from '../hooks/useDarkCheck';

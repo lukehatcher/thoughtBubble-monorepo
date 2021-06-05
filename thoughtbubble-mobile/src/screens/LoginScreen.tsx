@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Button, StyleSheet, TouchableHighlight } from 'react-native';
 import { _onLogIn } from '../utils/auth';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { LoginScreenProps } from '../interfaces/componentProps';
+import { LoginScreenProps } from '../interfaces/screenProps';
 
 export const LoginScreen: React.FC<LoginScreenProps> = () => {
   return (

@@ -4,7 +4,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { FAB, IconButton } from 'react-native-paper';
 import styled, { ThemeProvider } from 'styled-components/native';
 
-import { ProjectsScreenProps } from '../interfaces/componentProps'; // type
+import { ProjectsScreenProps } from '../interfaces/screenProps';
 import { darkMode, lightMode } from '../constants/colors';
 import { AddProjectModal } from '../components/AddProjectModal';
 import { useDarkCheck } from '../hooks/useDarkCheck';

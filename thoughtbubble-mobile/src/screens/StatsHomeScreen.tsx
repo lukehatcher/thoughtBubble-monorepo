@@ -15,7 +15,7 @@ import equal from 'deep-equal';
 import { darkMode, lightMode } from '../constants/colors';
 import { RootState } from '../reducers/rootReducer';
 import { useDarkCheck } from '../hooks/useDarkCheck';
-import { StatsHomeScreenProps } from '../interfaces/componentProps';
+import { StatsHomeScreenProps } from '../interfaces/screenProps';
 import { fetchActivityDataAction } from '../actions/fetchActivityAction';
 import { DateHelper } from '../utils/dateHelpers';
 import { Modal, StyleSheet, Linking, Text } from 'react-native';
