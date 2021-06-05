@@ -4,6 +4,8 @@ import { persistidToken, clearAsyncStorage } from './asyncStorage';
 import store from '../store';
 import { storeUserAction } from '../actions/storeUserAction';
 import { fetchProjectDataAction } from '../actions/fetchProjectDataAction';
+import { fetchUserInfoAction } from '../actions/userInfoActions';
+import { fetchActivityDataAction } from '../actions/fetchActivityAction';
 
 const auth0 = new Auth0({
   domain: 'dev-4pq8almu.us.auth0.com',
@@ -17,9 +19,11 @@ export const _onLogIn = function (): void {
       // credentials contains accessToken, idToken, and expiresIn properties
       const decodedJwt = jwtDecode<JwtPayload>(credentials.idToken);
       await persistidToken(decodedJwt);
-      store.dispatch(storeUserAction(decodedJwt));
+      await store.dispatch(storeUserAction(decodedJwt));
       // throws error here
-      store.dispatch(fetchProjectDataAction(decodedJwt.sub)); // also adds user to db if needed
+      await store.dispatch(fetchProjectDataAction(decodedJwt.sub)); // also adds user to db if needed
+      await store.dispatch(fetchUserInfoAction()); // fetch users personal settings/info etc
+      await store.dispatch(fetchActivityDataAction()); // fetch user's activity data
     })
     .catch((err) => console.log('auth.ts: login canceled/error logging into auth0', err));
 };
