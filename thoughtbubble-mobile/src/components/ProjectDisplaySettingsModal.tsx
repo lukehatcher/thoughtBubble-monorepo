@@ -1,29 +1,22 @@
-import React, { FC, memo, useState } from 'react';
+import React, { FC, memo } from 'react';
 import { Modal, StyleSheet } from 'react-native';
 import { IconButton, Switch, RadioButton } from 'react-native-paper';
 import styled from 'styled-components/native';
 import { useDispatch, useSelector } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
-import { colors } from '../constants/colors';
+import { darkMode, lightMode } from '../constants/colors';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { Overlay } from './Overlay';
 import { OrderType } from '../interfaces/stringLiteralTypes';
 import { Directions, OrderTypes } from '../constants/orders';
 import { UserInfoActionTypes } from '../constants/actionTypes';
 import { RootState } from '../reducers/rootReducer';
+import { ProjectDisplaySettingsModalProps } from '../interfaces/componentProps';
 import {
   changeProjectDirectionAction,
   changeProjectOrderAction,
   changeSaveOrderSettingAction,
 } from '../actions/userInfoActions';
-
-const { darkMode, lightMode } = colors;
-
-interface ProjectDisplaySettingsModalProps {
-  modalVisible: boolean;
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-}
 
 export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> = memo(function ({
   modalVisible,
@@ -80,7 +73,7 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
     if (order === currOrder) {
       return isDarkMode ? darkMode.primary : lightMode.primary;
     }
-    return '#808080'; // TODO: add and expand light grey const colors
+    return isDarkMode ? '#808080' : lightMode.textOnBackground; // TODO: add and expand light grey const colors
   };
 
   return (
@@ -90,7 +83,7 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
         <InfoModalContainer>
           <IconButton
             icon="close"
-            color={isDarkMode ? colors.darkMode.secondary : colors.lightMode.secondary}
+            color={isDarkMode ? darkMode.secondary : lightMode.secondary}
             size={35}
             onPress={() => setModalVisible(false)}
             style={styles.modalCloseIconBtn}
@@ -141,11 +134,12 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
                   <MaterialCommunityIcons
                     name="chevron-up"
                     size={35}
-                    color={isDarkMode ? colors.darkMode.primary : colors.lightMode.primary}
+                    color={isDarkMode ? darkMode.primary : lightMode.primary}
                     style={styles.modalActionIcon}
                   />
                   <RadioButton.Item
                     label="Low to High"
+                    labelStyle={{ color: `${isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground}` }}
                     // position="leading"
                     value="asc"
                     uncheckedColor="grey"
@@ -157,11 +151,12 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
                   <MaterialCommunityIcons
                     name="chevron-down"
                     size={35}
-                    color={isDarkMode ? colors.darkMode.primary : colors.lightMode.primary}
+                    color={isDarkMode ? darkMode.primary : lightMode.primary}
                     style={styles.modalActionIcon}
                   />
                   <RadioButton.Item
                     label="High to Low"
+                    labelStyle={{ color: `${isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground}` }}
                     // position="leading"
                     value="desc"
                     uncheckedColor="grey"
@@ -175,7 +170,7 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
               <MaterialCommunityIcons
                 name="cogs"
                 size={30}
-                // color={isDarkMode ? colors.darkMode.primary : colors.lightMode.primary}
+                // color={isDarkMode ? darkMode.primary : lightMode.primary}
                 color="#808080"
                 style={styles.modalActionIcon}
               />

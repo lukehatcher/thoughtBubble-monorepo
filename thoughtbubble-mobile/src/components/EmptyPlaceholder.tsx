@@ -1,16 +1,8 @@
 import React, { FC } from 'react';
 import styled, { ThemeProvider } from 'styled-components/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { colors } from '../constants/colors';
-
-const { darkMode, lightMode } = colors;
-
-interface EmptyPlaceholderProps {
-  isDarkMode: boolean;
-  theme: any; // obj with many conditional style props
-  displayTextLine1?: string;
-  displayTextLine2?: string;
-}
+import { darkMode, lightMode } from '../constants/colors';
+import { EmptyPlaceholderProps } from '../interfaces/componentProps';
 
 export const EmptyPlaceholder: FC<EmptyPlaceholderProps> = function ({
   isDarkMode,

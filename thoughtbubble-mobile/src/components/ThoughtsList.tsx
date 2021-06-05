@@ -1,23 +1,12 @@
 import React, { FC, memo } from 'react';
-import { View, Text, TouchableHighlight, TouchableOpacity, StyleSheet, Animated } from 'react-native';
-import { colors } from '../constants/colors';
+import { View, Text, TouchableHighlight, TouchableOpacity, StyleSheet, Animated, Alert } from 'react-native';
+import { darkMode, lightMode } from '../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { SwipeListView } from 'react-native-swipe-list-view';
-import { ThoughtShape } from '../interfaces/data';
 import styled from 'styled-components/native';
-
-const { darkMode, lightMode } = colors;
+import { ThoughtsListProps } from '../interfaces/componentProps';
 
 const SwipeListViewAnimated = Animated.createAnimatedComponent(SwipeListView);
-
-interface ThoughtsListProps {
-  renderModal: (thoughtId: string) => void;
-  isDarkMode: boolean;
-  thoughts: ThoughtShape[];
-  handleThoughtStatusChange: (thoughtId: string) => void;
-  handleThoughtDelete: (thoughtId: string) => void;
-  handleScroll: (...args: any[]) => void;
-}
 
 export const ThoughtsList: FC<ThoughtsListProps> = memo(function ({
   renderModal,
@@ -28,19 +17,31 @@ export const ThoughtsList: FC<ThoughtsListProps> = memo(function ({
   handleScroll,
 }) {
   const useTheme = (name: string) => (isDarkMode ? stylesDark[name] : stylesLight[name]);
-
-  const theme = {
-    // for styled-components ThemeProvider
-    background: isDarkMode ? darkMode.background : lightMode.background,
-    primary: isDarkMode ? darkMode.primary : lightMode.primary,
-    primaryVariant: isDarkMode ? darkMode.primaryVariant : lightMode.primaryVariant,
-    secondary: isDarkMode ? darkMode.secondary : lightMode.secondary,
-    textOnBackground: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground,
-    textOnSurface: isDarkMode ? darkMode.textOnSurface : lightMode.textOnSurface,
-    dp1: isDarkMode ? darkMode.dp1 : lightMode.background,
-  };
   const firstItem = thoughts[0].id;
   const lastItem = thoughts[thoughts.length - 1].id;
+
+  const confirmDeletion = (thoughtId: string, rowMap: any, rowKey: string) => {
+    Alert.alert(
+      // alert color syncs with iphone dark/lightmode setting
+      'Are you sure you want to delete this thought?',
+      '',
+      [
+        {
+          text: 'Confirm',
+          onPress: () => {
+            handleThoughtDelete(thoughtId);
+          },
+          style: 'default',
+        },
+        {
+          text: 'Cancel',
+          onPress: () => closeRow(rowMap, rowKey),
+          style: 'cancel',
+        },
+      ],
+      { cancelable: false }, // android option
+    );
+  };
 
   const closeRow = (rowMap, rowKey) => {
     // for slidables
@@ -57,7 +58,6 @@ export const ThoughtsList: FC<ThoughtsListProps> = memo(function ({
       <View
         style={{
           ...useTheme('rowFront'),
-          backgroundColor: theme ? colors.darkMode.error : colors.lightMode.error,
         }}
       >
         {/* to match height of back view to the dynamic front view height,
@@ -77,7 +77,7 @@ export const ThoughtsList: FC<ThoughtsListProps> = memo(function ({
 
         <TouchableOpacity
           style={[useTheme('backRightBtn'), useTheme('backRightBtnLeft')]}
-          onPress={() => handleThoughtDelete(data.item.id)}
+          onPress={() => confirmDeletion(data.item.id, rowMap, data.item.key)}
         >
           <MaterialCommunityIcons name="trash-can-outline" size={25} color="white" />
         </TouchableOpacity>
@@ -111,7 +111,7 @@ export const ThoughtsList: FC<ThoughtsListProps> = memo(function ({
             <MaterialCommunityIcons
               name="dots-vertical"
               size={35}
-              color={theme ? colors.darkMode.primary : colors.lightMode.primary}
+              color={isDarkMode ? darkMode.primary : lightMode.primary}
             />
           </TouchableOpacity>
         </>
@@ -205,9 +205,11 @@ const stylesDark = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 'auto',
-    marginTop: 15,
-    marginHorizontal: 10,
-    borderRadius: 10,
+    // shape below
+    marginHorizontal: 15,
+    padding: 2.5,
+    marginTop: 11.5,
+    borderRadius: 17.5,
   },
   backRightBtn: {
     backgroundColor: 'pink',
@@ -224,17 +226,15 @@ const stylesDark = StyleSheet.create({
     alignItems: 'flex-end',
     paddingRight: 20,
     right: 50,
-    width: 100,
+    width: '82%',
   },
   backRightBtnRight: {
     backgroundColor: darkMode.secondary,
     right: 0,
-    borderBottomRightRadius: 10,
-    borderTopRightRadius: 10,
+    borderBottomRightRadius: 17.5,
+    borderTopRightRadius: 17.5,
   },
 });
-
-// ============================================================================
 
 const stylesLight = StyleSheet.create({
   mainContainer: {
@@ -268,9 +268,11 @@ const stylesLight = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 'auto',
-    marginTop: 15,
-    marginHorizontal: 10,
-    borderRadius: 10,
+    // shape below
+    marginHorizontal: 15,
+    padding: 2.5,
+    marginTop: 11.5,
+    borderRadius: 17.5,
     shadowColor: '#000',
     // shadow
     shadowOffset: {
@@ -300,7 +302,7 @@ const stylesLight = StyleSheet.create({
   backRightBtnRight: {
     backgroundColor: lightMode.secondary,
     right: 0,
-    borderBottomRightRadius: 10,
-    borderTopRightRadius: 10,
+    borderBottomRightRadius: 17.5,
+    borderTopRightRadius: 17.5,
   },
 });

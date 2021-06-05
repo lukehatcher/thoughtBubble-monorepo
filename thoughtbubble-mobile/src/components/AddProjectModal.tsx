@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-import { Modal, View, StyleSheet } from 'react-native';
+import { Modal, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { Button, IconButton, TextInput, HelperText } from 'react-native-paper';
 import { addProjectAction } from '../actions/projectActions';
-import { colors } from '../constants/colors';
+import { darkMode, lightMode } from '../constants/colors';
 import { AddProjectModalProps } from '../interfaces/componentProps';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import styled from 'styled-components/native';
-
-const { darkMode, lightMode } = colors;
 
 export const AddProjectModal: React.FC<AddProjectModalProps> = function ({ addProjModalView, setAddProjModalView }) {
   const [input, setInput] = useState('');

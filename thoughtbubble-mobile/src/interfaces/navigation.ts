@@ -20,3 +20,7 @@ export type StatsStackParamList = {
     projectId: string;
   };
 };
+
+export interface StatsStackNavigatorProps {}
+export interface AppNavTabsProps {}
+export interface ProjectsStackNavigatorProps {}

@@ -1,20 +1,13 @@
 import React, { FC, useState, memo } from 'react';
 import { Animated, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
-import { colors } from '../constants/colors';
+import { darkMode, lightMode } from '../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import styled from 'styled-components/native';
-import { ProjectShape } from '../interfaces/data';
 import { ArchiveDeleteModal } from './ArchiveDeleteModal';
+import { ProjectListProps } from '../interfaces/componentProps';
 
-interface ProjectListProps {
-  userProjectsData: ProjectShape[];
-  handleScroll: (...args: any[]) => void;
-  isDarkMode: boolean;
-}
-
-const { darkMode, lightMode } = colors;
 const SwipeListViewAnimated = Animated.createAnimatedComponent(SwipeListView);
 
 export const ProjectList: FC<ProjectListProps> = memo(function ({ userProjectsData, handleScroll, isDarkMode }) {
@@ -56,7 +49,7 @@ export const ProjectList: FC<ProjectListProps> = memo(function ({ userProjectsDa
           <MaterialCommunityIcons
             name="chevron-right"
             size={40}
-            color={isDarkMode ? colors.darkMode.primary : colors.lightMode.primary}
+            color={isDarkMode ? darkMode.primary : lightMode.primary}
           />
         </View>
       </TouchableHighlight>
@@ -73,16 +66,15 @@ export const ProjectList: FC<ProjectListProps> = memo(function ({ userProjectsDa
       <View
         style={{
           ...useTheme('rowFront'),
-          backgroundColor: isDarkMode ? colors.darkMode.error : colors.lightMode.error,
         }}
       >
         {/* to match height of back view to the dynamic front view height,
-      add random view below with same text (but invisable) to get same height */}
+      add random view below with same text (but invisible) to get same height */}
         <View>
           <Text style={useTheme('hiddenBackText')}>{data.item.projectName}</Text>
         </View>
         <TouchableOpacity
-          style={[useTheme('backRightBtn'), useTheme('backRightBtnRight')]}
+          style={[useTheme('backRightBtn')]}
           onPress={() => handleProjectDeletionPress(data.item.id, rowMap, data.item.key)}
         >
           <MaterialCommunityIcons name="minus-circle-outline" size={25} color="white" />
@@ -144,10 +136,12 @@ const stylesDark = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 'auto', // !!!!!!!!!
-    marginTop: 15,
-    marginHorizontal: 10,
     flexWrap: 'wrap',
-    borderRadius: 10,
+    // shape below
+    marginTop: 11.5,
+    marginHorizontal: 15,
+    borderRadius: 17.5,
+    padding: 10,
   },
   backRightBtn: {
     position: 'absolute',
@@ -156,14 +150,16 @@ const stylesDark = StyleSheet.create({
     bottom: 0,
     alignItems: 'flex-end',
     justifyContent: 'center',
-    width: 155,
-  },
-  backRightBtnRight: {
-    // change colors to see why all these styles are necesary
+    width: '99%',
     backgroundColor: darkMode.error,
+    // change colors to see why all these styles are necesary
+    // backgroundColor: darkMode.error,
     right: 0,
-    borderBottomRightRadius: 10,
-    borderTopRightRadius: 10,
+    borderBottomRightRadius: 17.5,
+    borderTopRightRadius: 17.5,
+    // helps remove red edge but doesnt solve it 100%
+    borderColor: darkMode.background,
+    borderWidth: 1,
   },
   hiddenBackText: {
     fontSize: 20,
@@ -178,10 +174,12 @@ const stylesLight = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 'auto', // !!!!!!!!!
-    marginTop: 15,
-    marginHorizontal: 10,
     flexWrap: 'wrap',
-    borderRadius: 10,
+    // shape below
+    marginTop: 10,
+    marginHorizontal: 15,
+    borderRadius: 17.5,
+    padding: 10,
     // shadow
     shadowColor: '#000',
     shadowOffset: {
@@ -199,13 +197,16 @@ const stylesLight = StyleSheet.create({
     bottom: 0,
     alignItems: 'flex-end',
     justifyContent: 'center',
-    width: 155,
-  },
-  backRightBtnRight: {
+    width: '99%',
     backgroundColor: lightMode.error,
+    // change colors to see why all these styles are necesary
+    // backgroundColor: lightMode.error,
     right: 0,
-    borderBottomRightRadius: 10,
-    borderTopRightRadius: 10,
+    borderBottomRightRadius: 17.5,
+    borderTopRightRadius: 17.5,
+    // helps remove red edge but doesnt solve it 100%
+    borderColor: lightMode.background,
+    borderWidth: 1,
   },
   hiddenBackText: {
     fontSize: 20,

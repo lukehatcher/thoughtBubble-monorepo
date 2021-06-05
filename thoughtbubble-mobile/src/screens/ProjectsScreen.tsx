@@ -1,21 +1,17 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { StyleSheet, LogBox, Animated } from 'react-native';
-import { useSelector } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { FAB, IconButton } from 'react-native-paper';
 import styled, { ThemeProvider } from 'styled-components/native';
 
-import { RootState } from '../reducers/rootReducer'; // type
-import { ProjectsScreenProps } from '../interfaces/componentProps'; // type
-import { colors } from '../constants/colors';
+import { ProjectsScreenProps } from '../interfaces/screenProps';
+import { darkMode, lightMode } from '../constants/colors';
 import { AddProjectModal } from '../components/AddProjectModal';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { useOrderProjects } from '../hooks/useOrderProjects';
 import { ProjectList } from '../components/ProjectList';
 import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
 import { ProjectDisplaySettingsModal } from '../components/ProjectDisplaySettingsModal';
-
-const { darkMode, lightMode } = colors;
 
 export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) => {
   const [addProjModalView, setAddProjModalView] = useState(false);
@@ -132,7 +128,7 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
             icon="tune"
             onPress={() => openProjectSettingsModal()}
             size={30}
-            color={theme ? colors.darkMode.primary : colors.lightMode.textOnPrimary}
+            color={isDarkMode ? darkMode.secondary : lightMode.textOnSurface}
             style={styles.tuneIcon}
           />
           <Animated.View

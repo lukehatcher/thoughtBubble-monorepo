@@ -3,7 +3,7 @@ import { Modal, View, StyleSheet, Text } from 'react-native';
 import { Button, TextInput, IconButton } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { editThoughtAction, thoughtTagChangeAction } from '../actions/thoughtActions';
-import { colors } from '../constants/colors';
+import { darkMode, lightMode } from '../constants/colors';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { MoreModalProps } from '../interfaces/componentProps';
 import { RootState } from '../reducers/rootReducer';
@@ -16,9 +16,9 @@ export const MoreModal: FC<MoreModalProps> = ({ moreModalView, setMoreModalView,
       .find((proj) => proj.id === projectId)
       .projectThoughts.find((thought) => thought.id === thoughtId).tag;
   const tag: string | null = useSelector(tagSelector);
-  const theme = useDarkCheck();
+  const idDarkMode = useDarkCheck();
 
-  const useTheme = (name: string) => (theme ? stylesDark[name] : stylesLight[name]);
+  const useTheme = (name: string) => (idDarkMode ? stylesDark[name] : stylesLight[name]);
 
   const handleThoughtEdit = function (newThought: string, id: string) {
     if (!newThought) {
@@ -47,9 +47,9 @@ export const MoreModal: FC<MoreModalProps> = ({ moreModalView, setMoreModalView,
             style={useTheme('textInput')}
             theme={{
               colors: {
-                primary: theme ? colors.darkMode.primary : colors.lightMode.primary,
-                text: theme ? colors.darkMode.textOnSurface : colors.lightMode.textOnBackground,
-                placeholder: theme ? `${colors.darkMode.textOnSurface}87` : `${colors.lightMode.textOnBackground}87`,
+                primary: idDarkMode ? darkMode.primary : lightMode.primary,
+                text: idDarkMode ? darkMode.textOnSurface : lightMode.textOnBackground,
+                placeholder: idDarkMode ? `${darkMode.textOnSurface}87` : `${lightMode.textOnBackground}87`,
               },
             }}
             keyboardAppearance="dark"
@@ -58,7 +58,7 @@ export const MoreModal: FC<MoreModalProps> = ({ moreModalView, setMoreModalView,
           <Button
             mode="contained"
             icon="pencil"
-            color={theme ? colors.darkMode.primary : colors.lightMode.primary}
+            color={idDarkMode ? darkMode.primary : lightMode.primary}
             onPress={() => {
               setMoreModalView(false);
               handleThoughtEdit(input.trim(), thoughtId);
@@ -70,7 +70,7 @@ export const MoreModal: FC<MoreModalProps> = ({ moreModalView, setMoreModalView,
           <IconButton
             icon="close"
             size={50}
-            color={theme ? colors.darkMode.primary : colors.lightMode.primary}
+            color={idDarkMode ? darkMode.primary : lightMode.primary}
             style={sharedStyles.closeBtn}
             onPress={() => {
               setMoreModalView(false);
@@ -151,11 +151,11 @@ const stylesDark = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.darkMode.background,
+    backgroundColor: darkMode.background,
   },
   textInput: {
     color: 'white',
-    backgroundColor: colors.darkMode.dp1,
+    backgroundColor: darkMode.dp1,
     width: 250,
     marginBottom: 10,
   },
@@ -164,11 +164,11 @@ const stylesDark = StyleSheet.create({
     // width: 250,
   },
   text: {
-    color: colors.darkMode.textOnBackground,
+    color: darkMode.textOnBackground,
   },
   currentTag: {
     borderWidth: 1,
-    borderColor: colors.darkMode.primary,
+    borderColor: darkMode.primary,
   },
 });
 
@@ -177,10 +177,10 @@ const stylesLight = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.lightMode.background,
+    backgroundColor: lightMode.background,
   },
   textInput: {
-    backgroundColor: colors.lightMode.background,
+    backgroundColor: lightMode.background,
     width: 250,
     marginBottom: 10,
   },
@@ -189,10 +189,10 @@ const stylesLight = StyleSheet.create({
     // width: 250,
   },
   text: {
-    color: colors.lightMode.textOnBackground,
+    color: lightMode.textOnBackground,
   },
   currentTag: {
     borderWidth: 1,
-    borderColor: colors.lightMode.primary,
+    borderColor: lightMode.primary,
   },
 });

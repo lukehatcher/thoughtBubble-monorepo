@@ -3,19 +3,17 @@ import { Modal, View, Text, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Chip, IconButton } from 'react-native-paper';
 import { filterProjectAction } from '../actions/projectActions';
-import { colors } from '../constants/colors';
+import { darkMode, lightMode } from '../constants/colors';
 import { SortThoughtModalProps } from '../interfaces/componentProps';
 import { RootState } from '../reducers/rootReducer';
 import { clearTagsAction, updateFiltersAction } from '../actions/filterActions';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { StatusFilters } from '../interfaces/stringLiteralTypes';
 
-const { darkMode, lightMode } = colors;
-
 export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId, sortModalView, setSortModalView }) {
   const dispatch = useDispatch();
-  const theme = useDarkCheck();
-  const useTheme = (name: string) => (theme ? stylesDark[name] : stylesLight[name]);
+  const isDarkMode = useDarkCheck();
+  const useTheme = (name: string) => (isDarkMode ? stylesDark[name] : stylesLight[name]);
   const filters = useSelector((state: RootState) => state.filters);
 
   const handleThoughtFilter = async function (typeOfFilter: string) {
@@ -47,8 +45,8 @@ export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId
           <Chip
             selected={isStatusSelected('completed')}
             style={isStatusSelected('completed') ? useTheme('chipSelected') : useTheme('chip')}
-            textStyle={theme ? { color: 'white' } : null}
-            selectedColor={theme ? darkMode.textOnBackground87 : null}
+            textStyle={isDarkMode ? { color: 'white' } : null}
+            selectedColor={isDarkMode ? darkMode.textOnBackground87 : null}
             icon="check"
             onPress={() => handleThoughtFilter('completed')}
           >
@@ -57,8 +55,8 @@ export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId
           <Chip
             selected={isStatusSelected('incomplete')}
             style={isStatusSelected('incomplete') ? useTheme('chipSelected') : useTheme('chip')}
-            textStyle={theme ? { color: 'white' } : null}
-            selectedColor={theme ? darkMode.textOnBackground87 : null}
+            textStyle={isDarkMode ? { color: 'white' } : null}
+            selectedColor={isDarkMode ? darkMode.textOnBackground87 : null}
             icon="close"
             onPress={() => handleThoughtFilter('incomplete')}
           >
@@ -67,8 +65,8 @@ export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId
           <Chip
             selected={isStatusSelected('all')}
             style={isStatusSelected('all') ? useTheme('chipSelected') : useTheme('chip')}
-            textStyle={theme ? { color: 'white' } : null}
-            selectedColor={theme ? darkMode.textOnBackground87 : null}
+            textStyle={isDarkMode ? { color: 'white' } : null}
+            selectedColor={isDarkMode ? darkMode.textOnBackground87 : null}
             icon="eye-outline"
             onPress={() => handleThoughtFilter('all')}
           >
@@ -77,7 +75,7 @@ export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId
           <Chip
             selected={isTagSelected('red')}
             style={isTagSelected('red') ? useTheme('chipSelected') : useTheme('chip')}
-            textStyle={theme ? { color: 'white' } : null}
+            textStyle={isDarkMode ? { color: 'white' } : null}
             selectedColor="red"
             icon="tag"
             onPress={() => handleThoughtFilter('red')}
@@ -87,7 +85,7 @@ export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId
           <Chip
             selected={isTagSelected('orange')}
             style={isTagSelected('orange') ? useTheme('chipSelected') : useTheme('chip')}
-            textStyle={theme ? { color: 'white' } : null}
+            textStyle={isDarkMode ? { color: 'white' } : null}
             icon="tag"
             selectedColor="orange"
             onPress={() => handleThoughtFilter('orange')}
@@ -97,7 +95,7 @@ export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId
           <Chip
             selected={isTagSelected('green')}
             style={isTagSelected('green') ? useTheme('chipSelected') : useTheme('chip')}
-            textStyle={theme ? { color: 'white' } : null}
+            textStyle={isDarkMode ? { color: 'white' } : null}
             icon="tag"
             selectedColor="green"
             onPress={() => handleThoughtFilter('green')}
@@ -107,7 +105,7 @@ export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId
           <Chip
             selected={isTagSelected('blue')}
             style={isTagSelected('blue') ? useTheme('chipSelected') : useTheme('chip')}
-            textStyle={theme ? { color: 'white' } : null}
+            textStyle={isDarkMode ? { color: 'white' } : null}
             icon="tag"
             selectedColor="blue"
             onPress={() => handleThoughtFilter('blue')}
@@ -117,7 +115,7 @@ export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId
           <Chip
             selected={isTagSelected('purple')}
             style={isTagSelected('purple') ? useTheme('chipSelected') : useTheme('chip')}
-            textStyle={theme ? { color: 'white' } : null}
+            textStyle={isDarkMode ? { color: 'white' } : null}
             icon="tag"
             selectedColor="purple"
             onPress={() => handleThoughtFilter('purple')}
@@ -127,7 +125,7 @@ export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId
           <Chip
             selected={isTagSelected('star')}
             style={isTagSelected('star') ? useTheme('chipSelected') : useTheme('chip')}
-            textStyle={theme ? { color: 'white' } : null}
+            textStyle={isDarkMode ? { color: 'white' } : null}
             icon="star"
             selectedColor="#D4AF37"
             onPress={() => handleThoughtFilter('star')}
@@ -138,8 +136,8 @@ export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId
             icon="tag-off-outline"
             onPress={() => handleClearTags()}
             style={useTheme('chip')}
-            textStyle={theme ? { color: 'white' } : null}
-            selectedColor={theme ? darkMode.textOnBackground87 : null}
+            textStyle={isDarkMode ? { color: 'white' } : null}
+            selectedColor={isDarkMode ? darkMode.textOnBackground87 : null}
           >
             remove all tags
           </Chip>
@@ -148,7 +146,7 @@ export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId
       <IconButton
         icon="close"
         size={50}
-        color={theme ? darkMode.primary : lightMode.primary}
+        color={isDarkMode ? darkMode.primary : lightMode.primary}
         style={sharedStyles.closeBtn}
         onPress={() => setSortModalView(false)}
       />
@@ -198,6 +196,7 @@ const stylesDark = StyleSheet.create({
 
 const stylesLight = StyleSheet.create({
   chip: {
+    backgroundColor: lightMode.background,
     margin: 5,
     shadowColor: '#000',
     shadowOffset: {
@@ -209,6 +208,7 @@ const stylesLight = StyleSheet.create({
     elevation: 3,
   },
   chipSelected: {
+    backgroundColor: '#eee', // TODO: extract
     margin: 5,
     shadowColor: '#000',
     shadowOffset: {

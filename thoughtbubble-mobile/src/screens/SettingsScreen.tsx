@@ -4,9 +4,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Switch } from 'react-native-paper';
 import { RootState } from '../reducers/rootReducer';
 import { _onLogOut } from '../utils/auth';
-import { SettingsScreenProps } from '../interfaces/componentProps';
+import { SettingsScreenProps } from '../interfaces/screenProps';
 import { changeEmailSettingsAction, changeDarkModeAction } from '../actions/userInfoActions';
-import { colors } from '../constants/colors';
+import { darkMode, lightMode } from '../constants/colors';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 
 export const SettingsScreen: React.FC<SettingsScreenProps> = () => {
@@ -14,7 +14,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = () => {
   let idToken = useSelector((state: RootState) => state.storedUser);
   const dailyEmailSetting = useSelector((state: RootState) => state.userInfo.dailyEmail);
   const weeklyEmailSetting = useSelector((state: RootState) => state.userInfo.weeklyEmail);
-  const theme = useDarkCheck();
+  const isDarkMode = useDarkCheck();
 
   const handleEmailSettingToggle = function (emailSetting: string): void {
     if (emailSetting === 'daily') dispatch(changeEmailSettingsAction('daily'));
@@ -25,7 +25,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = () => {
     dispatch(changeDarkModeAction());
   };
 
-  const useTheme = (name: string) => (theme ? stylesDark[name] : stylesLight[name]);
+  const useTheme = (name: string) => (isDarkMode ? stylesDark[name] : stylesLight[name]);
 
   return (
     <>
@@ -66,13 +66,13 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = () => {
         <Text style={useTheme('textColor')}>theme</Text>
         <View style={useTheme('settingItemTheme')}>
           <Text style={useTheme('text')}>dark mode</Text>
-          <Switch value={theme} onValueChange={() => handleDarkModeToggle()} style={stylesShared.toggle} />
+          <Switch value={isDarkMode} onValueChange={() => handleDarkModeToggle()} style={stylesShared.toggle} />
         </View>
         <TouchableOpacity style={useTheme('logoutBtn')}>
           <Button
             title="logout"
             onPress={() => _onLogOut()}
-            color={theme ? colors.darkMode.onError : colors.lightMode.onError}
+            color={isDarkMode ? darkMode.onError : lightMode.onError}
           />
         </TouchableOpacity>
       </View>
@@ -94,24 +94,24 @@ const stylesDark = StyleSheet.create({
     flex: 0.25,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.darkMode.background,
+    backgroundColor: darkMode.background,
   },
   middleView: {
     flex: 0.3,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.darkMode.dp1,
+    backgroundColor: darkMode.dp1,
   },
   bottomContainer: {
     paddingTop: 25,
     flex: 2.75,
-    backgroundColor: colors.darkMode.background,
+    backgroundColor: darkMode.background,
   },
   userPicPlusInfo: {
     flexDirection: 'row',
     padding: 15,
     margin: 10,
-    backgroundColor: colors.darkMode.dp1,
+    backgroundColor: darkMode.dp1,
     borderRadius: 6,
   },
   nameEmail: {
@@ -122,7 +122,7 @@ const stylesDark = StyleSheet.create({
   emailSettingsContainer: {
     padding: 15,
     margin: 10,
-    backgroundColor: colors.darkMode.dp1,
+    backgroundColor: darkMode.dp1,
     borderRadius: 6,
   },
   emailSettingsItem: {
@@ -135,7 +135,7 @@ const stylesDark = StyleSheet.create({
     alignItems: 'center',
     padding: 15,
     margin: 10,
-    backgroundColor: colors.darkMode.dp1,
+    backgroundColor: darkMode.dp1,
     borderRadius: 6,
   },
   img: {
@@ -144,21 +144,21 @@ const stylesDark = StyleSheet.create({
     borderRadius: 50,
   },
   headerText: {
-    color: colors.darkMode.primary,
+    color: darkMode.primary,
     fontSize: 25,
   },
   text: {
-    color: colors.darkMode.textOnSurface,
+    color: darkMode.textOnSurface,
     fontSize: 15, // 14 default
   },
   textColor: {
-    color: colors.darkMode.primary,
+    color: darkMode.primary,
     marginLeft: 10,
     fontSize: 20,
   },
   logoutBtn: {
-    color: colors.darkMode.onError,
-    backgroundColor: colors.darkMode.error,
+    color: darkMode.onError,
+    backgroundColor: darkMode.error,
     borderRadius: 15,
     padding: 6,
     marginHorizontal: 70,
@@ -173,24 +173,24 @@ const stylesLight = StyleSheet.create({
     flex: 0.25,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.lightMode.primaryVariant, // #6200EE primary, #3700B3 primary variant
+    backgroundColor: lightMode.primaryVariant, // #6200EE primary, #3700B3 primary variant
   },
   middleView: {
     flex: 0.3,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.lightMode.primary, // #6200EE primary, #3700B3 primary variant
+    backgroundColor: lightMode.primary, // #6200EE primary, #3700B3 primary variant
   },
   bottomContainer: {
     paddingTop: 25,
     flex: 2.75,
-    backgroundColor: colors.lightMode.background,
+    backgroundColor: lightMode.background,
   },
   userPicPlusInfo: {
     flexDirection: 'row',
     padding: 15,
     margin: 10,
-    backgroundColor: colors.lightMode.background,
+    backgroundColor: lightMode.background,
     borderRadius: 6,
     // shadow
     shadowColor: '#000',
@@ -210,7 +210,7 @@ const stylesLight = StyleSheet.create({
   emailSettingsContainer: {
     padding: 15,
     margin: 10,
-    backgroundColor: colors.lightMode.background,
+    backgroundColor: lightMode.background,
     borderRadius: 6,
     // shadow
     shadowColor: '#000',
@@ -232,7 +232,7 @@ const stylesLight = StyleSheet.create({
     alignItems: 'center',
     padding: 15,
     margin: 10,
-    backgroundColor: colors.lightMode.background,
+    backgroundColor: lightMode.background,
     borderRadius: 6,
     // shadow
     shadowColor: '#000',
@@ -250,21 +250,21 @@ const stylesLight = StyleSheet.create({
     borderRadius: 50,
   },
   headerText: {
-    color: colors.lightMode.textOnPrimary,
+    color: lightMode.textOnPrimary,
     fontSize: 25,
   },
   text: {
-    color: colors.lightMode.textOnSurface,
+    color: lightMode.textOnSurface,
     fontSize: 15, // 14 default
   },
   textColor: {
-    color: colors.lightMode.primaryVariant,
+    color: lightMode.primaryVariant,
     marginLeft: 10,
     fontSize: 20,
   },
   logoutBtn: {
-    color: colors.lightMode.onError,
-    backgroundColor: colors.lightMode.error,
+    color: lightMode.onError,
+    backgroundColor: lightMode.error,
     borderRadius: 15,
     padding: 6,
     marginHorizontal: 70,

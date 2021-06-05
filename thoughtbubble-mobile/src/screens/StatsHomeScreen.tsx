@@ -12,10 +12,10 @@ import {
   VictoryPolarAxis,
 } from 'victory-native';
 import equal from 'deep-equal';
-import { colors } from '../constants/colors';
+import { darkMode, lightMode } from '../constants/colors';
 import { RootState } from '../reducers/rootReducer';
 import { useDarkCheck } from '../hooks/useDarkCheck';
-import { StatsHomeScreenProps } from '../interfaces/componentProps';
+import { StatsHomeScreenProps } from '../interfaces/screenProps';
 import { fetchActivityDataAction } from '../actions/fetchActivityAction';
 import { DateHelper } from '../utils/dateHelpers';
 import { Modal, StyleSheet, Linking, Text } from 'react-native';
@@ -23,9 +23,7 @@ import { Button, IconButton, Snackbar, ProgressBar } from 'react-native-paper';
 import { activityRangeMap } from '../constants/activityRanges';
 import { Activity, ProjectShape } from '../interfaces/data';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-// folder, folder-information-outline, calender, thought-bubble
-
-const { darkMode, lightMode } = colors;
+import { Overlay } from '../components/Overlay';
 
 export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
   const isDarkMode = useDarkCheck();
@@ -409,16 +407,6 @@ const InfoModalText = styled.Text`
   margin-right: 19px;
   font-size: 14px;
   color: ${(props) => props.theme.textOnBackground};
-`;
-
-const Overlay = styled.View`
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  left: 0px;
-  height: 723px;
-  background-color: #00000095;
-  z-index: 999;
 `;
 
 const InfoModalContainer = styled.View`
