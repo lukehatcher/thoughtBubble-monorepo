@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { ProjectsScreen } from '../screens/ProjectsScreen';
 import { ThoughtsScreen } from '../screens/ThoughtsScreen';
 import { ProjectStackParamList } from '../interfaces/navigation';
-import { ProjectsStackNavigatorProps } from '../interfaces/componentProps';
+import { ProjectsStackNavigatorProps } from '../interfaces/navigation';
 
 const ProjectStack = createStackNavigator<ProjectStackParamList>();
 

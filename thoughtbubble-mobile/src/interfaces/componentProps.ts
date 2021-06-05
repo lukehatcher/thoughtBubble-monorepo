@@ -1,8 +1,5 @@
 import { ProjectShape, ThoughtShape } from './data';
 
-export interface AppNavTabsProps {}
-export interface ProjectsStackNavigatorProps {}
-
 export interface MoreModalProps {
   moreModalView: boolean;
   setMoreModalView: React.Dispatch<React.SetStateAction<boolean>>;
