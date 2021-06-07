@@ -105,8 +105,7 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
             </OrderOptionItem>
             <OrderOptionItem onPress={() => handleOrderTypeChange(OrderTypes.SIZE)}>
               <MaterialCommunityIcons
-                // name="sort-reverse-variant"
-                name="weight"
+                name="sort-reverse-variant"
                 size={30}
                 color={`${generateItemColor(OrderTypes.SIZE)}`}
                 style={styles.modalActionIcon}
