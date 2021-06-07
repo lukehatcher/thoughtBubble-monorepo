@@ -3,7 +3,7 @@ import { Modal, View, StyleSheet, Text } from 'react-native';
 import { Button, TextInput, IconButton } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { editThoughtAction, thoughtTagChangeAction } from '../actions/thoughtActions';
-import { darkMode, lightMode } from '../constants/colors';
+import { darkMode, lightMode, tagColorsDark, tagColorsLight } from '../constants/colors';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { MoreModalProps } from '../interfaces/componentProps';
 import { RootState } from '../reducers/rootReducer';
@@ -82,51 +82,51 @@ export const MoreModal: FC<MoreModalProps> = ({ moreModalView, setMoreModalView,
             <IconButton
               icon="tag"
               size={27}
-              color={'red'}
+              color={tagColorsDark.red}
               style={tag === 'red' ? useTheme('currentTag') : null}
               onPress={() => handleThoughtTag('red')}
             />
             <IconButton
               icon="tag"
               size={27}
-              color={'orange'}
+              color={tagColorsDark.orange}
               style={tag === 'orange' ? useTheme('currentTag') : null}
               onPress={() => handleThoughtTag('orange')}
             />
             <IconButton
               icon="tag"
               size={27}
-              color={'green'}
+              color={tagColorsDark.green}
               style={tag === 'green' ? useTheme('currentTag') : null}
               onPress={() => handleThoughtTag('green')}
             />
             <IconButton
               icon="tag"
               size={27}
-              color={'blue'}
+              color={tagColorsDark.blue}
               style={tag === 'blue' ? useTheme('currentTag') : null}
               onPress={() => handleThoughtTag('blue')}
             />
             <IconButton
               icon="tag"
               size={27}
-              color={'purple'}
+              color={tagColorsDark.purple}
               style={tag === 'purple' ? useTheme('currentTag') : null}
               onPress={() => handleThoughtTag('purple')}
             />
             <IconButton
               icon="tag-off"
               size={27}
-              color={'silver'}
+              color={'silver'} // silver
               style={!tag ? useTheme('currentTag') : null}
               onPress={() => handleThoughtTag(null)}
             />
             <IconButton
               icon="star"
               size={27}
-              color="#D4AF37"
-              style={tag === 'star' ? useTheme('currentTag') : null}
-              onPress={() => handleThoughtTag('star')}
+              color={tagColorsDark.gold}
+              style={tag === 'favorite' ? useTheme('currentTag') : null}
+              onPress={() => handleThoughtTag('favorite')}
             />
           </View>
         </View>

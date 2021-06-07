@@ -1,4 +1,5 @@
 import { ProjectShape, ThoughtShape } from './data';
+import { Tags } from './stringLiteralTypes';
 
 export interface MoreModalProps {
   moreModalView: boolean;
@@ -69,4 +70,10 @@ export interface ThoughtsListProps {
   handleThoughtStatusChange: (thoughtId: string) => void;
   handleThoughtDelete: (thoughtId: string) => void;
   handleScroll: (...args: any[]) => void;
+}
+
+export interface TagIconProps {
+  tag: Tags; // Tags
+  size: number;
+  style?: any;
 }

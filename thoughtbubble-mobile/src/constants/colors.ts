@@ -46,3 +46,24 @@ export const lightMode: Colors = {
   onError: '#FFFFFF',
   error: '#B00020',
 };
+
+// https://developer.apple.com/design/human-interface-guidelines/ios/visual-design/color/
+export const tagColorsDark = {
+  red: 'rgb(255, 69, 58)',
+  orange: 'rgb(255, 159, 10)',
+  green: 'rgb(48, 209, 88)',
+  blue: 'rgb(10, 132, 255)',
+  cyan: 'rgb(50, 173, 230)',
+  purple: 'rgb(191, 90, 242)',
+  gold: '#D4AF37',
+};
+
+export const tagColorsLight = {
+  red: 'rgb(255, 45, 85)',
+  orange: 'rgb(255, 149, 0)',
+  green: 'rgb(52, 199, 89)',
+  blue: 'rgb(0, 122, 255)',
+  cyan: 'rgb(100, 210, 255)',
+  purple: 'rgb(175, 82, 222)',
+  gold: '#D4AF37',
+};

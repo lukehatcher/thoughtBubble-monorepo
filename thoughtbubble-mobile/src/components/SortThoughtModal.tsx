@@ -3,7 +3,7 @@ import { Modal, View, Text, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Chip, IconButton } from 'react-native-paper';
 import { filterProjectAction } from '../actions/projectActions';
-import { darkMode, lightMode } from '../constants/colors';
+import { darkMode, lightMode, tagColorsDark } from '../constants/colors';
 import { SortThoughtModalProps } from '../interfaces/componentProps';
 import { RootState } from '../reducers/rootReducer';
 import { clearTagsAction, updateFiltersAction } from '../actions/filterActions';
@@ -76,8 +76,8 @@ export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId
             selected={isTagSelected('red')}
             style={isTagSelected('red') ? useTheme('chipSelected') : useTheme('chip')}
             textStyle={isDarkMode ? { color: 'white' } : null}
-            selectedColor="red"
             icon="tag"
+            selectedColor={tagColorsDark.red}
             onPress={() => handleThoughtFilter('red')}
           >
             red
@@ -87,7 +87,7 @@ export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId
             style={isTagSelected('orange') ? useTheme('chipSelected') : useTheme('chip')}
             textStyle={isDarkMode ? { color: 'white' } : null}
             icon="tag"
-            selectedColor="orange"
+            selectedColor={tagColorsDark.orange}
             onPress={() => handleThoughtFilter('orange')}
           >
             orange
@@ -97,7 +97,7 @@ export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId
             style={isTagSelected('green') ? useTheme('chipSelected') : useTheme('chip')}
             textStyle={isDarkMode ? { color: 'white' } : null}
             icon="tag"
-            selectedColor="green"
+            selectedColor={tagColorsDark.green}
             onPress={() => handleThoughtFilter('green')}
           >
             green
@@ -107,7 +107,7 @@ export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId
             style={isTagSelected('blue') ? useTheme('chipSelected') : useTheme('chip')}
             textStyle={isDarkMode ? { color: 'white' } : null}
             icon="tag"
-            selectedColor="blue"
+            selectedColor={tagColorsDark.blue}
             onPress={() => handleThoughtFilter('blue')}
           >
             blue
@@ -117,18 +117,18 @@ export const SortThoughtModal: FC<SortThoughtModalProps> = function ({ projectId
             style={isTagSelected('purple') ? useTheme('chipSelected') : useTheme('chip')}
             textStyle={isDarkMode ? { color: 'white' } : null}
             icon="tag"
-            selectedColor="purple"
+            selectedColor={tagColorsDark.purple}
             onPress={() => handleThoughtFilter('purple')}
           >
             purple
           </Chip>
           <Chip
-            selected={isTagSelected('star')}
-            style={isTagSelected('star') ? useTheme('chipSelected') : useTheme('chip')}
+            selected={isTagSelected('favorite')}
+            style={isTagSelected('favorite') ? useTheme('chipSelected') : useTheme('chip')}
             textStyle={isDarkMode ? { color: 'white' } : null}
             icon="star"
-            selectedColor="#D4AF37"
-            onPress={() => handleThoughtFilter('star')}
+            selectedColor={tagColorsDark.gold}
+            onPress={() => handleThoughtFilter('favorite')}
           >
             favorites
           </Chip>

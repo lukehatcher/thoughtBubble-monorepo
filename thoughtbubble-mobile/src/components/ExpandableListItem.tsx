@@ -8,6 +8,8 @@ import { useDarkCheck } from '../hooks/useDarkCheck';
 import { useDispatch } from 'react-redux';
 import { unarchiveProjectAction } from '../actions/projectActions';
 import { ExpandableListItemProps } from '../interfaces/componentProps';
+import { TagIcon } from './TagIcon';
+import { Tags } from '../interfaces/stringLiteralTypes';
 
 export const ExpandableListItem: FC<ExpandableListItemProps> = memo(function ({
   projectId,
@@ -33,20 +35,20 @@ export const ExpandableListItem: FC<ExpandableListItemProps> = memo(function ({
     dispatch(unarchiveProjectAction(projectId));
   };
 
-  const mapTagToIcon = function (tag: string) {
-    // ['red', 'orange', 'green', 'blue', 'purple', 'star'];
-    if (!tag) {
-      return <MaterialCommunityIcons name="file" size={20} style={styles.accordionHeaderIcon} />;
-    }
-    return (
-      <MaterialCommunityIcons
-        name={tag === 'star' ? 'star' : 'tag'}
-        size={20}
-        style={styles.accordionHeaderIcon}
-        color={tag === 'star' ? 'yellow' : tag}
-      />
-    );
-  };
+  // const mapTagToIcon = function (tag: string) {
+  //   // ['red', 'orange', 'green', 'blue', 'purple', 'star'];
+  //   if (!tag) {
+  //     return <MaterialCommunityIcons name="file" size={20} style={styles.accordionHeaderIcon} />;
+  //   }
+  //   return (
+  //     <MaterialCommunityIcons
+  //       name={tag === 'star' ? 'star' : 'tag'}
+  //       size={20}
+  //       style={styles.accordionHeaderIcon}
+  //       color={tag === 'star' ? 'yellow' : tag}
+  //     />
+  //   );
+  // };
 
   return (
     <>
@@ -85,7 +87,9 @@ export const ExpandableListItem: FC<ExpandableListItemProps> = memo(function ({
             </UnarchiveBtn>
             {projectThoughts.map((thought) => (
               <AccordionItem key={thought.id}>
-                <AccordianIconWrapper>{mapTagToIcon(thought.tag)}</AccordianIconWrapper>
+                <AccordianIconWrapper>
+                  <TagIcon style={styles.accordionHeaderIcon} size={20} tag={thought.tag as Tags} />
+                </AccordianIconWrapper>
                 <AccordionItemText completed={thought.completed}>{thought.text}</AccordionItemText>
               </AccordionItem>
             ))}

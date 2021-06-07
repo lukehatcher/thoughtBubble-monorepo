@@ -5,6 +5,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { SwipeListView } from 'react-native-swipe-list-view';
 import styled from 'styled-components/native';
 import { ThoughtsListProps } from '../interfaces/componentProps';
+import { TagIcon } from './TagIcon';
 
 const SwipeListViewAnimated = Animated.createAnimatedComponent(SwipeListView);
 
@@ -99,11 +100,7 @@ export const ThoughtsList: FC<ThoughtsListProps> = memo(function ({
           <Text style={data.item.completed ? useTheme('textCompleted') : useTheme('text')}>{data.item.text}</Text>
           {data.item.tag ? (
             <TouchableOpacity style={sharedStyles.tagIcon} onPress={() => renderModal(data.item.key)}>
-              {data.item.tag !== 'star' ? (
-                <MaterialCommunityIcons name="tag" size={25} color={data.item.tag} />
-              ) : (
-                <MaterialCommunityIcons name="star" size={25} color="#D4AF37" />
-              )}
+              <TagIcon size={25} tag={data.item.tag} />
             </TouchableOpacity>
           ) : (
             <></>
