@@ -15,7 +15,6 @@ import { StackBackButton } from '../components/StackBackButton';
 import { ThoughtsList } from '../components/ThoughtsList';
 import styled, { ThemeProvider } from 'styled-components/native';
 import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
-import equal from 'deep-equal';
 
 export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) => {
   const [addThoughtModalView, setAddThoughtModalView] = useState(false); // plus modal
@@ -26,7 +25,7 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
   const { projectId } = route.params;
   const thoughtsSelector = (state: RootState) =>
     state.userProjectData.find((proj) => proj.id === projectId).projectThoughts;
-  let thoughts = useSelector(thoughtsSelector, equal); // retrive thoughts for the project we're on
+  const thoughts = useSelector(thoughtsSelector); // retrive thoughts for the project we're on
 
   const isDarkMode = useDarkCheck();
   const theme = {
@@ -110,6 +109,10 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
     },
     [projectId],
   );
+
+  // const handleThoughtStatusChange = (thoughtId: string) => {
+  //   dispatch(thoughtStatusChangeAction(projectId, thoughtId));
+  // };
 
   const renderModal = useCallback((thoughtId: string) => {
     setFocusedId(thoughtId);

@@ -16,6 +16,7 @@ export const ThoughtsList: FC<ThoughtsListProps> = memo(function ({
   handleThoughtDelete,
   handleScroll,
 }) {
+  // console.log(thoughts);
   const useTheme = (name: string) => (isDarkMode ? stylesDark[name] : stylesLight[name]);
   const firstItem = thoughts[0].id;
   const lastItem = thoughts[thoughts.length - 1].id;
@@ -123,6 +124,7 @@ export const ThoughtsList: FC<ThoughtsListProps> = memo(function ({
 
   return (
     <>
+      {/* {console.log('ThoughtList rendered')} */}
       <SwipeListViewAnimated
         data={thoughts.map((i) => ({ ...i, key: i.id }))} // SwipeListView api requires key prop
         renderItem={renderItem}
