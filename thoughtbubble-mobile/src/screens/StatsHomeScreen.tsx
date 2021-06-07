@@ -131,7 +131,6 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
           </AccountTotalsCard>
         </AccountTotalsContainer>
         <ProgressBar
-          // progress={totalCompletedThoughts / totalThoughts}
           progress={totalThoughts ? totalCompletedThoughts / totalThoughts : 0}
           color={isDarkMode ? darkMode.primary : lightMode.primary}
           style={{ margin: 20 }}
