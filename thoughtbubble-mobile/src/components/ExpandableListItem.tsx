@@ -33,6 +33,21 @@ export const ExpandableListItem: FC<ExpandableListItemProps> = memo(function ({
     dispatch(unarchiveProjectAction(projectId));
   };
 
+  const mapTagToIcon = function (tag: string) {
+    // ['red', 'orange', 'green', 'blue', 'purple', 'star'];
+    if (!tag) {
+      return <MaterialCommunityIcons name="file" size={20} style={styles.accordionHeaderIcon} />;
+    }
+    return (
+      <MaterialCommunityIcons
+        name={tag === 'star' ? 'star' : 'tag'}
+        size={20}
+        style={styles.accordionHeaderIcon}
+        color={tag === 'star' ? 'yellow' : tag}
+      />
+    );
+  };
+
   return (
     <>
       <AccordionContainer>
@@ -70,8 +85,8 @@ export const ExpandableListItem: FC<ExpandableListItemProps> = memo(function ({
             </UnarchiveBtn>
             {projectThoughts.map((thought) => (
               <AccordionItem key={thought.id}>
-                <BulletPoint>{'\u2022'}</BulletPoint>
-                <AccordionItemText>{thought.text}</AccordionItemText>
+                <AccordianIconWrapper>{mapTagToIcon(thought.tag)}</AccordianIconWrapper>
+                <AccordionItemText completed={thought.completed}>{thought.text}</AccordionItemText>
               </AccordionItem>
             ))}
           </>
@@ -137,13 +152,14 @@ const AccordionItem = styled.View`
   flex-direction: row;
 `;
 
-const BulletPoint = styled.Text`
+const AccordianIconWrapper = styled.Text`
   color: ${(props) => props.theme.textOnBackground};
   margin-right: 15px;
 `;
 
 const AccordionItemText = styled.Text`
   flex-shrink: 1;
-  color: ${(props) => props.theme.textOnBackground};
+  color: ${(props) => (props.completed ? `${props.theme.textOnBackground}40` : props.theme.textOnBackground)};
   font-size: 16px;
+  text-decoration-line: ${(props) => (props.completed ? 'line-through' : 'none')};
 `;
