@@ -9,7 +9,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { RootState } from '../reducers/rootReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { DateHelper } from '../utils/dateHelpers';
-import { archiveProjectAction, deleteProjectAction } from '../actions/projectActions';
+import { archiveProjectAction, deleteProjectAction, pinProjectAction } from '../actions/projectActions';
 
 interface ProjectsTooltipProps {
   tooltipVisible: boolean;
@@ -27,7 +27,7 @@ export const ProjectsTooltip: FC<ProjectsTooltipProps> = memo(function ({
   const project = useSelector((state: RootState) => state.userProjectData.find((proj) => proj.id === focusedProjectId));
 
   const generateUnderlayColor = (): string => {
-    return isDarkMode ? `${darkMode.dp1}95` : '#eee';
+    return isDarkMode ? `${darkMode.dp2}99` : '#eee';
   };
 
   const handleProjectDeletion = function () {
@@ -61,7 +61,7 @@ export const ProjectsTooltip: FC<ProjectsTooltipProps> = memo(function ({
 
   const handleProjectPin = function () {
     setTooltipVisible(false);
-    // dispatch(pinProjectAction());
+    dispatch(pinProjectAction(focusedProjectId));
   };
 
   return (
@@ -95,9 +95,10 @@ export const ProjectsTooltip: FC<ProjectsTooltipProps> = memo(function ({
           <TooltipContainer>
             <TooltipItem underlayColor={generateUnderlayColor()} onPress={handleProjectPin}>
               <>
-                <TooltipItemText>Pin project </TooltipItemText>
+                <TooltipItemText>{project?.pinned ? 'Unpin project' : 'Pin project'}</TooltipItemText>
                 <MaterialCommunityIcons
-                  name="pin-outline"
+                  // name={project?.pinned ? 'pin-off-outline' : 'pin-outline'}
+                  name="pin"
                   size={20}
                   style={styles.icon}
                   color={isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground}

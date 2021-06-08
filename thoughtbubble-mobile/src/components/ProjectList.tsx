@@ -49,11 +49,20 @@ export const ProjectList: FC<ProjectListProps> = memo(function ({ userProjectsDa
       <TouchableHighlight
         onPress={() => navigation.navigate('Thoughts', { projectId: data.item.id })}
         style={useTheme('rowFront')}
-        underlayColor={'grey'}
+        underlayColor={isDarkMode ? darkMode.dp2 : '#eee'}
         onLongPress={() => handleLongPress(data.item.id)}
       >
         <View style={sharedStyles.chevronContainer}>
           <TextStyled>{data.item.projectName}</TextStyled>
+          {data.item.pinned ? (
+            <MaterialCommunityIcons
+              name="pin-outline"
+              size={30}
+              color={isDarkMode ? darkMode.error : lightMode.error}
+            />
+          ) : (
+            <></>
+          )}
           <MaterialCommunityIcons
             name="chevron-right"
             size={40}

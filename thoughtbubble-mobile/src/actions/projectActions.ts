@@ -83,3 +83,18 @@ export const unarchiveProjectAction = function (projectId: string) {
     }
   };
 };
+
+/**
+ * handle pin and un-pin
+ */
+export const pinProjectAction = function (projectId: string) {
+  return async (dispatch, _getState) => {
+    try {
+      const response = await axios.put('http://localhost:3001/api/projects/pin', { projectId });
+      console.log(response.data);
+      dispatch({ type: ProjectActionTypes.PIN, payload: response.data }); // add/re-initialize project to master filters state
+    } catch (err) {
+      console.error('@projectActions.ts: ', err);
+    }
+  };
+};
