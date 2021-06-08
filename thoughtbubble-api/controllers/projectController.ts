@@ -79,7 +79,7 @@ class ProjectsController extends ControllerHelper {
       // set archived status and update date
       const project = await Project.findOne({ id: projectId });
       const currBool = project?.archived;
-      const newDate = currBool ? new Date() : undefined;
+      const newDate = currBool ? undefined : new Date();
       await getConnection()
         .createQueryBuilder()
         .update(Project)
