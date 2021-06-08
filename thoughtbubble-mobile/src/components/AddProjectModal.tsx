@@ -15,7 +15,7 @@ export const AddProjectModal: React.FC<AddProjectModalProps> = function ({ addPr
 
   const handleProjectAddition = function (): void {
     const newProjectName = input.trim();
-    if (!newProjectName || newProjectName.length > 25) {
+    if (!newProjectName || newProjectName.length > 24) {
       return;
     }
     setInput('');
@@ -24,14 +24,14 @@ export const AddProjectModal: React.FC<AddProjectModalProps> = function ({ addPr
   };
 
   const inputIsTooLong = function (): boolean {
-    return input.trim().length > 25;
+    return input.trim().length > 24;
   };
 
   return (
     <Modal animationType="slide" visible={addProjModalView}>
       <ModalContainer>
         <HelperText type="error" visible={inputIsTooLong()} style={{ marginBottom: 15 }}>
-          Error: Project name must be less than 26 characters
+          Error: Project name must be less than 25 characters
         </HelperText>
         <TextInput
           mode="outlined"
