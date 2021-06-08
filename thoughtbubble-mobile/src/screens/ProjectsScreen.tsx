@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { StyleSheet, LogBox, Animated } from 'react-native';
+import React, { FC, useState, useEffect, useRef, useCallback } from 'react';
+import { StyleSheet, LogBox, Animated, View } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { FAB, IconButton } from 'react-native-paper';
 import styled, { ThemeProvider } from 'styled-components/native';
@@ -12,9 +12,10 @@ import { useOrderProjects } from '../hooks/useOrderProjects';
 import { ProjectList } from '../components/ProjectList';
 import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
 import { ProjectDisplaySettingsModal } from '../components/ProjectDisplaySettingsModal';
+import { DrawerActions } from '@react-navigation/native';
 // import { DrawerNavigator } from '../navigation/DrawerNavigator';
 
-export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) => {
+export const ProjectsScreen: FC<ProjectsScreenProps> = ({ navigation }) => {
   const [addProjModalView, setAddProjModalView] = useState(false);
   const [projectSettingsModal, setProjectSettingsModal] = useState(false);
   const isDarkMode = useDarkCheck();
@@ -132,7 +133,14 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
             icon="tune"
             onPress={() => openProjectSettingsModal()}
             size={30}
-            color={isDarkMode ? darkMode.secondary : lightMode.textOnSurface}
+            color={isDarkMode ? darkMode.textOnBackground87 : lightMode.textOnBackground}
+            style={styles.menuIcon}
+          />
+          <IconButton
+            icon="menu"
+            onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+            size={30}
+            color={isDarkMode ? darkMode.textOnBackground87 : lightMode.textOnBackground}
             style={styles.tuneIcon}
           />
           <Animated.View
@@ -207,8 +215,16 @@ const styles = StyleSheet.create({
   },
   tuneIcon: {
     position: 'absolute',
-    bottom: -5,
+    bottom: -2,
     right: 10,
+    borderRadius: 10,
+    width: 35,
+    height: 35,
+  },
+  menuIcon: {
+    position: 'absolute',
+    bottom: -2,
+    right: 50,
     borderRadius: 10,
     width: 35,
     height: 35,

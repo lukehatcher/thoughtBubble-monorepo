@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useLayoutEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styled, { ThemeProvider } from 'styled-components/native';
-import { useFocusEffect } from '@react-navigation/native';
+import { DrawerActions, useFocusEffect } from '@react-navigation/native';
 import {
   VictoryChart,
   VictoryTheme,
@@ -60,15 +60,6 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
   useLayoutEffect(() => {
     // add icons in header
     navigation.setOptions({
-      headerRight: () => (
-        <IconButton
-          icon="information-outline"
-          color={isDarkMode ? darkMode.secondary : lightMode.textOnBackground}
-          size={30}
-          onPress={() => setModalVisible(true)}
-          style={{ marginRight: 15, marginBottom: 10 }}
-        />
-      ),
       headerLeft: () => (
         <Text
           style={{
@@ -79,6 +70,25 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
         >
           streak: {calculateStreak()}🔥
         </Text>
+      ),
+      headerRight: () => (
+        <HeaderRightWrapper>
+          <IconButton
+            icon="information-outline"
+            color={isDarkMode ? darkMode.secondary : lightMode.textOnBackground}
+            size={30}
+            onPress={() => setModalVisible(true)}
+            style={{ marginBottom: 10 }}
+          />
+          <IconButton
+            icon="menu"
+            onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+            size={30}
+            color={isDarkMode ? darkMode.textOnBackground87 : lightMode.textOnBackground}
+            // style={{ marginRight: 0, marginBottom: 10 }}
+            style={styles.menuIcon}
+          />
+        </HeaderRightWrapper>
       ),
     });
   }, [navigation, isDarkMode]);
@@ -340,6 +350,12 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
   );
 };
 
+const HeaderRightWrapper = styled.View`
+  flex-direction: row;
+  align-items: center;
+  /* margin-bottom: 15px; */
+`;
+
 const styles = StyleSheet.create({
   carouselCard: {
     shadowColor: '#000',
@@ -360,6 +376,12 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginTop: 0,
     color: lightMode.primary,
+  },
+  menuIcon: {
+    marginRight: 15,
+    borderRadius: 10,
+    width: 35,
+    height: 35,
   },
 });
 

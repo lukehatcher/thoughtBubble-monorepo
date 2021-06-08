@@ -9,12 +9,15 @@ import { RootState } from '../reducers/rootReducer';
 import { ExpandableListItem } from '../components/ExpandableListItem';
 import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
 import { ArchiveScreenProps } from '../interfaces/screenProps';
+import { IconButton } from 'react-native-paper';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 
 export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
   const userArchiveData = useSelector((state: RootState) => state.archive);
   userArchiveData.sort((a, b) => b.archivedDate.localeCompare(a.archivedDate)); // sort by date added to archive
   const [showTitle, setShowTitle] = useState(false);
   const isDarkMode = useDarkCheck();
+  const navigation = useNavigation();
   const theme = {
     // for styled-components ThemeProvider
     background: isDarkMode ? darkMode.background : lightMode.background,
@@ -109,6 +112,13 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
           >
             Archive
           </Animated.Text>
+          <IconButton
+            icon="menu"
+            onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+            size={30}
+            color={isDarkMode ? darkMode.textOnBackground87 : lightMode.textOnBackground}
+            style={headerStyles.menuIcon}
+          />
           <Animated.View
             style={[
               headerStyles.bottomBorder,
@@ -198,5 +208,13 @@ const headerStyles = StyleSheet.create({
     width: '100%',
     textAlign: 'center',
     bottom: 10,
+  },
+  menuIcon: {
+    position: 'absolute',
+    bottom: -2,
+    right: 15,
+    borderRadius: 10,
+    width: 35,
+    height: 35,
   },
 });
