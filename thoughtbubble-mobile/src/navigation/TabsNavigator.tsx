@@ -51,43 +51,43 @@ export const AppTabsNavigator: FC<AppNavTabsProps> = () => {
 
   return (
     <>
-      <NavigationContainer>
-        <Tab.Navigator initialRouteName="Projects" tabBarOptions={dynamicTabBarOptions} tabBar={TabBar}>
-          <Tab.Screen
-            name="Settings"
-            component={SettingsScreen}
-            options={{
-              title: 'Settings',
-              tabBarIcon: ({ color }) => <MaterialCommunityIcons name="cog" size={30} color={color} />,
-            }}
-          />
-          <Tab.Screen
-            name="Projects"
-            component={ProjectsStackNavigator}
-            options={{
-              title: 'Projects',
-              tabBarIcon: ({ color }) => <MaterialCommunityIcons name="format-list-bulleted" size={30} color={color} />,
-              // tabBarIcon: ({ color }) => <MaterialCommunityIcons name="menu" size={30} color={color} />,
-            }}
-          />
-          <Tab.Screen
-            name="Archive"
-            component={ArchiveScreen}
-            options={{
-              title: 'Archive',
-              tabBarIcon: ({ color }) => <MaterialCommunityIcons name="archive" size={30} color={color} />,
-            }}
-          />
-          <Tab.Screen
-            name="Stats"
-            component={StatsStackNavigator}
-            options={{
-              title: 'Stats',
-              tabBarIcon: ({ color }) => <MaterialCommunityIcons name="equalizer" size={30} color={color} />,
-            }}
-          />
-        </Tab.Navigator>
-      </NavigationContainer>
+      {/* <NavigationContainer> */}
+      <Tab.Navigator initialRouteName="Projects" tabBarOptions={dynamicTabBarOptions} tabBar={TabBar}>
+        <Tab.Screen
+          name="Settings"
+          component={SettingsScreen}
+          options={{
+            title: 'Settings',
+            tabBarIcon: ({ color }) => <MaterialCommunityIcons name="cog" size={30} color={color} />,
+          }}
+        />
+        <Tab.Screen
+          name="Projects"
+          component={ProjectsStackNavigator}
+          options={{
+            title: 'Projects',
+            tabBarIcon: ({ color }) => <MaterialCommunityIcons name="format-list-bulleted" size={30} color={color} />,
+            // tabBarIcon: ({ color }) => <MaterialCommunityIcons name="menu" size={30} color={color} />,
+          }}
+        />
+        <Tab.Screen
+          name="Archive"
+          component={ArchiveScreen}
+          options={{
+            title: 'Archive',
+            tabBarIcon: ({ color }) => <MaterialCommunityIcons name="archive" size={30} color={color} />,
+          }}
+        />
+        <Tab.Screen
+          name="Stats"
+          component={StatsStackNavigator}
+          options={{
+            title: 'Stats',
+            tabBarIcon: ({ color }) => <MaterialCommunityIcons name="equalizer" size={30} color={color} />,
+          }}
+        />
+      </Tab.Navigator>
+      {/* </NavigationContainer> */}
     </>
   );
 };
