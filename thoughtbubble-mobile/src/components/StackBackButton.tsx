@@ -5,7 +5,7 @@ import { darkMode, lightMode } from '../constants/colors';
 import { useNavigation } from '@react-navigation/native';
 import { StackBackButtonProps } from '../interfaces/componentProps';
 
-export const StackBackButton: FC<StackBackButtonProps> = function ({ location, shadeBackground }) {
+export const StackBackButton: FC<StackBackButtonProps> = function ({ location }) {
   const isDarkMode = useDarkCheck();
   const navigation = useNavigation();
   return (
@@ -20,7 +20,6 @@ export const StackBackButton: FC<StackBackButtonProps> = function ({ location, s
         width: 35,
         height: 35,
         borderRadius: 10,
-        backgroundColor: shadeBackground ? darkMode.dp1 : null,
       }}
       animated={true}
     />
