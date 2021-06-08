@@ -1,11 +1,12 @@
 import axios from 'axios';
 import { locations } from '../constants/locations';
+import { BASE_URL } from '@env';
 
 export const addThoughtAction = (projectId: string, thought: string) => {
   return async (dispatch, getState) => {
     const userSub = getState().storedUser.sub;
     axios
-      .post('http://localhost:3001/api/thoughts', {
+      .post(`${BASE_URL}/thoughts`, {
         userSub,
         projectId,
         thought,
@@ -22,7 +23,7 @@ export const deleteThoughtAction = (projectId: string, thoughtId: string) => {
   return async (dispatch, getState) => {
     const userSub = getState().storedUser.sub;
     axios
-      .delete('http://localhost:3001/api/thoughts', {
+      .delete(`${BASE_URL}/thoughts`, {
         params: {
           userSub, // not used atm with new api
           projectId, // not used atm with the new api
@@ -40,7 +41,7 @@ export const editThoughtAction = (newThought: string, projectId: string, thought
   return async (dispatch, getState) => {
     const userSub = getState().storedUser.sub;
     axios
-      .put('http://localhost:3001/api/thoughts', {
+      .put(`${BASE_URL}/thoughts`, {
         userSub, // not use atm with the new api
         projectId, // not used atm with the new api
         thoughtId,
@@ -57,7 +58,7 @@ export const thoughtStatusChangeAction = (projectId: string, thoughtId: string) 
   return async (dispatch, getState) => {
     const userSub = getState().storedUser.sub;
     axios
-      .put('http://localhost:3001/api/thoughts/status', {
+      .put(`${BASE_URL}/thoughts/status`, {
         userSub, // not used atm with the new api
         projectId, // used for updating most recent edit time
         thoughtId,
@@ -73,7 +74,7 @@ export const thoughtTagChangeAction = function (projectId: string, thoughtId: st
   return async (dispatch, getState) => {
     const userSub = getState().storedUser.sub;
     axios
-      .put('http://localhost:3001/api/thoughts/tag', {
+      .put(`${BASE_URL}/thoughts/tag`, {
         userSub, // not used atm with the new api
         projectId, // used for updating most recent edit time
         thoughtId,

@@ -1,12 +1,13 @@
 import axios from 'axios';
 import { UserInfoActionTypes } from '../constants/actionTypes';
 import { Direction, OrderType } from '../interfaces/stringLiteralTypes';
+import { BASE_URL } from '@env';
 
 export const fetchUserInfoAction = () => {
   return async (dispatch, getState) => {
     const userSub = getState().storedUser.sub;
     axios
-      .get('http://localhost:3001/api/userinfo', {
+      .get(`${BASE_URL}/userinfo`, {
         params: { userSub },
       })
       .then((res) => {
@@ -21,7 +22,7 @@ export const changeEmailSettingsAction = (emailSetting: string) => {
     return async (dispatch, getState) => {
       const userSub = getState().storedUser.sub;
       axios
-        .put('http://localhost:3001/api/userinfo/dailyemail', {
+        .put(`${BASE_URL}/userinfo/dailyemail`, {
           userSub,
         })
         .then(() => {
@@ -33,7 +34,7 @@ export const changeEmailSettingsAction = (emailSetting: string) => {
     return async (dispatch, getState) => {
       const userSub = getState().storedUser.sub;
       axios
-        .put('http://localhost:3001/api/userinfo/weeklyemail', {
+        .put(`${BASE_URL}/userinfo/weeklyemail`, {
           userSub,
         })
         .then(() => {
@@ -48,7 +49,7 @@ export const changeDarkModeAction = () => {
   return async (dispatch, getState) => {
     const userSub = getState().storedUser.sub;
     axios
-      .put('http://localhost:3001/api/userinfo/darkmode', {
+      .put(`${BASE_URL}/userinfo/darkmode`, {
         userSub,
       })
       .then(() => {
@@ -62,7 +63,7 @@ export const changeProjectOrderAction = (projectOrder: OrderType) => {
   return async (dispatch, getState) => {
     const userSub = getState().storedUser.sub;
     axios
-      .put('http://localhost:3001/api/userinfo/projectOrder', {
+      .put(`${BASE_URL}/userinfo/projectOrder`, {
         userSub,
         projectOrder,
       })
@@ -77,7 +78,7 @@ export const changeProjectDirectionAction = (projectDirection: Direction) => {
   return async (dispatch, getState) => {
     const userSub = getState().storedUser.sub;
     axios
-      .put('http://localhost:3001/api/userinfo/projectDirection', {
+      .put(`${BASE_URL}/userinfo/projectDirection`, {
         userSub,
         projectDirection,
       })
@@ -92,7 +93,7 @@ export const changeSaveOrderSettingAction = (projectOrder: OrderType, projectDir
   return async (dispatch, getState) => {
     const userSub = getState().storedUser.sub;
     axios
-      .put('http://localhost:3001/api/userinfo/saveOrder', {
+      .put(`${BASE_URL}/userinfo/saveOrder`, {
         userSub,
         projectOrder,
         projectDirection,

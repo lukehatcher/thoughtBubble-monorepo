@@ -1,11 +1,12 @@
 import axios from 'axios';
 import { FilterActionTypes } from '../constants/actionTypes';
 import { ArchiveActionTypes } from '../constants/actionTypes';
+import { BASE_URL } from '@env';
 
 export const fetchProjectDataAction = function (userSub: string) {
   return async (dispatch, _getState) => {
     try {
-      const response = await axios.get('http://localhost:3001/api/projects', {
+      const response = await axios.get(`${BASE_URL}/projects`, {
         params: {
           userSub,
         },
