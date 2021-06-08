@@ -15,10 +15,10 @@ router
   .route('/archive') //
   .put(ProjectsController.archiveProject);
 
-// // api/projects/unarchive
-// router
-//   .route('/unarchive') //
-//   .put(ProjectsController.unarchiveProject);
+// api/projects/pin
+router
+  .route('/pin') //
+  .put(ProjectsController.pinProject);
 
 // api/projects/init
 // not tested

@@ -37,6 +37,14 @@ export class Project extends BaseEntity {
   archivedDate!: Date;
   // ============
 
+  // pinned data
+  @Column('boolean', { default: false })
+  pinned!: boolean;
+
+  @Column({ nullable: true })
+  pinDate!: Date;
+  // ============
+
   @Column('text', { nullable: true })
   tag!: string;
 
