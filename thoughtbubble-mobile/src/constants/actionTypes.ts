@@ -13,6 +13,7 @@ export enum ActivityActionTypes {
 export enum ProjectActionTypes {
   ARCHIVE = 'projects/archive',
   UNARCHIVE = 'projects/unarchive',
+  PIN = 'projects/pin', // covers pin and unpin
 }
 
 export enum ArchiveActionTypes {
@@ -22,7 +23,6 @@ export enum ArchiveActionTypes {
 }
 
 export enum UserInfoActionTypes {
-  // UPDATE_PROJ_DISPLAY = 'userInfo/updateProjectDisplay',
   UPDATE_ORDER = 'userInfo/updateOrder',
   UPDATE_DIRECTION = 'userInfo/updateDirection',
   UPDATE_SAVE_SETTING = 'userInfo/updateSaveSetting',

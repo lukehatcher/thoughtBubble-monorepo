@@ -146,6 +146,7 @@ const AccordionHeader = styled.View`
 const AccordionHeaderText = styled.Text`
   margin-left: 25px;
   font-size: 15px;
+  flex-shrink: 1;
   color: ${(props) => (props.expanded ? props.theme.primary : props.theme.textOnBackground)};
 `;
 

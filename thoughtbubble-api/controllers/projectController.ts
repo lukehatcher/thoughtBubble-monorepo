@@ -79,7 +79,7 @@ class ProjectsController extends ControllerHelper {
       // set archived status and update date
       const project = await Project.findOne({ id: projectId });
       const currBool = project?.archived;
-      const newDate = currBool ? new Date() : undefined;
+      const newDate = currBool ? undefined : new Date();
       await getConnection()
         .createQueryBuilder()
         .update(Project)
@@ -87,6 +87,45 @@ class ProjectsController extends ControllerHelper {
         .where('id = :id', { id: projectId })
         .execute();
 
+      const projectThoughts = await getRepository(Thought)
+        .createQueryBuilder('thought')
+        .where('thought.projectId = :projectId', { projectId: projectId })
+        .orderBy('thought.createdDate', 'ASC')
+        .getMany();
+
+      // update datetime stamp for most recent activity for that project
+      await this.updateLastUpdatedDate(projectId);
+
+      // return the updated project with its thoughts
+      const updatedProject = await Project.findOne({ id: projectId });
+      const data = updatedProject as any;
+      data.projectThoughts = projectThoughts;
+      res.status(200).send(data);
+    } catch (err) {
+      console.error(this.location, err);
+      res.sendStatus(400);
+    }
+  };
+
+  /**
+   * handle project pin and un-pin
+   */
+  public pinProject = async (req: Request, res: Response): Promise<void> => {
+    const { projectId } = req.body;
+
+    try {
+      // set archived status and update date
+      const project = await Project.findOne({ id: projectId });
+      const currBool = project?.pinned;
+      const newDate = currBool ? undefined : new Date(); // only update date if pinning (no when un-pinning)
+      await getConnection()
+        .createQueryBuilder()
+        .update(Project)
+        .set({ pinned: !currBool, pinDate: newDate })
+        .where('id = :id', { id: projectId })
+        .execute();
+
+      // fetch the thoughts for this project to send back to client
       const projectThoughts = await getRepository(Thought)
         .createQueryBuilder('thought')
         .where('thought.projectId = :projectId', { projectId: projectId })

@@ -1,12 +1,13 @@
 import axios from 'axios';
 import { locations } from '../constants/locations';
 import { FilterActionTypes, ProjectActionTypes, ArchiveActionTypes } from '../constants/actionTypes';
+import { BASE_URL } from '@env';
 
 export const addProjectAction = function (projectName: string) {
   return async (dispatch, getState) => {
     const userSub = getState().storedUser.sub;
     axios
-      .post('http://localhost:3001/api/projects', {
+      .post(`${BASE_URL}/projects`, {
         userSub,
         projectName,
         creationLocation: locations.MOBILE,
@@ -25,7 +26,7 @@ export const deleteProjectAction = function (projectId: string) {
   return async (dispatch, getState) => {
     const userSub = getState().storedUser.sub;
     axios
-      .delete('http://localhost:3001/api/projects', {
+      .delete(`${BASE_URL}/projects`, {
         params: {
           userSub,
           projectId,
@@ -43,7 +44,7 @@ export const filterProjectAction = function (projectId: string, filters: any) {
   return async (dispatch, getState) => {
     const userSub = getState().storedUser.sub;
     try {
-      const response = await axios.get('http://localhost:3001/api/projects', {
+      const response = await axios.get(`${BASE_URL}/projects`, {
         params: {
           userSub,
         },
@@ -60,7 +61,7 @@ export const filterProjectAction = function (projectId: string, filters: any) {
 export const archiveProjectAction = function (projectId: string) {
   return async (dispatch, _getState) => {
     try {
-      const response = await axios.put('http://localhost:3001/api/projects/archive', { projectId });
+      const response = await axios.put(`${BASE_URL}/projects/archive`, { projectId });
       dispatch({ type: ArchiveActionTypes.ADD_TO_ARCHIVE, payload: response.data }); // add project to archive
       dispatch({ type: ProjectActionTypes.ARCHIVE, payload: projectId }); // filter project out of main user project data
       dispatch({ type: FilterActionTypes.DEL_PROJ, payload: projectId }); // fitler project out of master filters state
@@ -73,11 +74,26 @@ export const archiveProjectAction = function (projectId: string) {
 export const unarchiveProjectAction = function (projectId: string) {
   return async (dispatch, _getState) => {
     try {
-      const response = await axios.put('http://localhost:3001/api/projects/archive', { projectId });
+      const response = await axios.put(`${BASE_URL}/projects/archive`, { projectId });
 
       dispatch({ type: ArchiveActionTypes.REMOVE_FROM_UNARCHIVE, payload: projectId }); // filter project out of archive
       dispatch({ type: ProjectActionTypes.UNARCHIVE, payload: response.data }); // add project back to main user project data
       dispatch({ type: FilterActionTypes.ADD_PROJ, payload: response.data }); // add/re-initialize project to master filters state
+    } catch (err) {
+      console.error('@projectActions.ts: ', err);
+    }
+  };
+};
+
+/**
+ * handle pin and un-pin
+ */
+export const pinProjectAction = function (projectId: string) {
+  return async (dispatch, _getState) => {
+    try {
+      const response = await axios.put(`${BASE_URL}/projects/pin`, { projectId });
+      console.log(response.data);
+      dispatch({ type: ProjectActionTypes.PIN, payload: response.data }); // add/re-initialize project to master filters state
     } catch (err) {
       console.error('@projectActions.ts: ', err);
     }

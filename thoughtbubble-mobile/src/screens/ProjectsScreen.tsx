@@ -119,7 +119,10 @@ export const ProjectsScreen: React.FC<ProjectsScreenProps> = ({ navigation }) =>
           <Animated.Text
             style={[
               headerStyles.animationText,
-              { opacity: animationOpacity, color: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground },
+              {
+                opacity: animationOpacity,
+                color: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground,
+              },
             ]}
           >
             Projects

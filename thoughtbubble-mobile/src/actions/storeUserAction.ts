@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { JwtPayload } from 'jwt-decode'; // type
+import { BASE_URL } from '@env';
 
 export const storeUserAction = (jwt: JwtPayload | null) => {
   // called from _onLogin util
@@ -8,7 +9,7 @@ export const storeUserAction = (jwt: JwtPayload | null) => {
     // note: jwt is null when app opens and no one is logged in
     if (jwt !== null) {
       axios
-        .post('http://localhost:3001/api/projects/init', {
+        .post(`${BASE_URL}/projects/init`, {
           userSub: jwt.sub,
         })
         .then(() => {
