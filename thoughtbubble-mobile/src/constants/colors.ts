@@ -20,6 +20,7 @@ export const darkMode: Colors = {
   primaryVariant: '#3700B3', // dark purple // same
   secondary: '#03DAC6', // teal (+ btn) // same
   background: '#121212',
+  // background: 'black',
   textOnPrimary: '#000000',
   textOnSecondary: '#000000',
   textOnBackground: '#FFFFFF', // 87 opacity

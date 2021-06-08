@@ -7,10 +7,12 @@ import { useNavigation } from '@react-navigation/native';
 import styled from 'styled-components/native';
 import { ArchiveDeleteModal } from './ArchiveDeleteModal';
 import { ProjectListProps } from '../interfaces/componentProps';
+import { ProjectsTooltip } from './ProjectsTooltip';
 
 const SwipeListViewAnimated = Animated.createAnimatedComponent(SwipeListView);
 
 export const ProjectList: FC<ProjectListProps> = memo(function ({ userProjectsData, handleScroll, isDarkMode }) {
+  const [tooltipVisible, setTooltipVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [focusedProjectId, setFocusedProjectId] = useState('');
   const [focusedRowMap, setFocusedRowMap] = useState(null); // needs better typing
@@ -20,7 +22,7 @@ export const ProjectList: FC<ProjectListProps> = memo(function ({ userProjectsDa
   const firstItem = userProjectsData[0].id;
   const lastItem = userProjectsData[userProjectsData.length - 1].id;
 
-  const handleProjectDeletionPress = function (projectId: string, rowMap: any, rowKey: string) {
+  const handleProjectDeletionPress = function (projectId: string, rowMap: any, rowKey: string): void {
     // on press, want to render modal to give user option to archive, delete, or cancel
     setFocusedProjectId(projectId);
     setFocusedRowMap(rowMap);
@@ -28,7 +30,12 @@ export const ProjectList: FC<ProjectListProps> = memo(function ({ userProjectsDa
     setModalVisible(true);
   };
 
-  const closeRow = (rowMap, rowKey) => {
+  const handleLongPress = function (projectId: string): void {
+    setFocusedProjectId(projectId);
+    setTooltipVisible(true);
+  };
+
+  const closeRow = (rowMap, rowKey): void => {
     // for slidables
     if (rowMap[rowKey]) {
       rowMap[rowKey].closeRow();
@@ -43,6 +50,7 @@ export const ProjectList: FC<ProjectListProps> = memo(function ({ userProjectsDa
         onPress={() => navigation.navigate('Thoughts', { projectId: data.item.id })}
         style={useTheme('rowFront')}
         underlayColor={'grey'}
+        onLongPress={() => handleLongPress(data.item.id)}
       >
         <View style={sharedStyles.chevronContainer}>
           <TextStyled>{data.item.projectName}</TextStyled>
@@ -109,6 +117,11 @@ export const ProjectList: FC<ProjectListProps> = memo(function ({ userProjectsDa
         focusedRowMap={focusedRowMap}
         focusedRowKey={focusedRowKey}
         closeRow={closeRow}
+      />
+      <ProjectsTooltip
+        tooltipVisible={tooltipVisible}
+        setTooltipVisible={setTooltipVisible}
+        focusedProjectId={focusedProjectId}
       />
     </>
   );
