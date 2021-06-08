@@ -27,9 +27,9 @@ import { config } from './config/enviroment';
   app.use(cors());
   app.use(morgan('dev'));
   app.use(express.json()); // for post and x only
-  app.use('/api/projects', projectRouter);
-  app.use('/api/thoughts', thoughtRouter);
-  app.use('/api/userinfo', userInfoRouter);
-  app.use('/api/activity', activityRouter);
+  app.use('/projects', projectRouter);
+  app.use('/thoughts', thoughtRouter);
+  app.use('/userinfo', userInfoRouter);
+  app.use('/activity', activityRouter);
   app.listen(config.port, () => console.log(`✅ 🚀 listening on port ${config.port}`));
 })();
