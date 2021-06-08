@@ -12,6 +12,7 @@ import { ArchiveScreenProps } from '../interfaces/screenProps';
 
 export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
   const userArchiveData = useSelector((state: RootState) => state.archive);
+  userArchiveData.sort((a, b) => b.archivedDate.localeCompare(a.archivedDate)); // sort by date added to archive
   const [showTitle, setShowTitle] = useState(false);
   const isDarkMode = useDarkCheck();
   const theme = {
@@ -26,11 +27,10 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
     error: isDarkMode ? darkMode.error : lightMode.error,
   };
 
-  // ============================== + showTitle useState
   const scrollY = useRef(new Animated.Value(0)).current;
   const animationOpacity = useRef(new Animated.Value(0)).current; // for the fading in small title
   const translation = scrollY.interpolate({
-    inputRange: [10, 130], // wayyy smoother start from 10 than from 100
+    inputRange: [10, 130], // way smoother start from 10 than from 100
     outputRange: [0, -50],
     extrapolate: 'clamp',
   });
