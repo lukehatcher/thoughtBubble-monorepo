@@ -4,6 +4,8 @@ import { AppTabsNavigator } from './TabsNavigator';
 import { CustomDrawerContent } from './DrawerNavigator';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
+import { useDarkCheck } from '../hooks/useDarkCheck';
+import { darkMode, lightMode } from '../constants/colors';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -29,9 +31,17 @@ const MainStackNavigator = () => {
  * highest level app navigator
  */
 export const AppNavigator = () => {
+  const isDarkMode = useDarkCheck();
   return (
     <NavigationContainer>
-      <Drawer.Navigator drawerContent={(props) => <CustomDrawerContent {...props} />}>
+      <Drawer.Navigator
+        drawerContentOptions={{
+          activeTintColor: '#e91e63',
+        }}
+        drawerContent={(props) => <CustomDrawerContent {...props} />}
+        drawerStyle={{ backgroundColor: isDarkMode ? darkMode.background : lightMode.background }}
+        // hideStatusBar
+      >
         <Drawer.Screen name="AppStack" component={MainStackNavigator} />
       </Drawer.Navigator>
     </NavigationContainer>
