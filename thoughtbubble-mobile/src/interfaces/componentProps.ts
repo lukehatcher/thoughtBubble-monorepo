@@ -76,3 +76,9 @@ export interface TagIconProps {
   size: number;
   style?: any;
 }
+
+export interface ProjectLongPressProps {
+  longPressModalVisible: boolean;
+  setLongPressModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  focusedProjectId: string;
+}

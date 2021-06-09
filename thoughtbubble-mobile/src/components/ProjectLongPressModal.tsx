@@ -1,25 +1,19 @@
-import React, { FC, memo, useState } from 'react';
-import { Alert, Modal, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
-import { IconButton } from 'react-native-paper';
+import React, { FC, memo } from 'react';
+import { Alert, Modal, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import styled from 'styled-components/native';
-import { darkMode, lightMode } from '../constants/colors';
-import { useDarkCheck } from '../hooks/useDarkCheck';
 import { BlurView } from '@react-native-community/blur';
+import { useDispatch, useSelector } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { RootState } from '../reducers/rootReducer';
-import { useDispatch, useSelector } from 'react-redux';
+import { darkMode, lightMode } from '../constants/colors';
+import { useDarkCheck } from '../hooks/useDarkCheck';
 import { DateHelper } from '../utils/dateHelpers';
 import { archiveProjectAction, deleteProjectAction, pinProjectAction } from '../actions/projectActions';
+import { ProjectLongPressProps } from '../interfaces/componentProps';
 
-interface ProjectsTooltipProps {
-  tooltipVisible: boolean;
-  setTooltipVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  focusedProjectId: string;
-}
-
-export const ProjectsTooltip: FC<ProjectsTooltipProps> = memo(function ({
-  tooltipVisible,
-  setTooltipVisible,
+export const ProjectLongPressModal: FC<ProjectLongPressProps> = memo(function ({
+  longPressModalVisible,
+  setLongPressModalVisible,
   focusedProjectId,
 }) {
   const isDarkMode = useDarkCheck();
@@ -39,7 +33,7 @@ export const ProjectsTooltip: FC<ProjectsTooltipProps> = memo(function ({
         {
           text: 'Confirm',
           onPress: () => {
-            setTooltipVisible(false);
+            setLongPressModalVisible(false);
             dispatch(deleteProjectAction(focusedProjectId));
           },
           style: 'default',
@@ -55,20 +49,25 @@ export const ProjectsTooltip: FC<ProjectsTooltipProps> = memo(function ({
   };
 
   const handleProjectArchive = function () {
-    setTooltipVisible(false);
+    setLongPressModalVisible(false);
     dispatch(archiveProjectAction(focusedProjectId));
   };
 
   const handleProjectPin = function () {
-    setTooltipVisible(false);
+    setLongPressModalVisible(false);
     dispatch(pinProjectAction(focusedProjectId));
   };
 
   return (
     <>
-      <Modal visible={tooltipVisible} animationType="fade" transparent onRequestClose={() => setTooltipVisible(false)}>
+      <Modal
+        visible={longPressModalVisible}
+        animationType="fade"
+        transparent
+        onRequestClose={() => setLongPressModalVisible(false)}
+      >
         <View style={{ flex: 1, alignItems: 'center' }}>
-          <TouchableWithoutFeedback onPress={() => setTooltipVisible(false)}>
+          <TouchableWithoutFeedback onPress={() => setLongPressModalVisible(false)}>
             <BlurView
               style={styles.blurView}
               blurType={isDarkMode ? 'regular' : 'ultraThinMaterialLight'}
@@ -92,10 +91,10 @@ export const ProjectsTooltip: FC<ProjectsTooltipProps> = memo(function ({
             </InfoWrapper>
           </ProjectPreviewContainer>
 
-          <TooltipContainer>
-            <TooltipItem underlayColor={generateUnderlayColor()} onPress={handleProjectPin}>
+          <LongPressModalContainer>
+            <LongPressModalItem underlayColor={generateUnderlayColor()} onPress={handleProjectPin}>
               <>
-                <TooltipItemText>{project?.pinned ? 'Unpin project' : 'Pin project'}</TooltipItemText>
+                <LongPressModalItemText>{project?.pinned ? 'Unpin project' : 'Pin project'}</LongPressModalItemText>
                 <MaterialCommunityIcons
                   // name={project?.pinned ? 'pin-off-outline' : 'pin-outline'}
                   name="pin"
@@ -104,11 +103,11 @@ export const ProjectsTooltip: FC<ProjectsTooltipProps> = memo(function ({
                   color={isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground}
                 />
               </>
-            </TooltipItem>
+            </LongPressModalItem>
             <BottomBorder />
-            <TooltipItem underlayColor={generateUnderlayColor()} onPress={handleProjectArchive}>
+            <LongPressModalItem underlayColor={generateUnderlayColor()} onPress={handleProjectArchive}>
               <>
-                <TooltipItemText>Archive project</TooltipItemText>
+                <LongPressModalItemText>Archive project</LongPressModalItemText>
                 <MaterialCommunityIcons
                   name="archive"
                   size={20}
@@ -116,11 +115,13 @@ export const ProjectsTooltip: FC<ProjectsTooltipProps> = memo(function ({
                   color={isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground}
                 />
               </>
-            </TooltipItem>
+            </LongPressModalItem>
             <BottomBorder />
-            <TooltipItem underlayColor={generateUnderlayColor()} onPress={handleProjectDeletion}>
+            <LongPressModalItem underlayColor={generateUnderlayColor()} onPress={handleProjectDeletion}>
               <>
-                <TooltipItemText color={isDarkMode ? darkMode.error : lightMode.error}>Delete project</TooltipItemText>
+                <LongPressModalItemText color={isDarkMode ? darkMode.error : lightMode.error}>
+                  Delete project
+                </LongPressModalItemText>
                 <MaterialCommunityIcons
                   name="trash-can-outline"
                   size={20}
@@ -128,8 +129,8 @@ export const ProjectsTooltip: FC<ProjectsTooltipProps> = memo(function ({
                   color={isDarkMode ? darkMode.error : lightMode.error}
                 />
               </>
-            </TooltipItem>
-          </TooltipContainer>
+            </LongPressModalItem>
+          </LongPressModalContainer>
         </View>
       </Modal>
     </>
@@ -168,7 +169,7 @@ const PreviewInfoText = styled.Text`
 `;
 // ======
 
-const TooltipContainer = styled.View`
+const LongPressModalContainer = styled.View`
   background-color: ${(props) => props.theme.background};
   border-radius: 15px;
   width: 250px;
@@ -178,14 +179,14 @@ const TooltipContainer = styled.View`
   margin-right: 125px;
 `;
 
-const TooltipItem = styled.TouchableHighlight`
+const LongPressModalItem = styled.TouchableHighlight`
   flex-direction: row;
   justify-content: center;
   align-items: center;
   padding: 10px;
 `;
 
-const TooltipItemText = styled.Text`
+const LongPressModalItemText = styled.Text`
   color: ${(props) => (props.color ? props.color : props.theme.textOnSurface)};
   margin-left: 10px;
   font-size: 15px;

@@ -7,12 +7,12 @@ import { useNavigation } from '@react-navigation/native';
 import styled from 'styled-components/native';
 import { ArchiveDeleteModal } from './ArchiveDeleteModal';
 import { ProjectListProps } from '../interfaces/componentProps';
-import { ProjectsTooltip } from './ProjectsTooltip';
+import { ProjectLongPressModal } from './ProjectLongPressModal';
 
 const SwipeListViewAnimated = Animated.createAnimatedComponent(SwipeListView);
 
 export const ProjectList: FC<ProjectListProps> = memo(function ({ userProjectsData, handleScroll, isDarkMode }) {
-  const [tooltipVisible, setTooltipVisible] = useState(false);
+  const [longPressModalVisible, setLongPressModalVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [focusedProjectId, setFocusedProjectId] = useState('');
   const [focusedRowMap, setFocusedRowMap] = useState(null); // needs better typing
@@ -32,7 +32,7 @@ export const ProjectList: FC<ProjectListProps> = memo(function ({ userProjectsDa
 
   const handleLongPress = function (projectId: string): void {
     setFocusedProjectId(projectId);
-    setTooltipVisible(true);
+    setLongPressModalVisible(true);
   };
 
   const closeRow = (rowMap, rowKey): void => {
@@ -127,9 +127,9 @@ export const ProjectList: FC<ProjectListProps> = memo(function ({ userProjectsDa
         focusedRowKey={focusedRowKey}
         closeRow={closeRow}
       />
-      <ProjectsTooltip
-        tooltipVisible={tooltipVisible}
-        setTooltipVisible={setTooltipVisible}
+      <ProjectLongPressModal
+        longPressModalVisible={longPressModalVisible}
+        setLongPressModalVisible={setLongPressModalVisible}
         focusedProjectId={focusedProjectId}
       />
     </>
