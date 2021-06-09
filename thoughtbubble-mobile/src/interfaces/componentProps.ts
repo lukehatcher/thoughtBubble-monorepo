@@ -19,10 +19,10 @@ export interface AddThoughtModalProps {
   setAddThoughtModalView: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export interface SortThoughtModalProps {
+export interface FilterThoughtModalProps {
   projectId: string;
-  sortModalView: boolean;
-  setSortModalView: React.Dispatch<React.SetStateAction<boolean>>;
+  filterModalVisible: boolean;
+  setFilterModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface ArchiveDeleteModalProps {

@@ -7,7 +7,7 @@ import { deleteThoughtAction, thoughtStatusChangeAction } from '../actions/thoug
 import { MoreModal } from '../components/MoreModal';
 import { ThoughtScreenProps } from '../interfaces/screenProps';
 import { darkMode, lightMode } from '../constants/colors';
-import { SortThoughtModal } from '../components/SortThoughtModal';
+import { FilterThoughtModal } from '../components/FilterThoughtModal';
 import { AddThoughtModal } from '../components/AddThoughtModal';
 import { FAB, IconButton } from 'react-native-paper';
 import { useDarkCheck } from '../hooks/useDarkCheck';
@@ -19,7 +19,7 @@ import { DrawerActions } from '@react-navigation/native';
 
 export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) => {
   const [addThoughtModalView, setAddThoughtModalView] = useState(false); // plus modal
-  const [sortModalView, setSortModalView] = useState(false);
+  const [filterModalVisible, setFilterModalVisible] = useState(false);
   const [moreModalView, setMoreModalView] = useState(false);
   const [focusedId, setFocusedId] = useState('');
   const dispatch = useDispatch();
@@ -111,10 +111,6 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
     [projectId],
   );
 
-  // const handleThoughtStatusChange = (thoughtId: string) => {
-  //   dispatch(thoughtStatusChangeAction(projectId, thoughtId));
-  // };
-
   const renderModal = useCallback((thoughtId: string) => {
     setFocusedId(thoughtId);
     setMoreModalView(true);
@@ -157,6 +153,7 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
             >
               Thoughts
             </Animated.Text>
+
             {/* back button */}
             <View style={{ position: 'absolute', bottom: -5, right: 85 }}>
               <StackBackButton location="Projects" />
@@ -164,11 +161,12 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
             {/* sort modal button */}
             <IconButton
               icon="sort-variant"
-              onPress={() => setSortModalView(true)}
+              onPress={() => setFilterModalVisible(true)}
               size={30}
               color={isDarkMode ? darkMode.textOnBackground87 : lightMode.textOnBackground}
               style={styles.sortIcon}
             />
+            {/* drawer button */}
             <IconButton
               icon="menu"
               onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
@@ -176,6 +174,7 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
               color={isDarkMode ? darkMode.textOnBackground87 : lightMode.textOnBackground}
               style={styles.menuIcon}
             />
+
             <Animated.View
               style={[
                 headerStyles.bottomBorder,
@@ -212,7 +211,11 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
           addThoughtModalView={addThoughtModalView}
           setAddThoughtModalView={setAddThoughtModalView}
         />
-        <SortThoughtModal projectId={projectId} sortModalView={sortModalView} setSortModalView={setSortModalView} />
+        <FilterThoughtModal
+          projectId={projectId}
+          filterModalVisible={filterModalVisible}
+          setFilterModalVisible={setFilterModalVisible}
+        />
         <FAB style={styles.fab} icon="plus" onPress={() => setAddThoughtModalView(true)} label="new thought" />
       </ThemeProvider>
     </>
