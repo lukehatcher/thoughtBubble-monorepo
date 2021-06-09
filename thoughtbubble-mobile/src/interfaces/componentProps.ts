@@ -60,7 +60,6 @@ export interface ProjectListProps {
 
 export interface StackBackButtonProps {
   location: 'Projects' | 'Analytics';
-  shadeBackground?: boolean;
 }
 
 export interface ThoughtsListProps {

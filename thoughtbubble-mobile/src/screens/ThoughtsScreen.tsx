@@ -15,6 +15,7 @@ import { StackBackButton } from '../components/StackBackButton';
 import { ThoughtsList } from '../components/ThoughtsList';
 import styled, { ThemeProvider } from 'styled-components/native';
 import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
+import { DrawerActions } from '@react-navigation/native';
 
 export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) => {
   const [addThoughtModalView, setAddThoughtModalView] = useState(false); // plus modal
@@ -157,16 +158,23 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
               Thoughts
             </Animated.Text>
             {/* back button */}
-            <View style={{ position: 'absolute', bottom: -9, right: 60 }}>
+            <View style={{ position: 'absolute', bottom: -5, right: 85 }}>
               <StackBackButton location="Projects" />
             </View>
             {/* sort modal button */}
             <IconButton
+              icon="menu"
+              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+              size={35}
+              color={isDarkMode ? darkMode.textOnBackground87 : lightMode.textOnBackground}
+              style={styles.sortIcon}
+            />
+            <IconButton
               icon="sort-variant"
               onPress={() => setSortModalView(true)}
-              size={35}
-              color={theme ? darkMode.primary : lightMode.textOnPrimary}
-              style={styles.sortIcon}
+              size={30}
+              color={isDarkMode ? darkMode.textOnBackground87 : lightMode.textOnBackground}
+              style={styles.menuIcon}
             />
             <Animated.View
               style={[
@@ -262,8 +270,16 @@ const styles = StyleSheet.create({
   },
   sortIcon: {
     position: 'absolute',
-    bottom: -5,
+    bottom: -2,
     right: 10,
+    borderRadius: 10,
+    width: 35,
+    height: 35,
+  },
+  menuIcon: {
+    position: 'absolute',
+    bottom: -2,
+    right: 50,
     borderRadius: 10,
     width: 35,
     height: 35,

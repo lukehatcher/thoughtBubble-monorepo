@@ -9,9 +9,9 @@ import { useDarkCheck } from '../hooks/useDarkCheck';
 import { locations } from '../constants/locations';
 import { DateHelper } from '../utils/dateHelpers';
 import { Activity } from '../interfaces/data';
-import { useFocusEffect } from '@react-navigation/native';
+import { DrawerActions, useFocusEffect } from '@react-navigation/native';
 import { fetchActivityDataAction } from '../actions/fetchActivityAction';
-import { Button, ProgressBar, Snackbar } from 'react-native-paper';
+import { Button, IconButton, ProgressBar, Snackbar } from 'react-native-paper';
 import { activityRangeMap } from '../constants/activityRanges';
 import { StyleSheet } from 'react-native';
 import { StackBackButton } from '../components/StackBackButton';
@@ -53,7 +53,16 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
     // set screen title
     navigation.setOptions({
       title: userProjectsData.find((proj) => proj.id === projectId).projectName,
-      headerLeft: () => <StackBackButton location="Analytics" shadeBackground />,
+      headerLeft: () => <StackBackButton location="Analytics" />,
+      headerRight: () => (
+        <IconButton
+          icon="menu"
+          onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+          size={30}
+          color={isDarkMode ? darkMode.textOnBackground87 : lightMode.textOnBackground}
+          style={styles.menuIcon}
+        />
+      ),
     });
   });
 
@@ -253,6 +262,12 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginTop: 0,
     color: lightMode.primary,
+  },
+  menuIcon: {
+    marginRight: 15,
+    borderRadius: 10,
+    width: 35,
+    height: 35,
   },
 });
 
