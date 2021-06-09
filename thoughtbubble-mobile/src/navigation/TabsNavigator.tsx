@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator, BottomTabBar } from '@react-navigation/bottom-tabs';
 import { SettingsScreen } from '../screens/SettingsScreen';
 import { ProjectsStackNavigator } from './ProjectsStackNavigator';

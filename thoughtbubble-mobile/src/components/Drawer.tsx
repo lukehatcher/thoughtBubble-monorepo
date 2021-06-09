@@ -1,6 +1,6 @@
 import React from 'react';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import { Image, Linking, StyleSheet, View } from 'react-native';
+import { Image, Linking, StyleSheet } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { darkMode, lightMode } from '../constants/colors';
@@ -11,9 +11,9 @@ import { changeDarkModeAction } from '../actions/userInfoActions';
 import { RootState } from '../reducers/rootReducer';
 
 /**
- * drawer content
+ * custom drawer content
  */
-export const CustomDrawerContent = ({ navigation }) => {
+export const DrawerContent = ({ navigation }) => {
   const dispatch = useDispatch();
   const isDarkMode = useDarkCheck();
   const labelColor = isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground;
@@ -52,25 +52,25 @@ export const CustomDrawerContent = ({ navigation }) => {
         <DrawerItem
           label="Settings"
           labelStyle={{ color: labelColor }}
-          icon={() => <MaterialCommunityIcons name="cog" size={30} color={iconColor} />}
+          icon={() => <MaterialCommunityIcons name="cog" size={25} color={iconColor} />}
           onPress={() => navigation.navigate('Settings')}
         />
         <DrawerItem
           label="Projects"
           labelStyle={{ color: labelColor }}
-          icon={() => <MaterialCommunityIcons name="format-list-bulleted" size={30} color={iconColor} />}
+          icon={() => <MaterialCommunityIcons name="format-list-bulleted" size={25} color={iconColor} />}
           onPress={() => navigation.navigate('Projects')}
         />
         <DrawerItem
           label="Archive"
           labelStyle={{ color: labelColor }}
-          icon={() => <MaterialCommunityIcons name="archive" size={30} color={iconColor} />}
+          icon={() => <MaterialCommunityIcons name="archive" size={25} color={iconColor} />}
           onPress={() => navigation.navigate('Archive')}
         />
         <DrawerItem
           label="Stats"
           labelStyle={{ color: labelColor }}
-          icon={() => <MaterialCommunityIcons name="equalizer" size={30} color={iconColor} />}
+          icon={() => <MaterialCommunityIcons name="equalizer" size={25} color={iconColor} />}
           onPress={() => navigation.navigate('Stats')}
         />
 
@@ -79,13 +79,13 @@ export const CustomDrawerContent = ({ navigation }) => {
         <DrawerItem
           label="Discussion Board"
           labelStyle={{ color: labelColor }}
-          icon={() => <MaterialCommunityIcons name="forum" size={30} color={iconColor} />}
+          icon={() => <MaterialCommunityIcons name="forum" size={25} color={iconColor} />}
           onPress={() => Linking.openURL('https://github.com/lukehatcher/thoughtBubble-monorepo/discussions')}
         />
         <DrawerItem
           label="Visit Repository"
           labelStyle={{ color: labelColor }}
-          icon={() => <MaterialCommunityIcons name="github" size={30} color={iconColor} />}
+          icon={() => <MaterialCommunityIcons name="github" size={25} color={iconColor} />}
           onPress={() => Linking.openURL('https://github.com/lukehatcher/thoughtBubble-monorepo')}
         />
 
@@ -109,7 +109,7 @@ export const CustomDrawerContent = ({ navigation }) => {
         label="Logout (not active)"
         labelStyle={{ color: isDarkMode ? darkMode.error : lightMode.error }}
         icon={() => (
-          <MaterialCommunityIcons name="logout" size={30} color={isDarkMode ? darkMode.error : lightMode.error} />
+          <MaterialCommunityIcons name="logout" size={25} color={isDarkMode ? darkMode.error : lightMode.error} />
         )}
         onPress={() => console.log('this should logout')}
       />
