@@ -1,7 +1,6 @@
 import React, { FC, memo } from 'react';
-import { Alert, Modal, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import { Alert, Modal, StyleSheet, View } from 'react-native';
 import styled from 'styled-components/native';
-import { BlurView } from '@react-native-community/blur';
 import { useDispatch, useSelector } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { RootState } from '../reducers/rootReducer';
@@ -10,6 +9,7 @@ import { useDarkCheck } from '../hooks/useDarkCheck';
 import { DateHelper } from '../utils/dateHelpers';
 import { archiveProjectAction, deleteProjectAction, pinProjectAction } from '../actions/projectActions';
 import { ProjectLongPressProps } from '../interfaces/componentProps';
+import { BlurOverlay } from './BlurOverlay';
 
 export const ProjectLongPressModal: FC<ProjectLongPressProps> = memo(function ({
   longPressModalVisible,
@@ -67,14 +67,7 @@ export const ProjectLongPressModal: FC<ProjectLongPressProps> = memo(function ({
         onRequestClose={() => setLongPressModalVisible(false)}
       >
         <View style={{ flex: 1, alignItems: 'center' }}>
-          <TouchableWithoutFeedback onPress={() => setLongPressModalVisible(false)}>
-            <BlurView
-              style={styles.blurView}
-              blurType={isDarkMode ? 'regular' : 'ultraThinMaterialLight'}
-              reducedTransparencyFallbackColor={isDarkMode ? 'black' : 'white'}
-              blurAmount={1}
-            />
-          </TouchableWithoutFeedback>
+          <BlurOverlay pressOutCallback={() => setLongPressModalVisible(false)} />
 
           <ProjectPreviewContainer>
             <PreviewTitle>{project?.projectName}</PreviewTitle>
@@ -137,6 +130,13 @@ export const ProjectLongPressModal: FC<ProjectLongPressProps> = memo(function ({
   );
 });
 
+const styles = StyleSheet.create({
+  icon: {
+    marginRight: 10,
+    marginLeft: 'auto',
+  },
+});
+
 const TextWithColor = styled.Text`
   color: ${(props) => props.theme.secondary};
 `;
@@ -167,14 +167,12 @@ const PreviewInfoText = styled.Text`
   font-size: 18px;
   margin-bottom: 15px;
 `;
-// ======
 
 const LongPressModalContainer = styled.View`
   background-color: ${(props) => props.theme.background};
   border-radius: 15px;
   width: 250px;
   overflow: hidden;
-  /* position: absolute; */
   margin-top: 15px;
   margin-right: 125px;
 `;
@@ -196,18 +194,3 @@ const BottomBorder = styled.View`
   height: 0.5px;
   background-color: #eee;
 `;
-
-const styles = StyleSheet.create({
-  blurView: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: 'rgba(0,0,0,0.1)',
-  },
-  icon: {
-    marginRight: 10,
-    marginLeft: 'auto',
-  },
-});

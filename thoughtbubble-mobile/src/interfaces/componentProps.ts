@@ -82,3 +82,8 @@ export interface ProjectLongPressProps {
   setLongPressModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   focusedProjectId: string;
 }
+
+export interface BlurOverlayProps {
+  pressOutCallback: (...args) => void;
+  backgroundColor?: string; // rgba format is best
+}

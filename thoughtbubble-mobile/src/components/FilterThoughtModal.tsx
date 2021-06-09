@@ -1,7 +1,8 @@
-import React, { FC, memo } from 'react';
-import { Modal, View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import React, { FC } from 'react';
+import { Modal, View, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Chip, IconButton } from 'react-native-paper';
+import styled from 'styled-components/native';
 import { filterProjectAction } from '../actions/projectActions';
 import { darkMode, lightMode, tagColorsDark } from '../constants/colors';
 import { FilterThoughtModalProps } from '../interfaces/componentProps';
@@ -9,8 +10,7 @@ import { RootState } from '../reducers/rootReducer';
 import { clearTagsAction, updateFiltersAction } from '../actions/filterActions';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { StatusFilters } from '../interfaces/stringLiteralTypes';
-import { BlurView } from '@react-native-community/blur';
-import styled from 'styled-components/native';
+import { BlurOverlay } from './BlurOverlay';
 
 export const FilterThoughtModal: FC<FilterThoughtModalProps> = function ({
   projectId,
@@ -45,15 +45,7 @@ export const FilterThoughtModal: FC<FilterThoughtModalProps> = function ({
   return (
     <Modal animationType="fade" visible={filterModalVisible} transparent>
       <View style={{ flex: 1, alignItems: 'center' }}>
-        {console.log('rendered')}
-        <TouchableWithoutFeedback onPress={() => setFilterModalVisible(false)}>
-          <BlurView
-            style={styles.blurView}
-            blurType={isDarkMode ? 'regular' : 'ultraThinMaterialLight'}
-            reducedTransparencyFallbackColor={isDarkMode ? 'black' : 'white'}
-            blurAmount={1}
-          />
-        </TouchableWithoutFeedback>
+        <BlurOverlay pressOutCallback={() => setFilterModalVisible(false)} />
 
         <ContentContainer>
           <IconButton
@@ -236,14 +228,6 @@ const stylesLight = StyleSheet.create({
 });
 
 const styles = StyleSheet.create({
-  blurView: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: 'rgba(0,0,0,0.1)',
-  },
   closeBtn: {
     borderRadius: 10,
     position: 'absolute',
