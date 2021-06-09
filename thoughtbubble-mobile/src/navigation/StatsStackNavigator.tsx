@@ -20,7 +20,10 @@ export const StatsStackNavigator: FC<StatsStackNavigatorProps> = function () {
       borderBottomWidth: 0,
     },
     headerTintColor: isDarkMode ? darkMode.primary : lightMode.primary, // stack backarrow
-    headerTitleStyle: { color: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground },
+    headerTitleStyle: {
+      color: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground,
+      fontFamily: 'Inter',
+    },
   };
   return (
     <Stack.Navigator screenOptions={dynamicScreenOptions}>
