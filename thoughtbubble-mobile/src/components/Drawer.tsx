@@ -1,6 +1,6 @@
 import React from 'react';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import { Image, Linking, StyleSheet } from 'react-native';
+import { Image, Linking, StyleProp, StyleSheet, TextStyle } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { darkMode, lightMode } from '../constants/colors';
@@ -9,6 +9,7 @@ import { Switch } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeDarkModeAction } from '../actions/userInfoActions';
 import { RootState } from '../reducers/rootReducer';
+import { TextTB } from './Text';
 
 /**
  * custom drawer content
@@ -16,9 +17,14 @@ import { RootState } from '../reducers/rootReducer';
 export const DrawerContent = ({ navigation }) => {
   const dispatch = useDispatch();
   const isDarkMode = useDarkCheck();
-  const labelColor = isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground;
-  const iconColor = isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground;
   const idToken = useSelector((state: RootState) => state.storedUser);
+  const iconColor = isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground;
+  const itemStyle: StyleProp<TextStyle> = {
+    color: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground,
+    fontFamily: 'Inter',
+    fontWeight: '400',
+    fontSize: 14,
+  };
 
   const theme = {
     // for styled-components ThemeProvider
@@ -51,25 +57,25 @@ export const DrawerContent = ({ navigation }) => {
         <LabelText>Navigation</LabelText>
         <DrawerItem
           label="Settings"
-          labelStyle={{ color: labelColor }}
+          labelStyle={itemStyle}
           icon={() => <MaterialCommunityIcons name="cog" size={25} color={iconColor} />}
           onPress={() => navigation.navigate('Settings')}
         />
         <DrawerItem
           label="Projects"
-          labelStyle={{ color: labelColor }}
+          labelStyle={itemStyle}
           icon={() => <MaterialCommunityIcons name="format-list-bulleted" size={25} color={iconColor} />}
           onPress={() => navigation.navigate('Projects')}
         />
         <DrawerItem
           label="Archive"
-          labelStyle={{ color: labelColor }}
+          labelStyle={itemStyle}
           icon={() => <MaterialCommunityIcons name="archive" size={25} color={iconColor} />}
           onPress={() => navigation.navigate('Archive')}
         />
         <DrawerItem
           label="Stats"
-          labelStyle={{ color: labelColor }}
+          labelStyle={itemStyle}
           icon={() => <MaterialCommunityIcons name="equalizer" size={25} color={iconColor} />}
           onPress={() => navigation.navigate('Stats')}
         />
@@ -78,13 +84,13 @@ export const DrawerContent = ({ navigation }) => {
         <LabelText>Community</LabelText>
         <DrawerItem
           label="Discussion Board"
-          labelStyle={{ color: labelColor }}
+          labelStyle={itemStyle}
           icon={() => <MaterialCommunityIcons name="forum" size={25} color={iconColor} />}
           onPress={() => Linking.openURL('https://github.com/lukehatcher/thoughtBubble-monorepo/discussions')}
         />
         <DrawerItem
           label="Visit Repository"
-          labelStyle={{ color: labelColor }}
+          labelStyle={itemStyle}
           icon={() => <MaterialCommunityIcons name="github" size={25} color={iconColor} />}
           onPress={() => Linking.openURL('https://github.com/lukehatcher/thoughtBubble-monorepo')}
         />
@@ -94,11 +100,11 @@ export const DrawerContent = ({ navigation }) => {
         <DrawerItem
           label={() => (
             <Wrapper>
-              <DarkThemeText>Dark Theme</DarkThemeText>
+              <TextTB>Dark Theme</TextTB>
               <Switch value={isDarkMode} onValueChange={() => handleDarkModeToggle()} style={styles.switch} />
             </Wrapper>
           )}
-          labelStyle={{ color: labelColor }}
+          labelStyle={itemStyle}
           onPress={() => Linking.openURL('https://github.com/lukehatcher/thoughtBubble-monorepo')}
         />
 
@@ -107,7 +113,7 @@ export const DrawerContent = ({ navigation }) => {
       <DrawerItem
         style={styles.logout}
         label="Logout (not active)"
-        labelStyle={{ color: isDarkMode ? darkMode.error : lightMode.error }}
+        labelStyle={[itemStyle, { color: isDarkMode ? darkMode.error : lightMode.error }]}
         icon={() => (
           <MaterialCommunityIcons name="logout" size={25} color={isDarkMode ? darkMode.error : lightMode.error} />
         )}
@@ -125,12 +131,14 @@ const NameContainer = styled.View`
   flex-direction: column;
 `;
 const NameText = styled.Text`
+  font-family: Inter;
   font-size: 16px;
   font-weight: bold;
   flex-shrink: 1;
   color: ${(props) => props.theme.textOnBackground};
 `;
 const UsernameText = styled.Text`
+  font-family: Inter;
   font-size: 14px;
   flex-shrink: 1;
   color: #808080;
@@ -141,14 +149,11 @@ const Wrapper = styled.View`
   align-items: center;
 `;
 
-const DarkThemeText = styled.Text`
-  color: ${(props) => props.theme.textOnBackground};
-`;
-
 const LabelText = styled.Text`
   color: #808080;
   margin-left: 15px;
   margin-bottom: 0px;
+  font-family: Inter;
 `;
 
 const ThinBorder = styled.View`

@@ -184,7 +184,7 @@ const stylesDark = StyleSheet.create({
     borderWidth: 1,
   },
   hiddenBackText: {
-    fontSize: 20,
+    fontSize: 19,
     padding: 15,
     color: 'rgba(0, 0, 0, 0)',
   },
@@ -214,7 +214,7 @@ const stylesLight = StyleSheet.create({
   },
   backRightBtn: {
     position: 'absolute',
-    paddingRight: 20,
+    paddingRight: 18,
     top: 0,
     bottom: 0,
     alignItems: 'flex-end',
@@ -231,14 +231,16 @@ const stylesLight = StyleSheet.create({
     borderWidth: 1,
   },
   hiddenBackText: {
-    fontSize: 20,
+    fontSize: 19,
     padding: 15,
     color: 'rgba(0, 0, 0, 0)',
   },
 });
 
 const TextStyled = styled.Text`
-  font-size: 20px;
+  /* font-size: 20px; */
+  font-size: 19px;
+  font-family: Inter;
   flex: 1;
   padding: 15px;
   color: ${(props) => props.theme.textOnSurface};

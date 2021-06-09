@@ -172,6 +172,9 @@ const HeaderTitleText = styled.Text`
   font-size: 22px;
   color: ${(props) => props.theme.textOnBackground};
   margin-left: 15px;
+  /* font-family: Roboto; */
+  font-family: Inter;
+  font-weight: 700;
 `;
 
 const headerStyles = StyleSheet.create({
@@ -202,6 +205,7 @@ const headerStyles = StyleSheet.create({
     width: '100%',
     textAlign: 'center',
     bottom: 10,
+    fontFamily: 'Inter',
   },
 });
 

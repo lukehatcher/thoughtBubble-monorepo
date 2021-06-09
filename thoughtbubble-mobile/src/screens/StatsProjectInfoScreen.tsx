@@ -132,7 +132,7 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
           style={{ margin: 20 }}
         />
         <GraphTitleContainer>
-          <GraphTitleText>activity overview</GraphTitleText>
+          <GraphTitleText>Activity Overview</GraphTitleText>
         </GraphTitleContainer>
         <GraphContainer>
           <VictoryChart
@@ -188,7 +188,7 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
             mode={currRange === activityRangeMap.get('1W') ? 'contained' : 'text'}
             onPress={() => handle1WClick()} // and change currrange
             color={`${darkMode.primary}18`}
-            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary }}
+            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary, fontFamily: 'Inter' }}
           >
             1W
           </Button>
@@ -198,7 +198,7 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
             mode={currRange === activityRangeMap.get('1M') ? 'contained' : 'text'}
             onPress={() => handle1MClick()}
             color={`${darkMode.primary}18`}
-            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary }}
+            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary, fontFamily: 'Inter' }}
           >
             1M
           </Button>
@@ -208,7 +208,7 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
             mode={currRange === activityRangeMap.get('3M') ? 'contained' : 'text'}
             onPress={() => handle3MClick()}
             color={`${darkMode.primary}18`}
-            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary }}
+            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary, fontFamily: 'Inter' }}
           >
             3M
           </Button>
@@ -218,7 +218,7 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
             mode={currRange === activityRangeMap.get('6M') ? 'contained' : 'text'}
             onPress={() => handle6MClick()}
             color={`${darkMode.primary}18`}
-            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary }}
+            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary, fontFamily: 'Inter' }}
           >
             6M
           </Button>
@@ -228,7 +228,7 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
             mode={currRange === activityRangeMap.get('1Y') ? 'contained' : 'text'}
             onPress={() => handle1YClick()}
             color={`${darkMode.primary}18`}
-            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary }}
+            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary, fontFamily: 'Inter' }}
           >
             1Y
           </Button>
@@ -291,20 +291,19 @@ const AccountTotalsContainer = styled.View`
 `;
 
 const AccountTotalsCard = styled.View`
-  /* color: ${(props) => props.theme.textOnBackground}; */
-  /* border: 1px solid black; */
-  /* margin: 15px; */
   width: 130px;
   height: 65px;
 `;
 
 const TotalNumberText = styled.Text`
+  font-family: Inter;
   text-align: center;
   font-size: 40px;
   color: ${(props) => props.theme.textOnBackground};
 `;
 
 const TotalNumberSubText = styled.Text`
+  font-family: Inter;
   text-align: center;
   font-size: 11px;
   color: ${(props) => props.theme.textOnBackground};
@@ -315,6 +314,7 @@ const GraphTitleContainer = styled.View`
 `;
 
 const GraphTitleText = styled.Text`
+  font-family: Inter;
   font-size: 15px;
   color: ${(props) => props.theme.textOnBackground};
   text-align: center;
@@ -335,11 +335,14 @@ const ChangeGraphRangeContainer = styled.View`
 `;
 
 const PieChartTitle = styled.Text`
+  margin-top: 30px;
+  font-family: Inter;
   text-align: center;
   color: ${(prop) => prop.theme.textOnBackground};
 `;
 
 const CreatedDateText = styled.Text`
+  font-family: Inter;
   text-align: center;
   color: ${(props) => props.theme.textOnBackground};
 `;

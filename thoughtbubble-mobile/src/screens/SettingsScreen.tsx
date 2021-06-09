@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, Button, TouchableOpacity } from 'react-native';
+import { View, Image, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { Switch } from 'react-native-paper';
+import styled, { ThemeProvider } from 'styled-components/native';
 import { RootState } from '../reducers/rootReducer';
 import { _onLogOut } from '../utils/auth';
 import { SettingsScreenProps } from '../interfaces/screenProps';
@@ -16,6 +17,18 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = () => {
   const weeklyEmailSetting = useSelector((state: RootState) => state.userInfo.weeklyEmail);
   const isDarkMode = useDarkCheck();
 
+  const theme = {
+    // for styled-components ThemeProvider
+    background: isDarkMode ? darkMode.background : lightMode.background,
+    primary: isDarkMode ? darkMode.primary : lightMode.primary,
+    primaryVariant: isDarkMode ? darkMode.primaryVariant : lightMode.primaryVariant,
+    secondary: isDarkMode ? darkMode.secondary : lightMode.secondary,
+    textOnBackground: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground,
+    textOnSurface: isDarkMode ? darkMode.textOnSurface : lightMode.textOnSurface,
+    dp1: isDarkMode ? darkMode.dp1 : lightMode.background,
+    cardHeader: isDarkMode ? darkMode.secondary : lightMode.primary,
+  };
+
   const handleEmailSettingToggle = function (emailSetting: string): void {
     if (emailSetting === 'daily') dispatch(changeEmailSettingsAction('daily'));
     else dispatch(changeEmailSettingsAction('weekly'));
@@ -28,25 +41,25 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = () => {
   const useTheme = (name: string) => (isDarkMode ? stylesDark[name] : stylesLight[name]);
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <View style={useTheme('topView')}></View>
       <View style={useTheme('middleView')}>
-        <Text style={useTheme('headerText')}>Settings</Text>
+        <HeaderText>Settings</HeaderText>
       </View>
 
       <View style={useTheme('bottomContainer')}>
         <View style={useTheme('userPicPlusInfo')}>
           <Image source={{ uri: idToken.picture }} style={useTheme('img')} />
-          <View style={stylesDark.nameEmail}>
-            <Text style={useTheme('text')}>{idToken.name}</Text>
-            <Text style={useTheme('text')}>{idToken.email}</Text>
-          </View>
+          <NameEmailContainer>
+            <NameText>{idToken.name}</NameText>
+            <EmailText>{idToken.email}</EmailText>
+          </NameEmailContainer>
         </View>
 
-        <Text style={useTheme('textColor')}>notifications</Text>
+        <SectionLabel>notifications</SectionLabel>
         <View style={useTheme('emailSettingsContainer')}>
           <View style={useTheme('emailSettingsItem')}>
-            <Text style={useTheme('text')}>daily emails</Text>
+            <ItemText>daily emails</ItemText>
             <Switch
               value={dailyEmailSetting}
               onValueChange={() => handleEmailSettingToggle('daily')}
@@ -54,7 +67,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = () => {
             />
           </View>
           <View style={useTheme('emailSettingsItem')}>
-            <Text style={useTheme('text')}>weekly emails </Text>
+            <ItemText>weekly emails </ItemText>
             <Switch
               value={weeklyEmailSetting}
               onValueChange={() => handleEmailSettingToggle('weekly')}
@@ -63,22 +76,28 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = () => {
           </View>
         </View>
 
-        <Text style={useTheme('textColor')}>theme</Text>
+        <SectionLabel>theme</SectionLabel>
         <View style={useTheme('settingItemTheme')}>
-          <Text style={useTheme('text')}>dark mode</Text>
+          <ItemText>Dark Theme</ItemText>
           <Switch value={isDarkMode} onValueChange={() => handleDarkModeToggle()} style={stylesShared.toggle} />
         </View>
         <TouchableOpacity style={useTheme('logoutBtn')}>
           <Button
-            title="logout"
+            title="Logout"
             onPress={() => _onLogOut()}
             color={isDarkMode ? darkMode.onError : lightMode.onError}
           />
         </TouchableOpacity>
       </View>
-    </>
+    </ThemeProvider>
   );
 };
+
+const HeaderText = styled.Text`
+  font-family: Inter;
+  color: ${(props) => props.theme.textOnBackground};
+  font-size: 25px;
+`;
 
 const stylesShared = StyleSheet.create({
   toggle: {
@@ -86,6 +105,39 @@ const stylesShared = StyleSheet.create({
     marginLeft: 'auto',
   },
 });
+
+const NameText = styled.Text`
+  font-weight: 600;
+  color: ${(props) => props.theme.textOnSurface};
+  font-size: 17px;
+  font-family: Inter;
+`;
+
+const EmailText = styled.Text`
+  /* color: ${(props) => props.theme.textOnSurface}; */
+  color: #808080;
+  font-size: 15px;
+  font-family: Inter;
+`;
+
+const SectionLabel = styled.Text`
+  margin-left: 10px;
+  font-family: Inter;
+  font-size: 18px;
+  color: ${(props) => props.theme.primary};
+`;
+
+const ItemText = styled.Text`
+  color: ${(props) => props.theme.textOnSurface};
+  font-size: 15px;
+  font-family: Inter;
+`;
+
+const NameEmailContainer = styled.View`
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 30px;
+`;
 
 // ==================== darkmode styles ====================
 
@@ -114,11 +166,6 @@ const stylesDark = StyleSheet.create({
     backgroundColor: darkMode.dp1,
     borderRadius: 6,
   },
-  nameEmail: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    marginLeft: 30,
-  },
   emailSettingsContainer: {
     padding: 15,
     margin: 10,
@@ -144,17 +191,9 @@ const stylesDark = StyleSheet.create({
     borderRadius: 50,
   },
   headerText: {
+    fontFamily: 'Inter',
     color: darkMode.primary,
     fontSize: 25,
-  },
-  text: {
-    color: darkMode.textOnSurface,
-    fontSize: 15, // 14 default
-  },
-  textColor: {
-    color: darkMode.primary,
-    marginLeft: 10,
-    fontSize: 20,
   },
   logoutBtn: {
     color: darkMode.onError,
@@ -202,11 +241,6 @@ const stylesLight = StyleSheet.create({
     shadowRadius: 2.22,
     elevation: 3,
   },
-  nameEmail: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    marginLeft: 30,
-  },
   emailSettingsContainer: {
     padding: 15,
     margin: 10,
@@ -248,19 +282,6 @@ const stylesLight = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 50,
-  },
-  headerText: {
-    color: lightMode.textOnPrimary,
-    fontSize: 25,
-  },
-  text: {
-    color: lightMode.textOnSurface,
-    fontSize: 15, // 14 default
-  },
-  textColor: {
-    color: lightMode.primaryVariant,
-    marginLeft: 10,
-    fontSize: 20,
   },
   logoutBtn: {
     color: lightMode.onError,

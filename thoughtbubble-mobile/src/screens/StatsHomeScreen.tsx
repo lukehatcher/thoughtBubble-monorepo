@@ -64,8 +64,9 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
         <Text
           style={{
             color: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground,
-            fontSize: 17,
+            fontSize: 16,
             marginLeft: 16,
+            fontFamily: 'Inter',
           }}
         >
           streak: {calculateStreak()}🔥
@@ -146,7 +147,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
           style={{ margin: 20 }}
         />
         <GraphTitleContainer>
-          <GraphTitleText>activity overview</GraphTitleText>
+          <GraphTitleText>Activity Overview</GraphTitleText>
         </GraphTitleContainer>
         <SnackBarContainer>
           <Snackbar
@@ -221,7 +222,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
             mode={currRange === activityRangeMap.get('1W') ? 'contained' : 'text'}
             onPress={() => handle1WClick()} // and change currrange
             color={`${darkMode.primary}18`}
-            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary }}
+            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary, fontFamily: 'Inter' }}
           >
             1W
           </Button>
@@ -231,7 +232,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
             mode={currRange === activityRangeMap.get('1M') ? 'contained' : 'text'}
             onPress={() => handle1MClick()}
             color={`${darkMode.primary}18`}
-            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary }}
+            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary, fontFamily: 'Inter' }}
           >
             1M
           </Button>
@@ -241,7 +242,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
             mode={currRange === activityRangeMap.get('3M') ? 'contained' : 'text'}
             onPress={() => handle3MClick()}
             color={`${darkMode.primary}18`}
-            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary }}
+            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary, fontFamily: 'Inter' }}
           >
             3M
           </Button>
@@ -251,7 +252,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
             mode={currRange === activityRangeMap.get('6M') ? 'contained' : 'text'}
             onPress={() => handle6MClick()}
             color={`${darkMode.primary}18`}
-            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary }}
+            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary, fontFamily: 'Inter' }}
           >
             6M
           </Button>
@@ -261,7 +262,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
             mode={currRange === activityRangeMap.get('1Y') ? 'contained' : 'text'}
             onPress={() => handle1YClick()}
             color={`${darkMode.primary}18`}
-            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary }}
+            labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary, fontFamily: 'Inter' }}
           >
             1Y
           </Button>
@@ -401,12 +402,14 @@ const AccountTotalsCard = styled.View`
 `;
 
 const TotalNumberText = styled.Text`
+  font-family: Inter;
   text-align: center;
   font-size: 40px;
   color: ${(props) => props.theme.textOnBackground};
 `;
 
 const TotalNumberSubText = styled.Text`
+  font-family: Inter;
   text-align: center;
   font-size: 11px;
   color: ${(props) => props.theme.textOnBackground};
@@ -424,9 +427,9 @@ const InfoModalTextContainer = styled.View`
 `;
 
 const InfoModalText = styled.Text`
-  /* border: 1px solid green; */
+  font-family: Inter;
   margin: 15px;
-  margin-right: 19px;
+  margin-right: 20px;
   font-size: 14px;
   color: ${(props) => props.theme.textOnBackground};
 `;
@@ -481,6 +484,7 @@ const GraphTitleContainer = styled.View`
 `;
 
 const GraphTitleText = styled.Text`
+  font-family: Inter;
   font-size: 15px;
   color: ${(props) => props.theme.textOnBackground};
   text-align: center;
@@ -501,12 +505,14 @@ const CarouselCard = styled.TouchableOpacity`
   background-color: ${(props) => props.theme.dp1};
 `;
 
+// TODO: let long project names fit
 const CarouselCardHeaderText = styled.Text`
+  font-family: Inter;
+  font-size: 19px;
   margin-left: 0px;
   margin-right: auto;
   margin-bottom: 10px;
   color: ${(props) => props.theme.cardHeader};
-  font-size: 20px;
 `;
 
 const CarouselCardTextLastUpdateContainer = styled.View`
@@ -517,6 +523,7 @@ const CarouselCardTextLastUpdateContainer = styled.View`
 `;
 
 const CarouselCardText = styled.Text`
+  font-family: Inter;
   font-size: 13px;
   color: ${(props) => props.theme.textOnBackground};
   text-align: center;

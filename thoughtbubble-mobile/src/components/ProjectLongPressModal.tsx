@@ -138,6 +138,7 @@ const styles = StyleSheet.create({
 });
 
 const TextWithColor = styled.Text`
+  font-family: Inter;
   color: ${(props) => props.theme.secondary};
 `;
 
@@ -157,12 +158,14 @@ const InfoWrapper = styled.View`
 `;
 
 const PreviewTitle = styled.Text`
+  font-family: Inter;
   color: ${(props) => props.theme.textOnBackground};
   font-size: 45px;
   margin-bottom: 40px;
 `;
 
 const PreviewInfoText = styled.Text`
+  font-family: Inter;
   color: ${(props) => props.theme.textOnBackground};
   font-size: 18px;
   margin-bottom: 15px;
@@ -185,6 +188,7 @@ const LongPressModalItem = styled.TouchableHighlight`
 `;
 
 const LongPressModalItemText = styled.Text`
+  font-family: Inter;
   color: ${(props) => (props.color ? props.color : props.theme.textOnSurface)};
   margin-left: 10px;
   font-size: 15px;

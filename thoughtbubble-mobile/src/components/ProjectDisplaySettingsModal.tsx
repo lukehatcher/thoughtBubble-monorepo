@@ -73,7 +73,7 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
     if (order === currOrder) {
       return isDarkMode ? darkMode.primary : lightMode.primary;
     }
-    return isDarkMode ? '#808080' : lightMode.textOnBackground; // TODO: add and expand light grey const colors
+    return isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground; // TODO: add and expand light grey const colors
   };
 
   return (
@@ -138,7 +138,10 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
                   />
                   <RadioButton.Item
                     label="Low to High"
-                    labelStyle={{ color: `${isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground}` }}
+                    labelStyle={{
+                      color: `${isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground}`,
+                      fontFamily: 'Inter',
+                    }}
                     // position="leading"
                     value="asc"
                     uncheckedColor="grey"
@@ -155,7 +158,10 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
                   />
                   <RadioButton.Item
                     label="High to Low"
-                    labelStyle={{ color: `${isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground}` }}
+                    labelStyle={{
+                      color: `${isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground}`,
+                      fontFamily: 'Inter',
+                    }}
                     // position="leading"
                     value="desc"
                     uncheckedColor="grey"
@@ -194,9 +200,8 @@ const InfoModalContainer = styled.View`
 `;
 
 const ModalTitle = styled.Text`
-  /* border: 1px solid red; */
+  font-family: Inter;
   color: ${(props) => props.theme.textOnSurface};
-  /* width: 250px; */
   font-size: 20px;
   text-align: center;
   margin-top: 20px;
@@ -210,12 +215,14 @@ const OrderOptionsContainer = styled.View`
 `;
 
 const SortTitle = styled.Text`
+  font-family: Inter;
   color: #808080;
   margin-left: 15px;
   margin-bottom: 4px;
 `;
 
 const OrderTitle = styled.Text`
+  font-family: Inter;
   color: #808080;
   margin-left: 15px;
   margin-bottom: 2px;
@@ -229,6 +236,7 @@ const OrderOptionItem = styled.TouchableOpacity`
 `;
 
 const OrderOptionItemText = styled.Text`
+  font-family: Inter;
   margin-left: 12px;
 `;
 
@@ -276,6 +284,7 @@ const SaveOrderContainer = styled.View`
 `;
 
 const SaveOrderText = styled.Text`
+  font-family: Inter;
   color: ${(props) => props.theme.textOnSurface};
   font-size: 15px;
   margin-left: 14px;

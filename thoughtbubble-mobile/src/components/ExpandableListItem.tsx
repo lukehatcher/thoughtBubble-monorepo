@@ -83,7 +83,7 @@ export const ExpandableListItem: FC<ExpandableListItemProps> = memo(function ({
               onPress={() => handleUnArchive()}
               underlayColor={isDarkMode ? `${darkMode.error}87` : `${lightMode.error}87`}
             >
-              <UnarchiveBtnText>un-archive</UnarchiveBtnText>
+              <UnarchiveBtnText>Unarchive</UnarchiveBtnText>
             </UnarchiveBtn>
             {projectThoughts.map((thought) => (
               <AccordionItem key={thought.id}>
@@ -129,11 +129,6 @@ const UnarchiveBtn = styled.TouchableHighlight`
   border-radius: 15px;
 `;
 
-const UnarchiveBtnText = styled.Text`
-  color: ${(props) => props.theme.textOnError};
-  /* font-weight: bold; */
-`;
-
 const AccordionContainer = styled.View`
   background-color: ${(props) => props.theme.dp1};
 `;
@@ -144,10 +139,18 @@ const AccordionHeader = styled.View`
 `;
 
 const AccordionHeaderText = styled.Text`
+  font-size: 16px;
+  font-weight: 500;
+  font-family: Inter;
   margin-left: 25px;
-  font-size: 15px;
   flex-shrink: 1;
   color: ${(props) => (props.expanded ? props.theme.primary : props.theme.textOnBackground)};
+`;
+
+const UnarchiveBtnText = styled.Text`
+  font-family: Inter;
+  color: ${(props) => props.theme.textOnError};
+  font-weight: 400;
 `;
 
 const AccordionItem = styled.View`
@@ -163,8 +166,9 @@ const AccordianIconWrapper = styled.Text`
 `;
 
 const AccordionItemText = styled.Text`
+  font-family: Inter;
+  font-size: 15px;
   flex-shrink: 1;
   color: ${(props) => (props.completed ? `${props.theme.textOnBackground}40` : props.theme.textOnBackground)};
-  font-size: 16px;
   text-decoration-line: ${(props) => (props.completed ? 'line-through' : 'none')};
 `;
