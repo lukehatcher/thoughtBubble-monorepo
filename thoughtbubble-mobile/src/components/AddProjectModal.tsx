@@ -35,7 +35,7 @@ export const AddProjectModal: React.FC<AddProjectModalProps> = function ({ addPr
         </HelperText>
         <TextInput
           mode="outlined"
-          label="new project"
+          label="New project"
           value={input}
           onChangeText={(input) => setInput(input)}
           multiline
@@ -53,11 +53,13 @@ export const AddProjectModal: React.FC<AddProjectModalProps> = function ({ addPr
               text: isDarkMode ? darkMode.textOnSurface : lightMode.textOnBackground,
               placeholder: isDarkMode ? `${darkMode.textOnSurface}87` : `${lightMode.textOnBackground}87`,
             },
+            fonts: { regular: { fontFamily: 'Inter' } },
           }}
         />
         <Button
           mode="contained"
           icon="folder-upload"
+          labelStyle={{ fontFamily: 'Inter' }}
           color={isDarkMode ? darkMode.primary : lightMode.primary}
           onPress={() => handleProjectAddition()}
           style={styles.btn}

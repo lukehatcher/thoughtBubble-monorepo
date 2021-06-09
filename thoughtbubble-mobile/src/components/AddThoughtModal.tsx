@@ -51,11 +51,13 @@ export const AddThoughtModal: FC<AddThoughtModalProps> = function ({
                 text: isDarkMode ? darkMode.textOnSurface : lightMode.textOnBackground,
                 placeholder: isDarkMode ? `${darkMode.textOnSurface}87` : `${lightMode.textOnBackground}87`,
               },
+              fonts: { regular: { fontFamily: 'Inter' } },
             }}
           />
 
           <Button
             mode="contained"
+            labelStyle={{ fontFamily: 'Inter' }}
             icon="file-upload"
             color={isDarkMode ? darkMode.primary : lightMode.primary}
             onPress={() => handleThoughtAddition()}

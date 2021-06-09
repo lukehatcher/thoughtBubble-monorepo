@@ -241,7 +241,6 @@ const TextStyled = styled.Text`
   /* font-size: 20px; */
   font-size: 19px;
   font-family: Inter;
-  font-weight: 500;
   flex: 1;
   padding: 15px;
   color: ${(props) => props.theme.textOnSurface};
