@@ -229,6 +229,8 @@ const MainContainer = styled.View`
 
 const HeaderTitleText = styled.Text`
   font-size: 22px;
+  font-family: Inter;
+  font-weight: 700;
   color: ${(props) => props.theme.textOnBackground};
   margin-left: 15px;
 `;
@@ -261,6 +263,7 @@ const headerStyles = StyleSheet.create({
     width: '100%',
     textAlign: 'center',
     bottom: 10,
+    fontFamily: 'Inter',
   },
 });
 

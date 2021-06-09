@@ -165,6 +165,8 @@ const MainContainer = styled.View`
 `;
 
 const HeaderTitleText = styled.Text`
+  font-family: Inter;
+  font-weight: 700;
   font-size: 22px;
   color: ${(props) => props.theme.textOnBackground};
   margin-left: 15px;
@@ -204,6 +206,7 @@ const headerStyles = StyleSheet.create({
     marginLeft: 30,
   },
   animationText: {
+    fontFamily: 'Inter',
     position: 'absolute',
     width: '100%',
     textAlign: 'center',

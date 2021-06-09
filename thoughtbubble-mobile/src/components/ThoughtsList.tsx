@@ -153,7 +153,7 @@ const PaddingViewBottom = styled.View`
 const sharedStyles = StyleSheet.create({
   hiddenBackText: {
     // see notes in code
-    fontSize: 20,
+    fontSize: 19,
     padding: 15,
     color: 'rgba(0, 0, 0, 0)',
   },
@@ -178,23 +178,20 @@ const stylesDark = StyleSheet.create({
     backgroundColor: darkMode.background,
   },
   text: {
-    fontSize: 20,
+    fontSize: 19,
+    fontFamily: 'Inter',
     flex: 1,
     padding: 15,
     paddingEnd: 35,
     color: darkMode.textOnSurface,
   },
-  textNothingHere: {
-    color: `${darkMode.textOnBackground}40`,
-    fontSize: 20,
-    marginTop: 20,
-  },
   textCompleted: {
+    fontSize: 19,
+    fontFamily: 'Inter',
     textDecorationLine: 'line-through',
     padding: 15,
     paddingEnd: 35,
     color: `${darkMode.textOnSurface}50`,
-    fontSize: 20,
     flex: 1,
   },
   // === SwipeListView styles ===
@@ -241,23 +238,20 @@ const stylesLight = StyleSheet.create({
     backgroundColor: lightMode.background,
   },
   text: {
-    fontSize: 20,
+    fontSize: 19,
+    fontFamily: 'Inter',
     flex: 1,
     padding: 15,
     paddingEnd: 35,
     color: lightMode.textOnSurface,
   },
-  textNothingHere: {
-    color: `${lightMode.textOnBackground}40`,
-    fontSize: 20,
-    marginTop: 20,
-  },
   textCompleted: {
+    fontSize: 19,
+    fontFamily: 'Inter',
     textDecorationLine: 'line-through',
     padding: 15,
     paddingEnd: 35,
     color: `${lightMode.textOnSurface}50`,
-    fontSize: 20,
     flex: 1,
   },
   // === SwipeListView styles ===
