@@ -163,15 +163,15 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
             </View>
             {/* sort modal button */}
             <IconButton
-              icon="menu"
-              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
-              size={35}
+              icon="sort-variant"
+              onPress={() => setSortModalView(true)}
+              size={30}
               color={isDarkMode ? darkMode.textOnBackground87 : lightMode.textOnBackground}
               style={styles.sortIcon}
             />
             <IconButton
-              icon="sort-variant"
-              onPress={() => setSortModalView(true)}
+              icon="menu"
+              onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
               size={30}
               color={isDarkMode ? darkMode.textOnBackground87 : lightMode.textOnBackground}
               style={styles.menuIcon}
@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
     bottom: 80,
     margin: 16,
   },
-  sortIcon: {
+  menuIcon: {
     position: 'absolute',
     bottom: -2,
     right: 10,
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
   },
-  menuIcon: {
+  sortIcon: {
     position: 'absolute',
     bottom: -2,
     right: 50,

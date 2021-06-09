@@ -133,14 +133,14 @@ export const ProjectsScreen: FC<ProjectsScreenProps> = ({ navigation }) => {
             onPress={() => openProjectSettingsModal()}
             size={30}
             color={isDarkMode ? darkMode.textOnBackground87 : lightMode.textOnBackground}
-            style={styles.menuIcon}
+            style={styles.tuneIcon}
           />
           <IconButton
             icon="menu"
             onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
             size={30}
             color={isDarkMode ? darkMode.textOnBackground87 : lightMode.textOnBackground}
-            style={styles.tuneIcon}
+            style={styles.menuIcon}
           />
           <Animated.View
             style={[
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
     bottom: 80,
     margin: 16,
   },
-  tuneIcon: {
+  menuIcon: {
     position: 'absolute',
     bottom: -2,
     right: 10,
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
   },
-  menuIcon: {
+  tuneIcon: {
     position: 'absolute',
     bottom: -2,
     right: 50,

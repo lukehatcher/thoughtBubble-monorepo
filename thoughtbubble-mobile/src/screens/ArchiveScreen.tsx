@@ -212,7 +212,7 @@ const headerStyles = StyleSheet.create({
   menuIcon: {
     position: 'absolute',
     bottom: -2,
-    right: 15,
+    right: 10,
     borderRadius: 10,
     width: 35,
     height: 35,
