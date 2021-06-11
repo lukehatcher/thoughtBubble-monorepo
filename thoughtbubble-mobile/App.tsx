@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { ActivityIndicator, StatusBar } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Provider as ReduxProvider } from 'react-redux';
@@ -13,6 +13,7 @@ import { fetchUserInfoAction } from './src/actions/userInfoActions';
 import { fetchActivityDataAction } from './src/actions/fetchActivityAction';
 import { useDarkCheck } from './src/hooks/useDarkCheck';
 import { AppNavigator } from './src/navigation/AppNavigator';
+import { SplashScreen } from './src/screens/SplashScreen';
 
 interface AppProps {}
 
@@ -20,18 +21,29 @@ const App: FC<AppProps> = () => {
   const loginStatus = useSelector((state: RootState) => state.storedUser);
   const isDarkMode = useDarkCheck();
 
-  if (loginStatus.sub) {
+  if (loginStatus.status === 'succeeded' && loginStatus.token.sub) {
     return (
       <>
+        {console.log('app')}
         <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
         <AppNavigator />
       </>
     );
   }
+  if (loginStatus.status === 'succeeded' && !loginStatus.token.sub) {
+    return (
+      <>
+        {console.log('login')}
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+        <LoginScreen />
+      </>
+    );
+  }
   return (
     <>
+      {console.log('splash')}
       <StatusBar barStyle="light-content" />
-      <LoginScreen />
+      <SplashScreen />
     </>
   );
 };

@@ -4,7 +4,7 @@ import { BASE_URL } from '@env';
 
 export const fetchActivityDataAction = function () {
   return async (dispatch, getState) => {
-    const userSub = getState().storedUser.sub;
+    const userSub = getState().storedUser.token?.sub;
     try {
       const response = await axios.get(`${BASE_URL}/activity`, {
         params: {

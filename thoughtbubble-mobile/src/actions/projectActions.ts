@@ -5,7 +5,8 @@ import { BASE_URL } from '@env';
 
 export const addProjectAction = function (projectName: string) {
   return async (dispatch, getState) => {
-    const userSub = getState().storedUser.sub;
+    // const userSub = getState().storedUser.token?.sub;
+    const userSub = getState().storedUser.token?.sub;
     axios
       .post(`${BASE_URL}/projects`, {
         userSub,
@@ -24,7 +25,7 @@ export const addProjectAction = function (projectName: string) {
 
 export const deleteProjectAction = function (projectId: string) {
   return async (dispatch, getState) => {
-    const userSub = getState().storedUser.sub;
+    const userSub = getState().storedUser.token?.sub;
     axios
       .delete(`${BASE_URL}/projects`, {
         params: {
@@ -42,7 +43,7 @@ export const deleteProjectAction = function (projectId: string) {
 
 export const filterProjectAction = function (projectId: string, filters: any) {
   return async (dispatch, getState) => {
-    const userSub = getState().storedUser.sub;
+    const userSub = getState().storedUser.token?.sub;
     try {
       const response = await axios.get(`${BASE_URL}/projects`, {
         params: {

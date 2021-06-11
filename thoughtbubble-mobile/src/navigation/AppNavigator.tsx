@@ -6,6 +6,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { darkMode, lightMode } from '../constants/colors';
+import { SplashScreen } from '../screens/SplashScreen';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();

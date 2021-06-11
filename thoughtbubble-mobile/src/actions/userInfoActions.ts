@@ -5,7 +5,7 @@ import { BASE_URL } from '@env';
 
 export const fetchUserInfoAction = () => {
   return async (dispatch, getState) => {
-    const userSub = getState().storedUser.sub;
+    const userSub = getState().storedUser.token?.sub;
     axios
       .get(`${BASE_URL}/userinfo`, {
         params: { userSub },
@@ -20,7 +20,7 @@ export const fetchUserInfoAction = () => {
 export const changeEmailSettingsAction = (emailSetting: string) => {
   if (emailSetting === 'daily') {
     return async (dispatch, getState) => {
-      const userSub = getState().storedUser.sub;
+      const userSub = getState().storedUser.token?.sub;
       axios
         .put(`${BASE_URL}/userinfo/dailyemail`, {
           userSub,
@@ -32,7 +32,7 @@ export const changeEmailSettingsAction = (emailSetting: string) => {
     };
   } else {
     return async (dispatch, getState) => {
-      const userSub = getState().storedUser.sub;
+      const userSub = getState().storedUser.token?.sub;
       axios
         .put(`${BASE_URL}/userinfo/weeklyemail`, {
           userSub,
@@ -47,7 +47,7 @@ export const changeEmailSettingsAction = (emailSetting: string) => {
 
 export const changeDarkModeAction = () => {
   return async (dispatch, getState) => {
-    const userSub = getState().storedUser.sub;
+    const userSub = getState().storedUser.token?.sub;
     axios
       .put(`${BASE_URL}/userinfo/darkmode`, {
         userSub,
@@ -61,7 +61,7 @@ export const changeDarkModeAction = () => {
 // ========
 export const changeProjectOrderAction = (projectOrder: OrderType) => {
   return async (dispatch, getState) => {
-    const userSub = getState().storedUser.sub;
+    const userSub = getState().storedUser.token?.sub;
     axios
       .put(`${BASE_URL}/userinfo/projectOrder`, {
         userSub,
@@ -76,7 +76,7 @@ export const changeProjectOrderAction = (projectOrder: OrderType) => {
 
 export const changeProjectDirectionAction = (projectDirection: Direction) => {
   return async (dispatch, getState) => {
-    const userSub = getState().storedUser.sub;
+    const userSub = getState().storedUser.token?.sub;
     axios
       .put(`${BASE_URL}/userinfo/projectDirection`, {
         userSub,
@@ -91,7 +91,7 @@ export const changeProjectDirectionAction = (projectDirection: Direction) => {
 
 export const changeSaveOrderSettingAction = (projectOrder: OrderType, projectDirection: Direction) => {
   return async (dispatch, getState) => {
-    const userSub = getState().storedUser.sub;
+    const userSub = getState().storedUser.token?.sub;
     axios
       .put(`${BASE_URL}/userinfo/saveOrder`, {
         userSub,
