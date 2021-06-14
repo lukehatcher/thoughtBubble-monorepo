@@ -14,4 +14,8 @@ export const config = {
     refresh_token: process.env.EMAIL_BOT_REFRESH_TOKEN,
     access_token: process.env.EMAIL_BOT_ACCESS_TOKEN,
   },
+  auth: {
+    github_client_id: process.env.GITHUB_CLIENT_ID,
+    github_client_secret: process.env.GITHUB_CLIENT_SECRET,
+  },
 };
