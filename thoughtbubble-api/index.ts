@@ -1,6 +1,6 @@
 import 'reflect-metadata';
-import { createConnection } from 'typeorm';
-import express from 'express';
+import { createConnection, getConnection } from 'typeorm';
+import express, { Request, Response } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import { join } from 'path';
@@ -11,6 +11,8 @@ import { router as activityRouter } from './routes/activity';
 import { config } from './config/enviroment';
 import passport from 'passport';
 import { Strategy as GitHubStrategy } from 'passport-github';
+import { User } from './entities/User';
+import jwt from 'jsonwebtoken';
 
 (async function () {
   try {
@@ -38,12 +40,28 @@ import { Strategy as GitHubStrategy } from 'passport-github';
         clientSecret: config.auth.github_client_secret!,
         callbackURL: 'http://localhost:3001/auth/github/callback', // needs to match what we gave github
       },
-      (_, __, profile, cb) => {
+      async (_, __, profile, cb) => {
         console.log(profile);
-        cb(null, { accessToken: 'asdf', refreshToken: '' });
-        // User.findOrCreate({ githubId: profile.id }, function (err, user) {
-        //   return cb(err, user);
-        // });
+        // check if user exists before saving
+        let user = await User.findOne({ where: { githubId: profile.id } });
+        if (user) {
+          // if the user's github name/data updated, update it
+          // await getConnection()
+          //   .createQueryBuilder()
+          //   .update(User)
+          //   .set({ username: profile.displayName, email: profile.emails ? profile.emails[0].value : '' })
+          //   .where('id = :id', { id: profile.id })
+          //   .execute();
+        } else {
+          // first time user, create new user
+          user = await User.create({
+            githubId: profile.id,
+            username: profile.displayName,
+            email: profile.emails ? profile.emails[0].value : '',
+          }); // .save();
+        }
+        // should be an env variable
+        cb(null, { accessToken: jwt.sign({ userId: user.id }, 'asdfasdfasdf', { expiresIn: '1y' }) });
       }
     )
   );
@@ -53,10 +71,10 @@ import { Strategy as GitHubStrategy } from 'passport-github';
   app.get(
     '/auth/github/callback',
     passport.authenticate('github'), // { failureRedirect: '/login' }
-    function (_req, res) {
+    function (req: any, res: Response) {
       // Successful authentication, redirect home.
-      // res.redirect('/');
-      res.send('logged in correctly');
+      res.send(req.user.accessToken);
+      res.redirect(''); // normally redirect back to website
     }
   );
 
