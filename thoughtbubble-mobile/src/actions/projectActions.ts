@@ -2,17 +2,20 @@ import axios from 'axios';
 import { locations } from '../constants/locations';
 import { FilterActionTypes, ProjectActionTypes, ArchiveActionTypes } from '../constants/actionTypes';
 import { BASE_URL } from '@env';
+import { getToken } from '../utils/asyncStorage';
 
 export const addProjectAction = function (projectName: string) {
-  return async (dispatch, getState) => {
-    // const userSub = getState().storedUser.token?.sub;
-    const userSub = getState().storedUser.token?.sub;
+  return async (dispatch, _getState) => {
+    const token = await getToken();
     axios
-      .post(`${BASE_URL}/projects`, {
-        userSub,
-        projectName,
-        creationLocation: locations.MOBILE,
-      })
+      .post(
+        `${BASE_URL}/projects`,
+        {
+          projectName,
+          creationLocation: locations.MOBILE,
+        },
+        { headers: { Authorization: `Bearer ${token}` } },
+      )
       .then((res) => {
         const newProject = res.data;
         newProject.projectThoughts = []; // does not come with query entity
@@ -24,12 +27,12 @@ export const addProjectAction = function (projectName: string) {
 };
 
 export const deleteProjectAction = function (projectId: string) {
-  return async (dispatch, getState) => {
-    const userSub = getState().storedUser.token?.sub;
+  return async (dispatch, _getState) => {
+    const token = await getToken();
     axios
       .delete(`${BASE_URL}/projects`, {
+        headers: { Authorization: `Bearer ${token}` },
         params: {
-          userSub,
           projectId,
         },
       })
@@ -42,14 +45,10 @@ export const deleteProjectAction = function (projectId: string) {
 };
 
 export const filterProjectAction = function (projectId: string, filters: any) {
-  return async (dispatch, getState) => {
-    const userSub = getState().storedUser.token?.sub;
+  return async (dispatch, _getState) => {
+    const token = await getToken();
     try {
-      const response = await axios.get(`${BASE_URL}/projects`, {
-        params: {
-          userSub,
-        },
-      });
+      const response = await axios.get(`${BASE_URL}/projects`, { headers: { Authorization: `Bearer ${token}` } });
       // this action type pertains to the project and its thoughts not the filters stored in memory
       // the filter param is the filters stored in memory though
       dispatch({ type: 'filterData', payload: { data: response.data, filters, projectId } });
@@ -61,8 +60,13 @@ export const filterProjectAction = function (projectId: string, filters: any) {
 
 export const archiveProjectAction = function (projectId: string) {
   return async (dispatch, _getState) => {
+    const token = await getToken();
     try {
-      const response = await axios.put(`${BASE_URL}/projects/archive`, { projectId });
+      const response = await axios.put(
+        `${BASE_URL}/projects/archive`,
+        { projectId },
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
       dispatch({ type: ArchiveActionTypes.ADD_TO_ARCHIVE, payload: response.data }); // add project to archive
       dispatch({ type: ProjectActionTypes.ARCHIVE, payload: projectId }); // filter project out of main user project data
       dispatch({ type: FilterActionTypes.DEL_PROJ, payload: projectId }); // fitler project out of master filters state
@@ -74,8 +78,13 @@ export const archiveProjectAction = function (projectId: string) {
 
 export const unarchiveProjectAction = function (projectId: string) {
   return async (dispatch, _getState) => {
+    const token = await getToken();
     try {
-      const response = await axios.put(`${BASE_URL}/projects/archive`, { projectId });
+      const response = await axios.put(
+        `${BASE_URL}/projects/archive`,
+        { projectId },
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
 
       dispatch({ type: ArchiveActionTypes.REMOVE_FROM_UNARCHIVE, payload: projectId }); // filter project out of archive
       dispatch({ type: ProjectActionTypes.UNARCHIVE, payload: response.data }); // add project back to main user project data
@@ -91,8 +100,13 @@ export const unarchiveProjectAction = function (projectId: string) {
  */
 export const pinProjectAction = function (projectId: string) {
   return async (dispatch, _getState) => {
+    const token = await getToken();
     try {
-      const response = await axios.put(`${BASE_URL}/projects/pin`, { projectId });
+      const response = await axios.put(
+        `${BASE_URL}/projects/pin`,
+        { projectId },
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
       console.log(response.data);
       dispatch({ type: ProjectActionTypes.PIN, payload: response.data }); // add/re-initialize project to master filters state
     } catch (err) {

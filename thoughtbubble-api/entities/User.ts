@@ -26,6 +26,12 @@ export class User extends BaseEntity {
   @Column('text')
   username!: string;
 
+  @Column('text', { nullable: true }) // nullable cause of the old users in the db
+  displayName!: string;
+
+  @Column('text', { nullable: true })
+  avatarUrl!: string;
+
   @Column('boolean', { default: true })
   dailyEmail!: boolean;
 

@@ -13,6 +13,7 @@ import passport from 'passport';
 import { Strategy as GitHubStrategy } from 'passport-github';
 import { User } from './entities/User';
 import jwt from 'jsonwebtoken';
+import { authMiddleware } from './middleware/authMiddleware';
 
 (async function () {
   try {
@@ -46,22 +47,32 @@ import jwt from 'jsonwebtoken';
         let user = await User.findOne({ where: { githubId: profile.id } });
         if (user) {
           // if the user's github name/data updated, update it
-          // await getConnection()
-          //   .createQueryBuilder()
-          //   .update(User)
-          //   .set({ username: profile.displayName, email: profile.emails ? profile.emails[0].value : '' })
-          //   .where('id = :id', { id: profile.id })
-          //   .execute();
+          await getConnection()
+            .createQueryBuilder()
+            .update(User)
+            .set({
+              username: profile.username,
+              displayName: profile.displayName,
+              email: profile.emails ? profile.emails[0].value : '',
+              avatarUrl: (profile._json as any).avatar_url, // never blank for a github user even if they didnt make one
+            })
+            .where('id = :id', { id: user.id })
+            .execute();
         } else {
           // first time user, create new user
           user = await User.create({
             githubId: profile.id,
-            username: profile.displayName,
+            username: profile.username,
+            displayName: profile.displayName,
             email: profile.emails ? profile.emails[0].value : '',
-          }); // .save();
+            avatarUrl: (profile._json as any).avatar_url,
+          }).save();
         }
         // should be an env variable
-        cb(null, { accessToken: jwt.sign({ userId: user.id }, 'asdfasdfasdf', { expiresIn: '1y' }) });
+        // console.log('asdfasdfasdfasdfasdfasdf', user.id);
+        cb(null, {
+          accessToken: jwt.sign({ userId: user.id }, config.auth.github_client_secret!, { expiresIn: '1y' }),
+        });
       }
     )
   );
@@ -73,18 +84,54 @@ import jwt from 'jsonwebtoken';
     passport.authenticate('github'), // { failureRedirect: '/login' }
     function (req: any, res: Response) {
       // Successful authentication, redirect home.
-      res.send(req.user.accessToken);
-      res.redirect(''); // normally redirect back to website
+      // res.send(req.user.accessToken);
+      res.redirect(`thoughtbubble://${req.user.accessToken}`); // deep-link
     }
   );
 
+  app.get('/user', async (req: Request, res: Response) => {
+    // Authorization: <type> <credentials> -> Bearer a9sd87f6as9df
+    const authHeader = req.headers.authorization;
+    console.log('authheader', authHeader);
+    if (!authHeader) {
+      res.send({ user: null });
+      return;
+    }
+
+    const token = authHeader.split(' ')[1];
+    if (!token) {
+      res.send({ user: null });
+      return;
+    }
+
+    let userId = '';
+    try {
+      const payload: any = jwt.verify(token, config.auth.github_client_secret!);
+      userId = payload.userId;
+      console.log('payload', payload);
+      console.log('userid', userId);
+    } catch (err) {
+      res.send({ user: null });
+      console.error(err);
+    }
+
+    if (!userId) {
+      res.send({ user: null });
+      return;
+    }
+
+    const user = await User.findOne({ id: userId });
+    res.send(user);
+  });
+
   app.use(cors());
+  // app.use(cors({origin: '*'}));
   app.use(morgan('dev'));
   app.use(express.json()); // for post and x only
-  // app.put('/login', loginController);
-  app.use('/projects', projectRouter);
-  app.use('/thoughts', thoughtRouter);
-  app.use('/userinfo', userInfoRouter);
-  app.use('/activity', activityRouter);
+  // app.use(authMiddleware);
+  app.use('/projects', authMiddleware, projectRouter);
+  app.use('/thoughts', authMiddleware, thoughtRouter);
+  app.use('/userinfo', authMiddleware, userInfoRouter);
+  app.use('/activity', authMiddleware, activityRouter);
   app.listen(config.port, () => console.log(`🚀 listening on port ${config.port}`));
 })();

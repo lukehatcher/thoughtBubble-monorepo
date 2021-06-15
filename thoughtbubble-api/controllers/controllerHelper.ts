@@ -14,10 +14,10 @@ export class ControllerHelper {
     this.fname = '@controllerHelper.ts: ';
   }
 
-  private saveActivity = async function (userSub: string, projectId: string) {
+  private saveActivity = async function (userId: string, projectId: string) {
     const activity = new Activity();
     activity.activityDate = new Date();
-    activity.user = (await User.findOne({ githubId: userSub }))!;
+    activity.user = (await User.findOne({ id: userId }))!;
     activity.project = (await Project.findOne({ id: projectId }))!;
     getConnection().manager.save(activity);
   };
@@ -28,7 +28,7 @@ export class ControllerHelper {
    * @param userSub ex: `github|12345678`
    * @param projectId uuid
    */
-  public recordActivity = async (userSub: string, projectId: string, thoughtId?: string): Promise<void> => {
+  public recordActivity = async (userId: string, projectId: string, thoughtId?: string): Promise<void> => {
     try {
       if (thoughtId) {
         const thought = await Thought.findOne({ id: thoughtId });
@@ -36,7 +36,7 @@ export class ControllerHelper {
         if (thought?.completedYet) return;
         // record activity
         else {
-          this.saveActivity(userSub, projectId);
+          this.saveActivity(userId, projectId);
           // mark thought's completeYet to true to prevent double recording
           if (!thought?.completedYet) {
             await getConnection()
@@ -49,7 +49,7 @@ export class ControllerHelper {
         }
       } else {
         // record all project creation activity
-        this.saveActivity(userSub, projectId);
+        this.saveActivity(userId, projectId);
       }
     } catch (err) {
       console.error(this.fname, err);
