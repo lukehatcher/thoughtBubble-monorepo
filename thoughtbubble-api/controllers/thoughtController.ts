@@ -15,14 +15,15 @@ class ThoughtsController extends ControllerHelper {
 
   public createThought = async (req: Request, res: Response): Promise<void> => {
     // correctly throws error is project id is not in db project table
-    const { userSub, projectId, thought, creationLocation } = req.body;
+    const { projectId, thought, creationLocation } = req.body;
+    const { userId } = req;
     try {
       const newThought = await Thought.create({ text: thought, projectId, creationLocation }).save();
 
       // update datetime stamp for most recent activity for that project
       await this.updateLastUpdatedDate(projectId);
       // record the users activity
-      await this.recordActivity(userSub, projectId);
+      await this.recordActivity(userId, projectId);
 
       res.send(newThought); // maybe just send the id
     } catch (err) {
@@ -32,7 +33,7 @@ class ThoughtsController extends ControllerHelper {
   };
 
   public deleteThought = async (req: Request, res: Response): Promise<void> => {
-    const { userSub, projectId, thoughtId } = req.query;
+    const { projectId, thoughtId } = req.query;
     try {
       await Thought.delete({ id: thoughtId?.toString() });
 
@@ -47,7 +48,7 @@ class ThoughtsController extends ControllerHelper {
   };
 
   public editThought = async (req: Request, res: Response): Promise<void> => {
-    const { userSub, projectId, thoughtId, newThought } = req.body;
+    const { projectId, thoughtId, newThought } = req.body;
     try {
       await getConnection()
         .createQueryBuilder()
@@ -67,7 +68,8 @@ class ThoughtsController extends ControllerHelper {
   };
 
   public toggleThoughtStatus = async (req: Request, res: Response): Promise<void> => {
-    const { userSub, projectId, thoughtId } = req.body;
+    const { projectId, thoughtId } = req.body;
+    const { userId } = req;
     try {
       const thought = await Thought.findOne({ id: thoughtId });
       const currBool = thought?.completed;
@@ -81,7 +83,7 @@ class ThoughtsController extends ControllerHelper {
       // update datetime stamp for most recent activity for that project
       await this.updateLastUpdatedDate(projectId);
       // record the users activity
-      await this.recordActivity(userSub, projectId, thoughtId);
+      await this.recordActivity(userId, projectId, thoughtId);
 
       res.sendStatus(200);
     } catch (err) {
@@ -91,9 +93,8 @@ class ThoughtsController extends ControllerHelper {
   };
 
   public editTag = async (req: Request, res: Response) => {
-    const { userSub, projectId, thoughtId, tag: newtag } = req.body;
+    const { projectId, thoughtId, tag: newtag } = req.body;
     try {
-      const thought = await Thought.findOne({ id: thoughtId });
       await getConnection() //
         .createQueryBuilder()
         .update(Thought)

@@ -61,6 +61,7 @@ export class ControllerHelper {
    * @param projectId
    */
   public updateLastUpdatedDate = async function (projectId: string) {
+    console.log('updated date updated');
     await getConnection()
       .createQueryBuilder()
       .update(Project)
