@@ -127,8 +127,7 @@ import { authMiddleware } from './middleware/authMiddleware';
   app.use(cors());
   // app.use(cors({origin: '*'}));
   app.use(morgan('dev'));
-  app.use(express.json()); // for post and x only
-  // app.use(authMiddleware);
+  app.use(express.json());
   app.use('/projects', authMiddleware, projectRouter);
   app.use('/thoughts', authMiddleware, thoughtRouter);
   app.use('/userinfo', authMiddleware, userInfoRouter);

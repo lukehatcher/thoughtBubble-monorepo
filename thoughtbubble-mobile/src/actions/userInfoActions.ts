@@ -5,6 +5,7 @@ import { BASE_URL } from '@env';
 import { JwtPayload } from 'jwt-decode';
 import { getToken } from '../utils/asyncStorage';
 
+// TODO: need to edit route on api side
 export const fetchUserAction = (token: JwtPayload) => {
   return async (dispatch, _getState) => {
     axios
@@ -51,7 +52,7 @@ export const changeDarkModeAction = () => {
       .catch((err) => console.error('@userInfoActions.ts: ', err));
   };
 };
-// ========
+
 export const changeProjectOrderAction = (projectOrder: OrderType) => {
   return async (dispatch, _getState) => {
     const token = await getToken();
