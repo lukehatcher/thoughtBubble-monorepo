@@ -11,40 +11,40 @@ class userInfoController {
     this.location = '@userInfoControllers.ts: ';
   }
 
-  public fetchUserInfo = async (req: Request, res: Response): Promise<void> => {
-    const userSub = req.query.userSub as string;
-    try {
-      const user = await User.findOne({ githubId: userSub });
-      // return user obj without projects arr, cannot just delete projs arr cause of ts2790
-      const userInfo = {
-        id: user?.id,
-        username: user?.username,
-        githubId: user?.githubId,
-        email: user?.email,
-        dailyEmail: user?.dailyEmail,
-        weeklyEmail: user?.weeklyEmail,
-        darkMode: user?.darkMode,
-        projectOrder: user?.projectOrder,
-        projectDirection: user?.projectDirection,
-        saveOrder: user?.saveOrder,
-      };
-      res.send(userInfo);
-    } catch (err) {
-      console.error(this.location, err);
-      res.sendStatus(400);
-    }
-  };
+  // public fetchUserInfo = async (req: Request, res: Response): Promise<void> => {
+  //   const {userId} = req;
+  //   try {
+  //     const user = await User.findOne({ id: userId });
+  //     // return user obj without projects arr, cannot just delete projs arr cause of ts2790
+  //     const userInfo = {
+  //       id: user?.id,
+  //       username: user?.username,
+  //       githubId: user?.githubId,
+  //       email: user?.email,
+  //       dailyEmail: user?.dailyEmail,
+  //       weeklyEmail: user?.weeklyEmail,
+  //       darkMode: user?.darkMode,
+  //       projectOrder: user?.projectOrder,
+  //       projectDirection: user?.projectDirection,
+  //       saveOrder: user?.saveOrder,
+  //     };
+  //     res.send(userInfo);
+  //   } catch (err) {
+  //     console.error(this.location, err);
+  //     res.sendStatus(400);
+  //   }
+  // };
 
   public toggleDarkMode = async (req: Request, res: Response) => {
-    const { userSub } = req.body;
+    const { userId } = req;
     try {
-      const user = await User.findOne({ githubId: userSub });
+      const user = await User.findOne({ id: userId });
       const darkModeSetting = user?.darkMode;
       await getConnection() //
         .createQueryBuilder()
         .update(User)
         .set({ darkMode: !darkModeSetting })
-        .where('githubId = :githubId', { githubId: userSub })
+        .where('id = :id', { id: userId })
         .execute();
       res.sendStatus(200);
     } catch (err) {
@@ -54,8 +54,8 @@ class userInfoController {
   };
 
   public toggleDailyEmailSetting = async (req: Request, res: Response): Promise<void> => {
-    const { userSub } = req.body;
-    const user = await User.findOne({ githubId: userSub });
+    const { userId } = req;
+    const user = await User.findOne({ id: userId });
     const dailyEmailSetting = user?.dailyEmail;
     if (dailyEmailSetting) {
       // opting out
@@ -86,14 +86,14 @@ class userInfoController {
       .createQueryBuilder()
       .update(User)
       .set({ dailyEmail: !dailyEmailSetting })
-      .where('githubId = :githubId', { githubId: userSub })
+      .where('id = :id', { id: userId })
       .execute();
     res.sendStatus(200);
   };
 
   public toggleWeeklyEmailSetting = async (req: Request, res: Response): Promise<void> => {
-    const { userSub } = req.body;
-    const user = await User.findOne({ githubId: userSub });
+    const { userId } = req;
+    const user = await User.findOne({ id: userId });
     const weeklyEmailSetting = user?.weeklyEmail;
     if (weeklyEmailSetting) {
       // opting out
@@ -124,20 +124,21 @@ class userInfoController {
       .createQueryBuilder()
       .update(User)
       .set({ weeklyEmail: !weeklyEmailSetting })
-      .where('githubId = :githubId', { githubId: userSub })
+      .where('id = :id', { id: userId })
       .execute();
     res.sendStatus(200);
   };
 
   public updateProjectOrder = async (req: Request, res: Response) => {
-    const { userSub, projectOrder } = req.body;
-    const user = await User.findOne({ githubId: userSub });
+    const { projectOrder } = req.body;
+    const { userId } = req;
+    const user = await User.findOne({ id: userId });
     try {
       await getConnection()
         .createQueryBuilder()
         .update(User)
         .set({ projectOrder: projectOrder })
-        .where('githubId = :githubId', { githubId: userSub })
+        .where('id = :id', { id: userId })
         .execute();
       res.sendStatus(200);
     } catch (err) {
@@ -147,14 +148,14 @@ class userInfoController {
   };
 
   public updateProjectDirection = async (req: Request, res: Response) => {
-    const { userSub, projectDirection } = req.body;
-    const user = await User.findOne({ githubId: userSub });
+    const { projectDirection } = req.body;
+    const { userId } = req;
     try {
       await getConnection()
         .createQueryBuilder()
         .update(User)
         .set({ projectDirection: projectDirection })
-        .where('githubId = :githubId', { githubId: userSub })
+        .where('id = :id', { id: userId })
         .execute();
       res.sendStatus(200);
     } catch (err) {
@@ -164,16 +165,17 @@ class userInfoController {
   };
 
   public toggleProjectOrderSetting = async (req: Request, res: Response) => {
-    const { userSub, projectOrder, projectDirection } = req.body;
+    const { projectOrder, projectDirection } = req.body;
+    const { userId } = req;
     console.log(projectOrder, projectDirection);
-    const user = await User.findOne({ githubId: userSub });
+    const user = await User.findOne({ id: userId });
     const currSetting = user?.saveOrder;
     try {
       await getConnection()
         .createQueryBuilder()
         .update(User)
         .set({ saveOrder: !currSetting, projectOrder, projectDirection })
-        .where('githubId = :githubId', { githubId: userSub })
+        .where('id = :id', { id: userId })
         .execute();
       res.sendStatus(200);
     } catch (err) {

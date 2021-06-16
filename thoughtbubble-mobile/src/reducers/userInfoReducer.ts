@@ -13,12 +13,15 @@ const initialState: UserInfoShape = {
   projectOrder: OrderTypes.LAST_UPDATED,
   projectDirection: Directions.DESC,
   saveOrder: false,
+  avatarUrl: 'filler',
+  displayName: '',
 };
 
 export const userInfoReducer = (state = initialState, action): UserInfoShape => {
   const { payload, type } = action;
   switch (type) {
     case 'fetchUserInfo':
+      console.log('stored new userInfo', payload);
       return payload;
     case 'toggleDailyEmail':
       return {

@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import { Activity } from '../entities/Activity';
-import { User } from '../entities/User';
 
 class ActivityController {
   private readonly location: string;
@@ -11,17 +10,13 @@ class ActivityController {
   }
 
   public fetchUserActivity = async (req: Request, res: Response): Promise<void> => {
-    const userSub = req.query.userSub as string;
+    const { userId } = req;
     try {
-      const user = await User.findOne({ githubId: userSub });
-      const userIdx = user?.id;
       const userActivity = await getRepository(Activity)
         .createQueryBuilder('activity')
-        // .leftJoinAndSelect('activity.project', 'project')
-        .where('activity.user = :user', { user: userIdx })
+        .where('activity.user = :user', { user: userId })
         .getMany();
-      // console.log(JSON.stringify(userActivity));
-      res.send(JSON.stringify(userActivity));
+      res.send(userActivity);
     } catch (err) {
       console.error(this.location, err);
       res.sendStatus(400);

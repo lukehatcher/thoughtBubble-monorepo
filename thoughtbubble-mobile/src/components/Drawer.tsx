@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { changeDarkModeAction } from '../actions/userInfoActions';
 import { RootState } from '../reducers/rootReducer';
 import { TextTB } from './Text';
+import { _logout } from '../utils/auth';
 
 /**
  * custom drawer content
@@ -17,7 +18,7 @@ import { TextTB } from './Text';
 export const DrawerContent = ({ navigation }) => {
   const dispatch = useDispatch();
   const isDarkMode = useDarkCheck();
-  const idToken = useSelector((state: RootState) => state.storedUser);
+  const user = useSelector((state: RootState) => state.userInfo);
   const iconColor = isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground;
   const itemStyle: StyleProp<TextStyle> = {
     color: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground,
@@ -48,10 +49,10 @@ export const DrawerContent = ({ navigation }) => {
     <ThemeProvider theme={theme}>
       <DrawerContentScrollView>
         <ImageNameContainer>
-          <Image source={{ uri: idToken.picture }} style={styles.img} />
+          <Image source={{ uri: user.avatarUrl }} style={styles.img} />
           <NameContainer>
-            <NameText>{idToken.name}</NameText>
-            <UsernameText>@{idToken.nickname}</UsernameText>
+            <NameText>{user.displayName}</NameText>
+            <UsernameText>@{user.username}</UsernameText>
           </NameContainer>
         </ImageNameContainer>
         <LabelText>Navigation</LabelText>
@@ -100,7 +101,9 @@ export const DrawerContent = ({ navigation }) => {
         <DrawerItem
           label={() => (
             <Wrapper>
-              <TextTB>Dark Theme</TextTB>
+              <TextTB style={{ color: isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground }}>
+                Dark Theme
+              </TextTB>
               <Switch value={isDarkMode} onValueChange={() => handleDarkModeToggle()} style={styles.switch} />
             </Wrapper>
           )}
@@ -112,12 +115,12 @@ export const DrawerContent = ({ navigation }) => {
       </DrawerContentScrollView>
       <DrawerItem
         style={styles.logout}
-        label="Logout (not active)"
+        label="Logout"
         labelStyle={[itemStyle, { color: isDarkMode ? darkMode.error : lightMode.error }]}
         icon={() => (
           <MaterialCommunityIcons name="logout" size={25} color={isDarkMode ? darkMode.error : lightMode.error} />
         )}
-        onPress={() => console.log('this should logout')}
+        onPress={_logout}
       />
     </ThemeProvider>
   );

@@ -15,13 +15,11 @@ class ProjectsController extends ControllerHelper {
   }
 
   public fetchProjects = async (req: Request, res: Response): Promise<void> => {
-    const userSub = req.query.userSub as string;
+    const { userId } = req;
     try {
-      const user = await User.findOne({ githubId: userSub }); // wack naming
-      const userIdx = user?.id;
       const usersProjects = await getRepository(Project) //
         .createQueryBuilder('project')
-        .where('project.userId = :userId', { userId: userIdx })
+        .where('project.userId = :userId', { userId: userId })
         .orderBy('project.lastUpdatedDate', 'DESC')
         .getMany();
 
@@ -44,13 +42,12 @@ class ProjectsController extends ControllerHelper {
   };
 
   public createProject = async (req: Request, res: Response): Promise<void> => {
-    const { userSub, projectName, creationLocation } = req.body;
+    const { projectName, creationLocation } = req.body;
+    const { userId } = req;
     try {
-      const user = await User.findOne({ githubId: userSub }); // wack naming
-      const userId = user?.id;
       const newProject = await Project.create({ projectName, userId, creationLocation }).save();
-      await this.recordActivity(userSub, newProject.id);
-      res.send(newProject); // maybe just send the id
+      await this.recordActivity(userId, newProject.id);
+      res.send(newProject);
     } catch (err) {
       console.error(this.location, err);
       res.sendStatus(400);
@@ -58,7 +55,7 @@ class ProjectsController extends ControllerHelper {
   };
 
   public deleteProject = async (req: Request, res: Response): Promise<void> => {
-    const { userSub, projectId } = req.query;
+    const { projectId } = req.query;
     try {
       // cascade delete takse care of thoughts
       await Project.delete({ id: projectId?.toString() });
@@ -144,25 +141,6 @@ class ProjectsController extends ControllerHelper {
       console.error(this.location, err);
       res.sendStatus(400);
     }
-  };
-
-  public initProjects = async (_req: Request, res: Response): Promise<void> => {
-    // const { userSub } = req.body;
-    // try {
-
-    //   await User.create({ });
-    res.sendStatus(200);
-    // } catch (err) {
-    //   console.error(this.location, err);
-    //   res.sendStatus(400);
-    // }
-
-    // const newUser = await User.create({
-    //   username: 'lukehatcher',
-    //   githubId: 'github|52586655',
-    //   email: 'lukehatcher98@gmail.com',
-    // }).save();
-    // console.log(newUser);
   };
 }
 

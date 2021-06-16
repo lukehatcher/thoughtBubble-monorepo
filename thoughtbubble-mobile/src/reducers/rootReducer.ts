@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import { storeUserReducer } from './storedUserReducer';
 import { UserProjectDataReducer } from './userProjectDataReducer';
 import { userInfoReducer } from './userInfoReducer';
 import { filterReducer } from './filterReducer';
@@ -7,7 +6,6 @@ import { activityReducer } from './activityReducer';
 import { archiveReducer } from './archiveReducer';
 
 const appReducer = combineReducers({
-  storedUser: storeUserReducer,
   userProjectData: UserProjectDataReducer,
   userInfo: userInfoReducer,
   filters: filterReducer,

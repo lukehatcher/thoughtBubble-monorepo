@@ -20,10 +20,4 @@ router
   .route('/pin') //
   .put(ProjectsController.pinProject);
 
-// api/projects/init
-// not tested
-router
-  .route('/init') //
-  .post(ProjectsController.initProjects);
-
 export { router };

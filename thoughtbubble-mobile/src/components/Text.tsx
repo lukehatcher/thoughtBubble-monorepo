@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import { Text } from 'react-native';
+import { Text, TextStyle } from 'react-native';
 
 /**
  * vanilla RN text component with 'Inter' as default text family
  */
-export const TextTB: FC = ({ children }) => {
-  return <Text style={{ fontFamily: 'Inter' }}>{children}</Text>;
+export const TextTB: FC<{ style: TextStyle }> = ({ children, style }) => {
+  return <Text style={[{ fontFamily: 'Inter' }, style]}>{children}</Text>;
 };
