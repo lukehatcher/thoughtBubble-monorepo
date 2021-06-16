@@ -3,6 +3,7 @@ import { View, Text, Button, StyleSheet, TouchableHighlight, Linking } from 'rea
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { LoginScreenProps } from '../interfaces/screenProps';
 import { BASE_URL } from '@env';
+import { TextTB } from '../components/Text';
 
 export const LoginScreen: React.FC<LoginScreenProps> = () => {
   const _openGithubAuth = () => {
@@ -13,8 +14,11 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
       <View style={styles.container}>
         <MaterialCommunityIcons name="thought-bubble" size={90} color="#6200EE" />
         <Text style={styles.logoText}>thoughtBubble</Text>
-        <TouchableHighlight style={styles.btn1}>
-          <Button title="login" color="white" onPress={_openGithubAuth} />
+        <TouchableHighlight style={styles.btn1} underlayColor="#21212190" onPress={_openGithubAuth}>
+          <>
+            <TextTB style={{ color: 'white', fontWeight: '600', marginRight: 20 }}>Login with GitHub</TextTB>
+            <MaterialCommunityIcons name="github" size={30} color="white" />
+          </>
         </TouchableHighlight>
       </View>
     </>
@@ -30,6 +34,9 @@ const styles = StyleSheet.create({
   },
   btn1: {
     position: 'absolute',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     bottom: 40,
     backgroundColor: '#212121',
     borderRadius: 15,
@@ -37,6 +44,7 @@ const styles = StyleSheet.create({
     margin: 10,
     marginTop: 25,
     width: 250,
+    height: 50,
     // shadow
     shadowColor: '#000',
     shadowOffset: {
