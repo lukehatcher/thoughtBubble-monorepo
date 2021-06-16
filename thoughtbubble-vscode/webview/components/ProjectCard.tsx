@@ -15,8 +15,6 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
   const [input, setInput] = useState('');
   const dispatch = useDispatch();
   const { projectName, id: projectId } = project;
-  const selector = (state: RootState) => state.storedUser!.id; // TS non-null-assertion-operator
-  const userSub = `github|${useSelector(selector)}`;
 
   const handleNewThought = function (e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();

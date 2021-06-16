@@ -22,10 +22,10 @@ window.addEventListener('message', (e) => {
     case 'sendingData/refresh': {
       // should check db here first then await...
       store.dispatch({ type: 'storeUser', payload: JSON.parse(message.userData) });
-      const userSub = `github|${JSON.parse(message.userData).id}`;
+      // const userSub = `github|${JSON.parse(message.userData).id}`;
       // seed redux store
-      store.dispatch(fetchDataAction(userSub));
-      store.dispatch(fetchUserInfoAction());
+      store.dispatch(fetchDataAction());
+      // store.dispatch(fetchUserInfoAction());
       return;
     }
   }

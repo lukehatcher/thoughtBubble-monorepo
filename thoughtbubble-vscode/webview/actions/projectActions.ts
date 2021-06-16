@@ -15,10 +15,11 @@ export const addProjectAction = (projectName: string) => {
         { headers: { Authorization: `Bearer ${DEV_TOKEN}` } }
       )
       .then((res) => {
-        const newProject: ProjectShape = res.data;
+        const newProject = res.data;
+        newProject.projectThoughts = []; // does not come from db query
         dispatch({ type: 'addProject', payload: newProject });
       })
-      .catch((err) => console.error('@projectActions.ts: ', err));
+      .catch((err) => console.error('@projectActions.ts: fail', err));
   };
 };
 

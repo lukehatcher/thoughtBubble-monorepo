@@ -4,7 +4,7 @@ import { BASE_URL, DEV_TOKEN } from '../constants/config';
 export const fetchUserInfoAction = () => {
   return async (dispatch, _getState) => {
     axios
-      .get(`${BASE_URL}/userinfo`, { headers: { Authorization: `Bearer ${DEV_TOKEN}` } })
+      .get(`${BASE_URL}/user`, { headers: { Authorization: `Bearer ${DEV_TOKEN}` } })
       .then((res) => {
         dispatch({ type: 'fetchUserInfo', payload: res.data });
       })
@@ -16,7 +16,7 @@ export const changeEmailSettingsAction = (emailSetting: string) => {
   if (emailSetting === 'daily') {
     return async (dispatch, _getState) => {
       axios
-        .put(`${BASE_URL}/dailyemail`, { headers: { Authorization: `Bearer ${DEV_TOKEN}` } })
+        .put(`${BASE_URL}/userinfo/dailyemail`, { headers: { Authorization: `Bearer ${DEV_TOKEN}` } })
         .then(() => {
           dispatch({ type: 'toggleDailyEmail', payload: '' });
         })
@@ -25,7 +25,7 @@ export const changeEmailSettingsAction = (emailSetting: string) => {
   } else {
     return async (dispatch, _getState) => {
       axios
-        .put(`${BASE_URL}/weeklyemail`, { headers: { Authorization: `Bearer ${DEV_TOKEN}` } })
+        .put(`${BASE_URL}/userinfo/weeklyemail`, { headers: { Authorization: `Bearer ${DEV_TOKEN}` } })
         .then(() => {
           dispatch({ type: 'toggleWeeklyEmail', payload: '' });
         })
