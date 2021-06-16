@@ -9,7 +9,6 @@ export const fetchProjectDataAction = function () {
     const token = await getToken();
     try {
       const response = await axios.get(`${BASE_URL}/projects`, { headers: { Authorization: `Bearer ${token}` } });
-      console.log('OGOGOG', response.data);
       dispatch({ type: 'fetchData', payload: response.data });
       dispatch({ type: FilterActionTypes.INIT, payload: response.data });
       dispatch({ type: ArchiveActionTypes.FETCH, payload: response.data });

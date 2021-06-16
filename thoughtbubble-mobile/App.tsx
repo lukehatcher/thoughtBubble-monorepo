@@ -34,6 +34,8 @@ const App: FC = () => {
     await persistToken(token); // might be a redundant await
     // get user from db,
     dispatch(fetchUserAction(token));
+    dispatch(fetchProjectDataAction());
+    dispatch(fetchActivityDataAction());
   };
 
   useEffect(() => {
