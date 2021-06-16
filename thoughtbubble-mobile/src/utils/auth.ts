@@ -1,39 +1,49 @@
 import Auth0 from 'react-native-auth0';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
-import { persistidToken, clearAsyncStorage } from './asyncStorage';
+import { persistToken, clearAsyncStorage } from './asyncStorage';
 import store from '../store';
-import { storeUserAction } from '../actions/storeUserAction';
 import { fetchProjectDataAction } from '../actions/fetchProjectDataAction';
-import { fetchUserInfoAction } from '../actions/userInfoActions';
+import { fetchUserAction } from '../actions/userInfoActions';
 import { fetchActivityDataAction } from '../actions/fetchActivityAction';
+import { Linking } from 'react-native';
+import { BASE_URL } from '@env';
 
-const auth0 = new Auth0({
-  domain: 'dev-4pq8almu.us.auth0.com',
-  clientId: '4fzla6jGCLomMZwbRtHNg3c970TrydDs',
-});
-
-export const _onLogIn = function (): void {
-  auth0.webAuth
-    .authorize({ scope: 'openid profile email', prompt: 'login' })
-    .then(async (credentials) => {
-      // credentials contains accessToken, idToken, and expiresIn properties
-      const decodedJwt = jwtDecode<JwtPayload>(credentials.idToken);
-      await persistidToken(decodedJwt);
-      await store.dispatch(storeUserAction(decodedJwt));
-      // throws error here
-      await store.dispatch(fetchProjectDataAction(decodedJwt.sub)); // also adds user to db if needed
-      await store.dispatch(fetchUserInfoAction()); // fetch users personal settings/info etc
-      await store.dispatch(fetchActivityDataAction()); // fetch user's activity data
-    })
-    .catch((err) => console.log('auth.ts: login canceled/error logging into auth0', err));
+export const _openGithubAuth = () => {
+  Linking.openURL(`${BASE_URL}/auth/github`);
 };
 
-export const _onLogOut = function (): void {
-  auth0.webAuth
-    .clearSession()
-    .then(async () => {
-      await clearAsyncStorage();
-      store.dispatch({ type: 'USER_LOGOUT', payload: null });
-    })
-    .catch((err) => console.log('auth.ts: log out cancelled/error logging out w auth0', err));
+export const _logout = async () => {
+  await clearAsyncStorage();
+  store.dispatch({ type: 'USER_LOGOUT' });
 };
+
+// const auth0 = new Auth0({
+//   domain: 'dev-4pq8almu.us.auth0.com',
+//   clientId: '4fzla6jGCLomMZwbRtHNg3c970TrydDs',
+// });
+
+// export const _onLogIn = function (): void {
+//   auth0.webAuth
+//     .authorize({ scope: 'openid profile email', prompt: 'login' })
+//     .then(async (credentials) => {
+//       // credentials contains accessToken, idToken, and expiresIn properties
+//       const decodedJwt = jwtDecode<JwtPayload>(credentials.idToken);
+//       await persistidToken(decodedJwt);
+//       // await store.dispatch(storeUserAction(decodedJwt)); // DELETED
+//       // throws error here
+//       await store.dispatch(fetchProjectDataAction(decodedJwt.sub)); // also adds user to db if needed
+//       // await store.dispatch(fetchUserInfoAction()); // DELETED fetch users personal settings/info etc
+//       await store.dispatch(fetchActivityDataAction()); // fetch user's activity data
+//     })
+//     .catch((err) => console.log('auth.ts: login canceled/error logging into auth0', err));
+// };
+
+// export const _onLogOut = function (): void {
+//   auth0.webAuth
+//     .clearSession()
+//     .then(async () => {
+//       await clearAsyncStorage();
+//       store.dispatch({ type: 'USER_LOGOUT', payload: null });
+//     })
+//     .catch((err) => console.log('auth.ts: log out cancelled/error logging out w auth0', err));
+// };

@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Switch } from 'react-native-paper';
 import styled, { ThemeProvider } from 'styled-components/native';
 import { RootState } from '../reducers/rootReducer';
-import { _onLogOut } from '../utils/auth';
+import { _logout } from '../utils/auth';
 import { SettingsScreenProps } from '../interfaces/screenProps';
 import { changeEmailSettingsAction, changeDarkModeAction } from '../actions/userInfoActions';
 import { darkMode, lightMode } from '../constants/colors';
@@ -12,7 +12,7 @@ import { useDarkCheck } from '../hooks/useDarkCheck';
 
 export const SettingsScreen: React.FC<SettingsScreenProps> = () => {
   const dispatch = useDispatch();
-  let idToken = useSelector((state: RootState) => state.storedUser);
+  let user = useSelector((state: RootState) => state.userInfo);
   const dailyEmailSetting = useSelector((state: RootState) => state.userInfo.dailyEmail);
   const weeklyEmailSetting = useSelector((state: RootState) => state.userInfo.weeklyEmail);
   const isDarkMode = useDarkCheck();
@@ -49,10 +49,10 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = () => {
 
       <View style={useTheme('bottomContainer')}>
         <View style={useTheme('userPicPlusInfo')}>
-          <Image source={{ uri: idToken.picture }} style={useTheme('img')} />
+          <Image source={{ uri: user.avatarUrl }} style={useTheme('img')} />
           <NameEmailContainer>
-            <NameText>{idToken.name}</NameText>
-            <EmailText>{idToken.email}</EmailText>
+            <NameText>{user.displayName}</NameText>
+            <EmailText>{user.email}</EmailText>
           </NameEmailContainer>
         </View>
 
@@ -82,11 +82,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = () => {
           <Switch value={isDarkMode} onValueChange={() => handleDarkModeToggle()} style={stylesShared.toggle} />
         </View>
         <TouchableOpacity style={useTheme('logoutBtn')}>
-          <Button
-            title="Logout"
-            onPress={() => _onLogOut()}
-            color={isDarkMode ? darkMode.onError : lightMode.onError}
-          />
+          <Button title="Logout" onPress={_logout} color={isDarkMode ? darkMode.onError : lightMode.onError} />
         </TouchableOpacity>
       </View>
     </ThemeProvider>

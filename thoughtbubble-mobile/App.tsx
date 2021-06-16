@@ -1,61 +1,113 @@
 import React, { FC, useEffect, useState } from 'react';
-import { ActivityIndicator, StatusBar } from 'react-native';
-import { useSelector } from 'react-redux';
+import { ActivityIndicator, Linking, Platform, StatusBar } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { Provider as ReduxProvider } from 'react-redux';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { LoginScreen } from './src/screens/LoginScreen';
-import { checkForIdToken } from './src/utils/asyncStorage';
-import { storeUserAction } from './src/actions/storeUserAction';
+import { checkForToken, clearAsyncStorage } from './src/utils/asyncStorage';
 import { fetchProjectDataAction } from './src/actions/fetchProjectDataAction';
 import { RootState } from './src/reducers/rootReducer'; // type
 import store from './src/store';
-import { fetchUserInfoAction } from './src/actions/userInfoActions';
+import { fetchUserAction } from './src/actions/userInfoActions';
 import { fetchActivityDataAction } from './src/actions/fetchActivityAction';
 import { useDarkCheck } from './src/hooks/useDarkCheck';
 import { AppNavigator } from './src/navigation/AppNavigator';
 import { SplashScreen } from './src/screens/SplashScreen';
+import jwtDecode, { JwtPayload } from 'jwt-decode';
+import axios from 'axios';
+import { BASE_URL } from '@env';
+import { persistToken } from './src/utils/asyncStorage';
 
-interface AppProps {}
-
-const App: FC<AppProps> = () => {
-  const loginStatus = useSelector((state: RootState) => state.storedUser);
+const App: FC = () => {
+  const loginStatus = useSelector((state: RootState) => state.userInfo.id);
+  console.log('loginStatus', loginStatus);
   const isDarkMode = useDarkCheck();
+  const dispatch = useDispatch();
 
-  if (loginStatus.status === 'succeeded' && loginStatus.token.sub) {
+  /**
+   * just logged in and was redirected
+   * app was already open
+   */
+  const handleOpenURL = async ({ url }) => {
+    const token = url.split('//')[1]; // asdf.asdf.asdf
+    // store token in async storage
+    await persistToken(token); // might be a redundant await
+    // get user from db,
+    dispatch(fetchUserAction(token));
+  };
+
+  useEffect(() => {
+    // app is not open yet i.e. opened Safarai and went to `thoughtbubble://`, would log `thoughtbubble://`
+    Linking.getInitialURL().then((url) => {
+      // console.log('app was just opened for for first time', url);
+    });
+    if (Platform.OS === 'ios') {
+      Linking.addEventListener('url', handleOpenURL);
+    }
+    return () => {
+      if (Platform.OS === 'ios') {
+        Linking.removeEventListener('url', handleOpenURL);
+      }
+    };
+  }, []);
+
+  if (loginStatus) {
+    // redux store has been set with info
     return (
       <>
-        {console.log('app')}
+        {console.log('app screen')}
         <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
         <AppNavigator />
       </>
     );
   }
-  if (loginStatus.status === 'succeeded' && !loginStatus.token.sub) {
-    return (
-      <>
-        {console.log('login')}
-        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-        <LoginScreen />
-      </>
-    );
-  }
+
   return (
     <>
-      {console.log('splash')}
-      <StatusBar barStyle="light-content" />
-      <SplashScreen />
+      {console.log('login screen')}
+      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <LoginScreen />
     </>
   );
+
+  // if (loginStatus.status === 'succeeded' && loginStatus.token.sub) {
+  //   return (
+  //     <>
+  //       {console.log('app')}
+  //       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+  //       <AppNavigator />
+  //     </>
+  //   );
+  // }
+  // if (loginStatus.status === 'succeeded' && !loginStatus.token.sub) {
+  //   return (
+  //     <>
+  //       {console.log('login')}
+  //       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+  //       <LoginScreen />
+  //     </>
+  //   );
+  // }
+  // return (
+  //   <>
+  //     {console.log('splash')}
+  //     <StatusBar barStyle="light-content" />
+  //     <SplashScreen />
+  //   </>
+  // );
 };
 
-checkForIdToken().then(async (res) => {
+// clearAsyncStorage().then(() => console.log('cleared async storage'));
+
+checkForToken().then(async (token) => {
   // this function updates the redux store to match any contents in the asyncstorage before rendering app
   // only executed when app is first loaded/launched
-  if (res !== null) {
-    await store.dispatch(storeUserAction(res)); // store idToken in redux store if theres an idToken in asyncstorage
-    await store.dispatch(fetchProjectDataAction(res.sub)); // populate the redux store with the user's projects
-    await store.dispatch(fetchUserInfoAction()); // fetch users personal settings/info etc
-    await store.dispatch(fetchActivityDataAction()); // fetch user's activity data
+  if (token !== null) {
+    console.log('there was a token');
+    await store.dispatch(fetchUserAction(token));
+    await store.dispatch(fetchProjectDataAction()); // populate the redux store with the user's projects
+    // await store.dispatch(fetchUserInfoAction()); // fetch users personal settings/info etc
+    // await store.dispatch(fetchActivityDataAction()); // fetch user's activity data
   }
 });
 

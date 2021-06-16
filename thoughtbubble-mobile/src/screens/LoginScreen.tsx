@@ -1,17 +1,20 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, TouchableHighlight } from 'react-native';
-import { _onLogIn } from '../utils/auth';
+import { View, Text, Button, StyleSheet, TouchableHighlight, Linking } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { LoginScreenProps } from '../interfaces/screenProps';
+import { BASE_URL } from '@env';
 
 export const LoginScreen: React.FC<LoginScreenProps> = () => {
+  const _openGithubAuth = () => {
+    Linking.openURL(`${BASE_URL}/auth/github`);
+  };
   return (
     <>
       <View style={styles.container}>
         <MaterialCommunityIcons name="thought-bubble" size={90} color="#6200EE" />
         <Text style={styles.logoText}>thoughtBubble</Text>
         <TouchableHighlight style={styles.btn1}>
-          <Button title="login" color="white" onPress={() => _onLogIn()} />
+          <Button title="login" color="white" onPress={_openGithubAuth} />
         </TouchableHighlight>
       </View>
     </>

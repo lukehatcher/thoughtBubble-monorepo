@@ -1,9 +1,9 @@
 import React, { FC, useState, useEffect, useRef, useCallback } from 'react';
-import { StyleSheet, LogBox, Animated } from 'react-native';
+import { StyleSheet, LogBox, Animated, Linking, Platform } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { FAB, IconButton } from 'react-native-paper';
 import styled, { ThemeProvider } from 'styled-components/native';
-import { DrawerActions } from '@react-navigation/native';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 
 import { ProjectsScreenProps } from '../interfaces/screenProps';
 import { darkMode, lightMode } from '../constants/colors';
@@ -13,6 +13,8 @@ import { useOrderProjects } from '../hooks/useOrderProjects';
 import { ProjectList } from '../components/ProjectList';
 import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
 import { ProjectDisplaySettingsModal } from '../components/ProjectDisplaySettingsModal';
+import { BASE_URL } from '@env';
+import axios from 'axios';
 
 export const ProjectsScreen: FC<ProjectsScreenProps> = ({ navigation }) => {
   const [addProjModalView, setAddProjModalView] = useState(false);

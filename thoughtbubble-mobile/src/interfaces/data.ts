@@ -12,6 +12,8 @@ export interface UserInfoShape {
   projectOrder: OrderType;
   projectDirection: Direction;
   saveOrder: boolean;
+  displayName: string;
+  avatarUrl: string;
 }
 
 export interface ThoughtShape {
