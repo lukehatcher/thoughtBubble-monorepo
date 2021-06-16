@@ -89,8 +89,8 @@ export const ProjectLongPressModal: FC<ProjectLongPressProps> = memo(function ({
               <>
                 <LongPressModalItemText>{project?.pinned ? 'Unpin project' : 'Pin project'}</LongPressModalItemText>
                 <MaterialCommunityIcons
-                  // name={project?.pinned ? 'pin-off-outline' : 'pin-outline'}
-                  name="pin"
+                  name={project?.pinned ? 'pin-off-outline' : 'pin-outline'}
+                  // name="pin"
                   size={20}
                   style={styles.icon}
                   color={isDarkMode ? darkMode.textOnBackground : lightMode.textOnBackground}
@@ -139,6 +139,7 @@ const styles = StyleSheet.create({
 
 const TextWithColor = styled.Text`
   font-family: Inter;
+  font-weight: 500;
   color: ${(props) => props.theme.secondary};
 `;
 
@@ -159,6 +160,7 @@ const InfoWrapper = styled.View`
 
 const PreviewTitle = styled.Text`
   font-family: Inter;
+  font-weight: 600;
   color: ${(props) => props.theme.textOnBackground};
   font-size: 45px;
   margin-bottom: 40px;
