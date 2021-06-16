@@ -34,7 +34,9 @@ import { authMiddleware } from './middleware/authMiddleware';
   passport.serializeUser((user: any, done) => {
     done(null, user.accessToken); // docs say id
   });
+
   app.use(passport.initialize());
+
   passport.use(
     new GitHubStrategy(
       {
@@ -47,7 +49,7 @@ import { authMiddleware } from './middleware/authMiddleware';
         // check if user exists before saving
         let user = await User.findOne({ where: { githubId: profile.id } });
         if (user) {
-          // if the user's github name/data updated, update it
+          // if the user's github name/data exist already, update it uncase they changed it on github.com
           await getConnection()
             .createQueryBuilder()
             .update(User)
@@ -55,12 +57,12 @@ import { authMiddleware } from './middleware/authMiddleware';
               username: profile.username,
               displayName: profile.displayName,
               email: profile.emails ? profile.emails[0].value : '',
-              avatarUrl: (profile._json as any).avatar_url, // never blank for a github user even if they didnt make one
+              avatarUrl: (profile._json as any).avatar_url,
             })
             .where('id = :id', { id: user.id })
             .execute();
         } else {
-          // first time user, create new user
+          // first time user, create new User
           user = await User.create({
             githubId: profile.id,
             username: profile.username,
@@ -69,8 +71,6 @@ import { authMiddleware } from './middleware/authMiddleware';
             avatarUrl: (profile._json as any).avatar_url,
           }).save();
         }
-        // should be an env variable
-        // console.log('asdfasdfasdfasdfasdfasdf', user.id);
         cb(null, {
           accessToken: jwt.sign({ userId: user.id }, config.auth.github_client_secret!, { expiresIn: '1y' }),
         });
@@ -80,18 +80,12 @@ import { authMiddleware } from './middleware/authMiddleware';
 
   app.get('/auth/github', passport.authenticate('github', { session: false }));
 
-  app.get(
-    '/auth/github/callback',
-    passport.authenticate('github'), // { failureRedirect: '/login' }
-    function (req: any, res: Response) {
-      // Successful authentication, redirect home.
-      // res.send(req.user.accessToken);
-      res.redirect(`thoughtbubble://${req.user.accessToken}`); // deep-link
-    }
-  );
+  app.get('/auth/github/callback', passport.authenticate('github'), function (req: any, res: Response) {
+    res.redirect(`thoughtbubble://${req.user.accessToken}`); // deep-link
+  });
 
   app.get('/user', async (req: Request, res: Response) => {
-    // Authorization: <type> <credentials> -> Bearer a9sd87f6as9df
+    // Authorization: <type> <credentials>
     const authHeader = req.headers.authorization;
     console.log('authheader', authHeader);
     if (!authHeader) {

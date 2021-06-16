@@ -16,8 +16,7 @@ export const authMiddleware: RequestHandler<{}, any, any, {}> = (req: Request, _
   try {
     const payload: any = jwt.verify(token, config.auth.github_client_secret!);
     req.userId = payload.userId;
-    next();
-    return;
+    return next();
   } catch (err) {
     throw new Error('failed to authenticate');
   }
