@@ -33,14 +33,14 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
         dispatch(filtertThoughtsAction(projectId, 'incomplete'));
         return;
       case 'all':
-        dispatch(fetchDataAction(userSub));
+        dispatch(fetchDataAction());
         return;
     }
   };
 
   return (
     <div className="projectCard-container">
-      <h1 style={{ color: '#6200EE' }}>{projectName}</h1>
+      <h1 style={{ color: '#BB86FC' }}>{projectName}</h1>
       <div className="proj-title-container">
         {/* filter thoughts popup */}
         <Popup
