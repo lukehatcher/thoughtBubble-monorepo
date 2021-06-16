@@ -23,6 +23,7 @@ import { authMiddleware } from './middleware/authMiddleware';
       entities: [join(__dirname, './entities/*.*')],
       logging: config.node_env === 'development',
       synchronize: config.node_env === 'development',
+      // dropSchema: true,
     });
   } catch (err) {
     console.error('error creating typeORM postgres connection', err);

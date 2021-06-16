@@ -103,11 +103,9 @@ checkForToken().then(async (token) => {
   // this function updates the redux store to match any contents in the asyncstorage before rendering app
   // only executed when app is first loaded/launched
   if (token !== null) {
-    console.log('there was a token');
     await store.dispatch(fetchUserAction(token));
-    await store.dispatch(fetchProjectDataAction()); // populate the redux store with the user's projects
-    // await store.dispatch(fetchUserInfoAction()); // fetch users personal settings/info etc
-    // await store.dispatch(fetchActivityDataAction()); // fetch user's activity data
+    await store.dispatch(fetchProjectDataAction());
+    await store.dispatch(fetchActivityDataAction()); // fetch user's activity data
   }
 });
 
