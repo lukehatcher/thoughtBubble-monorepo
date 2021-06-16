@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { createConnection, getConnection } from 'typeorm';
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import { join } from 'path';
@@ -30,6 +30,7 @@ import { authMiddleware } from './middleware/authMiddleware';
   }
 
   const app = express();
+  app.use(cors({ origin: '*' }));
 
   passport.serializeUser((user: any, done) => {
     done(null, user.accessToken); // docs say id
@@ -119,8 +120,7 @@ import { authMiddleware } from './middleware/authMiddleware';
     res.send(user);
   });
 
-  app.use(cors());
-  // app.use(cors({origin: '*'}));
+  // app.use(cors());
   app.use(morgan('dev'));
   app.use(express.json());
   app.use('/projects', authMiddleware, projectRouter);

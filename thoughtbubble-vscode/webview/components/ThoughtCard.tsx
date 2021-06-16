@@ -52,7 +52,7 @@ export const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, projectId, th
         </div>
         <div className="menu-item" onClick={() => handleThoughtTag()}>
           <VscTag size="1em" color="#AAB2C0" />
-          &nbsp;&nbsp; tag (coming soon)
+          &nbsp;&nbsp; tag
         </div>
         <div className="menu-item" onClick={() => handleThoughtDeletion()}>
           <VscTrash size="1em" color="#AAB2C0" />

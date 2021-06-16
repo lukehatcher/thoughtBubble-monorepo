@@ -4,7 +4,7 @@
 
 ## demo video
 
-<div align="center"><a href="https://www.youtube.com/watch?v=rfUMVnv-l9g" target="_blank"><img src="./docs/images/youtubeThumbnail.png" height="500" width="auto"></a></div>
+<div align="center"><a href="https://www.youtube.com/watch?v=WuTVLKUo9dk" target="_blank"><img src="./docs/images/youtubeThumbnail2.png" height="500" width="auto"></a></div>
 
 ## monorepo structure
 
@@ -24,10 +24,10 @@ I built this project to help better centralize my code related thoughts for whil
 
 ## current project state
 
-Mobile app is nearing completion.
+Mobile app has about 95% of its necessary features and I have just started shifting my time more towards the VSCode client to catch it up (6/15/21).
 
 ## roadmap
 
 ## contributions
 
-project will be open to contributions soon, code base needs some restructuring first and some core features still need implementing on the vscode desktop client
+project will be open to contributions some day, code base needs some restructuring first and some core features still need implementing on the vscode desktop client

@@ -1,18 +1,16 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, TouchableHighlight, Linking } from 'react-native';
+import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { LoginScreenProps } from '../interfaces/screenProps';
-import { BASE_URL } from '@env';
 import { TextTB } from '../components/Text';
+import { _openGithubAuth } from '../utils/auth';
+import { darkMode } from '../constants/colors';
 
 export const LoginScreen: React.FC<LoginScreenProps> = () => {
-  const _openGithubAuth = () => {
-    Linking.openURL(`${BASE_URL}/auth/github`);
-  };
   return (
     <>
       <View style={styles.container}>
-        <MaterialCommunityIcons name="thought-bubble" size={90} color="#6200EE" />
+        <MaterialCommunityIcons name="thought-bubble" size={90} color={darkMode.primary} />
         <Text style={styles.logoText}>thoughtBubble</Text>
         <TouchableHighlight style={styles.btn1} underlayColor="#21212190" onPress={_openGithubAuth}>
           <>
@@ -56,7 +54,7 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   logoText: {
-    color: '#6200EE',
+    color: darkMode.primary,
     fontSize: 40,
   },
 });

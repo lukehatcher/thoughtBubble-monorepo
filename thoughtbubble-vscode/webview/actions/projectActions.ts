@@ -1,31 +1,34 @@
 import axios from 'axios';
 import { ProjectShape } from '../interfaces/interfaces';
 import { locations } from '../constants/locations';
+import { BASE_URL, DEV_TOKEN } from '../constants/config';
 
 export const addProjectAction = (projectName: string) => {
-  return async (dispatch, getState) => {
-    const userSub = `github|${getState().storedUser.id}`;
+  return async (dispatch, _getState) => {
     axios
-      .post('http://localhost:3001/api/projects', {
-        userSub,
-        projectName,
-        creationLocation: locations.VSCODE,
-      })
+      .post(
+        `${BASE_URL}/projects`,
+        {
+          projectName,
+          creationLocation: locations.VSCODE,
+        },
+        { headers: { Authorization: `Bearer ${DEV_TOKEN}` } }
+      )
       .then((res) => {
-        const newProject: ProjectShape = res.data;
+        const newProject = res.data;
+        newProject.projectThoughts = []; // does not come from db query
         dispatch({ type: 'addProject', payload: newProject });
       })
-      .catch((err) => console.error('@projectActions.ts: ', err));
+      .catch((err) => console.error('@projectActions.ts: fail', err));
   };
 };
 
 export const deleteProjectAction = (projectId: string) => {
-  return async (dispatch, getState) => {
-    const userSub = `github|${getState().storedUser.id}`;
+  return async (dispatch, _getState) => {
     axios
-      .delete('http://localhost:3001/api/projects', {
+      .delete(`${BASE_URL}/projects`, {
+        headers: { Authorization: `Bearer ${DEV_TOKEN}` },
         params: {
-          userSub,
           projectId,
         },
       })

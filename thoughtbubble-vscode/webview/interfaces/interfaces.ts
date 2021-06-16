@@ -1,20 +1,49 @@
+// export interface ThoughtShape {
+//   // dup
+//   id: string;
+//   projectId: string;
+//   text: string;
+//   completed: boolean;
+//   tag: string | null;
+// }
+
 export interface ThoughtShape {
-  // dup
   id: string;
+  // dates come in as string, they can be converted to type Date with `new Date(param)`
+  createdDate: string;
+  // lastUpdatedDate?: string; // not yet // idk its ever needed
+  creationLocation: any; // Locations;
   projectId: string;
   text: string;
   completed: boolean;
   tag: string | null;
+  key?: string; // used later for -> https://github.com/jemise111/react-native-swipe-list-view#usage
 }
 
 // shape of data in redux store && shape of data returned from api
+// export interface ProjectShape {
+//   // dup
+//   id: string;
+//   userId: string;
+//   projectName: string;
+//   projectThoughts: ThoughtShape[];
+//   completed: boolean;
+// }
+
 export interface ProjectShape {
-  // dup
   id: string;
+  createdDate: string;
+  lastUpdatedDate: string;
+  creationLocation: any; // Locations;
+  archived: boolean;
+  archivedDate: string; // actually a, iso date
   userId: string;
   projectName: string;
   projectThoughts: ThoughtShape[];
   completed: boolean;
+  pinned: boolean;
+  pinDate: string; // iso date
+  // key?: string; // used later for -> https://github.com/jemise111/react-native-swipe-list-view#usage
 }
 
 export interface ThoughtCardProps {

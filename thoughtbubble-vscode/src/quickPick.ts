@@ -3,12 +3,14 @@ import axios from 'axios';
 import { StateManager } from './stateManager';
 import { ProjectShape, projectTuple } from './interfaces';
 
+export const BASE_URL = 'http://localhost:3001';
+export const DEV_TOKEN = 'asdf1234';
+
 export async function fetchQuickPickData(): Promise<null | projectTuple[]> {
-  const userData = StateManager.getToken();
-  if (!userData) return null;
-  const userSub = `github|${JSON.parse(userData).id}`;
+  // const userData = StateManager.getToken();
+  // if (!userData) return null;
   try {
-    const response = await axios.get('http://localhost:3001/api/projects', { params: { userSub } });
+    const response = await axios.get(`${BASE_URL}/projects`, { headers: { Authorization: `Bearer ${DEV_TOKEN}` } });
     const userData: ProjectShape[] = response.data;
     return userData.map((proj) => ({ projectName: proj.projectName, projectId: proj.id }));
   } catch (err) {
@@ -18,14 +20,16 @@ export async function fetchQuickPickData(): Promise<null | projectTuple[]> {
 }
 
 export async function addThoughtFromQuickPick(projectId: string, newThought: string) {
-  const userData = StateManager.getToken() as string; // checking for undefined happened in fetchQuickPickData ^
-  const userSub = `github|${JSON.parse(userData).id}`;
   try {
-    await axios.post('http://localhost:3001/api/thoughts', {
-      userSub,
-      projectId,
-      thought: newThought,
-    });
+    await axios.post(
+      `${BASE_URL}/thoughts`,
+      {
+        projectId,
+        thought: newThought,
+        creationLocation: 'vscode',
+      },
+      { headers: { Authorization: `Bearer ${DEV_TOKEN}` } }
+    );
   } catch (err) {
     vscode.window.showErrorMessage(JSON.stringify(err));
   }

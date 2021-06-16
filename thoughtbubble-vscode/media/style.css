@@ -34,7 +34,7 @@ html {
 }
 
 .menu-item:hover {
-  color: #6200ee;
+  color: #bb86fc;
 }
 
 .menu-item-override {
@@ -146,7 +146,7 @@ textarea:focus {
   right: 10px;
   outline: none;
   border: none;
-  background-color: #6200ee;
+  background-color: #bb86fc;
   padding: 10px;
   border-radius: 5px;
 }

@@ -3,3 +3,4 @@ dist
 notes.js
 media/reactBundle.js
 media/reactBundle.js.map
+webview/constants/config.ts

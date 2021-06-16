@@ -1,16 +1,19 @@
 import axios from 'axios';
 import { locations } from '../constants/locations';
+import { BASE_URL, DEV_TOKEN } from '../constants/config';
 
 export const addThoughtAction = (projectId: string, thought: string) => {
-  return async (dispatch, getState) => {
-    const userSub = `github|${getState().storedUser.id}`;
+  return async (dispatch, _getState) => {
     axios
-      .post('http://localhost:3001/api/thoughts', {
-        userSub,
-        projectId,
-        thought,
-        creationLocation: locations.VSCODE,
-      })
+      .post(
+        `${BASE_URL}/thoughts`,
+        {
+          projectId,
+          thought,
+          creationLocation: locations.VSCODE,
+        },
+        { headers: { Authorization: `Bearer ${DEV_TOKEN}` } }
+      )
       .then((res) => {
         // const newThoughtId = res.data;
         dispatch({ type: 'addThought', payload: res.data });
@@ -20,12 +23,11 @@ export const addThoughtAction = (projectId: string, thought: string) => {
 };
 
 export const deleteThoughtAction = (projectId: string, thoughtId: string) => {
-  return async (dispatch, getState) => {
-    const userSub = `github|${getState().storedUser.id}`;
+  return async (dispatch, _getState) => {
     axios
-      .delete('http://localhost:3001/api/thoughts', {
+      .delete(`${BASE_URL}/thoughts`, {
+        headers: { Authorization: `Bearer ${DEV_TOKEN}` },
         params: {
-          userSub, // not used atm
           projectId, // not used in api atm
           thoughtId,
         },
@@ -38,16 +40,18 @@ export const deleteThoughtAction = (projectId: string, thoughtId: string) => {
 };
 
 export const editThoughtAction = (newThought: string, projectId: string, thoughtId: string) => {
-  return async (dispatch, getState) => {
-    const userSub = `github|${getState().storedUser.id}`;
+  return async (dispatch, _getState) => {
     try {
       axios
-        .put('http://localhost:3001/api/thoughts', {
-          userSub, // not used in new api atm
-          projectId, // not used in new api atm
-          thoughtId,
-          newThought,
-        })
+        .put(
+          `${BASE_URL}/thoughts`,
+          {
+            projectId, // not used in new api atm
+            thoughtId,
+            newThought,
+          },
+          { headers: { Authorization: `Bearer ${DEV_TOKEN}` } }
+        )
         .then((res) => {
           dispatch({ type: 'editThought', payload: { projectId, id: thoughtId, newThought } });
         });
@@ -58,14 +62,16 @@ export const editThoughtAction = (newThought: string, projectId: string, thought
 };
 
 export const thoughtStatusChangeAction = (projectId: string, thoughtId: string) => {
-  return async (dispatch, getState) => {
-    const userSub = `github|${getState().storedUser.id}`;
+  return async (dispatch, _getState) => {
     axios
-      .put('http://localhost:3001/api/thoughts/status', {
-        userSub, // not used atm in new api
-        projectId, // not used atm
-        thoughtId,
-      })
+      .put(
+        `${BASE_URL}/thoughts/status`,
+        {
+          projectId, // not used atm
+          thoughtId,
+        },
+        { headers: { Authorization: `Bearer ${DEV_TOKEN}` } }
+      )
       .then((res) => {
         dispatch({ type: 'thoughtStatusChange', payload: { projectId, id: thoughtId } });
       })

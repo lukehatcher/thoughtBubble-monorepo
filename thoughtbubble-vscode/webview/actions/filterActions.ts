@@ -1,14 +1,10 @@
 import axios from 'axios';
-// new api
+import { BASE_URL, DEV_TOKEN } from '../constants/config';
+
 export const filtertThoughtsAction = (projectId: string, filterType: string) => {
-  return async (dispatch, getState) => {
-    const userSub = `github|${getState().storedUser.id}`;
+  return async (dispatch, _getState) => {
     try {
-      const response = await axios.get('http://localhost:3001/api/projects', {
-        params: {
-          userSub,
-        },
-      });
+      const response = await axios.get(`${BASE_URL}/projects`, { headers: { Authorization: `Bearer ${DEV_TOKEN}` } });
       dispatch({ type: `filterData/${filterType}`, payload: { data: response.data, projectId } });
     } catch (err) {
       console.error('fetchDataAction.ts: ', err);
