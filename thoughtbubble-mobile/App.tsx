@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Provider as ReduxProvider } from 'react-redux';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { LoginScreen } from './src/screens/LoginScreen';
-import { checkForToken, clearAsyncStorage } from './src/utils/asyncStorage';
+import { clearAsyncStorage, getToken } from './src/utils/asyncStorage';
 import { fetchProjectDataAction } from './src/actions/fetchProjectDataAction';
 import { RootState } from './src/reducers/rootReducer'; // type
 import store from './src/store';
@@ -12,10 +12,6 @@ import { fetchUserAction } from './src/actions/userInfoActions';
 import { fetchActivityDataAction } from './src/actions/fetchActivityAction';
 import { useDarkCheck } from './src/hooks/useDarkCheck';
 import { AppNavigator } from './src/navigation/AppNavigator';
-import { SplashScreen } from './src/screens/SplashScreen';
-import jwtDecode, { JwtPayload } from 'jwt-decode';
-import axios from 'axios';
-import { BASE_URL } from '@env';
 import { persistToken } from './src/utils/asyncStorage';
 
 const App: FC = () => {
@@ -24,24 +20,21 @@ const App: FC = () => {
   const isDarkMode = useDarkCheck();
   const dispatch = useDispatch();
 
-  /**
-   * just logged in and was redirected
-   * app was already open
-   */
+  // just logged in and was redirected, app was already open
   const handleOpenURL = async ({ url }) => {
-    const token = url.split('//')[1]; // asdf.asdf.asdf
+    const token = url.split('//')[1]; // <bearer> <asdf.asdf.asdf>
     // store token in async storage
-    await persistToken(token); // might be a redundant await
-    // get user from db,
+    await persistToken(token);
+    // fill redux store
     dispatch(fetchUserAction(token));
     dispatch(fetchProjectDataAction());
     dispatch(fetchActivityDataAction());
   };
 
   useEffect(() => {
-    // app is not open yet i.e. opened Safarai and went to `thoughtbubble://`, would log `thoughtbubble://`
     Linking.getInitialURL().then((url) => {
-      // console.log('app was just opened for for first time', url);
+      // app is not open yet i.e. opened Safarai and went to `thoughtbubble://`,
+      console.log('you just opened the app by going to this url: ', url);
     });
     if (Platform.OS === 'ios') {
       Linking.addEventListener('url', handleOpenURL);
@@ -54,7 +47,6 @@ const App: FC = () => {
   }, []);
 
   if (loginStatus) {
-    // redux store has been set with info
     return (
       <>
         {console.log('app screen')}
@@ -101,7 +93,7 @@ const App: FC = () => {
 
 // clearAsyncStorage().then(() => console.log('cleared async storage'));
 
-checkForToken().then(async (token) => {
+getToken().then(async (token) => {
   // this function updates the redux store to match any contents in the asyncstorage before rendering app
   // only executed when app is first loaded/launched
   if (token !== null) {

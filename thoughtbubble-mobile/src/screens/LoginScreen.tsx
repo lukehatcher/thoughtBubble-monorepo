@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { LoginScreenProps } from '../interfaces/screenProps';
 import { TextTB } from '../components/Text';
-import { _openGithubAuth } from '../utils/auth';
+import { _loginGitHub } from '../utils/auth';
 import { darkMode } from '../constants/colors';
 
 export const LoginScreen: React.FC<LoginScreenProps> = () => {
@@ -12,7 +12,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
       <View style={styles.container}>
         <MaterialCommunityIcons name="thought-bubble" size={90} color={darkMode.primary} />
         <Text style={styles.logoText}>thoughtBubble</Text>
-        <TouchableHighlight style={styles.btn1} underlayColor="#21212190" onPress={_openGithubAuth}>
+        <TouchableHighlight style={styles.btn1} underlayColor="#21212190" onPress={_loginGitHub}>
           <>
             <TextTB style={{ color: 'white', fontWeight: '600', marginRight: 20 }}>Login with GitHub</TextTB>
             <MaterialCommunityIcons name="github" size={30} color="white" />
