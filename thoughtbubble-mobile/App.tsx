@@ -14,12 +14,14 @@ import { useDarkCheck } from './src/hooks/useDarkCheck';
 import { AppNavigator } from './src/navigation/AppNavigator';
 import { persistToken } from './src/utils/asyncStorage';
 import { SplashScreen } from './src/screens/SplashScreen';
+import RNBootSplash from 'react-native-bootsplash';
 
 const App: FC = () => {
   const loginStatus = useSelector((state: RootState) => state.userInfo);
   console.log('loginStatus', loginStatus);
   const isDarkMode = useDarkCheck();
   const dispatch = useDispatch();
+  // RNBootSplash.hide(); // immediate
 
   // just logged in and was redirected, app was already open
   const handleOpenURL = async ({ url }) => {
