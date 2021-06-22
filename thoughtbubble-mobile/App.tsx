@@ -13,9 +13,10 @@ import { fetchActivityDataAction } from './src/actions/fetchActivityAction';
 import { useDarkCheck } from './src/hooks/useDarkCheck';
 import { AppNavigator } from './src/navigation/AppNavigator';
 import { persistToken } from './src/utils/asyncStorage';
+import { SplashScreen } from './src/screens/SplashScreen';
 
 const App: FC = () => {
-  const loginStatus = useSelector((state: RootState) => state.userInfo.id);
+  const loginStatus = useSelector((state: RootState) => state.userInfo);
   console.log('loginStatus', loginStatus);
   const isDarkMode = useDarkCheck();
   const dispatch = useDispatch();
@@ -46,7 +47,7 @@ const App: FC = () => {
     };
   }, []);
 
-  if (loginStatus) {
+  if (loginStatus.status === 'completed' && loginStatus.id) {
     return (
       <>
         {console.log('app screen')}
@@ -55,42 +56,25 @@ const App: FC = () => {
       </>
     );
   }
-
+  if (loginStatus.status === 'completed' && !loginStatus.id) {
+    return (
+      <>
+        {console.log('login screen')}
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+        <LoginScreen />
+      </>
+    );
+  }
   return (
     <>
-      {console.log('login screen')}
+      {console.log('splash screen')}
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <LoginScreen />
+      <SplashScreen />
     </>
   );
-
-  // if (loginStatus.status === 'succeeded' && loginStatus.token.sub) {
-  //   return (
-  //     <>
-  //       {console.log('app')}
-  //       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-  //       <AppNavigator />
-  //     </>
-  //   );
-  // }
-  // if (loginStatus.status === 'succeeded' && !loginStatus.token.sub) {
-  //   return (
-  //     <>
-  //       {console.log('login')}
-  //       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-  //       <LoginScreen />
-  //     </>
-  //   );
-  // }
-  // return (
-  //   <>
-  //     {console.log('splash')}
-  //     <StatusBar barStyle="light-content" />
-  //     <SplashScreen />
-  //   </>
-  // );
 };
 
+// DEV only:
 // clearAsyncStorage().then(() => console.log('cleared async storage'));
 
 getToken().then(async (token) => {

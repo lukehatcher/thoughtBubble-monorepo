@@ -2,6 +2,23 @@ import { UserInfoShape } from '../interfaces/data';
 import { Directions, OrderTypes } from '../constants/orders';
 import { UserInfoActionTypes } from '../constants/actionTypes';
 
+// const initialState: {data: UserInfoShape, status: string} = {
+//   data: {
+//     id: '',
+//     email: '',
+//     username: '',
+//     githubId: '',
+//     dailyEmail: true,
+//     weeklyEmail: true,
+//     darkMode: true,
+//     projectOrder: OrderTypes.LAST_UPDATED,
+//     projectDirection: Directions.DESC,
+//     saveOrder: false,
+//     avatarUrl: 'filler',
+//     displayName: '',
+//   }, status: 'idle',
+// };
+
 const initialState: UserInfoShape = {
   id: '',
   email: '',
@@ -15,6 +32,7 @@ const initialState: UserInfoShape = {
   saveOrder: false,
   avatarUrl: 'filler',
   displayName: '',
+  status: 'idle',
 };
 
 export const userInfoReducer = (state = initialState, action): UserInfoShape => {
@@ -22,7 +40,7 @@ export const userInfoReducer = (state = initialState, action): UserInfoShape => 
   switch (type) {
     case 'fetchUserInfo':
       console.log('stored new userInfo', payload);
-      return payload;
+      return { ...payload, status: 'completed' };
     case 'toggleDailyEmail':
       return {
         ...state,

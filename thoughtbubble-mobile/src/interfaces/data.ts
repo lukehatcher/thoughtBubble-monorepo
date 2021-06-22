@@ -14,6 +14,7 @@ export interface UserInfoShape {
   saveOrder: boolean;
   displayName: string;
   avatarUrl: string;
+  status: string;
 }
 
 export interface ThoughtShape {
