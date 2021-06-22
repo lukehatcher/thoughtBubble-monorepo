@@ -12,7 +12,6 @@
 #import <FlipperKitNetworkPlugin/FlipperKitNetworkPlugin.h>
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
-#import <React/RCTLinkingManager.h> // auth0
 
 static void InitializeFlipper(UIApplication *application) {
   FlipperClient *client = [FlipperClient sharedClient];
@@ -43,14 +42,6 @@ static void InitializeFlipper(UIApplication *application) {
                   continueUserActivity:userActivity
                     restorationHandler:restorationHandler];
 }
-
-// end custom auth logic https://medium.com/swlh/creating-deep-links-in-react-native-f6680dd959a9
-
-// - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url
-//             options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options
-// {
-//   return [RCTLinkingManager application:app openURL:url options:options];
-// } // auth0
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
