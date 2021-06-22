@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
+import { View, StyleSheet, TouchableHighlight } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { LoginScreenProps } from '../interfaces/screenProps';
 import { TextTB } from '../components/Text';
@@ -11,7 +11,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
     <>
       <View style={styles.container}>
         <MaterialCommunityIcons name="thought-bubble" size={90} color={darkMode.primary} />
-        <Text style={styles.logoText}>thoughtBubble</Text>
+        <TextTB style={styles.logoText}>thoughtBubble</TextTB>
         <TouchableHighlight style={styles.btn1} underlayColor="#21212190" onPress={_loginGitHub}>
           <>
             <TextTB style={{ color: 'white', fontWeight: '600', marginRight: 20 }}>Login with GitHub</TextTB>
@@ -56,5 +56,6 @@ const styles = StyleSheet.create({
   logoText: {
     color: darkMode.primary,
     fontSize: 40,
+    fontWeight: '500',
   },
 });
