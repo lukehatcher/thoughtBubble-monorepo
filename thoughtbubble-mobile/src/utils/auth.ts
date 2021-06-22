@@ -9,5 +9,6 @@ export const _loginGitHub = () => {
 
 export const _logout = async () => {
   await clearAsyncStorage();
-  store.dispatch({ type: 'USER_LOGOUT' });
+  await store.dispatch({ type: 'USER_LOGOUT' });
+  await store.dispatch({ type: 'recordNoUser' });
 };

@@ -6,7 +6,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { darkMode, lightMode } from '../constants/colors';
-import { SplashScreen } from '../screens/SplashScreen';
+import RNBootSplash from 'react-native-bootsplash';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -34,11 +34,9 @@ const MainStackNavigator = () => {
 export const AppNavigator = () => {
   const isDarkMode = useDarkCheck();
   return (
-    <NavigationContainer>
+    // removes splash screen onload
+    <NavigationContainer onReady={() => RNBootSplash.hide({ fade: true })}>
       <Drawer.Navigator
-        drawerContentOptions={{
-          activeTintColor: '#e91e63',
-        }}
         drawerContent={(props) => <DrawerContent {...props} />}
         drawerStyle={{ backgroundColor: isDarkMode ? darkMode.background : lightMode.background }}
         // hideStatusBar

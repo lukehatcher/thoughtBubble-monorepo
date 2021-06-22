@@ -10,7 +10,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
   return (
     <>
       <View style={styles.container}>
-        <MaterialCommunityIcons name="thought-bubble" size={90} color={darkMode.primary} />
+        {/* <MaterialCommunityIcons name="thought-bubble" size={90} color={darkMode.primary} /> */}
         <TextTB style={styles.logoText}>thoughtBubble</TextTB>
         <TouchableHighlight style={styles.btn1} underlayColor="#21212190" onPress={_loginGitHub}>
           <>
@@ -25,7 +25,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#121212',
+    backgroundColor: darkMode.primaryVariant,
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -43,18 +43,9 @@ const styles = StyleSheet.create({
     marginTop: 25,
     width: 250,
     height: 50,
-    // shadow
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 7,
-    },
-    shadowOpacity: 0.34,
-    shadowRadius: 6.27,
-    elevation: 10,
   },
   logoText: {
-    color: darkMode.primary,
+    color: darkMode.textOnBackground,
     fontSize: 40,
     fontWeight: '500',
   },

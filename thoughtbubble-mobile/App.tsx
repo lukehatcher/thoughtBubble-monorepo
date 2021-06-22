@@ -14,14 +14,12 @@ import { useDarkCheck } from './src/hooks/useDarkCheck';
 import { AppNavigator } from './src/navigation/AppNavigator';
 import { persistToken } from './src/utils/asyncStorage';
 import { SplashScreen } from './src/screens/SplashScreen';
-import RNBootSplash from 'react-native-bootsplash';
 
 const App: FC = () => {
   const loginStatus = useSelector((state: RootState) => state.userInfo);
   console.log('loginStatus', loginStatus);
   const isDarkMode = useDarkCheck();
   const dispatch = useDispatch();
-  // RNBootSplash.hide(); // immediate
 
   // just logged in and was redirected, app was already open
   const handleOpenURL = async ({ url }) => {
@@ -59,6 +57,7 @@ const App: FC = () => {
     );
   }
   if (loginStatus.status === 'completed' && !loginStatus.id) {
+    // can only have a completed status and no id if theres no user
     return (
       <>
         {console.log('login screen')}
@@ -67,10 +66,9 @@ const App: FC = () => {
       </>
     );
   }
+  // only see this for split second when theres a stored token
   return (
     <>
-      {console.log('splash screen')}
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <SplashScreen />
     </>
   );
@@ -86,6 +84,9 @@ getToken().then(async (token) => {
     await store.dispatch(fetchUserAction(token));
     await store.dispatch(fetchProjectDataAction());
     await store.dispatch(fetchActivityDataAction()); // fetch user's activity data
+    // RNBootSplash.hide();
+  } else {
+    await store.dispatch({ type: 'recordNoUser' }); // set an empty token to get the completed flag
   }
 });
 

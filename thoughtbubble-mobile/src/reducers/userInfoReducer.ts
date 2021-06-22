@@ -62,6 +62,8 @@ export const userInfoReducer = (state = initialState, action): UserInfoShape => 
       return { ...state, projectDirection: payload };
     case UserInfoActionTypes.UPDATE_SAVE_SETTING:
       return { ...state, saveOrder: !state.saveOrder };
+    case 'recordNoUser':
+      return { ...state, status: 'completed' };
     default:
       return state;
   }
