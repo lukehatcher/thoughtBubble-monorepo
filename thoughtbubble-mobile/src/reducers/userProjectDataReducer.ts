@@ -27,6 +27,7 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
         } else {
           return {
             ...item,
+            lastUpdatedDate: new Date().toISOString(), // set temp date to reorder projects, temp date is overrode next app reload
             projectThoughts: [...item.projectThoughts, payload],
           };
         }
@@ -38,6 +39,7 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
         } else {
           return {
             ...item,
+            lastUpdatedDate: new Date().toISOString(),
             projectThoughts: item.projectThoughts.filter((thought) => thought.id !== payload.id),
           };
         }
@@ -49,6 +51,7 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
         } else {
           return {
             ...item,
+            lastUpdatedDate: new Date().toISOString(),
             projectThoughts: item.projectThoughts.map((thought) => {
               if (thought.id === payload.id) {
                 thought.text = payload.newThought;
@@ -65,6 +68,7 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
         } else {
           return {
             ...item,
+            lastUpdatedDate: new Date().toISOString(),
             projectThoughts: item.projectThoughts.map((thought) => {
               if (thought.id === payload.id) {
                 thought.tag = payload.tag;
@@ -81,6 +85,7 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
         } else {
           return {
             ...item,
+            lastUpdatedDate: new Date().toISOString(),
             projectThoughts: item.projectThoughts.map((thought) => {
               if (thought.id === payload.id) {
                 thought.completed = !thought.completed;
