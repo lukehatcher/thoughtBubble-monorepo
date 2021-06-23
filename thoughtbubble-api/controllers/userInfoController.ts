@@ -3,6 +3,8 @@ import { Request, Response } from 'express';
 import { getConnection } from 'typeorm';
 import { User } from '../entities/User';
 import { sendEmail } from '../services/email';
+import jwt from 'jsonwebtoken';
+import { config } from '../config/enviroment';
 
 class userInfoController {
   private readonly location: string;
@@ -34,6 +36,44 @@ class userInfoController {
   //     res.sendStatus(400);
   //   }
   // };
+
+  /**
+   * fetch user or set new user
+   */
+  public fetchOrSetUser = async (req: Request, res: Response) => {
+    // Authorization: <type> <credentials>
+    const authHeader = req.headers.authorization;
+    console.log('authheader', authHeader);
+    if (!authHeader) {
+      res.send({ user: null });
+      return;
+    }
+
+    const token = authHeader.split(' ')[1];
+    if (!token) {
+      res.send({ user: null });
+      return;
+    }
+
+    let userId = '';
+    try {
+      const payload: any = jwt.verify(token, config.auth.github_client_secret!);
+      userId = payload.userId;
+      console.log('payload', payload);
+      console.log('userid', userId);
+    } catch (err) {
+      res.send({ user: null });
+      console.error(err);
+    }
+
+    if (!userId) {
+      res.send({ user: null });
+      return;
+    }
+
+    const user = await User.findOne({ id: userId });
+    res.send(user);
+  };
 
   public toggleDarkMode = async (req: Request, res: Response) => {
     const { userId } = req;
