@@ -17,6 +17,7 @@ export const config = {
   auth: {
     github_client_id: process.env.GITHUB_CLIENT_ID,
     github_client_secret: process.env.GITHUB_CLIENT_SECRET,
+    github_callback_url: process.env.GITHUB_CALLBACK_URL,
   },
   vscode_dev: {
     vscode_dev_token: process.env.VSCODE_DEV_TOKEN,
