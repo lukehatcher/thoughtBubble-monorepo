@@ -57,6 +57,7 @@ const App: FC = () => {
     );
   }
   if (loginStatus.status === 'completed' && !loginStatus.id) {
+    // can only have a completed status and no id if theres no user
     return (
       <>
         {console.log('login screen')}
@@ -65,10 +66,9 @@ const App: FC = () => {
       </>
     );
   }
+  // only see this for split second when theres a stored token
   return (
     <>
-      {console.log('splash screen')}
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <SplashScreen />
     </>
   );
@@ -84,6 +84,9 @@ getToken().then(async (token) => {
     await store.dispatch(fetchUserAction(token));
     await store.dispatch(fetchProjectDataAction());
     await store.dispatch(fetchActivityDataAction()); // fetch user's activity data
+    // RNBootSplash.hide();
+  } else {
+    await store.dispatch({ type: 'recordNoUser' }); // set an empty token to get the completed flag
   }
 });
 

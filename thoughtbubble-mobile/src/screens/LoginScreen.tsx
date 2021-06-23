@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, TouchableHighlight } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { LoginScreenProps } from '../interfaces/screenProps';
 import { TextTB } from '../components/Text';
 import { _loginGitHub } from '../utils/auth';
 import { darkMode } from '../constants/colors';
+import RNBootSplash from 'react-native-bootsplash';
 
 export const LoginScreen: React.FC<LoginScreenProps> = () => {
+  useEffect(() => {
+    (async () => {
+      await RNBootSplash.hide();
+    })();
+  }, []);
+
   return (
     <>
       <View style={styles.container}>
-        <MaterialCommunityIcons name="thought-bubble" size={90} color={darkMode.primary} />
+        {/* <MaterialCommunityIcons name="thought-bubble" size={90} color={darkMode.primary} /> */}
         <TextTB style={styles.logoText}>thoughtBubble</TextTB>
         <TouchableHighlight style={styles.btn1} underlayColor="#21212190" onPress={_loginGitHub}>
           <>
@@ -25,7 +32,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#121212',
+    backgroundColor: darkMode.primaryVariant,
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -43,18 +50,9 @@ const styles = StyleSheet.create({
     marginTop: 25,
     width: 250,
     height: 50,
-    // shadow
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 7,
-    },
-    shadowOpacity: 0.34,
-    shadowRadius: 6.27,
-    elevation: 10,
   },
   logoText: {
-    color: darkMode.primary,
+    color: darkMode.textOnBackground,
     fontSize: 40,
     fontWeight: '500',
   },

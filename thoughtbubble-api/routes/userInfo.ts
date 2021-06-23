@@ -3,9 +3,9 @@ import UserInfoController from '../controllers/userInfoController';
 
 const router = express.Router();
 
-// router // api/userinfo
-//   .route('/')
-//   .get(UserInfoController.fetchUserInfo);
+router // api/userinfo
+  .route('/')
+  .get(UserInfoController.fetchOrSetUser);
 
 router // api/userinfo/email
   .route('/dailyemail')

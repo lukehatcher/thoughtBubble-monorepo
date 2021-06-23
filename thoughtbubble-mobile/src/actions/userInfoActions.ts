@@ -8,7 +8,7 @@ import { getToken } from '../utils/asyncStorage';
 export const fetchUserAction = (token: string) => {
   return async (dispatch, _getState) => {
     axios
-      .get(`${BASE_URL}/user`, { headers: { Authorization: `Bearer ${token}` } })
+      .get(`${BASE_URL}/userinfo`, { headers: { Authorization: `Bearer ${token}` } })
       .then(async (res) => {
         dispatch({ type: 'fetchUserInfo', payload: res.data });
       })

@@ -1,8 +1,8 @@
-import { Request, Response, RequestHandler } from 'express';
+import { Request, Response, RequestHandler, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { config } from '../config/enviroment';
 
-export const authMiddleware: RequestHandler<{}, any, any, {}> = (req: Request, _res: Response, next) => {
+export const authMiddleware: RequestHandler<{}, any, any, {}> = (req: Request, _res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
   if (!authHeader) {
     throw new Error('failed to authenticate');
