@@ -31,7 +31,7 @@ export const AddProjectModal: React.FC<AddProjectModalProps> = function ({ addPr
     <Modal animationType="slide" visible={addProjModalView}>
       <ModalContainer>
         <HelperText type="error" visible={inputIsTooLong()} style={{ marginBottom: 15 }}>
-          Error: Project name must be less than 25 characters
+          Project name must be less than 25 characters
         </HelperText>
         <TextInput
           mode="outlined"
