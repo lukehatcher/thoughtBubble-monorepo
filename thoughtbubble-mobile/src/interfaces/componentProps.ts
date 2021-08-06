@@ -85,7 +85,7 @@ export interface ProjectLongPressProps {
 }
 
 export interface BlurOverlayProps {
-  pressOutCallback: (...args) => void;
+  pressOutCallback: (...args: any[]) => void;
   backgroundColor?: string; // rgba format is best
 }
 
