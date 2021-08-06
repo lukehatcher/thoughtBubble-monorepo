@@ -1,3 +1,4 @@
+import { DrawerContentComponentProps, DrawerNavigationOptions } from '@react-navigation/drawer';
 import { ProjectShape, ThoughtShape } from './data';
 import { Tags } from './stringLiteralTypes';
 
@@ -87,3 +88,5 @@ export interface BlurOverlayProps {
   pressOutCallback: (...args) => void;
   backgroundColor?: string; // rgba format is best
 }
+
+export type DrawerContentProps = DrawerContentComponentProps<DrawerNavigationOptions>;

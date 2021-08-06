@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { Image, Linking, StyleProp, StyleSheet, TextStyle } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -11,11 +11,12 @@ import { changeDarkModeAction } from '../actions/userInfoActions';
 import { RootState } from '../reducers/rootReducer';
 import { TextTB } from './Text';
 import { _logout } from '../utils/auth';
+import { DrawerContentProps } from '../interfaces/componentProps';
 
 /**
  * custom drawer content
  */
-export const DrawerContent = ({ navigation }) => {
+export const DrawerContent: FC<DrawerContentProps> = ({ navigation }) => {
   const dispatch = useDispatch();
   const isDarkMode = useDarkCheck();
   const user = useSelector((state: RootState) => state.userInfo);
