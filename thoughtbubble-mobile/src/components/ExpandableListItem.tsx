@@ -10,6 +10,7 @@ import { unarchiveProjectAction } from '../actions/projectActions';
 import { ExpandableListItemProps } from '../interfaces/componentProps';
 import { TagIcon } from './TagIcon';
 import { Tags } from '../interfaces/stringLiteralTypes';
+import { AccordionHeaderTextProps, AccordionItemTextProps } from '../interfaces/styledComponentsProps';
 
 export const ExpandableListItem: FC<ExpandableListItemProps> = memo(function ({
   projectId,
@@ -34,21 +35,6 @@ export const ExpandableListItem: FC<ExpandableListItemProps> = memo(function ({
   const handleUnArchive = function () {
     dispatch(unarchiveProjectAction(projectId));
   };
-
-  // const mapTagToIcon = function (tag: string) {
-  //   // ['red', 'orange', 'green', 'blue', 'purple', 'star'];
-  //   if (!tag) {
-  //     return <MaterialCommunityIcons name="file" size={20} style={styles.accordionHeaderIcon} />;
-  //   }
-  //   return (
-  //     <MaterialCommunityIcons
-  //       name={tag === 'star' ? 'star' : 'tag'}
-  //       size={20}
-  //       style={styles.accordionHeaderIcon}
-  //       color={tag === 'star' ? 'yellow' : tag}
-  //     />
-  //   );
-  // };
 
   return (
     <>
@@ -138,7 +124,7 @@ const AccordionHeader = styled.View`
   align-items: center;
 `;
 
-const AccordionHeaderText = styled.Text`
+const AccordionHeaderText = styled.Text<AccordionHeaderTextProps>`
   font-size: 16px;
   font-weight: 500;
   font-family: Inter;
@@ -165,7 +151,7 @@ const AccordianIconWrapper = styled.Text`
   margin-right: 15px;
 `;
 
-const AccordionItemText = styled.Text`
+const AccordionItemText = styled.Text<AccordionItemTextProps>`
   font-family: Inter;
   font-size: 15px;
   flex-shrink: 1;
