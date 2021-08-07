@@ -1,11 +1,13 @@
 import React, { FC, memo } from 'react';
 import { View, Text, TouchableHighlight, TouchableOpacity, StyleSheet, Animated, Alert } from 'react-native';
-import { darkMode, lightMode } from '../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { SwipeListView } from 'react-native-swipe-list-view';
+import { RowMap, SwipeListView } from 'react-native-swipe-list-view';
 import styled from 'styled-components/native';
+import { darkMode, lightMode } from '../constants/colors';
 import { ThoughtsListProps } from '../interfaces/componentProps';
 import { TagIcon } from './TagIcon';
+import { ThoughtSwipeListData } from '../interfaces/data';
+import { styleOptions2, Tags } from '../interfaces/stringLiteralTypes';
 
 const SwipeListViewAnimated = Animated.createAnimatedComponent(SwipeListView);
 
@@ -17,8 +19,7 @@ export const ThoughtsList: FC<ThoughtsListProps> = memo(function ({
   handleThoughtDelete,
   handleScroll,
 }) {
-  // console.log(thoughts);
-  const useTheme = (name: string) => (isDarkMode ? stylesDark[name] : stylesLight[name]);
+  const useTheme = (name: styleOptions2) => (isDarkMode ? stylesDark[name] : stylesLight[name]);
   const firstItem = thoughts[0].id;
   const lastItem = thoughts[thoughts.length - 1].id;
 
@@ -45,14 +46,14 @@ export const ThoughtsList: FC<ThoughtsListProps> = memo(function ({
     );
   };
 
-  const closeRow = (rowMap, rowKey) => {
+  const closeRow = (rowMap: RowMap<any>, rowKey: string) => {
     // for slidables
     if (rowMap[rowKey]) {
       rowMap[rowKey].closeRow();
     }
   };
 
-  const renderHiddenItem = (data, rowMap) => (
+  const renderHiddenItem = (data: ThoughtSwipeListData, rowMap: RowMap<any>) => (
     // for slidables
     <>
       {/* add padding to the top of the scrollview */}
@@ -89,10 +90,11 @@ export const ThoughtsList: FC<ThoughtsListProps> = memo(function ({
     </>
   );
 
-  const renderItem = (data) => (
+  const renderItem = (data: ThoughtSwipeListData) => (
     // for slidables
     // thought is data.item.text
     <>
+      {console.log(data)}
       {/* add padding to the top of the scrollview */}
       {data.item.id === firstItem ? <PaddingView /> : <></>}
       <TouchableHighlight style={useTheme('rowFront')} underlayColor={'grey'}>
@@ -100,7 +102,7 @@ export const ThoughtsList: FC<ThoughtsListProps> = memo(function ({
           <Text style={data.item.completed ? useTheme('textCompleted') : useTheme('text')}>{data.item.text}</Text>
           {data.item.tag ? (
             <TouchableOpacity style={sharedStyles.tagIcon} onPress={() => renderModal(data.item.key)}>
-              <TagIcon size={25} tag={data.item.tag} />
+              <TagIcon size={25} tag={data.item.tag as Tags} />
             </TouchableOpacity>
           ) : (
             <></>

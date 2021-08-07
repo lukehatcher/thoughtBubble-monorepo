@@ -26,8 +26,14 @@ export interface ThoughtShape {
   projectId: string;
   text: string;
   completed: boolean;
-  tag: string | null;
+  tag: string | null; // TODO: change this to use the Tags string literal type
   key?: string; // used later for -> https://github.com/jemise111/react-native-swipe-list-view#usage
+}
+
+export interface ThoughtSwipeListData {
+  index: number;
+  item: ThoughtShape;
+  separators: any; // TODO: cant find any mention of this prop in the docs, likely from RN >_< https://github.com/jemise111/react-native-swipe-list-view
 }
 
 // shape of data in redux store && shape of data returned from api
