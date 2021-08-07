@@ -90,7 +90,7 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
           />
           <ModalTitle>Order and Sort</ModalTitle>
 
-          <OrderOptionsContainer>
+          <>
             <SortTitle>SORT</SortTitle>
             <OrderOptionItem onPress={() => handleOrderTypeChange(OrderTypes.LAST_UPDATED)}>
               <MaterialCommunityIcons
@@ -182,7 +182,7 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
               <SaveOrderText>Save settings for next time?</SaveOrderText>
               <Switch value={saveOrderSetting} onValueChange={() => handleSwitchToggle()} style={styles.switch} />
             </SaveOrderContainer>
-          </OrderOptionsContainer>
+          </>
         </InfoModalContainer>
       </Modal>
     </>
@@ -192,7 +192,6 @@ export const ProjectDisplaySettingsModal: FC<ProjectDisplaySettingsModalProps> =
 const InfoModalContainer = styled.View`
   height: 450px;
   background-color: ${(props) => props.theme.background};
-  /* background-color: black; */
   margin-top: auto;
   margin-bottom: 0px;
   border-top-left-radius: 20px;
@@ -210,10 +209,6 @@ const ModalTitle = styled.Text`
   margin-bottom: 25px;
 `;
 
-const OrderOptionsContainer = styled.View`
-  /* border: 1px solid red; */
-`;
-
 const SortTitle = styled.Text`
   font-family: Inter;
   color: #808080;
@@ -229,7 +224,6 @@ const OrderTitle = styled.Text`
 `;
 
 const OrderOptionItem = styled.TouchableOpacity`
-  /* border: 1px solid green; */
   flex-direction: row;
   align-items: center;
   padding: 5px;
@@ -242,8 +236,6 @@ const OrderOptionItemText = styled.Text`
 
 // CONTAINER 2
 const RadioButtonContainer = styled.View`
-  /* flex-direction: row; */
-  /* width: 170px; */
   margin-top: 25px;
 `;
 
@@ -270,7 +262,6 @@ const styles = StyleSheet.create({
   switch: {
     marginRight: 10,
     marginLeft: 'auto',
-    // height: 10,
   },
 });
 
@@ -279,8 +270,6 @@ const SaveOrderContainer = styled.View`
   flex-direction: row;
   align-items: center;
   margin-top: 25px;
-  /* border: 1px solid blue; */
-  /* height: 50px; */
 `;
 
 const SaveOrderText = styled.Text`

@@ -12,5 +12,6 @@ declare module 'styled-components' {
     textOnError?: string;
     error?: string;
     borderColor?: string;
+    textOnSurface?: string;
   }
 }
