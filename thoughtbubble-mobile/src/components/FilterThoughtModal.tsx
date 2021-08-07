@@ -9,7 +9,7 @@ import { FilterThoughtModalProps } from '../interfaces/componentProps';
 import { RootState } from '../reducers/rootReducer';
 import { clearTagsAction, updateFiltersAction } from '../actions/filterActions';
 import { useDarkCheck } from '../hooks/useDarkCheck';
-import { StatusFilters } from '../interfaces/stringLiteralTypes';
+import { chipStyle, StatusFilters } from '../interfaces/stringLiteralTypes';
 import { BlurOverlay } from './BlurOverlay';
 
 export const FilterThoughtModal: FC<FilterThoughtModalProps> = function ({
@@ -19,7 +19,7 @@ export const FilterThoughtModal: FC<FilterThoughtModalProps> = function ({
 }) {
   const dispatch = useDispatch();
   const isDarkMode = useDarkCheck();
-  const useTheme = (name: string) => (isDarkMode ? stylesDark[name] : stylesLight[name]);
+  const useTheme = (name: chipStyle) => (isDarkMode ? stylesDark[name] : stylesLight[name]);
   const filters = useSelector((state: RootState) => state.filters);
 
   const handleThoughtFilter = async function (typeOfFilter: string) {
@@ -140,7 +140,6 @@ export const FilterThoughtModal: FC<FilterThoughtModalProps> = function ({
             <Chip
               selected={isTagSelected('favorite')}
               style={isTagSelected('favorite') ? useTheme('chipSelected') : useTheme('chip')}
-              // textStyle={isDarkMode ? { color: 'white', fontFamily: 'Inter' } : { fontFamily: 'Inter' }}
               textStyle={{ color: isDarkMode ? 'white' : null, fontFamily: 'Inter' }}
               icon="star"
               selectedColor={tagColorsDark.gold}
