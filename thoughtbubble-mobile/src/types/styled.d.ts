@@ -13,5 +13,6 @@ declare module 'styled-components' {
     error?: string;
     borderColor?: string;
     textOnSurface?: string;
+    cardHeader?: string;
   }
 }

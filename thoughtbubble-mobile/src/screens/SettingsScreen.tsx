@@ -9,6 +9,7 @@ import { SettingsScreenProps } from '../interfaces/screenProps';
 import { changeEmailSettingsAction, changeDarkModeAction } from '../actions/userInfoActions';
 import { darkMode, lightMode } from '../constants/colors';
 import { useDarkCheck } from '../hooks/useDarkCheck';
+import { styleOptions3 } from '../interfaces/stringLiteralTypes';
 
 export const SettingsScreen: React.FC<SettingsScreenProps> = () => {
   const dispatch = useDispatch();
@@ -38,7 +39,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = () => {
     dispatch(changeDarkModeAction());
   };
 
-  const useTheme = (name: string) => (isDarkMode ? stylesDark[name] : stylesLight[name]);
+  const useTheme = (name: styleOptions3) => (isDarkMode ? stylesDark[name] : stylesLight[name]);
 
   return (
     <ThemeProvider theme={theme}>

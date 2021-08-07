@@ -13,3 +13,13 @@ export type styleOptions2 =
   | 'backRightBtnLeft'
   | 'textCompleted'
   | 'text'; // // for ThoughtList component, used for last few remaining useTheme hooks
+export type styleOptions3 =
+  | 'topView'
+  | 'middleView'
+  | 'bottomContainer'
+  | 'userPicPlusInfo'
+  | 'emailSettingsContainer'
+  | 'emailSettingsItem'
+  | 'settingItemTheme'
+  | 'logoutBtn'
+  | 'img';
