@@ -1,13 +1,15 @@
 import React, { FC, useState, memo } from 'react';
 import { Animated, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
-import { SwipeListView } from 'react-native-swipe-list-view';
-import { darkMode, lightMode } from '../constants/colors';
+import { SwipeListView, RowMap } from 'react-native-swipe-list-view';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import styled from 'styled-components/native';
+import { darkMode, lightMode } from '../constants/colors';
 import { ArchiveDeleteModal } from './ArchiveDeleteModal';
 import { ProjectListProps } from '../interfaces/componentProps';
 import { ProjectLongPressModal } from './ProjectLongPressModal';
+import { ProjectSwipeListData } from '../interfaces/data';
+import { styleOptions } from '../interfaces/stringLiteralTypes';
 
 const SwipeListViewAnimated = Animated.createAnimatedComponent(SwipeListView);
 
@@ -17,7 +19,7 @@ export const ProjectList: FC<ProjectListProps> = memo(function ({ userProjectsDa
   const [focusedProjectId, setFocusedProjectId] = useState('');
   const [focusedRowMap, setFocusedRowMap] = useState(null); // needs better typing
   const [focusedRowKey, setFocusedRowKey] = useState('');
-  const useTheme = (name: string) => (isDarkMode ? stylesDark[name] : stylesLight[name]);
+  const useTheme = (name: styleOptions) => (isDarkMode ? stylesDark[name] : stylesLight[name]);
   const navigation = useNavigation();
   const firstItem = userProjectsData[0].id;
   const lastItem = userProjectsData[userProjectsData.length - 1].id;
@@ -35,14 +37,14 @@ export const ProjectList: FC<ProjectListProps> = memo(function ({ userProjectsDa
     setLongPressModalVisible(true);
   };
 
-  const closeRow = (rowMap, rowKey): void => {
+  const closeRow = (rowMap: RowMap<any>, rowKey: string): void => {
     // for slidables
     if (rowMap[rowKey]) {
       rowMap[rowKey].closeRow();
     }
   };
 
-  const renderItem = (data) => (
+  const renderItem = (data: ProjectSwipeListData) => (
     // for slidables
     <>
       {data.item.id === firstItem ? <PaddingView /> : <></>}
@@ -53,7 +55,7 @@ export const ProjectList: FC<ProjectListProps> = memo(function ({ userProjectsDa
         onLongPress={() => handleLongPress(data.item.id)}
       >
         <View style={sharedStyles.chevronContainer}>
-          <TextStyled>{data.item.projectName}</TextStyled>
+          <ProjectNameText>{data.item.projectName}</ProjectNameText>
           {data.item.pinned ? (
             <MaterialCommunityIcons
               name="pin-outline"
@@ -75,7 +77,7 @@ export const ProjectList: FC<ProjectListProps> = memo(function ({ userProjectsDa
     </>
   );
 
-  const renderHiddenItem = (data, rowMap) => (
+  const renderHiddenItem = (data: ProjectSwipeListData, rowMap: RowMap<any>) => (
     // for slidables
     <>
       {/* add padding to the top of the scrollview */}
@@ -237,8 +239,7 @@ const stylesLight = StyleSheet.create({
   },
 });
 
-const TextStyled = styled.Text`
-  /* font-size: 20px; */
+const ProjectNameText = styled.Text`
   font-size: 19px;
   font-family: Inter;
   flex: 1;

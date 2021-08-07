@@ -47,6 +47,13 @@ export interface ProjectShape {
   key?: string; // used later for -> https://github.com/jemise111/react-native-swipe-list-view#usage
 }
 
+// for ProjectList component
+export interface ProjectSwipeListData {
+  index: number;
+  item: ProjectShape;
+  separators: any; // TODO: cant find any mention of this prop in the docs, likely from RN >_< https://github.com/jemise111/react-native-swipe-list-view
+}
+
 export interface Activity {
   data: Array<{
     id: string;
