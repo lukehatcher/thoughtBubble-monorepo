@@ -1,12 +1,13 @@
 import React, { FC, useState } from 'react';
-import { Modal, View, StyleSheet, Text } from 'react-native';
+import { Modal, View, StyleSheet } from 'react-native';
 import { Button, TextInput, IconButton } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { editThoughtAction, thoughtTagChangeAction } from '../actions/thoughtActions';
-import { darkMode, lightMode, tagColorsDark, tagColorsLight } from '../constants/colors';
+import { darkMode, lightMode, tagColorsDark } from '../constants/colors';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { MoreModalProps } from '../interfaces/componentProps';
 import { RootState } from '../reducers/rootReducer';
+import styled from 'styled-components/native';
 
 export const MoreModal: FC<MoreModalProps> = ({ moreModalView, setMoreModalView, projectId, thoughtId }) => {
   const [input, setInput] = useState('');
@@ -16,9 +17,7 @@ export const MoreModal: FC<MoreModalProps> = ({ moreModalView, setMoreModalView,
       .find((proj) => proj.id === projectId)
       .projectThoughts.find((thought) => thought.id === thoughtId).tag;
   const tag: string | null = useSelector(tagSelector);
-  const idDarkMode = useDarkCheck();
-
-  const useTheme = (name: string) => (idDarkMode ? stylesDark[name] : stylesLight[name]);
+  const isDarkMode = useDarkCheck();
 
   const handleThoughtEdit = function (newThought: string, id: string) {
     if (!newThought) {
@@ -33,10 +32,14 @@ export const MoreModal: FC<MoreModalProps> = ({ moreModalView, setMoreModalView,
     dispatch(thoughtTagChangeAction(projectId, thoughtId, tagColor)); // should take thought id (for db) and maybe project id for the new data in redux
   };
 
+  const generateTagStyle = function () {
+    return [styles.currentTag, { borderColor: isDarkMode ? darkMode.primary : lightMode.primary }];
+  };
+
   return (
     <>
       <Modal animationType="slide" visible={moreModalView}>
-        <View style={useTheme('modal')}>
+        <ModalContainer>
           <TextInput
             mode="outlined"
             label="edit thought"
@@ -44,12 +47,17 @@ export const MoreModal: FC<MoreModalProps> = ({ moreModalView, setMoreModalView,
             onChangeText={(input) => setInput(input)}
             placeholder="edit thought"
             multiline
-            style={useTheme('textInput')}
+            style={[
+              styles.textInput,
+              {
+                backgroundColor: isDarkMode ? darkMode.dp1 : lightMode.background,
+              },
+            ]}
             theme={{
               colors: {
-                primary: idDarkMode ? darkMode.primary : lightMode.primary,
-                text: idDarkMode ? darkMode.textOnSurface : lightMode.textOnBackground,
-                placeholder: idDarkMode ? `${darkMode.textOnSurface}87` : `${lightMode.textOnBackground}87`,
+                primary: isDarkMode ? darkMode.primary : lightMode.primary,
+                text: isDarkMode ? darkMode.textOnSurface : lightMode.textOnBackground,
+                placeholder: isDarkMode ? `${darkMode.textOnSurface}87` : `${lightMode.textOnBackground}87`,
               },
             }}
             keyboardAppearance="dark"
@@ -58,84 +66,99 @@ export const MoreModal: FC<MoreModalProps> = ({ moreModalView, setMoreModalView,
           <Button
             mode="contained"
             icon="pencil"
-            color={idDarkMode ? darkMode.primary : lightMode.primary}
+            color={isDarkMode ? darkMode.primary : lightMode.primary}
             onPress={() => {
               setMoreModalView(false);
               handleThoughtEdit(input.trim(), thoughtId);
             }}
-            style={useTheme('btn')}
           >
             submit change
           </Button>
           <IconButton
             icon="close"
             size={50}
-            color={idDarkMode ? darkMode.primary : lightMode.primary}
-            style={sharedStyles.closeBtn}
+            color={isDarkMode ? darkMode.primary : lightMode.primary}
+            style={styles.closeBtn}
             onPress={() => {
               setMoreModalView(false);
               setInput('');
             }}
           />
-          <Text style={useTheme('text')}>select tag</Text>
-          <View style={sharedStyles.tagContainer}>
+          <SelectTagText>select tag</SelectTagText>
+          <View style={styles.tagContainer}>
             <IconButton
               icon="tag"
               size={27}
               color={tagColorsDark.red}
-              style={tag === 'red' ? useTheme('currentTag') : null}
+              style={tag === 'red' ? generateTagStyle() : null}
               onPress={() => handleThoughtTag('red')}
             />
             <IconButton
               icon="tag"
               size={27}
               color={tagColorsDark.orange}
-              style={tag === 'orange' ? useTheme('currentTag') : null}
+              style={tag === 'orange' ? generateTagStyle() : null}
               onPress={() => handleThoughtTag('orange')}
             />
             <IconButton
               icon="tag"
               size={27}
               color={tagColorsDark.green}
-              style={tag === 'green' ? useTheme('currentTag') : null}
+              style={tag === 'green' ? generateTagStyle() : null}
               onPress={() => handleThoughtTag('green')}
             />
             <IconButton
               icon="tag"
               size={27}
               color={tagColorsDark.blue}
-              style={tag === 'blue' ? useTheme('currentTag') : null}
+              style={tag === 'blue' ? generateTagStyle() : null}
               onPress={() => handleThoughtTag('blue')}
             />
             <IconButton
               icon="tag"
               size={27}
               color={tagColorsDark.purple}
-              style={tag === 'purple' ? useTheme('currentTag') : null}
+              style={tag === 'purple' ? generateTagStyle() : null}
               onPress={() => handleThoughtTag('purple')}
             />
             <IconButton
               icon="tag-off"
               size={27}
-              color={'silver'} // silver
-              style={!tag ? useTheme('currentTag') : null}
+              color={'silver'}
+              style={!tag ? generateTagStyle() : null}
               onPress={() => handleThoughtTag(null)}
             />
             <IconButton
               icon="star"
               size={27}
               color={tagColorsDark.gold}
-              style={tag === 'favorite' ? useTheme('currentTag') : null}
+              style={tag === 'favorite' ? generateTagStyle() : null}
               onPress={() => handleThoughtTag('favorite')}
             />
           </View>
-        </View>
+        </ModalContainer>
       </Modal>
     </>
   );
 };
 
-const sharedStyles = StyleSheet.create({
+const SelectTagText = styled.Text`
+  color: ${(props) => props.theme.textOnBackground};
+  margin-top: 10px;
+`;
+
+const ModalContainer = styled.View`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  background-color: ${(props) => props.theme.background};
+`;
+
+const styles = StyleSheet.create({
+  textInput: {
+    width: 250,
+    marginBottom: 10,
+  },
   closeBtn: {
     position: 'absolute',
     top: 50,
@@ -144,55 +167,7 @@ const sharedStyles = StyleSheet.create({
   tagContainer: {
     flexDirection: 'row',
   },
-});
-
-const stylesDark = StyleSheet.create({
-  modal: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: darkMode.background,
-  },
-  textInput: {
-    color: 'white',
-    backgroundColor: darkMode.dp1,
-    width: 250,
-    marginBottom: 10,
-  },
-  btn: {
-    marginBottom: 10,
-    // width: 250,
-  },
-  text: {
-    color: darkMode.textOnBackground,
-  },
   currentTag: {
     borderWidth: 1,
-    borderColor: darkMode.primary,
-  },
-});
-
-const stylesLight = StyleSheet.create({
-  modal: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: lightMode.background,
-  },
-  textInput: {
-    backgroundColor: lightMode.background,
-    width: 250,
-    marginBottom: 10,
-  },
-  btn: {
-    marginBottom: 10,
-    // width: 250,
-  },
-  text: {
-    color: lightMode.textOnBackground,
-  },
-  currentTag: {
-    borderWidth: 1,
-    borderColor: lightMode.primary,
   },
 });
