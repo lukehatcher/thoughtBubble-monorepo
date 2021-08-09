@@ -59,14 +59,3 @@ export interface ProjectSwipeListData {
   item: ProjectShape;
   separators: any; // TODO: cant find any mention of this prop in the docs, likely from RN >_< https://github.com/jemise111/react-native-swipe-list-view
 }
-
-export interface Activity {
-  data: Array<{
-    id: string;
-    activityDate: string; // Date string
-    userId: string; // not showing up for now
-    projectId: string; // not showing up for now
-  }>;
-  graphData: Array<{ x: number; y: number }>; // data or all projects
-  graphDataPerProject: { [key: string]: Array<{ x: number; y: number }> };
-}

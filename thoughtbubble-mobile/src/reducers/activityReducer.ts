@@ -1,14 +1,14 @@
 import { ActivityActionTypes } from '../constants/actionTypes';
 import { DateHelper } from '../utils/dateHelpers';
-import { Activity } from '../interfaces/data';
+import { Point, Activity, ActivityReducerAction } from '../interfaces/redux';
 
-const initialState = {
+const initialState: Activity = {
   data: [],
   graphData: [],
   graphDataPerProject: {},
 };
 
-export const activityReducer = (state = initialState, action): Activity => {
+export const activityReducer = (state = initialState, action: ActivityReducerAction): Activity => {
   const { type, payload } = action;
   switch (type) {
     case ActivityActionTypes.FETCH: {
@@ -19,10 +19,10 @@ export const activityReducer = (state = initialState, action): Activity => {
       for (let i = 0; i <= todayNumb; i++) {
         graphDataMap.set(i, 0); // create map of all possible days
       }
-      const graphData: Array<{ x: number; y: number }> = [];
+      const graphData: Point[] = [];
 
       // ==== split up by project ====
-      const graphDataPerProject = {};
+      const graphDataPerProjectMap: { [key: string]: Map<number, number> } = {};
 
       // ==== populate activity maps ====
       for (let i = 0; i < payload.length; i++) {
@@ -31,14 +31,14 @@ export const activityReducer = (state = initialState, action): Activity => {
         // handle map for all combined projects
         graphDataMap.set(day, graphDataMap.get(day) + 1);
         // handle individual project maps
-        if (!graphDataPerProject[projectId]) {
+        if (!graphDataPerProjectMap[projectId]) {
           const map = new Map<number, number>();
           for (let i = 0; i <= todayNumb; i++) {
             map.set(i, 0);
           }
-          graphDataPerProject[projectId] = map;
+          graphDataPerProjectMap[projectId] = map;
         } else {
-          graphDataPerProject[projectId].set(day, graphDataPerProject[projectId].get(day) + 1);
+          graphDataPerProjectMap[projectId].set(day, graphDataPerProjectMap[projectId].get(day) + 1);
         }
       }
 
@@ -48,9 +48,10 @@ export const activityReducer = (state = initialState, action): Activity => {
         graphData.push({ x: key, y: val });
       });
       // for individual projects
-      for (let k in graphDataPerProject) {
-        const projGraphData = []; // for curr proj
-        graphDataPerProject[k].forEach((val, key) => {
+      const graphDataPerProject: { [key: string]: Point[] } = {}; // return object
+      for (let k in graphDataPerProjectMap) {
+        const projGraphData: Point[] = []; // for curr proj
+        graphDataPerProjectMap[k].forEach((val, key) => {
           projGraphData.push({ x: key, y: val });
         });
         graphDataPerProject[k] = projGraphData;
