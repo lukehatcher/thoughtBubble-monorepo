@@ -3,6 +3,7 @@ import { locations } from '../constants/locations';
 import { FilterActionTypes, ProjectActionTypes, ArchiveActionTypes } from '../constants/actionTypes';
 import { BASE_URL } from '@env';
 import { getToken } from '../utils/asyncStorage';
+import { AppThunk } from '../interfaces/redux';
 
 export const addProjectAction = function (projectName: string) {
   return async (dispatch, _getState) => {
@@ -58,7 +59,7 @@ export const filterProjectAction = function (projectId: string, filters: any) {
   };
 };
 
-export const archiveProjectAction = function (projectId: string) {
+export const archiveProjectAction = function (projectId: string): AppThunk<void> {
   return async (dispatch, _getState) => {
     const token = await getToken();
     try {
@@ -76,7 +77,7 @@ export const archiveProjectAction = function (projectId: string) {
   };
 };
 
-export const unarchiveProjectAction = function (projectId: string) {
+export const unarchiveProjectAction = function (projectId: string): AppThunk<void> {
   return async (dispatch, _getState) => {
     const token = await getToken();
     try {

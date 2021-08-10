@@ -1,7 +1,8 @@
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
-import { ActivityActionTypes } from '../constants/actionTypes';
+import { ActivityActionTypes, ArchiveActionTypes } from '../constants/actionTypes';
 import { RootState } from '../reducers/rootReducer';
+import { ProjectShape } from './data';
 
 // reusable thunk typing
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, AnyAction>;
@@ -29,4 +30,10 @@ export interface Activity {
   data: ActivityData[];
   graphData: Point[]; // data or all projects
   graphDataPerProject: { [key: string]: Point[] };
+}
+
+// === activity reducer ===
+export interface ArchiveReducerAction {
+  type: ArchiveActionTypes;
+  payload: ProjectShape[] | ProjectShape | string;
 }
