@@ -9,7 +9,7 @@ import { FilterThoughtModalProps } from '../interfaces/componentProps';
 import { RootState } from '../reducers/rootReducer';
 import { clearTagsAction, updateFiltersAction } from '../actions/filterActions';
 import { useDarkCheck } from '../hooks/useDarkCheck';
-import { chipStyle, StatusFilters } from '../interfaces/stringLiteralTypes';
+import { chipStyle, StatusFilters, Tags } from '../interfaces/stringLiteralTypes';
 import { BlurOverlay } from './BlurOverlay';
 
 export const FilterThoughtModal: FC<FilterThoughtModalProps> = function ({
@@ -22,7 +22,7 @@ export const FilterThoughtModal: FC<FilterThoughtModalProps> = function ({
   const useTheme = (name: chipStyle) => (isDarkMode ? stylesDark[name] : stylesLight[name]);
   const filters = useSelector((state: RootState) => state.filters);
 
-  const handleThoughtFilter = async function (typeOfFilter: string) {
+  const handleThoughtFilter = async function (typeOfFilter: Tags | StatusFilters) {
     await dispatch(updateFiltersAction(projectId, typeOfFilter));
     await dispatch(filterProjectAction(projectId, filters)); // do I HAVE to pass filters here?
   };
@@ -37,7 +37,7 @@ export const FilterThoughtModal: FC<FilterThoughtModalProps> = function ({
     return filters.find((proj) => proj.id === projectId).status === status;
   };
 
-  const isTagSelected = function (tag: string) {
+  const isTagSelected = function (tag: Tags) {
     if (!filters.length) return false;
     return filters.find((proj) => proj.id === projectId).tags.includes(tag);
   };

@@ -1,48 +1,48 @@
 import { FilterActionTypes } from '../constants/actionTypes';
-import { StatusFilters } from '../interfaces/stringLiteralTypes';
 import { statusFilters } from '../constants/filters';
+import { ProjectShape } from '../interfaces/data';
+import { FilterReducerAction, FilterReducerInitialState } from '../interfaces/redux';
+import { StatusFilters, Tags } from '../interfaces/stringLiteralTypes';
 
-const initialState: ProjectFilters[] = [];
+const initialState: FilterReducerInitialState[] = [];
 
-interface ProjectFilters {
-  id: string;
-  status: StatusFilters;
-  tags: string[];
-}
-
-export const filterReducer = (state = initialState, action): ProjectFilters[] => {
-  switch (action.type) {
+export const filterReducer = (state = initialState, action: FilterReducerAction): FilterReducerInitialState[] => {
+  const { type, payload } = action;
+  switch (type) {
     case FilterActionTypes.INIT: {
-      const data = action.payload;
+      const data = payload as ProjectShape[];
       const newState = [];
       for (let i = 0; i < data.length; i++) {
-        newState.push({ id: data[i].id, status: 'all', tags: [] });
+        const status: StatusFilters = 'all';
+        newState.push({ id: data[i].id, status, tags: [] });
       }
       return newState;
     }
     case FilterActionTypes.ADD_PROJ:
-      return [...state, { id: action.payload.id, status: 'all', tags: [] }];
+      return [...state, { id: (payload as ProjectShape).id, status: 'all', tags: [] }];
     case FilterActionTypes.DEL_PROJ:
-      return state.filter((proj) => proj.id !== action.payload);
+      return state.filter((proj) => proj.id !== payload);
     case FilterActionTypes.UPDATE:
-      const { typeOfFilter, projectId } = action.payload;
+      const { typeOfFilter, projectId } = payload as { typeOfFilter: StatusFilters | Tags; projectId: string };
 
+      // if typeOfFilter is a status
       if (statusFilters.includes(typeOfFilter)) {
         return state.map((proj) => {
           if (proj.id === projectId) {
-            proj.status = typeOfFilter;
+            proj.status = typeOfFilter as StatusFilters;
             return proj;
           } else {
             return proj;
           }
         });
       } else {
+        // if typeOfFilter is a color
         return state.map((proj) => {
           if (proj.id === projectId) {
-            if (proj.tags.includes(typeOfFilter)) {
+            if (proj.tags.includes(typeOfFilter as Tags)) {
               proj.tags = proj.tags.filter((tag) => tag !== typeOfFilter);
             } else {
-              proj.tags.push(typeOfFilter);
+              proj.tags.push(typeOfFilter as Tags);
             }
             return proj; // added or removed tag to proj
           } else {
@@ -52,7 +52,7 @@ export const filterReducer = (state = initialState, action): ProjectFilters[] =>
       }
     case FilterActionTypes.CLEAR:
       return state.map((proj) => {
-        if (proj.id === action.payload) {
+        if (proj.id === payload) {
           proj.tags = [];
           return proj;
         } else {
