@@ -94,7 +94,6 @@ export const ThoughtsList: FC<ThoughtsListProps> = memo(function ({
     // for slidables
     // thought is data.item.text
     <>
-      {console.log(data)}
       {/* add padding to the top of the scrollview */}
       {data.item.id === firstItem ? <PaddingView /> : <></>}
       <TouchableHighlight style={useTheme('rowFront')} underlayColor={'grey'}>

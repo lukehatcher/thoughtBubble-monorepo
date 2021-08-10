@@ -39,7 +39,6 @@ export const userInfoReducer = (state = initialState, action): UserInfoShape => 
   const { payload, type } = action;
   switch (type) {
     case 'fetchUserInfo':
-      console.log('stored new userInfo', payload);
       return { ...payload, status: 'completed' };
     case 'toggleDailyEmail':
       return {

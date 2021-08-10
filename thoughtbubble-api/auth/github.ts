@@ -11,7 +11,7 @@ export const githubVerifyCallback = async (
   profile: GitHubStrategy.Profile,
   cb: oauth2.VerifyCallback
 ) => {
-  console.log(profile);
+  // console.log(profile);
   // check if user exists before saving
   let user = await User.findOne({ where: { githubId: profile.id } });
   if (user) {

@@ -43,7 +43,6 @@ class userInfoController {
   public fetchOrSetUser = async (req: Request, res: Response) => {
     // Authorization: <type> <credentials>
     const authHeader = req.headers.authorization;
-    console.log('authheader', authHeader);
     if (!authHeader) {
       res.send({ user: null });
       return;
@@ -59,8 +58,6 @@ class userInfoController {
     try {
       const payload: any = jwt.verify(token, config.auth.github_client_secret!);
       userId = payload.userId;
-      console.log('payload', payload);
-      console.log('userid', userId);
     } catch (err) {
       res.send({ user: null });
       console.error(err);
@@ -207,7 +204,6 @@ class userInfoController {
   public toggleProjectOrderSetting = async (req: Request, res: Response) => {
     const { projectOrder, projectDirection } = req.body;
     const { userId } = req;
-    console.log(projectOrder, projectDirection);
     const user = await User.findOne({ id: userId });
     const currSetting = user?.saveOrder;
     try {

@@ -108,7 +108,6 @@ export const pinProjectAction = function (projectId: string) {
         { projectId },
         { headers: { Authorization: `Bearer ${token}` } },
       );
-      console.log(response.data);
       dispatch({ type: ProjectActionTypes.PIN, payload: response.data }); // add/re-initialize project to master filters state
     } catch (err) {
       console.error('@projectActions.ts: ', err);

@@ -17,7 +17,6 @@ import { SplashScreen } from './src/screens/SplashScreen';
 
 const App: FC = () => {
   const loginStatus = useSelector((state: RootState) => state.userInfo);
-  console.log('loginStatus', loginStatus);
   const isDarkMode = useDarkCheck();
   const dispatch = useDispatch();
 
@@ -50,7 +49,7 @@ const App: FC = () => {
   if (loginStatus.status === 'completed' && loginStatus.id) {
     return (
       <>
-        {console.log('app screen')}
+        {/* {console.log('app screen')} */}
         <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
         <AppNavigator />
       </>
@@ -60,7 +59,7 @@ const App: FC = () => {
     // can only have a completed status and no id if theres no user
     return (
       <>
-        {console.log('login screen')}
+        {/* {console.log('login screen')} */}
         <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
         <LoginScreen />
       </>

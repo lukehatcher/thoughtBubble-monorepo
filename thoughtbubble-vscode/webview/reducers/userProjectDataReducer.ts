@@ -10,7 +10,6 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
     case 'addProject':
       return [payload, ...state];
     case 'deleteProject':
-      console.log(state, 'checking things');
       return state.filter((projects) => projects.id !== payload);
     case 'addThought':
       return state.map((item) => {
