@@ -1,3 +1,4 @@
+import { UserInfoLoadingStatus } from './redux';
 import { Direction, Locations, OrderType } from './stringLiteralTypes';
 
 export interface UserInfoShape {
@@ -14,7 +15,7 @@ export interface UserInfoShape {
   saveOrder: boolean;
   displayName: string;
   avatarUrl: string;
-  status: string;
+  loadingStatus: UserInfoLoadingStatus;
 }
 
 export interface ThoughtShape {

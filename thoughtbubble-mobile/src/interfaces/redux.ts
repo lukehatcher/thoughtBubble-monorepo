@@ -1,13 +1,20 @@
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
-import { ActivityActionTypes, ArchiveActionTypes } from '../constants/actionTypes';
+import { ActivityActionTypes, ArchiveActionTypes, UserInfoActionTypes } from '../constants/actionTypes';
 import { RootState } from '../reducers/rootReducer';
-import { ProjectShape } from './data';
+import { ProjectShape, UserInfoShape } from './data';
 import { FilterActionTypes } from '../constants/actionTypes';
 import { StatusFilters, Tags } from './stringLiteralTypes';
+import { Directions, OrderTypes } from '../constants/orders';
 
 // reusable thunk typing
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, AnyAction>;
+
+// used to make sure user token/info has loaded before rendering things on App.tsx
+export enum UserInfoLoadingStatus {
+  IDLE = 'idle',
+  COMPLETED = 'completed',
+}
 
 // === activity reducer ===
 export interface ActivityReducerAction {
@@ -50,4 +57,10 @@ export interface FilterReducerInitialState {
   id: string;
   status: StatusFilters;
   tags: Tags[];
+}
+
+// userInfo reducer
+export interface UserInfoAction {
+  type: UserInfoActionTypes;
+  payload: UserInfoShape | Directions | OrderTypes;
 }

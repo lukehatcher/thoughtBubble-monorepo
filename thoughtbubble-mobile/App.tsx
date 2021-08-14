@@ -14,6 +14,8 @@ import { useDarkCheck } from './src/hooks/useDarkCheck';
 import { AppNavigator } from './src/navigation/AppNavigator';
 import { persistToken } from './src/utils/asyncStorage';
 import { SplashScreen } from './src/screens/SplashScreen';
+import { UserInfoActionTypes } from './src/constants/actionTypes';
+import { UserInfoLoadingStatus } from './src/interfaces/redux';
 
 const App: FC = () => {
   const loginStatus = useSelector((state: RootState) => state.userInfo);
@@ -21,7 +23,7 @@ const App: FC = () => {
   const dispatch = useDispatch();
 
   // just logged in and was redirected, app was already open
-  const handleOpenURL = async ({ url }) => {
+  const handleOpenURL = async ({ url }: { url: string }) => {
     const token = url.split('//')[1]; // <bearer> <asdf.asdf.asdf>
     // store token in async storage
     await persistToken(token);
@@ -46,7 +48,7 @@ const App: FC = () => {
     };
   }, []);
 
-  if (loginStatus.status === 'completed' && loginStatus.id) {
+  if (loginStatus.loadingStatus === UserInfoLoadingStatus.COMPLETED && loginStatus.id) {
     return (
       <>
         {/* {console.log('app screen')} */}
@@ -55,7 +57,7 @@ const App: FC = () => {
       </>
     );
   }
-  if (loginStatus.status === 'completed' && !loginStatus.id) {
+  if (loginStatus.loadingStatus === UserInfoLoadingStatus.COMPLETED && !loginStatus.id) {
     // can only have a completed status and no id if theres no user
     return (
       <>
@@ -85,7 +87,7 @@ getToken().then(async (token) => {
     await store.dispatch(fetchActivityDataAction()); // fetch user's activity data
     // RNBootSplash.hide();
   } else {
-    await store.dispatch({ type: 'recordNoUser' }); // set an empty token to get the completed flag
+    await store.dispatch({ type: UserInfoActionTypes.RECORD_NO_USER }); // set an empty token to get the completed flag
   }
 });
 

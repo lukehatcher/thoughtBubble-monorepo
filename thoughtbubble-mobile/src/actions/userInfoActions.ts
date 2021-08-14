@@ -3,27 +3,27 @@ import { UserInfoActionTypes } from '../constants/actionTypes';
 import { Direction, OrderType } from '../interfaces/stringLiteralTypes';
 import { BASE_URL } from '@env';
 import { getToken } from '../utils/asyncStorage';
+import { AppThunk } from '../interfaces/redux';
 
-// TODO: need to edit route on api side
-export const fetchUserAction = (token: string) => {
+export const fetchUserAction = (token: string): AppThunk<void> => {
   return async (dispatch, _getState) => {
     axios
       .get(`${BASE_URL}/userinfo`, { headers: { Authorization: `Bearer ${token}` } })
       .then(async (res) => {
-        dispatch({ type: 'fetchUserInfo', payload: res.data });
+        dispatch({ type: UserInfoActionTypes.FETCH, payload: res.data });
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.error('@userInfoActions.ts: ', err));
   };
 };
 
-export const changeEmailSettingsAction = (emailSetting: string) => {
+export const changeEmailSettingsAction = (emailSetting: string): AppThunk<void> => {
   if (emailSetting === 'daily') {
     return async (dispatch, _getState) => {
       const token = await getToken();
       axios
         .put(`${BASE_URL}/userinfo/dailyemail`, {}, { headers: { Authorization: `Bearer ${token}` } })
         .then(() => {
-          dispatch({ type: 'toggleDailyEmail', payload: '' });
+          dispatch({ type: UserInfoActionTypes.TOGGLE_DAILY_EMAIL, payload: '' });
         })
         .catch((err) => console.error('@userInfoActions.ts: ', err));
     };
@@ -33,26 +33,26 @@ export const changeEmailSettingsAction = (emailSetting: string) => {
       axios
         .put(`${BASE_URL}/userinfo/weeklyemail`, {}, { headers: { Authorization: `Bearer ${token}` } })
         .then(() => {
-          dispatch({ type: 'toggleWeeklyEmail', payload: '' });
+          dispatch({ type: UserInfoActionTypes.TOGGLE_WEEKLY_EMAIL, payload: '' });
         })
         .catch((err) => console.error('@userInfoActions.ts: ', err));
     };
   }
 };
 
-export const changeDarkModeAction = () => {
+export const changeDarkModeAction = (): AppThunk<void> => {
   return async (dispatch, _getState) => {
     const token = await getToken();
     axios
       .put(`${BASE_URL}/userinfo/darkmode`, {}, { headers: { Authorization: `Bearer ${token}` } })
       .then(() => {
-        dispatch({ type: 'toggleDarkMode', payload: '' });
+        dispatch({ type: UserInfoActionTypes.TOGGLE_DARKMODE, payload: '' });
       })
       .catch((err) => console.error('@userInfoActions.ts: ', err));
   };
 };
 
-export const changeProjectOrderAction = (projectOrder: OrderType) => {
+export const changeProjectOrderAction = (projectOrder: OrderType): AppThunk<void> => {
   return async (dispatch, _getState) => {
     const token = await getToken();
     axios
@@ -70,7 +70,7 @@ export const changeProjectOrderAction = (projectOrder: OrderType) => {
   };
 };
 
-export const changeProjectDirectionAction = (projectDirection: Direction) => {
+export const changeProjectDirectionAction = (projectDirection: Direction): AppThunk<void> => {
   return async (dispatch, _getState) => {
     const token = await getToken();
     axios
@@ -88,7 +88,7 @@ export const changeProjectDirectionAction = (projectDirection: Direction) => {
   };
 };
 
-export const changeSaveOrderSettingAction = (projectOrder: OrderType, projectDirection: Direction) => {
+export const changeSaveOrderSettingAction = (projectOrder: OrderType, projectDirection: Direction): AppThunk<void> => {
   return async (dispatch, _getState) => {
     const token = await getToken();
     axios
