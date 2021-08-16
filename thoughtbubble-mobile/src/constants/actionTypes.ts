@@ -12,7 +12,8 @@ export enum ActivityActionTypes {
 
 export enum ProjectActionTypes {
   FETCH = 'projects/fetch',
-  ADD = 'projects/addProject',
+  ADD_PROJ = 'projects/addProject',
+  ADD_THOUGHT = 'projects/addThought',
   DELETE = 'projects/deleteProject',
   ARCHIVE = 'projects/archive',
   UNARCHIVE = 'projects/unarchive',

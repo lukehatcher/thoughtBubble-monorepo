@@ -1,9 +1,11 @@
 import axios from 'axios';
-import { locations } from '../constants/locations';
 import { BASE_URL } from '@env';
+import { locations } from '../constants/locations';
 import { getToken } from '../utils/asyncStorage';
+import { ProjectActionTypes } from '../constants/actionTypes';
+import { AppThunk } from '../interfaces/redux';
 
-export const addThoughtAction = (projectId: string, thought: string) => {
+export const addThoughtAction = (projectId: string, thought: string): AppThunk<void> => {
   return async (dispatch, _getState) => {
     const token = await getToken();
     axios
@@ -17,7 +19,7 @@ export const addThoughtAction = (projectId: string, thought: string) => {
         { headers: { Authorization: `Bearer ${token}` } },
       )
       .then((res) => {
-        dispatch({ type: 'addThought', payload: res.data });
+        dispatch({ type: ProjectActionTypes.ADD_THOUGHT, payload: res.data });
       })
       .catch((err) => console.error('@thoughtActions.ts: ', err));
   };

@@ -20,7 +20,7 @@ export const addProjectAction = function (projectName: string): AppThunk<void> {
       .then((res) => {
         const newProject = res.data;
         newProject.projectThoughts = []; // does not come with query entity
-        dispatch({ type: ProjectActionTypes.ADD, payload: newProject });
+        dispatch({ type: ProjectActionTypes.ADD_PROJ, payload: newProject });
         dispatch({ type: FilterActionTypes.ADD_PROJ, payload: newProject });
       })
       .catch((err) => console.error('@projectActions.ts: ', err));
