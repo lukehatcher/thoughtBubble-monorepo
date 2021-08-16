@@ -1,5 +1,5 @@
 import { UserInfoLoadingStatus } from './redux';
-import { Direction, Locations, OrderType } from './stringLiteralTypes';
+import { Direction, Locations, OrderType, Tags } from './stringLiteralTypes';
 
 export interface UserInfoShape {
   // from query on User entity table
@@ -27,7 +27,7 @@ export interface ThoughtShape {
   projectId: string;
   text: string;
   completed: boolean;
-  tag: string | null; // TODO: change this to use the Tags string literal type
+  tag: Tags;
   key?: string; // used later for -> https://github.com/jemise111/react-native-swipe-list-view#usage
 }
 

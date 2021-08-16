@@ -1,95 +1,143 @@
-import { ProjectShape } from '../interfaces/data';
+import { Action } from 'redux';
+import { ProjectShape, ThoughtShape } from '../interfaces/data';
 import { ProjectActionTypes } from '../constants/actionTypes';
+import { FilterReducerInitialState } from '../interfaces/redux';
+import { Tags } from '../interfaces/stringLiteralTypes';
 
 const initialState: ProjectShape[] = [];
 
-// interface UserProjectDataReducerAction {
-//   type:
-//   payload:
-// }
+interface UserProjectDataReducerAction extends Action {
+  type: ProjectActionTypes;
+  payload:
+    | string
+    | ProjectShape[]
+    | ProjectShape
+    | ThoughtShape
+    | EditThoughtPayload
+    | DeleteThoughtPayload
+    | EditThoughtTagPayload
+    | ToggleThoughtStatusPayload
+    | FilterPayload;
+}
 
-export const UserProjectDataReducer = (state = initialState, action): ProjectShape[] => {
-  const { type, payload } = action;
+interface EditThoughtPayload {
+  id: string;
+  projectId: string;
+  newThought: string;
+}
+
+interface DeleteThoughtPayload {
+  id: string;
+  projectId: string;
+}
+
+interface EditThoughtTagPayload {
+  id: string;
+  projectId: string;
+  tag: Tags; // for now
+}
+
+interface ToggleThoughtStatusPayload {
+  id: string;
+  projectId: string;
+}
+
+interface FilterPayload {
+  data: ProjectShape[];
+  projectId: string;
+  // filters: any; // for now
+  filters: FilterReducerInitialState[];
+}
+
+export const UserProjectDataReducer = (state = initialState, action: UserProjectDataReducerAction): ProjectShape[] => {
+  let { type, payload } = action;
   switch (type) {
     case ProjectActionTypes.FETCH:
-      return payload.filter((proj) => !proj.archived);
+      return (payload as ProjectShape[]).filter((proj) => !proj.archived);
     case ProjectActionTypes.ADD_PROJ:
-      return [payload, ...state];
+      return [payload as ProjectShape, ...state];
     case ProjectActionTypes.DELETE_PROJ:
       return state.filter((proj) => proj.id !== payload);
     case ProjectActionTypes.ARCHIVE:
       return state.filter((proj) => proj.id !== payload);
     case ProjectActionTypes.UNARCHIVE:
       // move to front because by default projects are shown in lastUpdated order
-      return [payload, ...state];
-    case ProjectActionTypes.ADD_THOUGHT:
+      return [payload as ProjectShape, ...state];
+    case ProjectActionTypes.ADD_THOUGHT: // all typed
+      const newThought = payload as ThoughtShape;
       return state.map((item) => {
-        if (item.id !== payload.projectId) {
+        if (item.id !== newThought.projectId) {
           return item;
         } else {
           return {
             ...item,
             lastUpdatedDate: new Date().toISOString(), // set temp date to reorder projects, temp date is overrode next app reload
-            projectThoughts: [...item.projectThoughts, payload],
+            projectThoughts: [...item.projectThoughts, newThought],
           };
         }
       });
-    case ProjectActionTypes.DELETE_THOUGHT:
+    case ProjectActionTypes.DELETE_THOUGHT: // all typed
+      const newProject = payload as DeleteThoughtPayload;
       return state.map((item) => {
-        if (item.id !== payload.projectId) {
+        if (item.id !== newProject.projectId) {
           return item;
         } else {
           return {
             ...item,
             lastUpdatedDate: new Date().toISOString(),
-            projectThoughts: item.projectThoughts.filter((thought) => thought.id !== payload.id),
+            projectThoughts: item.projectThoughts.filter((thought) => thought.id !== newProject.id),
           };
         }
       });
-    case ProjectActionTypes.EDIT_THOUGHT:
+    case ProjectActionTypes.EDIT_THOUGHT: {
+      const updatedThought = payload as EditThoughtPayload;
       return state.map((item) => {
-        if (item.id !== payload.projectId) {
+        if (item.id !== updatedThought.projectId) {
           return item;
         } else {
           return {
             ...item,
             lastUpdatedDate: new Date().toISOString(),
             projectThoughts: item.projectThoughts.map((thought) => {
-              if (thought.id === payload.id) {
-                thought.text = payload.newThought;
+              if (thought.id === updatedThought.id) {
+                thought.text = updatedThought.newThought;
               }
               return thought;
             }),
           };
         }
       });
-    case ProjectActionTypes.EDIT_THOUGHT_TAG:
+    }
+    case ProjectActionTypes.EDIT_THOUGHT_TAG: {
+      const updatedThought = payload as EditThoughtTagPayload;
       return state.map((item) => {
-        if (item.id !== payload.projectId) {
+        if (item.id !== updatedThought.projectId) {
           return item;
         } else {
           return {
             ...item,
             lastUpdatedDate: new Date().toISOString(),
             projectThoughts: item.projectThoughts.map((thought) => {
-              if (thought.id === payload.id) {
-                thought.tag = payload.tag;
+              if (thought.id === updatedThought.id) {
+                thought.tag = updatedThought.tag;
               }
               return thought;
             }),
           };
         }
       });
-    case ProjectActionTypes.TOGGLE_THOUGHT_COMPLETED_STATUS:
+    }
+    case ProjectActionTypes.TOGGLE_THOUGHT_COMPLETED_STATUS: {
+      const updatedThought = payload as ToggleThoughtStatusPayload;
       return state.map((item) => {
-        if (item.id !== payload.projectId) {
+        if (item.id !== updatedThought.projectId) {
           return item;
         } else {
           return {
             ...item,
             lastUpdatedDate: new Date().toISOString(),
             projectThoughts: item.projectThoughts.map((thought) => {
-              if (thought.id === payload.id) {
+              if (thought.id === updatedThought.id) {
                 thought.completed = !thought.completed;
               }
               return thought;
@@ -97,12 +145,14 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
           };
         }
       });
-    case ProjectActionTypes.FILTER:
+    }
+    case ProjectActionTypes.FILTER: {
+      const filterPayload = payload as FilterPayload;
       // payload has all userProjectData, projectId and filters[] props on it, filters has id, status and tags[] on each object
-      return payload.data.map((project) => {
-        let { status, tags } = payload.filters.find((proj) => proj.id === payload.projectId);
+      return filterPayload.data.map((project) => {
+        let { status, tags } = filterPayload.filters.find((proj) => proj.id === filterPayload.projectId);
         if (status === 'all') {
-          if (project.id === payload.projectId) {
+          if (project.id === filterPayload.projectId) {
             if (!tags.length) return project; // if no tags
             return {
               ...project,
@@ -113,18 +163,18 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
           }
         } else {
           // convert complete/incomplete
-          status = status === 'completed' ? true : false;
+          const newStatus = status === 'completed' ? true : false;
           // status is completed or incomplete
-          if (project.id === payload.projectId) {
+          if (project.id === filterPayload.projectId) {
             if (!tags.length)
               return {
                 ...project,
-                projectThoughts: project.projectThoughts.filter((thought) => thought.completed === status),
+                projectThoughts: project.projectThoughts.filter((thought) => thought.completed === newStatus),
               };
             return {
               ...project,
               projectThoughts: project.projectThoughts.filter(
-                (thought) => thought.completed === status && tags.includes(thought.tag),
+                (thought) => thought.completed === newStatus && tags.includes(thought.tag),
               ),
             };
           } else {
@@ -132,15 +182,17 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
           }
         }
       });
-    case ProjectActionTypes.PIN: // covers both pin and unpin
+    }
+    case ProjectActionTypes.PIN: {
+      const pinPayload = payload as ProjectShape;
       return state.map((proj) => {
-        if (proj.id === payload.id) {
-          proj = payload;
-          return proj;
+        if (proj.id === pinPayload.id) {
+          return pinPayload;
         } else {
           return proj;
         }
       });
+    }
     default:
       return state;
   }
