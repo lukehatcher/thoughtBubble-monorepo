@@ -22,7 +22,7 @@ export enum UserInfoLoadingStatus {
 }
 
 // === activity reducer ===
-export interface ActivityReducerAction {
+export interface ActivityReducerAction extends Action {
   type: ActivityActionTypes; // enum
   payload: ActivityData[];
 }
@@ -47,13 +47,13 @@ export interface Activity {
 }
 
 // === archive reducer ===
-export interface ArchiveReducerAction {
+export interface ArchiveReducerAction extends Action {
   type: ArchiveActionTypes;
   payload: ProjectShape[] | ProjectShape | string;
 }
 
 // === filter reducer ===
-export interface FilterReducerAction {
+export interface FilterReducerAction extends Action {
   type: FilterActionTypes;
   payload: ProjectShape[] | ProjectShape | string | { typeOfFilter: string; projectId: string };
 }
@@ -65,7 +65,7 @@ export interface FilterReducerInitialState {
 }
 
 // userInfo reducer
-export interface UserInfoAction {
+export interface UserInfoAction extends Action {
   type: UserInfoActionTypes;
   payload: UserInfoShape | Directions | OrderTypes;
 }
@@ -85,29 +85,29 @@ export interface UserProjectDataReducerAction extends Action {
     | FilterPayload;
 }
 
-export interface EditThoughtPayload extends Action {
+export interface EditThoughtPayload {
   id: string;
   projectId: string;
   newThought: string;
 }
 
-export interface DeleteThoughtPayload extends Action {
+export interface DeleteThoughtPayload {
   id: string;
   projectId: string;
 }
 
-export interface EditThoughtTagPayload extends Action {
+export interface EditThoughtTagPayload {
   id: string;
   projectId: string;
   tag: Tags;
 }
 
-export interface ToggleThoughtStatusPayload extends Action {
+export interface ToggleThoughtStatusPayload {
   id: string;
   projectId: string;
 }
 
-export interface FilterPayload extends Action {
+export interface FilterPayload {
   data: ProjectShape[];
   projectId: string;
   filters: FilterReducerInitialState[];
