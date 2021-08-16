@@ -43,7 +43,7 @@ export const deleteThoughtAction = (projectId: string, thoughtId: string): AppTh
   };
 };
 
-export const editThoughtAction = (newThought: string, projectId: string, thoughtId: string) => {
+export const editThoughtAction = (newThought: string, projectId: string, thoughtId: string): AppThunk<void> => {
   return async (dispatch, _getState) => {
     const token = await getToken();
     axios
@@ -57,7 +57,7 @@ export const editThoughtAction = (newThought: string, projectId: string, thought
         { headers: { Authorization: `Bearer ${token}` } },
       )
       .then(() => {
-        dispatch({ type: 'editThought', payload: { projectId, id: thoughtId, newThought } });
+        dispatch({ type: ProjectActionTypes.EDIT_THOUGHT, payload: { projectId, id: thoughtId, newThought } });
       })
       .catch((err) => console.error('@thoughtActions.ts: ', err));
   };

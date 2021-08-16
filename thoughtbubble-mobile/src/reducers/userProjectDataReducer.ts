@@ -47,7 +47,8 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
           };
         }
       });
-    case 'editThought':
+    // case 'editThought':
+    case ProjectActionTypes.EDIT_THOUGHT:
       return state.map((item) => {
         if (item.id !== payload.projectId) {
           return item;
