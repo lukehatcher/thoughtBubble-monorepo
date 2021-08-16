@@ -16,14 +16,13 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
       return payload.filter((proj) => !proj.archived);
     case ProjectActionTypes.ADD_PROJ:
       return [payload, ...state];
-    case ProjectActionTypes.DELETE:
+    case ProjectActionTypes.DELETE_PROJ:
       return state.filter((proj) => proj.id !== payload);
     case ProjectActionTypes.ARCHIVE:
       return state.filter((proj) => proj.id !== payload);
     case ProjectActionTypes.UNARCHIVE:
       // move to front because by default projects are shown in lastUpdated order
       return [payload, ...state];
-    // case 'addThought':
     case ProjectActionTypes.ADD_THOUGHT:
       return state.map((item) => {
         if (item.id !== payload.projectId) {
@@ -36,7 +35,7 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
           };
         }
       });
-    case 'deleteThought':
+    case ProjectActionTypes.DELETE_THOUGHT:
       return state.map((item) => {
         if (item.id !== payload.projectId) {
           return item;

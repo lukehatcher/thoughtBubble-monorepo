@@ -38,8 +38,8 @@ export const deleteProjectAction = function (projectId: string): AppThunk<void> 
         },
       })
       .then(() => {
-        dispatch({ type: ProjectActionTypes.DELETE, payload: projectId });
-        dispatch({ type: FilterActionTypes.DEL_PROJ, payload: projectId });
+        dispatch({ type: ProjectActionTypes.DELETE_PROJ, payload: projectId });
+        dispatch({ type: FilterActionTypes.DELETE_PROJ, payload: projectId });
       })
       .catch((err) => console.error('@projectActions.ts: ', err));
   };
@@ -70,7 +70,7 @@ export const archiveProjectAction = function (projectId: string): AppThunk<void>
       );
       dispatch({ type: ArchiveActionTypes.ADD_TO_ARCHIVE, payload: response.data }); // add project to archive
       dispatch({ type: ProjectActionTypes.ARCHIVE, payload: projectId }); // filter project out of main user project data
-      dispatch({ type: FilterActionTypes.DEL_PROJ, payload: projectId }); // fitler project out of master filters state
+      dispatch({ type: FilterActionTypes.DELETE_PROJ, payload: projectId }); // fitler project out of master filters state
     } catch (err) {
       console.error('@projectActions.ts: ', err);
     }

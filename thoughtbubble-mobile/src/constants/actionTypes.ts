@@ -1,7 +1,7 @@
 export enum FilterActionTypes {
   INIT = 'filters/initialize',
   ADD_PROJ = 'filters/addProject',
-  DEL_PROJ = 'filters/deleteProject',
+  DELETE_PROJ = 'filters/deleteProject',
   UPDATE = 'filters/update',
   CLEAR = 'filters/clearTags',
 }
@@ -14,7 +14,8 @@ export enum ProjectActionTypes {
   FETCH = 'projects/fetch',
   ADD_PROJ = 'projects/addProject',
   ADD_THOUGHT = 'projects/addThought',
-  DELETE = 'projects/deleteProject',
+  DELETE_PROJ = 'projects/deleteProject',
+  DELETE_THOUGHT = 'projects/deleteThought',
   ARCHIVE = 'projects/archive',
   UNARCHIVE = 'projects/unarchive',
   PIN = 'projects/pin', // covers pin and unpin

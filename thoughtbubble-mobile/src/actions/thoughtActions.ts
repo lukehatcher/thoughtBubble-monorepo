@@ -25,7 +25,7 @@ export const addThoughtAction = (projectId: string, thought: string): AppThunk<v
   };
 };
 
-export const deleteThoughtAction = (projectId: string, thoughtId: string) => {
+export const deleteThoughtAction = (projectId: string, thoughtId: string): AppThunk<void> => {
   return async (dispatch, _getState) => {
     const token = await getToken();
     axios
@@ -37,7 +37,7 @@ export const deleteThoughtAction = (projectId: string, thoughtId: string) => {
         },
       })
       .then(() => {
-        dispatch({ type: 'deleteThought', payload: { projectId, id: thoughtId } });
+        dispatch({ type: ProjectActionTypes.DELETE_THOUGHT, payload: { projectId, id: thoughtId } });
       })
       .catch((err) => console.error('@thoughtActions.ts: ', err));
   };

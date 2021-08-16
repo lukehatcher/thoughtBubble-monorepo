@@ -20,7 +20,7 @@ export const filterReducer = (state = initialState, action: FilterReducerAction)
     }
     case FilterActionTypes.ADD_PROJ:
       return [...state, { id: (payload as ProjectShape).id, status: 'all', tags: [] }];
-    case FilterActionTypes.DEL_PROJ:
+    case FilterActionTypes.DELETE_PROJ:
       return state.filter((proj) => proj.id !== payload);
     case FilterActionTypes.UPDATE:
       const { typeOfFilter, projectId } = payload as { typeOfFilter: StatusFilters | Tags; projectId: string };
