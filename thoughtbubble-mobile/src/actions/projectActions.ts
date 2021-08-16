@@ -5,7 +5,7 @@ import { BASE_URL } from '@env';
 import { getToken } from '../utils/asyncStorage';
 import { AppThunk } from '../interfaces/redux';
 
-export const addProjectAction = function (projectName: string) {
+export const addProjectAction = function (projectName: string): AppThunk<void> {
   return async (dispatch, _getState) => {
     const token = await getToken();
     axios
@@ -20,7 +20,7 @@ export const addProjectAction = function (projectName: string) {
       .then((res) => {
         const newProject = res.data;
         newProject.projectThoughts = []; // does not come with query entity
-        dispatch({ type: 'addProject', payload: newProject });
+        dispatch({ type: ProjectActionTypes.ADD, payload: newProject });
         dispatch({ type: FilterActionTypes.ADD_PROJ, payload: newProject });
       })
       .catch((err) => console.error('@projectActions.ts: ', err));
