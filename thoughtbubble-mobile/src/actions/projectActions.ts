@@ -27,7 +27,7 @@ export const addProjectAction = function (projectName: string): AppThunk<void> {
   };
 };
 
-export const deleteProjectAction = function (projectId: string) {
+export const deleteProjectAction = function (projectId: string): AppThunk<void> {
   return async (dispatch, _getState) => {
     const token = await getToken();
     axios
@@ -38,7 +38,7 @@ export const deleteProjectAction = function (projectId: string) {
         },
       })
       .then(() => {
-        dispatch({ type: 'deleteProject', payload: projectId });
+        dispatch({ type: ProjectActionTypes.DELETE, payload: projectId });
         dispatch({ type: FilterActionTypes.DEL_PROJ, payload: projectId });
       })
       .catch((err) => console.error('@projectActions.ts: ', err));

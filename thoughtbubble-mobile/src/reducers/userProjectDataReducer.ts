@@ -16,7 +16,8 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
       return payload.filter((proj) => !proj.archived);
     case ProjectActionTypes.ADD:
       return [payload, ...state];
-    case 'deleteProject':
+    // case 'deleteProject':
+    case ProjectActionTypes.DELETE:
       return state.filter((proj) => proj.id !== payload);
     // ==== archive cases ====
     case ProjectActionTypes.ARCHIVE:
