@@ -1,53 +1,15 @@
-import { Action } from 'redux';
 import { ProjectShape, ThoughtShape } from '../interfaces/data';
 import { ProjectActionTypes } from '../constants/actionTypes';
-import { FilterReducerInitialState } from '../interfaces/redux';
-import { Tags } from '../interfaces/stringLiteralTypes';
+import {
+  DeleteThoughtPayload,
+  EditThoughtPayload,
+  EditThoughtTagPayload,
+  FilterPayload,
+  ToggleThoughtStatusPayload,
+  UserProjectDataReducerAction,
+} from '../interfaces/redux';
 
 const initialState: ProjectShape[] = [];
-
-interface UserProjectDataReducerAction extends Action {
-  type: ProjectActionTypes;
-  payload:
-    | string
-    | ProjectShape[]
-    | ProjectShape
-    | ThoughtShape
-    | EditThoughtPayload
-    | DeleteThoughtPayload
-    | EditThoughtTagPayload
-    | ToggleThoughtStatusPayload
-    | FilterPayload;
-}
-
-interface EditThoughtPayload {
-  id: string;
-  projectId: string;
-  newThought: string;
-}
-
-interface DeleteThoughtPayload {
-  id: string;
-  projectId: string;
-}
-
-interface EditThoughtTagPayload {
-  id: string;
-  projectId: string;
-  tag: Tags; // for now
-}
-
-interface ToggleThoughtStatusPayload {
-  id: string;
-  projectId: string;
-}
-
-interface FilterPayload {
-  data: ProjectShape[];
-  projectId: string;
-  // filters: any; // for now
-  filters: FilterReducerInitialState[];
-}
 
 export const UserProjectDataReducer = (state = initialState, action: UserProjectDataReducerAction): ProjectShape[] => {
   let { type, payload } = action;

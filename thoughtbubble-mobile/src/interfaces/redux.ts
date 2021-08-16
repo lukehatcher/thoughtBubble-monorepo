@@ -1,8 +1,13 @@
-import { AnyAction } from 'redux';
+import { Action, AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
-import { ActivityActionTypes, ArchiveActionTypes, UserInfoActionTypes } from '../constants/actionTypes';
+import {
+  ActivityActionTypes,
+  ArchiveActionTypes,
+  ProjectActionTypes,
+  UserInfoActionTypes,
+} from '../constants/actionTypes';
 import { RootState } from '../reducers/rootReducer';
-import { ProjectShape, UserInfoShape } from './data';
+import { ProjectShape, ThoughtShape, UserInfoShape } from './data';
 import { FilterActionTypes } from '../constants/actionTypes';
 import { StatusFilters, Tags } from './stringLiteralTypes';
 import { Directions, OrderTypes } from '../constants/orders';
@@ -63,4 +68,47 @@ export interface FilterReducerInitialState {
 export interface UserInfoAction {
   type: UserInfoActionTypes;
   payload: UserInfoShape | Directions | OrderTypes;
+}
+
+// userProjectData reducer
+export interface UserProjectDataReducerAction extends Action {
+  type: ProjectActionTypes;
+  payload:
+    | string
+    | ProjectShape[]
+    | ProjectShape
+    | ThoughtShape
+    | EditThoughtPayload
+    | DeleteThoughtPayload
+    | EditThoughtTagPayload
+    | ToggleThoughtStatusPayload
+    | FilterPayload;
+}
+
+export interface EditThoughtPayload extends Action {
+  id: string;
+  projectId: string;
+  newThought: string;
+}
+
+export interface DeleteThoughtPayload extends Action {
+  id: string;
+  projectId: string;
+}
+
+export interface EditThoughtTagPayload extends Action {
+  id: string;
+  projectId: string;
+  tag: Tags;
+}
+
+export interface ToggleThoughtStatusPayload extends Action {
+  id: string;
+  projectId: string;
+}
+
+export interface FilterPayload extends Action {
+  data: ProjectShape[];
+  projectId: string;
+  filters: FilterReducerInitialState[];
 }
