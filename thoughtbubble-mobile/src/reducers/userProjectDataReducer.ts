@@ -3,11 +3,16 @@ import { ProjectActionTypes } from '../constants/actionTypes';
 
 const initialState: ProjectShape[] = [];
 
+// interface UserProjectDataReducerAction {
+//   type:
+//   payload:
+// }
+
 export const UserProjectDataReducer = (state = initialState, action): ProjectShape[] => {
   // should always filter out projects that have no
   const { type, payload } = action;
   switch (type) {
-    case 'fetchData':
+    case ProjectActionTypes.FETCH:
       return payload.filter((proj) => !proj.archived);
     case 'addProject':
       return [payload, ...state];

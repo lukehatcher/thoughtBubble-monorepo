@@ -11,6 +11,7 @@ export enum ActivityActionTypes {
 }
 
 export enum ProjectActionTypes {
+  FETCH = 'projects/fetch',
   ARCHIVE = 'projects/archive',
   UNARCHIVE = 'projects/unarchive',
   PIN = 'projects/pin', // covers pin and unpin
