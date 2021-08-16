@@ -82,7 +82,11 @@ export const thoughtStatusChangeAction = (projectId: string, thoughtId: string) 
   };
 };
 
-export const thoughtTagChangeAction = function (projectId: string, thoughtId: string, tag: string | null) {
+export const thoughtTagChangeAction = function (
+  projectId: string,
+  thoughtId: string,
+  tag: string | null,
+): AppThunk<void> {
   return async (dispatch, _getState) => {
     const token = await getToken();
     axios
@@ -96,7 +100,7 @@ export const thoughtTagChangeAction = function (projectId: string, thoughtId: st
         { headers: { Authorization: `Bearer ${token}` } },
       )
       .then(() => {
-        dispatch({ type: 'editThoughtTag', payload: { projectId, tag, id: thoughtId } });
+        dispatch({ type: ProjectActionTypes.EDIT_THOUGHT_TAG, payload: { projectId, tag, id: thoughtId } });
       })
       .catch((err) => console.error('@thoughtActions.ts: ', err));
   };

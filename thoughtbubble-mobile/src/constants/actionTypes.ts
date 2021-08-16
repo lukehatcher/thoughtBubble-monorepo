@@ -17,6 +17,7 @@ export enum ProjectActionTypes {
   DELETE_PROJ = 'projects/deleteProject',
   DELETE_THOUGHT = 'projects/deleteThought',
   EDIT_THOUGHT = 'projects/editThought',
+  EDIT_THOUGHT_TAG = 'projects/editThoughtTag',
   ARCHIVE = 'projects/archive',
   UNARCHIVE = 'projects/unarchive',
   PIN = 'projects/pin', // covers pin and unpin
