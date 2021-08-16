@@ -18,9 +18,11 @@ export enum ProjectActionTypes {
   DELETE_THOUGHT = 'projects/deleteThought',
   EDIT_THOUGHT = 'projects/editThought',
   EDIT_THOUGHT_TAG = 'projects/editThoughtTag',
+  TOGGLE_THOUGHT_COMPLETED_STATUS = 'projects/toggleThoughtCompletedStatus',
+  FILTER = 'projects/filter',
   ARCHIVE = 'projects/archive',
   UNARCHIVE = 'projects/unarchive',
-  PIN = 'projects/pin', // covers pin and unpin
+  PIN = 'projects/pin',
 }
 
 export enum ArchiveActionTypes {

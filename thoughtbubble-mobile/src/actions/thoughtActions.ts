@@ -63,7 +63,7 @@ export const editThoughtAction = (newThought: string, projectId: string, thought
   };
 };
 
-export const thoughtStatusChangeAction = (projectId: string, thoughtId: string) => {
+export const thoughtStatusChangeAction = (projectId: string, thoughtId: string): AppThunk<void> => {
   return async (dispatch, _getState) => {
     const token = await getToken();
     axios
@@ -76,7 +76,7 @@ export const thoughtStatusChangeAction = (projectId: string, thoughtId: string) 
         { headers: { Authorization: `Bearer ${token}` } },
       )
       .then(() => {
-        dispatch({ type: 'thoughtStatusChange', payload: { projectId, id: thoughtId } });
+        dispatch({ type: ProjectActionTypes.TOGGLE_THOUGHT_COMPLETED_STATUS, payload: { projectId, id: thoughtId } });
       })
       .catch((err) => console.error('@thoughtActions.ts: ', err));
   };

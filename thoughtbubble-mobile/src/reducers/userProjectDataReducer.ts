@@ -9,7 +9,6 @@ const initialState: ProjectShape[] = [];
 // }
 
 export const UserProjectDataReducer = (state = initialState, action): ProjectShape[] => {
-  // should always filter out projects that have no
   const { type, payload } = action;
   switch (type) {
     case ProjectActionTypes.FETCH:
@@ -81,7 +80,7 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
           };
         }
       });
-    case 'thoughtStatusChange':
+    case ProjectActionTypes.TOGGLE_THOUGHT_COMPLETED_STATUS:
       return state.map((item) => {
         if (item.id !== payload.projectId) {
           return item;
@@ -98,7 +97,7 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
           };
         }
       });
-    case 'filterData':
+    case ProjectActionTypes.FILTER:
       // payload has all userProjectData, projectId and filters[] props on it, filters has id, status and tags[] on each object
       return payload.data.map((project) => {
         let { status, tags } = payload.filters.find((proj) => proj.id === payload.projectId);
@@ -133,8 +132,7 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
           }
         }
       });
-    case ProjectActionTypes.PIN:
-      // covers pin and unpin
+    case ProjectActionTypes.PIN: // covers both pin and unpin
       return state.map((proj) => {
         if (proj.id === payload.id) {
           proj = payload;

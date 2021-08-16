@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { FilterActionTypes, ProjectActionTypes } from '../constants/actionTypes';
 import { ArchiveActionTypes } from '../constants/actionTypes';
-import { BASE_URL } from '@env';
 import { getToken } from '../utils/asyncStorage';
+import { AppThunk } from '../interfaces/redux';
+import { BASE_URL } from '@env';
 
-export const fetchProjectDataAction = function () {
+export const fetchProjectDataAction = (): AppThunk<void> => {
   return async (dispatch, _getState) => {
     const token = await getToken();
     try {

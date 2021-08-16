@@ -45,14 +45,14 @@ export const deleteProjectAction = function (projectId: string): AppThunk<void> 
   };
 };
 
-export const filterProjectAction = function (projectId: string, filters: any) {
+export const filterProjectAction = function (projectId: string, filters: any): AppThunk<void> {
   return async (dispatch, _getState) => {
     const token = await getToken();
     try {
       const response = await axios.get(`${BASE_URL}/projects`, { headers: { Authorization: `Bearer ${token}` } });
       // this action type pertains to the project and its thoughts not the filters stored in memory
       // the filter param is the filters stored in memory though
-      dispatch({ type: 'filterData', payload: { data: response.data, filters, projectId } });
+      dispatch({ type: ProjectActionTypes.FILTER, payload: { data: response.data, filters, projectId } });
     } catch (err) {
       console.error('@projectActions.ts: ', err);
     }
@@ -99,7 +99,7 @@ export const unarchiveProjectAction = function (projectId: string): AppThunk<voi
 /**
  * handle pin and un-pin
  */
-export const pinProjectAction = function (projectId: string) {
+export const pinProjectAction = function (projectId: string): AppThunk<void> {
   return async (dispatch, _getState) => {
     const token = await getToken();
     try {
