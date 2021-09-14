@@ -89,5 +89,6 @@ export class ControllerHelper {
     if (cachedValue) {
       return cachedValue;
     }
+    return undefined;
   }
 }
