@@ -6,6 +6,7 @@ import cors from 'cors';
 import { join } from 'path';
 import passport from 'passport';
 import { Strategy as GitHubStrategy } from 'passport-github';
+import redis from 'redis';
 import { router as projectRouter } from './routes/projects';
 import { router as thoughtRouter } from './routes/thoughts';
 import { router as userInfoRouter } from './routes/userInfo';
@@ -14,6 +15,8 @@ import { router as authRouter } from './routes/auth';
 import { config } from './config/enviroment';
 import { authMiddleware } from './middleware/authMiddleware';
 import { githubVerifyCallback } from './auth/github';
+
+export const redisClient = redis.createClient();
 
 (async function () {
   try {

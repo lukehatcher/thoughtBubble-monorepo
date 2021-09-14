@@ -1,8 +1,10 @@
 import { getConnection } from 'typeorm';
+import { promisify } from 'util';
 import { Activity } from '../entities/Activity';
 import { Project } from '../entities/Project';
 import { Thought } from '../entities/Thought';
 import { User } from '../entities/User';
+import { redisClient } from '../index';
 
 /**
  * this class provides methods that are used across more than one controller
@@ -58,7 +60,7 @@ export class ControllerHelper {
 
   /**
    * on thought addition, deletion, edit, tag edit or project archive
-   * @param projectId
+   * @param projectId uuid
    */
   public updateLastUpdatedDate = async function (projectId: string) {
     await getConnection()
@@ -68,4 +70,24 @@ export class ControllerHelper {
       .where('id = :id', { id: projectId })
       .execute();
   };
+
+  /**
+   * sets Redis cache with (key, val) pair
+   * default value expiration of 1hr
+   */
+  public cacheSet(key: string, value: string): void {
+    const defaultExpiration = 3600;
+    redisClient.setex(key, defaultExpiration, value);
+  }
+
+  /**
+   * returns stored value if key exists in Redis cache
+   */
+  public async cacheGet(key: string): Promise<string | undefined> {
+    const asyncGet = promisify(redisClient.get).bind(redisClient);
+    const cachedValue = await asyncGet(key);
+    if (cachedValue) {
+      return cachedValue;
+    }
+  }
 }
