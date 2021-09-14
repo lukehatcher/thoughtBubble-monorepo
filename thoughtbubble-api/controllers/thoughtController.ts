@@ -1,8 +1,6 @@
 import { Request, Response } from 'express';
-import { Connection, getConnection } from 'typeorm';
+import { getConnection } from 'typeorm';
 import { Thought } from '../entities/Thought';
-import { Project } from '../entities/Project';
-import { Activity } from '../entities/Activity';
 import { ControllerHelper } from './controllerHelper';
 
 class ThoughtsController extends ControllerHelper {

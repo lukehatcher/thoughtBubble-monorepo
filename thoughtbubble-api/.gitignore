@@ -3,3 +3,4 @@ node_modules
 *.pem
 aws-launch.sh
 services/generateEmailToken.ts
+redis-keys.txt
