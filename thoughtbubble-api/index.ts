@@ -1,19 +1,17 @@
 import 'reflect-metadata';
-import { createConnection, getConnection } from 'typeorm';
+import { createConnection } from 'typeorm';
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import { join } from 'path';
 import passport from 'passport';
 import { Strategy as GitHubStrategy } from 'passport-github';
-import jwt from 'jsonwebtoken';
 import { router as projectRouter } from './routes/projects';
 import { router as thoughtRouter } from './routes/thoughts';
 import { router as userInfoRouter } from './routes/userInfo';
 import { router as activityRouter } from './routes/activity';
 import { router as authRouter } from './routes/auth';
 import { config } from './config/enviroment';
-import { User } from './entities/User';
 import { authMiddleware } from './middleware/authMiddleware';
 import { githubVerifyCallback } from './auth/github';
 

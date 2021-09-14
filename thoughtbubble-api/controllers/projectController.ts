@@ -3,7 +3,6 @@ import { Request, Response } from 'express';
 import { getConnection, getRepository } from 'typeorm';
 import { Project } from '../entities/Project';
 import { Thought } from '../entities/Thought';
-import { User } from '../entities/User';
 import { ControllerHelper } from './controllerHelper';
 
 class ProjectsController extends ControllerHelper {
