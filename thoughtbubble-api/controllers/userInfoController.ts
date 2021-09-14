@@ -169,7 +169,6 @@ class userInfoController {
   public updateProjectOrder = async (req: Request, res: Response) => {
     const { projectOrder } = req.body;
     const { userId } = req;
-    const user = await User.findOne({ id: userId });
     try {
       await getConnection()
         .createQueryBuilder()
