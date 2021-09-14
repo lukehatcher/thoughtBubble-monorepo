@@ -12,8 +12,8 @@
   "activationEvents": [
     "onCommand:thoughtBubble.start",
     "onCommand:thoughtBubble.kill",
-    "onCommand:thoughtBubble.login",
-    "onCommand:thoughtBubble.addThought"
+    "onCommand:thoughtBubble.addThought",
+    "onCommand:thoughtBubble.authenticate"
   ],
   "repository": {
     "type": "git",
@@ -33,13 +33,13 @@
         "category": "thoughtBubble"
       },
       {
-        "command": "thoughtBubble.login",
-        "title": "login",
+        "command": "thoughtBubble.addThought",
+        "title": "add thought",
         "category": "thoughtBubble"
       },
       {
-        "command": "thoughtBubble.addThought",
-        "title": "add thought",
+        "command": "thoughtBubble.authenticate",
+        "title": "authenticate",
         "category": "thoughtBubble"
       }
     ]

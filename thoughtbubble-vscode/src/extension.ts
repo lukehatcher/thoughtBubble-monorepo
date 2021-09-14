@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 import { getNonce } from './generateNonce';
-import { Credentials } from './credentials';
 import { StateManager } from './stateManager';
 import { addThoughtFromQuickPick, fetchQuickPickData } from './quickPick';
 import { projectTuple } from './interfaces';
@@ -8,25 +7,12 @@ import { projectTuple } from './interfaces';
 export async function activate(context: vscode.ExtensionContext) {
   StateManager.globalState = context.globalState; // so i can reference state anywhere
 
-  // ================================================
-  const credentials = new Credentials();
-  await credentials.initialize(context);
-
-  const disposable = vscode.commands.registerCommand('thoughtBubble.login', async () => {
-    /**
-     * Octokit (https://github.com/octokit/rest.js#readme) is a library for making REST API
-     * calls to GitHub. It provides convenient typings that can be helpful for using the API.
-     * ...Documentation on GitHub's REST API can be found here: https://docs.github.com/en/rest
-     */
-    const octokit = await credentials.getOctokit();
-    const userInfo = await octokit.users.getAuthenticated();
-
-    vscode.window.showInformationMessage(`Logged into thoughtBubble via GitHub as ${userInfo.data.login}`);
-    // send message
-    StateManager.setToken(JSON.stringify(userInfo.data));
-  });
-  context.subscriptions.push(disposable);
-  // ================================================
+  context.subscriptions.push(
+    vscode.commands.registerCommand('thoughtBubble.authenticate', () => {
+      console.log('called auth function');
+      // vscode.window.showInformationMessage(`Logged into thoughtBubble via GitHub as ${userInfo.data.login}`);
+    })
+  );
 
   context.subscriptions.push(
     vscode.commands.registerCommand('thoughtBubble.start', () => {
