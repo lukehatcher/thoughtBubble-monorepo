@@ -12,6 +12,14 @@ import { FilterActionTypes } from '../constants/actionTypes';
 import { StatusFilters, Tags } from './stringLiteralTypes';
 import { Directions, OrderTypes } from '../constants/orders';
 
+export interface State {
+  userProjectData: ProjectShape[];
+  userInfo: UserInfoShape;
+  filters: FilterReducerInitialState[];
+  activity: Activity;
+  archive: ProjectShape[];
+}
+
 // reusable thunk typing
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, AnyAction>;
 

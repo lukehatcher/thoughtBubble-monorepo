@@ -4,6 +4,7 @@ import { userInfoReducer } from './userInfoReducer';
 import { filterReducer } from './filterReducer';
 import { activityReducer } from './activityReducer';
 import { archiveReducer } from './archiveReducer';
+import { State } from '../interfaces/redux';
 
 const appReducer = combineReducers({
   userProjectData: UserProjectDataReducer,
@@ -13,7 +14,8 @@ const appReducer = combineReducers({
   archive: archiveReducer,
 });
 
-export const rootReducer = (state, action) => {
+export const rootReducer = (state: State, action: any) => {
+  // TODO: type action param
   if (action.type === 'USER_LOGOUT') {
     state = undefined;
   }
