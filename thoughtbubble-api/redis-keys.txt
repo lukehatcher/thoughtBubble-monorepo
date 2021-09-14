@@ -1,0 +1,5 @@
+for caching projcts (with their nested thoughts inside them):
+projects:<userId uuid>
+
+for caching user's activity:
+activity:<userId uuid>
