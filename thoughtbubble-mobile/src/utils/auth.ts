@@ -5,7 +5,7 @@ import { BASE_URL } from '@env';
 import { UserInfoActionTypes } from '../constants/actionTypes';
 
 export const _loginGitHub = () => {
-  Linking.openURL(`${BASE_URL}/auth/github`);
+  Linking.openURL(`${BASE_URL}/auth/github/mobile`);
 };
 
 export const _logout = async () => {
