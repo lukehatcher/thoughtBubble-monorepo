@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import * as polka from 'polka';
+import { StateManager } from './stateManager';
 
 const authEndpoint = 'http://localhost:3001/auth/github/vscode';
 const vscodeServerPort = 7777;
@@ -14,6 +15,8 @@ export const authenticate = () => {
     }
     console.log(authToken);
     res.end('<h1>auth was sucessful</h1>');
+    await StateManager.setToken(authToken);
+    (polkaServer as any).close();
   });
 
   polkaServer.listen(vscodeServerPort, (err: Error) => {

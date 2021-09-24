@@ -1,18 +1,20 @@
-
 import * as vscode from 'vscode';
 
+const key = 'accessToken';
+
+// creates a global reference to the state container + methods
 export class StateManager {
   static globalState: vscode.Memento;
 
-  static setToken(token: string) {
-    return this.globalState.update('user', token);
+  public static setToken(token: string) {
+    return this.globalState.update(key, token);
   }
 
-  static getToken(): string | undefined {
-    return this.globalState.get('user');
+  public static getToken(): string | undefined {
+    return this.globalState.get(key);
   }
 
-  static removeToken(): void {
-    this.globalState.update('user', null);
+  public static removeToken(): void {
+    this.globalState.update(key, null);
   }
 }

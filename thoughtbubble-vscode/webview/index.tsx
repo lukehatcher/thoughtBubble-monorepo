@@ -11,7 +11,7 @@ import { fetchUserInfoAction } from './actions/userInfoActions';
 
 // request user token from extension
 vscodeGlobal.postMessage({
-  command: 'getUser',
+  command: 'fetchToken',
   value: null,
 });
 
@@ -20,12 +20,11 @@ window.addEventListener('message', (e) => {
   const message = e.data; // The json data that the extension sent
   switch (message.command) {
     case 'sendingData/refresh': {
-      // should check db here first then await...
-      store.dispatch({ type: 'storeUser', payload: JSON.parse(message.userData) });
-      // const userSub = `github|${JSON.parse(message.userData).id}`;
-      // seed redux store
+      // name should change here later
+      store.dispatch({ type: 'token/save', payload: message.token });
+      console.log(message.token);
+      // seed redux store (after we fetched token)
       store.dispatch(fetchDataAction());
-      // store.dispatch(fetchUserInfoAction());
       return;
     }
   }

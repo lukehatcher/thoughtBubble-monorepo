@@ -1,10 +1,11 @@
 import axios from 'axios';
-import { ProjectShape } from '../interfaces/interfaces';
 import { locations } from '../constants/locations';
-import { BASE_URL, DEV_TOKEN } from '../constants/config';
+import { BASE_URL } from '../constants/config';
 
 export const addProjectAction = (projectName: string) => {
-  return async (dispatch, _getState) => {
+  return async (dispatch, getState) => {
+    const { token } = getState();
+    if (!token) return; // TODO: validate if this logic is needed
     axios
       .post(
         `${BASE_URL}/projects`,
@@ -12,7 +13,7 @@ export const addProjectAction = (projectName: string) => {
           projectName,
           creationLocation: locations.VSCODE,
         },
-        { headers: { Authorization: `Bearer ${DEV_TOKEN}` } }
+        { headers: { Authorization: `Bearer ${token}` } }
       )
       .then((res) => {
         const newProject = res.data;
@@ -24,10 +25,12 @@ export const addProjectAction = (projectName: string) => {
 };
 
 export const deleteProjectAction = (projectId: string) => {
-  return async (dispatch, _getState) => {
+  return async (dispatch, getState) => {
+    const { token } = getState();
+    if (!token) return; // TODO: validate if this logic is needed
     axios
       .delete(`${BASE_URL}/projects`, {
-        headers: { Authorization: `Bearer ${DEV_TOKEN}` },
+        headers: { Authorization: `Bearer ${token}` },
         params: {
           projectId,
         },

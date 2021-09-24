@@ -9,18 +9,18 @@ import { VscSettingsGear, VscBook } from 'react-icons/vsc';
 
 export const HomePage: React.FC = () => {
   const loginSelector = (state: RootState) => state.userProjectData;
-  const userSelector = (state: RootState) => state.storedUser;
+  const userSelector = (state: RootState) => state.token;
   const loginStatus = useSelector(loginSelector);
 
-  const user = useSelector(userSelector);
-  let pic;
-  let username;
-  let name;
-  if (loginStatus && user) {
-    pic = user.avatar_url;
-    username = user.login;
-    name = user.name;
-  }
+  // const user = useSelector(userSelector);
+  // let pic;
+  // let username;
+  // let name;
+  // if (loginStatus && user) {
+  //   pic = user.avatar_url;
+  //   username = user.login;
+  //   name = user.name;
+  // }
 
   if (!loginStatus) {
     return (
@@ -49,12 +49,9 @@ export const HomePage: React.FC = () => {
       </nav>
       <div id="home-main-container">
         <header id="home-header">
-          {/* the var id is the github handle */}
-          <div id="welcome-text-container">
-            <h3 id="welcome-text">{`welcome back ${name}`}</h3>
-          </div>
+          <div id="welcome-text-container">{/* <h3 id="welcome-text">{`welcome back ${name}`}</h3> */}</div>
           <div id="pic-and-logout-container">
-            <img src={pic} id="user-img" alt="user's github profile pic" />
+            {/* <img src={pic} id="user-img" alt="user's github profile pic" /> */}
             <LogoutButton id="logout-btn-home" />
           </div>
         </header>

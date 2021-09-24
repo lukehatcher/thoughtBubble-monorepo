@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import { storeUserReducer } from './storedUserReducer';
+import { tokenReducer } from './tokenReducer';
 import { UserProjectDataReducer } from './userProjectDataReducer';
 import { userInfoReducer } from './userInfoReducer';
 
 const appReducer = combineReducers({
-  storedUser: storeUserReducer,
+  token: tokenReducer,
   userProjectData: UserProjectDataReducer,
   userInfo: userInfoReducer,
 });

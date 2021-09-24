@@ -1,9 +1,11 @@
 import axios from 'axios';
 import { locations } from '../constants/locations';
-import { BASE_URL, DEV_TOKEN } from '../constants/config';
+import { BASE_URL } from '../constants/config';
 
 export const addThoughtAction = (projectId: string, thought: string) => {
-  return async (dispatch, _getState) => {
+  return async (dispatch, getState) => {
+    const { token } = getState();
+    if (!token) return; // TODO: validate if this logic is needed
     axios
       .post(
         `${BASE_URL}/thoughts`,
@@ -12,7 +14,7 @@ export const addThoughtAction = (projectId: string, thought: string) => {
           thought,
           creationLocation: locations.VSCODE,
         },
-        { headers: { Authorization: `Bearer ${DEV_TOKEN}` } }
+        { headers: { Authorization: `Bearer ${token}` } }
       )
       .then((res) => {
         // const newThoughtId = res.data;
@@ -23,16 +25,18 @@ export const addThoughtAction = (projectId: string, thought: string) => {
 };
 
 export const deleteThoughtAction = (projectId: string, thoughtId: string) => {
-  return async (dispatch, _getState) => {
+  return async (dispatch, getState) => {
+    const { token } = getState();
+    if (!token) return; // TODO: validate if this logic is needed
     axios
       .delete(`${BASE_URL}/thoughts`, {
-        headers: { Authorization: `Bearer ${DEV_TOKEN}` },
+        headers: { Authorization: `Bearer ${token}` },
         params: {
           projectId, // not used in api atm
           thoughtId,
         },
       })
-      .then((res) => {
+      .then((_res) => {
         dispatch({ type: 'deleteThought', payload: { projectId, id: thoughtId } });
       })
       .catch((err) => console.error('@thoughtActions.ts: ', err));
@@ -40,7 +44,9 @@ export const deleteThoughtAction = (projectId: string, thoughtId: string) => {
 };
 
 export const editThoughtAction = (newThought: string, projectId: string, thoughtId: string) => {
-  return async (dispatch, _getState) => {
+  return async (dispatch, getState) => {
+    const { token } = getState();
+    if (!token) return; // TODO: validate if this logic is needed
     try {
       axios
         .put(
@@ -50,9 +56,9 @@ export const editThoughtAction = (newThought: string, projectId: string, thought
             thoughtId,
             newThought,
           },
-          { headers: { Authorization: `Bearer ${DEV_TOKEN}` } }
+          { headers: { Authorization: `Bearer ${token}` } }
         )
-        .then((res) => {
+        .then((_res) => {
           dispatch({ type: 'editThought', payload: { projectId, id: thoughtId, newThought } });
         });
     } catch (err) {
@@ -62,7 +68,9 @@ export const editThoughtAction = (newThought: string, projectId: string, thought
 };
 
 export const thoughtStatusChangeAction = (projectId: string, thoughtId: string) => {
-  return async (dispatch, _getState) => {
+  return async (dispatch, getState) => {
+    const { token } = getState();
+    if (!token) return; // TODO: validate if this logic is needed
     axios
       .put(
         `${BASE_URL}/thoughts/status`,
@@ -70,9 +78,9 @@ export const thoughtStatusChangeAction = (projectId: string, thoughtId: string) 
           projectId, // not used atm
           thoughtId,
         },
-        { headers: { Authorization: `Bearer ${DEV_TOKEN}` } }
+        { headers: { Authorization: `Bearer ${token}` } }
       )
-      .then((res) => {
+      .then((_res) => {
         dispatch({ type: 'thoughtStatusChange', payload: { projectId, id: thoughtId } });
       })
       .catch((err) => console.error('@thoughtActions.ts: ', err));

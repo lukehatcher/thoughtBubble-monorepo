@@ -15,6 +15,12 @@ export async function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
+    vscode.commands.registerCommand('thoughtBubble.test', () => {
+      vscode.window.showInformationMessage('token is:' + StateManager.getToken());
+    })
+  );
+
+  context.subscriptions.push(
     vscode.commands.registerCommand('thoughtBubble.start', () => {
       MainPanel.createOrShow(context.extensionUri);
     })
@@ -125,10 +131,10 @@ class MainPanel {
           case 'alert':
             vscode.window.showErrorMessage(message.value);
             return;
-          case 'getUser': {
-            const userData = StateManager.getToken() || '';
+          case 'fetchToken': {
+            const token = StateManager.getToken() || '';
             // vscode.window.showInformationMessage(userData);
-            this._panel.webview.postMessage({ command: 'sendingData/refresh', userData }); // whole obj = event.data;
+            this._panel.webview.postMessage({ command: 'sendingData/refresh', token }); // whole obj = event.data;
             return;
           }
           case 'logout':
