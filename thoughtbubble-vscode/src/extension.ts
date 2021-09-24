@@ -3,14 +3,14 @@ import { getNonce } from './generateNonce';
 import { StateManager } from './stateManager';
 import { addThoughtFromQuickPick, fetchQuickPickData } from './quickPick';
 import { projectTuple } from './interfaces';
+import { authenticate } from './auth';
 
 export async function activate(context: vscode.ExtensionContext) {
   StateManager.globalState = context.globalState; // so i can reference state anywhere
 
   context.subscriptions.push(
     vscode.commands.registerCommand('thoughtBubble.authenticate', () => {
-      console.log('called auth function');
-      // vscode.window.showInformationMessage(`Logged into thoughtBubble via GitHub as ${userInfo.data.login}`);
+      authenticate();
     })
   );
 
