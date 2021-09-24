@@ -28,5 +28,5 @@ router.route('/').get(passport.authenticate('github:vscode', { session: false })
 
 router.route('/callback').get(passport.authenticate('github:vscode', { session: false }), (req: any, res: Response) => {
   // vscode auth process redirects to server running in vscode on port 6666, that server listens and saves the access token
-  res.redirect(`http://localhost:6666/${req.user.accessToken}`);
+  res.redirect(`http://localhost:7777/auth/${req.user.accessToken}`);
 });
