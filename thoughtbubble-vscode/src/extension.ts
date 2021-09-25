@@ -10,7 +10,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.commands.registerCommand('thoughtBubble.authenticate', () => {
-      authenticate();
+      authenticate(() => {});
     })
   );
 
@@ -127,17 +127,22 @@ class MainPanel {
     // Handle messages from the webview
     this._panel.webview.onDidReceiveMessage(
       (message) => {
+        // can't use something like `const token = StateManager.getToken()` cause it can change back and forth during one switch visit
         switch (message.command) {
           case 'alert':
             vscode.window.showErrorMessage(message.value);
             break;
           case 'fetchToken': {
-            const token = StateManager.getToken();
-            this._panel.webview.postMessage({ command: 'sendingData/refresh', token });
+            this._panel.webview.postMessage({ command: 'sendingData/refresh', token: StateManager.getToken() });
             break;
           }
           case 'login':
-            authenticate(); // this can technically remove the auth command (but we will keep the command for now)
+            authenticate(() => {
+              this._panel.webview.postMessage({ command: 'sendingData/refresh', token: StateManager.getToken() });
+            });
+            // this can technically replace the auth command (but we will keep the command for now)
+            // this message is sent back to webview to it can update token in store and move HomePage.tsx from login view to logged in
+            break;
           case 'logout':
             StateManager.removeToken();
             break;

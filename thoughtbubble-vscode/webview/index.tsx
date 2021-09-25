@@ -21,8 +21,9 @@ window.addEventListener('message', (e) => {
   switch (message.command) {
     case 'sendingData/refresh': {
       // name should change here later
+      console.log('HERE IN THE sendingData/refresh', message.token);
       store.dispatch({ type: 'token/save', payload: message.token });
-      console.log(message.token);
+
       // seed redux store (after we fetched token)
       store.dispatch(fetchDataAction());
       return;

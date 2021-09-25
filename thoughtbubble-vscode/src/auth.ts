@@ -1,11 +1,12 @@
 import * as vscode from 'vscode';
 import * as polka from 'polka';
 import { StateManager } from './stateManager';
+import { createBrotliCompress } from 'zlib';
 
 const authEndpoint = 'http://localhost:3001/auth/github/vscode';
 const vscodeServerPort = 7777;
 
-export const authenticate = () => {
+export const authenticate = (cb: () => void) => {
   const polkaServer = polka();
 
   polkaServer.get('/auth/:authToken', async (req, res) => {
@@ -13,10 +14,11 @@ export const authenticate = () => {
     if (!authToken) {
       res.end('<h1>error, something went wrong</h1>');
     }
-    console.log(authToken);
     res.end('<h1>auth was sucessful</h1>');
     await StateManager.setToken(authToken);
-    (polkaServer as any).close();
+    // send a message back to the view with the token in it so the view can change from logged out to logged in state
+    cb();
+    // (polkaServer as any).close();
   });
 
   polkaServer.listen(vscodeServerPort, (err: Error) => {
