@@ -1,14 +1,9 @@
 import axios from 'axios';
 
-// !!!!!!!!!!!!!!!!!!!!
-// NOT IN USE RN
-// NO DB CHECK RN
-// !!!!!!!!!!!!!!!!!!!!
-
-export const storeUserAction = (userData: string | null) => {
+export const storeTokenAction = (token: string | null) => {
   // called from _onLogin util
   return async (dispatch) => {
-		dispatch({type: 'storeUser', payload: userData})
+    dispatch({ type: 'token/save', payload: token });
     // // add user to db if not exist
     // // note: jwt is null when app opens and no one is logged in
     // if (jwt !== null) {

@@ -8,9 +8,8 @@ import { LoginButton } from './LoginButton';
 import { VscSettingsGear, VscBook } from 'react-icons/vsc';
 
 export const HomePage: React.FC = () => {
-  const loginSelector = (state: RootState) => state.userProjectData;
-  const userSelector = (state: RootState) => state.token;
-  const loginStatus = useSelector(loginSelector);
+  const token = useSelector((state: RootState) => state.token);
+  const userData = useSelector((state: RootState) => state.userProjectData);
 
   // const user = useSelector(userSelector);
   // let pic;
@@ -22,7 +21,7 @@ export const HomePage: React.FC = () => {
   //   name = user.name;
   // }
 
-  if (!loginStatus) {
+  if (!token) {
     return (
       <>
         <LoginButton />

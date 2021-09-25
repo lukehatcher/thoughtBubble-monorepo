@@ -130,31 +130,24 @@ class MainPanel {
         switch (message.command) {
           case 'alert':
             vscode.window.showErrorMessage(message.value);
-            return;
+            break;
           case 'fetchToken': {
-            const token = StateManager.getToken() || '';
-            // vscode.window.showInformationMessage(userData);
-            this._panel.webview.postMessage({ command: 'sendingData/refresh', token }); // whole obj = event.data;
-            return;
+            const token = StateManager.getToken();
+            this._panel.webview.postMessage({ command: 'sendingData/refresh', token });
+            break;
           }
-          case 'logout':
-            // this._panel.webview.postMessage({ command: 'sendingData', userData: null });
-            // CLEAR SESSION
-            StateManager.removeToken();
-            // this._panel.webview
-            return;
           case 'login':
-            // execute login then post message to webview where redux store is updated
-            vscode.commands.executeCommand('thoughtBubble.login').then(() => {
-              this._panel.webview.postMessage({ command: 'sendingData/refresh', userData: StateManager.getToken() });
-            });
-            return;
+            authenticate(); // this can technically remove the auth command (but we will keep the command for now)
+          case 'logout':
+            StateManager.removeToken();
+            break;
           case 'refreshExt':
             // reload extension
             // used when you are already in the extension and you want to reload
             vscode.commands
               .executeCommand('thoughtBubble.kill')
               .then(() => vscode.commands.executeCommand('thoughtBubble.start'));
+            break;
         }
       },
       null,
