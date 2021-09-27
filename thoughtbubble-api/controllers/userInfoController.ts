@@ -9,7 +9,7 @@ import { config } from '../config/enviroment';
 class userInfoController {
   private readonly location: string;
 
-  constructor() {
+  public constructor() {
     this.location = '@userInfoControllers.ts: ';
   }
 

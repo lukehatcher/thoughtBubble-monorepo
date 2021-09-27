@@ -8,7 +8,7 @@ import { ControllerHelper } from './controllerHelper';
 class ProjectsController extends ControllerHelper {
   private readonly location: string;
 
-  constructor() {
+  public constructor() {
     super();
     this.location = '@projectControllers.ts: ';
   }

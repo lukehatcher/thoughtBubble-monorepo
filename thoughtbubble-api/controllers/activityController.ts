@@ -6,7 +6,7 @@ import { ControllerHelper } from './controllerHelper';
 class ActivityController extends ControllerHelper {
   private readonly location: string;
 
-  constructor() {
+  public constructor() {
     super();
     this.location = '@activityControllers.ts: ';
   }
