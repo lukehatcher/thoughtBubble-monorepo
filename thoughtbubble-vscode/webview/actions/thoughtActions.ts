@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { locations } from '../constants/locations';
 import { BASE_URL } from '../constants/config';
+import { AppThunk } from '../interfaces/redux';
+import { ProjectActionTypes } from '../interfaces/actionTypes';
 
 export const addThoughtAction = (projectId: string, thought: string) => {
   return async (dispatch, getState) => {
@@ -82,6 +84,30 @@ export const thoughtStatusChangeAction = (projectId: string, thoughtId: string) 
       )
       .then((_res) => {
         dispatch({ type: 'thoughtStatusChange', payload: { projectId, id: thoughtId } });
+      })
+      .catch((err) => console.error('@thoughtActions.ts: ', err));
+  };
+};
+
+export const thoughtTagChangeAction = function (
+  projectId: string,
+  thoughtId: string,
+  tag: string | null
+): AppThunk<void> {
+  return async (dispatch, getState) => {
+    const { token } = getState();
+    axios
+      .put(
+        `${BASE_URL}/thoughts/tag`,
+        {
+          projectId, // used for updating most recent edit time
+          thoughtId,
+          tag,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      .then(() => {
+        dispatch({ type: ProjectActionTypes.EDIT_THOUGHT_TAG, payload: { projectId, tag, id: thoughtId } });
       })
       .catch((err) => console.error('@thoughtActions.ts: ', err));
   };

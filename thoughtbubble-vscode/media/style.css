@@ -78,8 +78,6 @@ textarea:focus {
   outline: none;
   color: #aab2c0;
   border: none;
-  /* border: 1px solid #AAB2C0; */
-  /* border-radius: 5px; */
 }
 
 .edit-thought-submit:hover {
@@ -99,32 +97,26 @@ textarea:focus {
 
 /* project card + their thought cards */
 
-.projectCard-container {
-  /* border: 1px solid black; */
-}
-
 .thoughtCard-container {
   background: #1f232b;
   border-radius: 10px;
   padding: 10px;
   margin: 10px;
-  /* box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.35); */
 }
 
 .completed-text {
   text-decoration: line-through;
   color: #aab2c046;
-  /* opacity: 0.4; */
 }
 
 /* header + logout/in buttons */
 
-#header-toolbar-container {
+/* #header-toolbar-container {
   display: flex;
   flex-direction: row;
   align-items: center;
   padding: 10px;
-}
+} */
 
 #main-header {
   position: sticky;

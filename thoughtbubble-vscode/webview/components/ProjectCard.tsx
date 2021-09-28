@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addThoughtAction } from '../actions/thoughtActions';
-import { ProjectCardProps } from '../interfaces/interfaces';
+import { ProjectCardProps } from '../interfaces/componentProps';
 import { ThoughtCard } from './ThoughtCard';
 import { Popup } from 'reactjs-popup';
 import { fetchDataAction } from '../actions/fetchDataAction';
@@ -12,7 +12,7 @@ import { VscCloudUpload, VscFilter, VscNewFile } from 'react-icons/vsc';
 import { AiOutlineCloseCircle, AiOutlineCheckCircle, AiOutlineReload } from 'react-icons/ai';
 
 export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState<string>('');
   const dispatch = useDispatch();
   const { projectName, id: projectId } = project;
 

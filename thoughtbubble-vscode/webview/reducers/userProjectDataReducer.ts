@@ -1,3 +1,4 @@
+import { ProjectActionTypes } from '../interfaces/actionTypes';
 import { ProjectShape } from '../interfaces/interfaces';
 
 const initialState: ProjectShape[] = [];
@@ -87,6 +88,26 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
           return project;
         }
       });
+    case ProjectActionTypes.EDIT_THOUGHT_TAG: {
+      // const updatedThought = payload as EditThoughtTagPayload; // TODO
+      const updatedThought = payload;
+      return state.map((item) => {
+        if (item.id !== updatedThought.projectId) {
+          return item;
+        } else {
+          return {
+            ...item,
+            lastUpdatedDate: new Date().toISOString(),
+            projectThoughts: item.projectThoughts.map((thought) => {
+              if (thought.id === updatedThought.id) {
+                thought.tag = updatedThought.tag;
+              }
+              return thought;
+            }),
+          };
+        }
+      });
+    }
     default:
       return state;
   }

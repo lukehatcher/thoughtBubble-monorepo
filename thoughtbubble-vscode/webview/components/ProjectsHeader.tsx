@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import { addProjectAction, deleteProjectAction } from '../actions/projectActions';
 import { RootState } from '../reducers/rootReducer';
 import { VscNewFolder, VscCloudUpload, VscEdit, VscTrash, VscRefresh, VscSettingsGear } from 'react-icons/vsc';
@@ -32,8 +33,15 @@ export const ProjectsHeader: React.FC = function () {
     });
   };
 
+  const Container = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+  `;
+
   return (
-    <div id="header-toolbar-container">
+    <Container>
       {/* create new project submenu popup */}
       <Popup
         // contentStyle={{ border: '2px solid #AAB2C0', borderRadius: '10px' }}
@@ -93,10 +101,10 @@ export const ProjectsHeader: React.FC = function () {
         <VscRefresh size="2em" />
       </div>
       {/* <Link to={routerLocations.SETTINGS} style={{ color: '#AAB2C0' }}> */}
-      <Link to="/settings" style={{ color: '#AAB2C0' }}>
+      <Link to={routerLocations.SETTINGS} style={{ color: '#AAB2C0' }}>
         <VscSettingsGear size="2em" />
       </Link>
       <LogoutButton id="logout-btn-projects" />
-    </div>
+    </Container>
   );
 };

@@ -35,8 +35,8 @@ ReactDOM.render(
   <Provider store={store}>
     <Router>
       <Switch>
-        <Route path="/settings" component={SettingsPage} />
-        <Route path="/" component={ProjectPage} />
+        <Route path={routerLocations.SETTINGS} component={SettingsPage} />
+        <Route path={routerLocations.PROJECTS} component={ProjectPage} />
       </Switch>
     </Router>
   </Provider>,
