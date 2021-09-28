@@ -1,13 +1,13 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { HomePage } from './components/HomePage';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import store from './store';
 import { fetchDataAction } from './actions/fetchDataAction';
 import { SettingsPage } from './components/SettingsPage';
-import { ProjectList } from './components/ProjectList';
+import { ProjectPage } from './components/ProjectPage';
 import { fetchUserInfoAction } from './actions/userInfoActions';
+import { routerLocations } from './constants/routerLocations';
 
 // request user token from extension
 vscodeGlobal.postMessage({
@@ -35,9 +35,8 @@ ReactDOM.render(
   <Provider store={store}>
     <Router>
       <Switch>
-        <Route path="/settings" exact component={SettingsPage} />
-        <Route path="/projectList" exact component={ProjectList} />
-        <Route path="/" component={HomePage} />
+        <Route path="/settings" component={SettingsPage} />
+        <Route path="/" component={ProjectPage} />
       </Switch>
     </Router>
   </Provider>,

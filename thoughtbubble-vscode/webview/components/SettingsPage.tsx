@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../reducers/rootReducer';
 import { Link } from 'react-router-dom';
 import Switch from 'react-switch';
+import { routerLocations } from '../constants/routerLocations';
 
 // interface SettingsPageProps {}
 
@@ -20,7 +21,7 @@ export const SettingsPage: React.FC = function () {
   return (
     <div>
       <h1>settings</h1>
-      <Link to="/home">return home</Link>
+      <Link to={routerLocations.PROJECTS}>return to projects</Link>
       <div className="toggle-container">
         <p>daily emails</p>
         <Switch

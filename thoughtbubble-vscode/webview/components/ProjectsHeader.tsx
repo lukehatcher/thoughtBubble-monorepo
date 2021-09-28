@@ -3,10 +3,11 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProjectAction, deleteProjectAction } from '../actions/projectActions';
 import { RootState } from '../reducers/rootReducer';
-import { VscNewFolder, VscCloudUpload, VscEdit, VscTrash, VscRefresh, VscHome } from 'react-icons/vsc';
+import { VscNewFolder, VscCloudUpload, VscEdit, VscTrash, VscRefresh, VscSettingsGear } from 'react-icons/vsc';
 import Popup from 'reactjs-popup';
 import { LogoutButton } from './LogoutButton';
 import { Link } from 'react-router-dom';
+import { routerLocations } from '../constants/routerLocations';
 
 export const ProjectsHeader: React.FC = function () {
   const [input, setInput] = useState('');
@@ -91,8 +92,9 @@ export const ProjectsHeader: React.FC = function () {
       <div className="submenu-trigger" onClick={() => handleExtRefresh()}>
         <VscRefresh size="2em" />
       </div>
-      <Link to="/home" style={{ color: '#AAB2C0' }}>
-        <VscHome size="2em" />
+      {/* <Link to={routerLocations.SETTINGS} style={{ color: '#AAB2C0' }}> */}
+      <Link to="/settings" style={{ color: '#AAB2C0' }}>
+        <VscSettingsGear size="2em" />
       </Link>
       <LogoutButton id="logout-btn-projects" />
     </div>
