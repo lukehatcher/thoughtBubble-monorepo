@@ -12,8 +12,9 @@
   "activationEvents": [
     "onCommand:thoughtBubble.start",
     "onCommand:thoughtBubble.kill",
-    "onCommand:thoughtBubble.login",
-    "onCommand:thoughtBubble.addThought"
+    "onCommand:thoughtBubble.addThought",
+    "onCommand:thoughtBubble.authenticate",
+    "onCommand:thoughtBubble.test"
   ],
   "repository": {
     "type": "git",
@@ -33,13 +34,18 @@
         "category": "thoughtBubble"
       },
       {
-        "command": "thoughtBubble.login",
-        "title": "login",
+        "command": "thoughtBubble.addThought",
+        "title": "add thought",
         "category": "thoughtBubble"
       },
       {
-        "command": "thoughtBubble.addThought",
-        "title": "add thought",
+        "command": "thoughtBubble.authenticate",
+        "title": "authenticate",
+        "category": "thoughtBubble"
+      },
+      {
+        "command": "thoughtBubble.test",
+        "title": "test",
         "category": "thoughtBubble"
       }
     ]
@@ -55,8 +61,8 @@
   },
   "dependencies": {
     "@octokit/rest": "^18.3.5",
-    "@types/react-router-dom": "^5.1.7",
     "axios": "^0.21.1",
+    "polka": "^0.5.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-icons": "^4.2.0",
@@ -69,9 +75,11 @@
   },
   "devDependencies": {
     "@types/node": "^12.12.0",
+    "@types/polka": "^0.5.3",
     "@types/react": "^17.0.2",
     "@types/react-dom": "^17.0.1",
     "@types/react-redux": "^7.1.16",
+    "@types/react-router-dom": "^5.1.7",
     "@types/vscode": "^1.47.0",
     "@typescript-eslint/eslint-plugin": "^3.0.2",
     "@typescript-eslint/parser": "^3.0.2",

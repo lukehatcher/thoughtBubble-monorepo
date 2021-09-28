@@ -8,7 +8,7 @@ import { ControllerHelper } from './controllerHelper';
 class ProjectsController extends ControllerHelper {
   private readonly location: string;
 
-  constructor() {
+  public constructor() {
     super();
     this.location = '@projectControllers.ts: ';
   }
@@ -16,13 +16,13 @@ class ProjectsController extends ControllerHelper {
   public fetchProjects = async (req: Request, res: Response): Promise<void> => {
     const { userId } = req;
 
-    // check redis cache
-    const cacheKey = `projects:${userId}`;
-    const cacheResponse = await this.cacheGet(cacheKey);
-    if (cacheResponse) {
-      res.send(JSON.parse(cacheResponse));
-      return;
-    }
+    // check redis cache // TODO
+    // const cacheKey = `projects:${userId}`;
+    // const cacheResponse = await this.cacheGet(cacheKey);
+    // if (cacheResponse) {
+    //   res.send(JSON.parse(cacheResponse));
+    //   return;
+    // }
 
     try {
       const usersProjects = await getRepository(Project) //
@@ -42,8 +42,8 @@ class ProjectsController extends ControllerHelper {
         const projectThoughts2 = projectThoughts as any[];
         data[i].projectThoughts = projectThoughts2; // thoughts is a keyword
       }
-      // set redis cache
-      this.cacheSet(cacheKey, JSON.stringify(data));
+      // set redis cache // TODO
+      // this.cacheSet(cacheKey, JSON.stringify(data));
       // send response to client
       res.send(data).status(200);
     } catch (err) {

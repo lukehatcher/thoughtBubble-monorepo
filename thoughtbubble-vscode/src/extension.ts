@@ -1,32 +1,24 @@
 import * as vscode from 'vscode';
 import { getNonce } from './generateNonce';
-import { Credentials } from './credentials';
 import { StateManager } from './stateManager';
 import { addThoughtFromQuickPick, fetchQuickPickData } from './quickPick';
 import { projectTuple } from './interfaces';
+import { authenticate } from './auth';
 
 export async function activate(context: vscode.ExtensionContext) {
   StateManager.globalState = context.globalState; // so i can reference state anywhere
 
-  // ================================================
-  const credentials = new Credentials();
-  await credentials.initialize(context);
+  context.subscriptions.push(
+    vscode.commands.registerCommand('thoughtBubble.authenticate', () => {
+      authenticate(() => {});
+    })
+  );
 
-  const disposable = vscode.commands.registerCommand('thoughtBubble.login', async () => {
-    /**
-     * Octokit (https://github.com/octokit/rest.js#readme) is a library for making REST API
-     * calls to GitHub. It provides convenient typings that can be helpful for using the API.
-     * ...Documentation on GitHub's REST API can be found here: https://docs.github.com/en/rest
-     */
-    const octokit = await credentials.getOctokit();
-    const userInfo = await octokit.users.getAuthenticated();
-
-    vscode.window.showInformationMessage(`Logged into thoughtBubble via GitHub as ${userInfo.data.login}`);
-    // send message
-    StateManager.setToken(JSON.stringify(userInfo.data));
-  });
-  context.subscriptions.push(disposable);
-  // ================================================
+  context.subscriptions.push(
+    vscode.commands.registerCommand('thoughtBubble.test', () => {
+      vscode.window.showInformationMessage('token is:' + StateManager.getToken());
+    })
+  );
 
   context.subscriptions.push(
     vscode.commands.registerCommand('thoughtBubble.start', () => {
@@ -135,34 +127,32 @@ class MainPanel {
     // Handle messages from the webview
     this._panel.webview.onDidReceiveMessage(
       (message) => {
+        // can't use something like `const token = StateManager.getToken()` cause it can change back and forth during one switch visit
         switch (message.command) {
           case 'alert':
             vscode.window.showErrorMessage(message.value);
-            return;
-          case 'getUser': {
-            const userData = StateManager.getToken() || '';
-            // vscode.window.showInformationMessage(userData);
-            this._panel.webview.postMessage({ command: 'sendingData/refresh', userData }); // whole obj = event.data;
-            return;
+            break;
+          case 'fetchToken': {
+            this._panel.webview.postMessage({ command: 'sendingData/refresh', token: StateManager.getToken() });
+            break;
           }
-          case 'logout':
-            // this._panel.webview.postMessage({ command: 'sendingData', userData: null });
-            // CLEAR SESSION
-            StateManager.removeToken();
-            // this._panel.webview
-            return;
           case 'login':
-            // execute login then post message to webview where redux store is updated
-            vscode.commands.executeCommand('thoughtBubble.login').then(() => {
-              this._panel.webview.postMessage({ command: 'sendingData/refresh', userData: StateManager.getToken() });
+            authenticate(() => {
+              this._panel.webview.postMessage({ command: 'sendingData/refresh', token: StateManager.getToken() });
             });
-            return;
+            // this can technically replace the auth command (but we will keep the command for now)
+            // this message is sent back to webview to it can update token in store and move HomePage.tsx from login view to logged in
+            break;
+          case 'logout':
+            StateManager.removeToken();
+            break;
           case 'refreshExt':
             // reload extension
             // used when you are already in the extension and you want to reload
             vscode.commands
               .executeCommand('thoughtBubble.kill')
               .then(() => vscode.commands.executeCommand('thoughtBubble.start'));
+            break;
         }
       },
       null,

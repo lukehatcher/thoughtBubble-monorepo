@@ -6,7 +6,7 @@ import { ControllerHelper } from './controllerHelper';
 class ActivityController extends ControllerHelper {
   private readonly location: string;
 
-  constructor() {
+  public constructor() {
     super();
     this.location = '@activityControllers.ts: ';
   }
@@ -14,13 +14,13 @@ class ActivityController extends ControllerHelper {
   public fetchUserActivity = async (req: Request, res: Response): Promise<void> => {
     const { userId } = req;
 
-    // check redis cache
-    const cacheKey = `activity:${userId}`;
-    const cacheResponse = await this.cacheGet(cacheKey);
-    if (cacheResponse) {
-      res.send(JSON.parse(cacheResponse));
-      return;
-    }
+    // check redis cache // TODO
+    // const cacheKey = `activity:${userId}`;
+    // const cacheResponse = await this.cacheGet(cacheKey);
+    // if (cacheResponse) {
+    //   res.send(JSON.parse(cacheResponse));
+    //   return;
+    // }
 
     try {
       const userActivity = await getRepository(Activity)
@@ -28,7 +28,7 @@ class ActivityController extends ControllerHelper {
         .where('activity.user = :user', { user: userId })
         .getMany();
       // set redis cache
-      this.cacheSet(cacheKey, JSON.stringify(userActivity));
+      // this.cacheSet(cacheKey, JSON.stringify(userActivity)); // TODO:
       // return data to client
       res.send(userActivity);
     } catch (err) {

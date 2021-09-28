@@ -12,7 +12,7 @@ import { redisClient } from '../index';
 export class ControllerHelper {
   private readonly fname: string;
 
-  constructor() {
+  protected constructor() {
     this.fname = '@controllerHelper.ts: ';
   }
 
