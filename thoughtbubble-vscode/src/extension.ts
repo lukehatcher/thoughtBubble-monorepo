@@ -196,11 +196,9 @@ class MainPanel {
 
     // Local path to css styles
     const stylesMainPath = vscode.Uri.joinPath(this._extensionUri, 'media', 'style.css');
-    const stylesHomePath = vscode.Uri.joinPath(this._extensionUri, 'media', 'homePage.css');
     const stylesNormalizePath = vscode.Uri.joinPath(this._extensionUri, 'media', 'normalize.css');
     // Uri to load styles into webview
     const stylesMainUri = webview.asWebviewUri(stylesMainPath);
-    const stylesHomeUri = webview.asWebviewUri(stylesHomePath);
     const stylesNormalizeUri = webview.asWebviewUri(stylesNormalizePath);
 
     // Use a nonce to only allow specific scripts to be run;
@@ -217,7 +215,6 @@ class MainPanel {
 				-->
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 				<link rel="stylesheet" href="${stylesMainUri}">
-				<link rel="stylesheet" href="${stylesHomeUri}">
 				<link rel="stylesheet" href="${stylesNormalizeUri}">
 				<script nonce="${nonce}">
 					const vscodeGlobal = acquireVsCodeApi();
