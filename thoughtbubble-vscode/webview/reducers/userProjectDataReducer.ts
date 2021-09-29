@@ -108,6 +108,16 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
         }
       });
     }
+    case ProjectActionTypes.PIN: {
+      const pinPayload = payload as ProjectShape;
+      return state.map((proj) => {
+        if (proj.id === pinPayload.id) {
+          return pinPayload;
+        } else {
+          return proj;
+        }
+      });
+    }
     default:
       return state;
   }

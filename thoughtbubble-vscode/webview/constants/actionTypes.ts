@@ -10,7 +10,7 @@ export enum ProjectActionTypes {
   // FILTER = 'projects/filter',
   // ARCHIVE = 'projects/archive',
   // UNARCHIVE = 'projects/unarchive',
-  // PIN = 'projects/pin',
+  PIN = 'projects/pin',
 }
 
 // export enum FilterActionTypes {

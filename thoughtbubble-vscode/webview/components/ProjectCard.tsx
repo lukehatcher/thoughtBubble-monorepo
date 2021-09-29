@@ -20,8 +20,12 @@ import {
   VscPackage,
   VscSymbolKey,
   VscCalendar,
+  VscPinned,
+  VscKebabVertical,
 } from 'react-icons/vsc';
 import { Directions, OrderTypes } from '../constants/orders';
+import { pinProjectAction } from '../actions/projectActions';
+import styled from 'styled-components';
 
 export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
   const [input, setInput] = useState<string>('');
@@ -52,10 +56,23 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
     // dispatch({ type: 'sortProject', payload: projectId });
   };
 
+  const handleProjectPin = (projectId: string) => {
+    // handles both pin and unpin
+    dispatch(pinProjectAction(projectId));
+  };
+
   return (
     <div className="projectCard-container">
       <h1 style={{ color: '#BB86FC' }}>{projectName}</h1>
       <div className="proj-title-container">
+        {/* show that the project is pinned */}
+        {project.pinned ? (
+          <ButtonContainer onClick={() => handleProjectPin(projectId)}>
+            <VscPinned size="1.5em" color="red" />
+          </ButtonContainer>
+        ) : (
+          <></>
+        )}
         {/* filter thoughts popup */}
         <Popup
           trigger={
@@ -157,6 +174,26 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
             </button>
           </form>
         </Popup>
+        {/* settings button */}
+        <Popup
+          trigger={
+            <div className="submenu-trigger">
+              <VscKebabVertical size="1.5em" />
+            </div>
+          }
+          position="right top"
+          on="hover"
+          mouseLeaveDelay={100}
+          mouseEnterDelay={100}
+          arrow={false}
+          nested
+        >
+          <ButtonContainer className="menu-item" onClick={() => handleProjectPin(projectId)}>
+            {/* TODO: pin project */}
+            <VscPinned size="1em" color="#AAB2C0" />
+            &nbsp;&nbsp; {project.pinned ? 'unpin' : 'pin'} project
+          </ButtonContainer>
+        </Popup>
       </div>
       {/* display the actual thoughts */}
       {project.projectThoughts.map((thought) => (
@@ -165,3 +202,9 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
     </div>
   );
 };
+
+const ButtonContainer = styled.div`
+  &:hover {
+    cursor: pointer;
+  }
+`;

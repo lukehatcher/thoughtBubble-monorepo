@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { locations } from '../constants/locations';
 import { BASE_URL } from '../constants/config';
+import { AppThunk } from '../interfaces/redux';
+import { ProjectActionTypes } from '../constants/actionTypes';
 
 export const addProjectAction = (projectName: string) => {
   return async (dispatch, getState) => {
@@ -39,5 +41,21 @@ export const deleteProjectAction = (projectId: string) => {
         dispatch({ type: 'deleteProject', payload: projectId });
       })
       .catch((err) => console.error('@projectActions.ts: ', err));
+  };
+};
+
+export const pinProjectAction = (projectId: string): AppThunk<void> => {
+  return async (dispatch, getState) => {
+    const { token } = getState();
+    try {
+      const response = await axios.put(
+        `${BASE_URL}/projects/pin`,
+        { projectId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      dispatch({ type: ProjectActionTypes.PIN, payload: response.data }); // add/re-initialize project to master filters state
+    } catch (err) {
+      console.error('@projectActions.ts: ', err);
+    }
   };
 };
