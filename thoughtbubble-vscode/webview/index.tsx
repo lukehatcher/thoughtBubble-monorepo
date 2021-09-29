@@ -8,6 +8,7 @@ import { SettingsPage } from './components/SettingsPage';
 import { ProjectPage } from './components/ProjectPage';
 import { fetchUserInfoAction } from './actions/userInfoActions';
 import { routerLocations } from './constants/routerLocations';
+import { TokenActionTypes } from './constants/actionTypes';
 
 // request user token from extension
 vscodeGlobal.postMessage({
@@ -22,7 +23,7 @@ window.addEventListener('message', (e) => {
     case 'sendingData/refresh': {
       // name should change here later
       console.log('HERE IN THE sendingData/refresh', message.token);
-      store.dispatch({ type: 'token/save', payload: message.token });
+      store.dispatch({ type: TokenActionTypes.STORE, payload: message.token });
 
       // seed redux store (after we fetched token)
       store.dispatch(fetchDataAction());

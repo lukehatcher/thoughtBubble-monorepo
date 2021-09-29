@@ -41,3 +41,8 @@ export enum UserInfoActionTypes {
   // TOGGLE_DARKMODE = 'userInfo/toggleDarkMode',
   // RECORD_NO_USER = 'userInfo/recordNoUser',
 }
+
+// unique to vscode extension
+export enum TokenActionTypes {
+  STORE = 'token/save',
+}
