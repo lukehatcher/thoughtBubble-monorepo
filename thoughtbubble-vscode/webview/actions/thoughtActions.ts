@@ -2,7 +2,7 @@ import axios from 'axios';
 import { locations } from '../constants/locations';
 import { BASE_URL } from '../constants/config';
 import { AppThunk } from '../interfaces/redux';
-import { ProjectActionTypes } from '../interfaces/actionTypes';
+import { ProjectActionTypes } from '../constants/actionTypes';
 
 export const addThoughtAction = (projectId: string, thought: string) => {
   return async (dispatch, getState) => {

@@ -1,4 +1,4 @@
-import { ProjectActionTypes } from '../interfaces/actionTypes';
+import { ProjectActionTypes } from '../constants/actionTypes';
 import { ProjectShape } from '../interfaces/interfaces';
 
 const initialState: ProjectShape[] = [];

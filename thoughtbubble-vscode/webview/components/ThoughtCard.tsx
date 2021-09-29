@@ -37,29 +37,6 @@ export const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, projectId, th
     dispatch(thoughtTagChangeAction(projectId, thoughtId, tagColor));
   };
 
-  const popupBackground = '#1b1f24'; // from CSS file
-
-  const TagIconContainer = styled.div`
-    border: 1px solid grey;
-  `;
-
-  const PickTagPopupContainer = styled.div`
-    background-color: ${popupBackground};
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    padding: 15px;
-    align-items: center;
-  `;
-
-  const TagItem = styled.div`
-    padding: 5px;
-
-    &:hover {
-      cursor: pointer;
-    }
-  `;
-
   return (
     <div className="thoughtCard-container">
       <p className={thought.completed ? 'completed-text' : 'incomplete-text'}>{thought.text}</p>
@@ -152,3 +129,26 @@ export const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, projectId, th
     </div>
   );
 };
+
+const popupBackground = '#1b1f24'; // from CSS file
+
+const TagIconContainer = styled.div`
+  border: 1px solid grey;
+`;
+
+const PickTagPopupContainer = styled.div`
+  background-color: ${popupBackground};
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  align-items: center;
+`;
+
+const TagItem = styled.div`
+  padding: 5px;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;

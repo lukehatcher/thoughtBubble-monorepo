@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { changeEmailSettingsAction } from '../actions/userInfoActions';
+// import { changeEmailSettingsAction } from '../actions/userInfoActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../reducers/rootReducer';
 import { Link } from 'react-router-dom';
@@ -14,8 +14,8 @@ export const SettingsPage: React.FC = function () {
   const weeklyEmailSetting = useSelector((state: RootState) => state.userInfo.weeklyEmail);
 
   const handleEmailSettingToggle = function (emailSetting: string): void {
-    if (emailSetting === 'daily') dispatch(changeEmailSettingsAction('daily'));
-    else dispatch(changeEmailSettingsAction('weekly'));
+    // if (emailSetting === 'daily') dispatch(changeEmailSettingsAction('daily'));
+    // else dispatch(changeEmailSettingsAction('weekly'));
   };
 
   return (

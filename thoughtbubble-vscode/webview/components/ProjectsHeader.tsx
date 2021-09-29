@@ -33,13 +33,6 @@ export const ProjectsHeader: React.FC = function () {
     });
   };
 
-  const Container = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 10px;
-  `;
-
   return (
     <Container>
       {/* create new project submenu popup */}
@@ -108,3 +101,10 @@ export const ProjectsHeader: React.FC = function () {
     </Container>
   );
 };
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
+`;

@@ -26,6 +26,7 @@ window.addEventListener('message', (e) => {
 
       // seed redux store (after we fetched token)
       store.dispatch(fetchDataAction());
+      store.dispatch(fetchUserInfoAction());
       return;
     }
   }
