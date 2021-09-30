@@ -12,7 +12,7 @@ export const filterReducer = (state = initialState, action): FilterReducerInitia
     // INIT action is called in fetchDataAction.ts right after data is fetched
     case FilterActionTypes.INIT: {
       const data = payload as ProjectShape[];
-      const newState = [];
+      const newState: FilterReducerInitialState[] = [];
       for (let i = 0; i < data.length; i++) {
         const status = Status.ALL;
         newState.push({ id: data[i].id, status, tags: [] });
