@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { BASE_URL } from '../constants/config';
+import { Status } from '../constants/status';
 
-export const filtertThoughtsAction = (projectId: string, filterType: string) => {
+export const filtertThoughtsAction = (projectId: string, filterType: Status) => {
   return async (dispatch, getState) => {
     const { token } = getState();
     if (!token) return; // TODO: validate if this logic is needed

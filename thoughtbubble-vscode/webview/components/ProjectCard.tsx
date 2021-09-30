@@ -24,6 +24,7 @@ import {
   VscKebabVertical,
 } from 'react-icons/vsc';
 import { Directions, OrderTypes } from '../constants/orders';
+import { Status } from '../constants/status';
 import { pinProjectAction } from '../actions/projectActions';
 import styled from 'styled-components';
 import { UserInfoActionTypes } from '../constants/actionTypes';
@@ -48,15 +49,15 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
     setInput('');
   };
 
-  const handleThoughtFilter = (filterType: string): void => {
+  const handleThoughtFilter = (filterType: Status): void => {
     switch (filterType) {
-      case 'completed':
-        dispatch(filtertThoughtsAction(projectId, 'completed'));
+      case Status.COMPLETED:
+        dispatch(filtertThoughtsAction(projectId, Status.COMPLETED));
         return;
-      case 'incomplete':
-        dispatch(filtertThoughtsAction(projectId, 'incomplete'));
+      case Status.INCOMPLETE:
+        dispatch(filtertThoughtsAction(projectId, Status.INCOMPLETE));
         return;
-      case 'all':
+      case Status.ALL:
         dispatch(fetchDataAction());
         return;
     }
@@ -131,15 +132,15 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
           arrow={false}
           nested
         >
-          <div className="menu-item top-corners" onClick={() => handleThoughtFilter('completed')}>
+          <div className="menu-item top-corners" onClick={() => handleThoughtFilter(Status.COMPLETED)}>
             <AiOutlineCheckCircle size="1em" color="#AAB2C0" />
             &nbsp;&nbsp; show completed
           </div>
-          <div className="menu-item" onClick={() => handleThoughtFilter('incomplete')}>
+          <div className="menu-item" onClick={() => handleThoughtFilter(Status.INCOMPLETE)}>
             <AiOutlineCloseCircle size="1em" color="#AAB2C0" />
             &nbsp;&nbsp; show incomplete
           </div>
-          <div className="menu-item bottom-corners" onClick={() => handleThoughtFilter('all')}>
+          <div className="menu-item bottom-corners" onClick={() => handleThoughtFilter(Status.ALL)}>
             <VscRefresh size="1em" color="#AAB2C0" />
             &nbsp;&nbsp; view all
           </div>
