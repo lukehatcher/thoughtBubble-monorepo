@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { UserInfoActionTypes } from '../constants/actionTypes';
 import { BASE_URL } from '../constants/config';
+import { Directions } from '../constants/orders';
 import { AppThunk } from '../interfaces/redux';
 import { OrderType } from '../interfaces/stringLiteralTypes';
 
@@ -34,6 +35,24 @@ export const changeProjectOrderAction = (projectOrder: OrderType): AppThunk<void
         dispatch({ type: UserInfoActionTypes.UPDATE_ORDER, payload: projectOrder });
       })
       .catch((err) => console.error(fname, err));
+  };
+};
+
+export const changeProjectDirectionAction = (projectDirection: Directions): AppThunk<void> => {
+  return async (dispatch, getState) => {
+    const { token } = await getState();
+    axios
+      .put(
+        `${BASE_URL}/userinfo/projectDirection`,
+        {
+          projectDirection,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      .then(() => {
+        dispatch({ type: UserInfoActionTypes.UPDATE_DIRECTION, payload: projectDirection });
+      })
+      .catch((err) => console.error('@userInfoActions.ts: ', err));
   };
 };
 

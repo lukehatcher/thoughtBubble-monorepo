@@ -27,7 +27,7 @@ import { Directions, OrderTypes } from '../constants/orders';
 import { pinProjectAction } from '../actions/projectActions';
 import styled from 'styled-components';
 import { UserInfoActionTypes } from '../constants/actionTypes';
-import { changeProjectOrderAction } from '../actions/userInfoActions';
+import { changeProjectDirectionAction, changeProjectOrderAction } from '../actions/userInfoActions';
 
 export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
   const { projectName, id: projectId } = project;
@@ -38,6 +38,7 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
   // ==============
   const order = useSelector((state: RootState) => state.userInfo.projectOrder);
   const saveOrderSetting = useSelector((state: RootState) => state.userInfo.saveOrder);
+  const direction = useSelector((state: RootState) => state.userInfo.projectDirection);
   // ==============
 
   const handleNewThought = (e: React.FormEvent<HTMLFormElement>): void => {
@@ -60,8 +61,10 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
     }
   };
 
-  // ==============================
-  const handleOrderTypeChange = function (newOrder: OrderTypes): void {
+  /**
+   * change the projects to be sorted by alphabet, size or update date
+   */
+  const handleOrderTypeChange = (newOrder: OrderTypes): void => {
     // dispatch an action that changes how the projects are displayed
     if (newOrder === order) return;
     if (saveOrderSetting) {
@@ -70,6 +73,20 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
     } else {
       // save setting is OFF so just update redux store and not the DB
       dispatch({ type: UserInfoActionTypes.UPDATE_ORDER, payload: newOrder });
+    }
+  };
+
+  /**
+   * change the projects to be sorted in ascending or descending order
+   */
+  const handleDirectionChange = (newDirection: Directions): void => {
+    if (direction == newDirection) return;
+    if (saveOrderSetting) {
+      // save setting is ON, so need to update DB + redux store
+      dispatch(changeProjectDirectionAction(newDirection));
+    } else {
+      // save setting is OFF so just update redux store and not the DB
+      dispatch({ type: UserInfoActionTypes.UPDATE_DIRECTION, payload: newDirection });
     }
   };
 
@@ -132,7 +149,7 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
           nested
         >
           <div className="menu-item top-corners" onClick={() => handleOrderTypeChange(OrderTypes.ALPHABETICAL)}>
-            <VscSymbolKey size="1em" color="#AAB2C0" />
+            <VscSymbolKey size="1em" color={'white'} />
             &nbsp;&nbsp; sort alphabeticaly
           </div>
           <div className="menu-item" onClick={() => handleOrderTypeChange(OrderTypes.SIZE)}>
@@ -143,13 +160,13 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
             <VscCalendar size="1em" color="#AAB2C0" />
             &nbsp;&nbsp; sort by update date
           </div>
-          <div className="menu-item bottom-corners" onClick={() => {}}>
+          <div className="menu-item bottom-corners" onClick={() => handleDirectionChange(Directions.ASC)}>
             <VscArrowUp size="1em" color="#AAB2C0" />
-            &nbsp;&nbsp; low to high
+            &nbsp;&nbsp; ascending
           </div>
-          <div className="menu-item bottom-corners" onClick={() => {}}>
+          <div className="menu-item bottom-corners" onClick={() => handleDirectionChange(Directions.DESC)}>
             <VscArrowDown size="1em" color="#AAB2C0" />
-            &nbsp;&nbsp; high to low
+            &nbsp;&nbsp; descending
           </div>
         </Popup>
 

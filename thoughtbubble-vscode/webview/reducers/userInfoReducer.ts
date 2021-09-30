@@ -27,6 +27,11 @@ export const userInfoReducer = (state = initialState, action): UserInfoShape => 
         ...state,
         projectOrder: payload as OrderTypes,
       };
+    case UserInfoActionTypes.UPDATE_DIRECTION:
+      return {
+        ...state,
+        projectDirection: payload as Directions,
+      };
     // case 'toggleDailyEmail':
     //   return {
     //     ...state,
