@@ -34,7 +34,7 @@ export enum ProjectActionTypes {
 export enum UserInfoActionTypes {
   UPDATE_ORDER = 'userInfo/updateOrder',
   UPDATE_DIRECTION = 'userInfo/updateDirection',
-  // UPDATE_SAVE_SETTING = 'userInfo/updateSaveSetting',
+  UPDATE_SAVE_SETTING = 'userInfo/updateSaveSetting',
   FETCH = 'userInfo/fetch',
   // TOGGLE_DAILY_EMAIL = 'userInfo/toggleDailyEmail',
   // TOGGLE_WEEKLY_EMAIL = 'userInfo/toggleWeeklyEmail',

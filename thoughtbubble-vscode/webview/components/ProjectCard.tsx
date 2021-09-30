@@ -27,7 +27,11 @@ import { Directions, OrderTypes } from '../constants/orders';
 import { pinProjectAction } from '../actions/projectActions';
 import styled from 'styled-components';
 import { UserInfoActionTypes } from '../constants/actionTypes';
-import { changeProjectDirectionAction, changeProjectOrderAction } from '../actions/userInfoActions';
+import {
+  changeProjectDirectionAction,
+  changeProjectOrderAction,
+  changeSaveOrderSettingAction,
+} from '../actions/userInfoActions';
 
 export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
   const { projectName, id: projectId } = project;
@@ -37,8 +41,8 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
   console.log(userInfo);
   // ==============
   const order = useSelector((state: RootState) => state.userInfo.projectOrder);
-  const saveOrderSetting = useSelector((state: RootState) => state.userInfo.saveOrder);
   const direction = useSelector((state: RootState) => state.userInfo.projectDirection);
+  const saveOrderSetting = useSelector((state: RootState) => state.userInfo.saveOrder);
   // ==============
 
   const handleNewThought = (e: React.FormEvent<HTMLFormElement>): void => {
@@ -78,6 +82,7 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
 
   /**
    * change the projects to be sorted in ascending or descending order
+   * NOTE: this function version is different from the RN version as this is not a switch
    */
   const handleDirectionChange = (newDirection: Directions): void => {
     if (direction == newDirection) return;

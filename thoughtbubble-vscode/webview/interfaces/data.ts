@@ -1,4 +1,4 @@
-import { OrderType, Direction } from './stringLiteralTypes';
+import { OrderTypes, Directions } from '../constants/orders';
 
 export interface UserInfoShape {
   // from query on User entity table
@@ -9,8 +9,8 @@ export interface UserInfoShape {
   dailyEmail: boolean;
   weeklyEmail: boolean;
   darkMode: boolean;
-  projectOrder: OrderType;
-  projectDirection: Direction;
+  projectOrder: OrderTypes;
+  projectDirection: Directions;
   saveOrder: boolean;
   displayName: string;
   avatarUrl: string;
