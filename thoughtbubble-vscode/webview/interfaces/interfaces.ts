@@ -1,4 +1,4 @@
-export type Tags = 'red' | 'orange' | 'green' | 'blue' | 'purple' | 'favorite' | null;
+import { Tags } from '../constants/tags';
 
 export interface ThoughtShape {
   id: string;

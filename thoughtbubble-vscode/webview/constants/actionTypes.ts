@@ -7,19 +7,19 @@ export enum ProjectActionTypes {
   // EDIT_THOUGHT = 'projects/editThought',
   EDIT_THOUGHT_TAG = 'projects/editThoughtTag',
   // TOGGLE_THOUGHT_COMPLETED_STATUS = 'projects/toggleThoughtCompletedStatus',
-  // FILTER = 'projects/filter',
+  FILTER = 'projects/filter',
   // ARCHIVE = 'projects/archive',
   // UNARCHIVE = 'projects/unarchive',
   PIN = 'projects/pin',
 }
 
-// export enum FilterActionTypes {
-//   INIT = 'filters/initialize',
-//   ADD_PROJ = 'filters/addProject',
-//   DELETE_PROJ = 'filters/deleteProject',
-//   UPDATE = 'filters/update',
-//   CLEAR = 'filters/clearTags',
-// }
+export enum FilterActionTypes {
+  INIT = 'filters/initialize',
+  ADD_PROJ = 'filters/addProject',
+  DELETE_PROJ = 'filters/deleteProject',
+  UPDATE = 'filters/update',
+  CLEAR = 'filters/clearTags',
+}
 
 // export enum ActivityActionTypes {
 //   FETCH = 'activity/fetch',

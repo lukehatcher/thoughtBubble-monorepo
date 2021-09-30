@@ -1,16 +1,12 @@
-import axios from 'axios';
-import { BASE_URL } from '../constants/config';
 import { Status } from '../constants/status';
+import { FilterActionTypes } from '../constants/actionTypes';
+import { Tags } from '../constants/tags';
 
-export const filtertThoughtsAction = (projectId: string, filterType: Status) => {
-  return async (dispatch, getState) => {
-    const { token } = getState();
-    if (!token) return; // TODO: validate if this logic is needed
-    try {
-      const response = await axios.get(`${BASE_URL}/projects`, { headers: { Authorization: `Bearer ${token}` } });
-      dispatch({ type: `filterData/${filterType}`, payload: { data: response.data, projectId } });
-    } catch (err) {
-      console.error('fetchDataAction.ts: ', err);
-    }
-  };
+// these two functions were the only functions that were in these files in the mobile version of this file
+export const updateFiltersAction = function (projectId: string, typeOfFilter: Tags | Status) {
+  return { type: FilterActionTypes.UPDATE, payload: { typeOfFilter, projectId } };
+};
+
+export const clearTagsAction = function (projectId: string) {
+  return { type: FilterActionTypes.CLEAR, payload: projectId };
 };

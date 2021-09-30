@@ -7,7 +7,6 @@ import { ThoughtCard } from './ThoughtCard';
 import { Popup } from 'reactjs-popup';
 import { fetchDataAction } from '../actions/fetchDataAction';
 import { RootState } from '../reducers/rootReducer';
-import { filtertThoughtsAction } from '../actions/filterActions';
 import { AiOutlineCloseCircle, AiOutlineCheckCircle } from 'react-icons/ai';
 import {
   VscCloudUpload,
@@ -25,10 +24,12 @@ import {
 } from 'react-icons/vsc';
 import { Directions, OrderTypes } from '../constants/orders';
 import { Status } from '../constants/status';
-import { pinProjectAction } from '../actions/projectActions';
+import { filterProjectAction, pinProjectAction } from '../actions/projectActions';
 import styled from 'styled-components';
 import { UserInfoActionTypes } from '../constants/actionTypes';
 import { changeProjectDirectionAction, changeProjectOrderAction } from '../actions/userInfoActions';
+import { Tags } from '../constants/tags';
+import { updateFiltersAction } from '../actions/filterActions';
 
 export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
   const { projectName, id: projectId } = project;
@@ -42,6 +43,7 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
   const saveOrderSetting = useSelector((state: RootState) => state.userInfo.saveOrder);
   // ==============
   const tbGrey = '#AAB2C0';
+  const filters = useSelector((state: RootState) => state.filters);
 
   const handleNewThought = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -49,18 +51,10 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
     setInput('');
   };
 
-  const handleThoughtFilter = (filterType: Status): void => {
-    switch (filterType) {
-      case Status.COMPLETED:
-        dispatch(filtertThoughtsAction(projectId, Status.COMPLETED));
-        return;
-      case Status.INCOMPLETE:
-        dispatch(filtertThoughtsAction(projectId, Status.INCOMPLETE));
-        return;
-      case Status.ALL:
-        dispatch(fetchDataAction());
-        return;
-    }
+  // this function is same as the one in RN (except for the enum types)
+  const handleThoughtFilter = async function (typeOfFilter: Tags | Status) {
+    await dispatch(updateFiltersAction(projectId, typeOfFilter));
+    await dispatch(filterProjectAction(projectId, filters)); // do I HAVE to pass filters here?
   };
 
   /**

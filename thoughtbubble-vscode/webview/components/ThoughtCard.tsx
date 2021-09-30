@@ -13,21 +13,21 @@ import { VscEllipsis, VscTrash, VscTag, VscCloudUpload, VscEdit, VscStarFull, Vs
 import { BsCheckBox } from 'react-icons/bs';
 import styled from 'styled-components';
 import { tagColors } from '../constants/colors';
-import { Tags } from '../interfaces/interfaces';
+import { Tags, Tag } from '../constants/tags';
 
 export const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, projectId, thoughtId }) => {
   const [input, setInput] = useState<string>('');
   const dispatch = useDispatch();
 
-  const handleThoughtDeletion = function (): void {
+  const handleThoughtDeletion = (): void => {
     dispatch(deleteThoughtAction(projectId, thoughtId));
   };
 
-  const handleThoughtToggle = function (): void {
+  const handleThoughtToggle = (): void => {
     dispatch(thoughtStatusChangeAction(projectId, thoughtId));
   };
 
-  const handleThoughtEdit = function (e: React.FormEvent<HTMLFormElement>): void {
+  const handleThoughtEdit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     if (input) dispatch(editThoughtAction(input, projectId, thoughtId));
     setInput('');
@@ -72,22 +72,22 @@ export const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, projectId, th
         >
           <PickTagPopupContainer>
             <TagItem>
-              <VscTag size="1.5em" color={tagColors.red} onClick={() => handleThoughtTag('red')} />
+              <VscTag size="1.5em" color={tagColors.red} onClick={() => handleThoughtTag(Tag.RED)} />
             </TagItem>
             <TagItem>
-              <VscTag size="1.5em" color={tagColors.orange} onClick={() => handleThoughtTag('orange')} />
+              <VscTag size="1.5em" color={tagColors.orange} onClick={() => handleThoughtTag(Tag.ORANGE)} />
             </TagItem>
             <TagItem>
-              <VscTag size="1.5em" color={tagColors.green} onClick={() => handleThoughtTag('green')} />
+              <VscTag size="1.5em" color={tagColors.green} onClick={() => handleThoughtTag(Tag.GREEN)} />
             </TagItem>
             <TagItem>
-              <VscTag size="1.5em" color={tagColors.blue} onClick={() => handleThoughtTag('blue')} />
+              <VscTag size="1.5em" color={tagColors.blue} onClick={() => handleThoughtTag(Tag.BLUE)} />
             </TagItem>
             <TagItem>
-              <VscTag size="1.5em" color={tagColors.purple} onClick={() => handleThoughtTag('purple')} />
+              <VscTag size="1.5em" color={tagColors.purple} onClick={() => handleThoughtTag(Tag.PURPLE)} />
             </TagItem>
             <TagItem>
-              <VscStarFull size="1.5em" color={tagColors.gold} onClick={() => handleThoughtTag('favorite')} />
+              <VscStarFull size="1.5em" color={tagColors.gold} onClick={() => handleThoughtTag(Tag.FAVORITE)} />
             </TagItem>
             <TagItem>
               <VscCircleSlash size="1.5em" color="sliver" onClick={() => handleThoughtTag(null)} />

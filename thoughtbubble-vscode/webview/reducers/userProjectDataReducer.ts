@@ -66,28 +66,66 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
           };
         }
       });
-    case 'filterData/completed':
-      return payload.data.map((project) => {
-        if (project.id === payload.projectId) {
-          return {
-            ...project,
-            projectThoughts: project.projectThoughts.filter((thought) => thought.completed),
-          };
+    // case 'filterData/completed':
+    //   return payload.data.map((project) => {
+    //     if (project.id === payload.projectId) {
+    //       return {
+    //         ...project,
+    //         projectThoughts: project.projectThoughts.filter((thought) => thought.completed),
+    //       };
+    //     } else {
+    //       return project;
+    //     }
+    //   });
+    // case 'filterData/incomplete':
+    //   return payload.data.map((project) => {
+    //     if (project.id === payload.projectId) {
+    //       return {
+    //         ...project,
+    //         projectThoughts: project.projectThoughts.filter((thought) => !thought.completed),
+    //       };
+    //     } else {
+    //       return project;
+    //     }
+    //   });
+    case ProjectActionTypes.FILTER: {
+      // const filterPayload = payload as FilterPayload;
+      const filterPayload = payload;
+      // payload has all userProjectData, projectId and filters[] props on it, filters has id, status and tags[] on each object
+      return filterPayload.data.map((project) => {
+        let { status, tags } = filterPayload.filters.find((proj) => proj.id === filterPayload.projectId);
+        if (status === 'all') {
+          if (project.id === filterPayload.projectId) {
+            if (!tags.length) return project; // if no tags
+            return {
+              ...project,
+              projectThoughts: project.projectThoughts.filter((thought) => tags.includes(thought.tag)),
+            };
+          } else {
+            return project;
+          }
         } else {
-          return project;
+          // convert complete/incomplete
+          const newStatus = status === 'completed' ? true : false;
+          // status is completed or incomplete
+          if (project.id === filterPayload.projectId) {
+            if (!tags.length)
+              return {
+                ...project,
+                projectThoughts: project.projectThoughts.filter((thought) => thought.completed === newStatus),
+              };
+            return {
+              ...project,
+              projectThoughts: project.projectThoughts.filter(
+                (thought) => thought.completed === newStatus && tags.includes(thought.tag)
+              ),
+            };
+          } else {
+            return project;
+          }
         }
       });
-    case 'filterData/incomplete':
-      return payload.data.map((project) => {
-        if (project.id === payload.projectId) {
-          return {
-            ...project,
-            projectThoughts: project.projectThoughts.filter((thought) => !thought.completed),
-          };
-        } else {
-          return project;
-        }
-      });
+    }
     case ProjectActionTypes.EDIT_THOUGHT_TAG: {
       // const updatedThought = payload as EditThoughtTagPayload; // TODO
       const updatedThought = payload;
