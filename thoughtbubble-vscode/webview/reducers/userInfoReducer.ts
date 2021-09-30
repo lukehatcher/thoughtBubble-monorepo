@@ -22,6 +22,11 @@ export const userInfoReducer = (state = initialState, action): UserInfoShape => 
   switch (type) {
     case UserInfoActionTypes.FETCH:
       return payload;
+    case UserInfoActionTypes.UPDATE_ORDER:
+      return {
+        ...state,
+        projectOrder: payload as OrderTypes,
+      };
     // case 'toggleDailyEmail':
     //   return {
     //     ...state,

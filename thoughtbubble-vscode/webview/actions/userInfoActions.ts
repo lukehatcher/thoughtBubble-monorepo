@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { UserInfoActionTypes } from '../constants/actionTypes';
 import { BASE_URL } from '../constants/config';
+import { AppThunk } from '../interfaces/redux';
+import { OrderType } from '../interfaces/stringLiteralTypes';
 
 const fname = '@userInfoActions.ts: ';
 
@@ -12,6 +14,24 @@ export const fetchUserInfoAction = () => {
       .get(`${BASE_URL}/userinfo`, { headers: { Authorization: `Bearer ${token}` } })
       .then((res) => {
         dispatch({ type: UserInfoActionTypes.FETCH, payload: res.data });
+      })
+      .catch((err) => console.error(fname, err));
+  };
+};
+
+export const changeProjectOrderAction = (projectOrder: OrderType): AppThunk<void> => {
+  return async (dispatch, getState) => {
+    const { token } = getState();
+    axios
+      .put(
+        `${BASE_URL}/userinfo/projectOrder`,
+        {
+          projectOrder,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      .then(() => {
+        dispatch({ type: UserInfoActionTypes.UPDATE_ORDER, payload: projectOrder });
       })
       .catch((err) => console.error(fname, err));
   };

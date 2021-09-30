@@ -26,11 +26,19 @@ import {
 import { Directions, OrderTypes } from '../constants/orders';
 import { pinProjectAction } from '../actions/projectActions';
 import styled from 'styled-components';
+import { UserInfoActionTypes } from '../constants/actionTypes';
+import { changeProjectOrderAction } from '../actions/userInfoActions';
 
 export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
+  const { projectName, id: projectId } = project;
   const [input, setInput] = useState<string>('');
   const dispatch = useDispatch();
-  const { projectName, id: projectId } = project;
+  const userInfo = useSelector((state: RootState) => state.userInfo);
+  console.log(userInfo);
+  // ==============
+  const order = useSelector((state: RootState) => state.userInfo.projectOrder);
+  const saveOrderSetting = useSelector((state: RootState) => state.userInfo.saveOrder);
+  // ==============
 
   const handleNewThought = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -52,8 +60,17 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
     }
   };
 
-  const handleProjectSort = (direction: Directions, sort: OrderTypes) => {
-    // dispatch({ type: 'sortProject', payload: projectId });
+  // ==============================
+  const handleOrderTypeChange = function (newOrder: OrderTypes): void {
+    // dispatch an action that changes how the projects are displayed
+    if (newOrder === order) return;
+    if (saveOrderSetting) {
+      // save setting is ON, so need to update DB + redux store
+      dispatch(changeProjectOrderAction(newOrder));
+    } else {
+      // save setting is OFF so just update redux store and not the DB
+      dispatch({ type: UserInfoActionTypes.UPDATE_ORDER, payload: newOrder });
+    }
   };
 
   const handleProjectPin = (projectId: string) => {
@@ -114,35 +131,23 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
           arrow={false}
           nested
         >
-          <div
-            className="menu-item top-corners"
-            onClick={() => handleProjectSort(Directions.ASC, OrderTypes.ALPHABETICAL)}
-          >
+          <div className="menu-item top-corners" onClick={() => handleOrderTypeChange(OrderTypes.ALPHABETICAL)}>
             <VscSymbolKey size="1em" color="#AAB2C0" />
             &nbsp;&nbsp; sort alphabeticaly
           </div>
-          <div className="menu-item" onClick={() => handleProjectSort(Directions.ASC, OrderTypes.SIZE)}>
+          <div className="menu-item" onClick={() => handleOrderTypeChange(OrderTypes.SIZE)}>
             <VscPackage size="1em" color="#AAB2C0" />
             &nbsp;&nbsp; sort by size
           </div>
-          <div
-            className="menu-item bottom-corners"
-            onClick={() => handleProjectSort(Directions.ASC, OrderTypes.LAST_UPDATED)}
-          >
+          <div className="menu-item bottom-corners" onClick={() => handleOrderTypeChange(OrderTypes.LAST_UPDATED)}>
             <VscCalendar size="1em" color="#AAB2C0" />
             &nbsp;&nbsp; sort by update date
           </div>
-          <div
-            className="menu-item bottom-corners"
-            onClick={() => handleProjectSort(Directions.ASC, OrderTypes.ALPHABETICAL)}
-          >
+          <div className="menu-item bottom-corners" onClick={() => {}}>
             <VscArrowUp size="1em" color="#AAB2C0" />
             &nbsp;&nbsp; low to high
           </div>
-          <div
-            className="menu-item bottom-corners"
-            onClick={() => handleProjectSort(Directions.ASC, OrderTypes.ALPHABETICAL)}
-          >
+          <div className="menu-item bottom-corners" onClick={() => {}}>
             <VscArrowDown size="1em" color="#AAB2C0" />
             &nbsp;&nbsp; high to low
           </div>
