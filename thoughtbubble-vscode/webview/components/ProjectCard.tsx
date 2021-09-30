@@ -27,11 +27,7 @@ import { Directions, OrderTypes } from '../constants/orders';
 import { pinProjectAction } from '../actions/projectActions';
 import styled from 'styled-components';
 import { UserInfoActionTypes } from '../constants/actionTypes';
-import {
-  changeProjectDirectionAction,
-  changeProjectOrderAction,
-  changeSaveOrderSettingAction,
-} from '../actions/userInfoActions';
+import { changeProjectDirectionAction, changeProjectOrderAction } from '../actions/userInfoActions';
 
 export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
   const { projectName, id: projectId } = project;
@@ -44,6 +40,7 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
   const direction = useSelector((state: RootState) => state.userInfo.projectDirection);
   const saveOrderSetting = useSelector((state: RootState) => state.userInfo.saveOrder);
   // ==============
+  const tbGrey = '#AAB2C0';
 
   const handleNewThought = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -100,6 +97,14 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
     dispatch(pinProjectAction(projectId));
   };
 
+  const highlightOrder = (orderOption: OrderTypes): boolean => {
+    return orderOption === order;
+  };
+
+  const highlightDirection = (directionOption: Directions): boolean => {
+    return directionOption === direction;
+  };
+
   return (
     <div className="projectCard-container">
       <h1 style={{ color: '#BB86FC' }}>{projectName}</h1>
@@ -154,23 +159,23 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
           nested
         >
           <div className="menu-item top-corners" onClick={() => handleOrderTypeChange(OrderTypes.ALPHABETICAL)}>
-            <VscSymbolKey size="1em" color={'white'} />
+            <VscSymbolKey size="1em" color={highlightOrder(OrderTypes.ALPHABETICAL) ? 'red' : tbGrey} />
             &nbsp;&nbsp; sort alphabeticaly
           </div>
           <div className="menu-item" onClick={() => handleOrderTypeChange(OrderTypes.SIZE)}>
-            <VscPackage size="1em" color="#AAB2C0" />
+            <VscPackage size="1em" color={highlightOrder(OrderTypes.SIZE) ? 'red' : tbGrey} />
             &nbsp;&nbsp; sort by size
           </div>
           <div className="menu-item bottom-corners" onClick={() => handleOrderTypeChange(OrderTypes.LAST_UPDATED)}>
-            <VscCalendar size="1em" color="#AAB2C0" />
+            <VscCalendar size="1em" color={highlightOrder(OrderTypes.LAST_UPDATED) ? 'red' : tbGrey} />
             &nbsp;&nbsp; sort by update date
           </div>
           <div className="menu-item bottom-corners" onClick={() => handleDirectionChange(Directions.ASC)}>
-            <VscArrowUp size="1em" color="#AAB2C0" />
+            <VscArrowUp size="1em" color={highlightDirection(Directions.ASC) ? 'red' : tbGrey} />
             &nbsp;&nbsp; ascending
           </div>
           <div className="menu-item bottom-corners" onClick={() => handleDirectionChange(Directions.DESC)}>
-            <VscArrowDown size="1em" color="#AAB2C0" />
+            <VscArrowDown size="1em" color={highlightDirection(Directions.DESC) ? 'red' : tbGrey} />
             &nbsp;&nbsp; descending
           </div>
         </Popup>
