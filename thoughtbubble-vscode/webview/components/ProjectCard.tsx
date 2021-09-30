@@ -8,6 +8,14 @@ import { Popup } from 'reactjs-popup';
 import { fetchDataAction } from '../actions/fetchDataAction';
 import { RootState } from '../reducers/rootReducer';
 import { AiOutlineCloseCircle, AiOutlineCheckCircle } from 'react-icons/ai';
+import { Directions, OrderTypes } from '../constants/orders';
+import { Status } from '../constants/status';
+import { filterProjectAction, pinProjectAction } from '../actions/projectActions';
+import styled from 'styled-components';
+import { UserInfoActionTypes } from '../constants/actionTypes';
+import { changeProjectDirectionAction, changeProjectOrderAction } from '../actions/userInfoActions';
+import { Tags, Tag } from '../constants/tags';
+import { clearTagsAction, updateFiltersAction } from '../actions/filterActions';
 import {
   VscCloudUpload,
   VscFilter,
@@ -21,27 +29,18 @@ import {
   VscCalendar,
   VscPinned,
   VscKebabVertical,
+  VscTag,
+  VscStarFull,
+  VscEye,
 } from 'react-icons/vsc';
-import { Directions, OrderTypes } from '../constants/orders';
-import { Status } from '../constants/status';
-import { filterProjectAction, pinProjectAction } from '../actions/projectActions';
-import styled from 'styled-components';
-import { UserInfoActionTypes } from '../constants/actionTypes';
-import { changeProjectDirectionAction, changeProjectOrderAction } from '../actions/userInfoActions';
-import { Tags } from '../constants/tags';
-import { updateFiltersAction } from '../actions/filterActions';
 
 export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
   const { projectName, id: projectId } = project;
   const [input, setInput] = useState<string>('');
   const dispatch = useDispatch();
-  const userInfo = useSelector((state: RootState) => state.userInfo);
-  console.log(userInfo);
-  // ==============
   const order = useSelector((state: RootState) => state.userInfo.projectOrder);
   const direction = useSelector((state: RootState) => state.userInfo.projectDirection);
   const saveOrderSetting = useSelector((state: RootState) => state.userInfo.saveOrder);
-  // ==============
   const tbGrey = '#AAB2C0';
   const filters = useSelector((state: RootState) => state.filters);
 
@@ -55,6 +54,11 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
   const handleThoughtFilter = async function (typeOfFilter: Tags | Status) {
     await dispatch(updateFiltersAction(projectId, typeOfFilter));
     await dispatch(filterProjectAction(projectId, filters)); // do I HAVE to pass filters here?
+  };
+
+  const handleClearTags = async function () {
+    await dispatch(clearTagsAction(projectId));
+    await dispatch(filterProjectAction(projectId, filters));
   };
 
   /**
@@ -135,8 +139,36 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
             &nbsp;&nbsp; show incomplete
           </div>
           <div className="menu-item bottom-corners" onClick={() => handleThoughtFilter(Status.ALL)}>
-            <VscRefresh size="1em" color="#AAB2C0" />
+            <VscEye size="1em" color="#AAB2C0" />
             &nbsp;&nbsp; view all
+          </div>
+          <div className="menu-item bottom-corners" onClick={() => handleThoughtFilter(Tag.RED)}>
+            <VscTag size="1em" color="#AAB2C0" />
+            &nbsp;&nbsp; red tags
+          </div>
+          <div className="menu-item bottom-corners" onClick={() => handleThoughtFilter(Tag.ORANGE)}>
+            <VscTag size="1em" color="#AAB2C0" />
+            &nbsp;&nbsp; orange tags
+          </div>
+          <div className="menu-item bottom-corners" onClick={() => handleThoughtFilter(Tag.GREEN)}>
+            <VscTag size="1em" color="#AAB2C0" />
+            &nbsp;&nbsp; green tags
+          </div>
+          <div className="menu-item bottom-corners" onClick={() => handleThoughtFilter(Tag.BLUE)}>
+            <VscTag size="1em" color="#AAB2C0" />
+            &nbsp;&nbsp; blue tags
+          </div>
+          <div className="menu-item bottom-corners" onClick={() => handleThoughtFilter(Tag.PURPLE)}>
+            <VscTag size="1em" color="#AAB2C0" />
+            &nbsp;&nbsp; purple tags
+          </div>
+          <div className="menu-item bottom-corners" onClick={() => handleThoughtFilter(Tag.FAVORITE)}>
+            <VscStarFull size="1em" color="#AAB2C0" />
+            &nbsp;&nbsp; favorites
+          </div>
+          <div className="menu-item bottom-corners" onClick={() => handleClearTags()}>
+            <VscRefresh size="1em" color="#AAB2C0" />
+            &nbsp;&nbsp; remove all tags
           </div>
         </Popup>
         {/* sort items popup */}
