@@ -37,10 +37,6 @@ import {
 export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
   const { projectName, id: projectId } = project;
   const [input, setInput] = useState<string>('');
-  const [showTextBox, setShowTextBox] = useState<boolean>(false);
-  const [textBoxContent, setTextBoxContent] = useState<string>('');
-  // have to null check ref.current later, could also use document.createElement('form') and avoid null checks
-  const textBoxRef = useRef<HTMLFormElement>(null);
   const dispatch = useDispatch();
   const order = useSelector((state: RootState) => state.userInfo.projectOrder);
   const direction = useSelector((state: RootState) => state.userInfo.projectDirection);
@@ -108,35 +104,11 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
     return directionOption === direction;
   };
 
-  const handle = () => {
-    if (!textBoxRef.current) return;
-    setShowTextBox(!showTextBox);
-    if (textBoxRef.current.style.height) {
-      textBoxRef.current.style.height = ''; // 0px in css equates to '' in js
-    } else {
-      // textBoxRef.style.maxHeight = textBoxRef.scrollHeight + 'px';
-      textBoxRef.current.style.height = '200px';
-    }
-  };
-
   return (
     <div className="projectCard-container">
       <h1 style={{ color: '#BB86FC' }}>{projectName}</h1>
 
-      <button onClick={() => handle()}>toggle text box</button>
-
-      {/* <div className={showTextBox ? 'textbox' : 'textbox--hidden'}>{textBoxContent}</div> */}
-      <form className="collapsible" ref={textBoxRef} onSubmit={(e) => handleNewThought(e)}>
-        <textarea
-          // className="new-thought-input"
-          value={input}
-          placeholder={`add a new thought...`}
-          onChange={(e) => setInput(e.target.value)}
-        />
-        <button className="edit-thought-submit" type="submit">
-          <VscCloudUpload size="2em" />
-        </button>
-      </form>
+      {/* =============================== */}
 
       <div className="proj-title-container">
         {/* show that the project is pinned */}

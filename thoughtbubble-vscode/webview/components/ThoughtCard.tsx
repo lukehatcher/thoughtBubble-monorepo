@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Popup } from 'reactjs-popup';
 import {
@@ -14,10 +14,20 @@ import { BsCheckBox } from 'react-icons/bs';
 import styled from 'styled-components';
 import { tagColors } from '../constants/colors';
 import { Tags, Tag } from '../constants/tags';
+import { PopupActions } from 'reactjs-popup/dist/types';
 
 export const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, projectId, thoughtId }) => {
   const [input, setInput] = useState<string>('');
   const dispatch = useDispatch();
+
+  // have to null check ref.current later, could also use document.createElement('form') and avoid null checks
+  const textBoxRef = useRef<HTMLFormElement>(null);
+  const popupRef = useRef<PopupActions>(null);
+  const closePopup = () => {
+    if (!popupRef.current) return;
+    popupRef.current.close();
+  };
+  const [showTextBox, setShowTextBox] = useState<boolean>(false);
 
   const handleThoughtDeletion = (): void => {
     dispatch(deleteThoughtAction(projectId, thoughtId));
@@ -29,7 +39,9 @@ export const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, projectId, th
 
   const handleThoughtEdit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    if (input) dispatch(editThoughtAction(input, projectId, thoughtId));
+    if (input) {
+      dispatch(editThoughtAction(input, projectId, thoughtId));
+    }
     setInput('');
   };
 
@@ -37,10 +49,38 @@ export const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, projectId, th
     dispatch(thoughtTagChangeAction(projectId, thoughtId, tagColor));
   };
 
+  const showEditThoughtBox = (): void => {
+    if (!textBoxRef.current) return; // might be undefined first time cause of null initial ref status
+    setShowTextBox(!showTextBox);
+    // close the tooltip dropdown when we want to show the edit thought box
+    closePopup();
+    if (textBoxRef.current.style.height) {
+      textBoxRef.current.style.height = ''; // 0px in css equates to '' in js
+    } else {
+      // textBoxRef.style.maxHeight = textBoxRef.scrollHeight + 'px';
+      textBoxRef.current.style.height = '200px';
+    }
+  };
+
   return (
     <div className="thoughtCard-container">
       <p className={thought.completed ? 'completed-text' : 'incomplete-text'}>{thought.text}</p>
+
+      <form className="collapsible" ref={textBoxRef} onSubmit={(e) => handleThoughtEdit(e)}>
+        <textarea
+          // className="new-thought-input"
+          value={input}
+          placeholder={`add a new thought...`}
+          onChange={(e) => setInput(e.target.value)}
+        />
+        <button className="edit-thought-submit" type="submit">
+          <VscCloudUpload size="2em" />
+        </button>
+        {/* button for closing edit thought textbox */}
+        <button onClick={showEditThoughtBox}>&times;</button>
+      </form>
       <Popup
+        ref={popupRef}
         // contentStyle={{ border: '2px solid #AAB2C0', borderRadius: '10px' }}
         trigger={
           <div className="submenu-trigger">
@@ -93,24 +133,16 @@ export const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, projectId, th
             </TagItem>
           </PickTagPopupContainer>
         </Popup>
-        {/* === === */}
+        {/* === edit and delete dropdown buttons === */}
+        <div className="menu-item" onClick={() => showEditThoughtBox()}>
+          <VscEdit size="1em" color="#AAB2C0" />
+          &nbsp;&nbsp; edit thought
+        </div>
         <div className="menu-item" onClick={() => handleThoughtDeletion()}>
           <VscTrash size="1em" color="#AAB2C0" />
           &nbsp;&nbsp; delete thought
         </div>
-        <form className="menu-item bottom-corners" onSubmit={(e) => handleThoughtEdit(e)}>
-          <VscEdit size="1em" color="#AAB2C0" />
-          <input
-            className="edit-thought-input"
-            type="text"
-            value={input}
-            placeholder="edit thought..."
-            onChange={(e) => setInput(e.target.value)}
-          />
-          <button className="edit-thought-submit" type="submit">
-            <VscCloudUpload size="1.5em" />
-          </button>
-        </form>
+        {/* === === */}
       </Popup>
       {/* conditionally show tag if thought has one */}
       {thought.tag ? (
