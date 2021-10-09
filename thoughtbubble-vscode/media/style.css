@@ -148,3 +148,37 @@ textarea:focus {
   flex-direction: row;
   align-items: center;
 }
+
+/* slide animation */
+
+.textbox {
+  border: 1px solid red;
+  /* overflow: hidden; */
+  height: 200px;
+  width: 0px;
+  transition: width 600ms ease-in-out, height 600ms ease-in-out;
+}
+
+.textbox--hidden {
+  overflow: hidden;
+  border: 1px solid red;
+  height: 0px;
+  width: 0px;
+  transition: width 600ms ease-in-out, height 600ms ease-in-out;
+}
+
+/* from w3 https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_collapsible_animate */
+
+.collapsible {
+  border: 1px solid red;
+  height: 0px;
+  width: 300px;
+  transition: height 0.2s ease-out;
+  overflow: hidden;
+}
+
+/* .content {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.2s ease-out;
+} */

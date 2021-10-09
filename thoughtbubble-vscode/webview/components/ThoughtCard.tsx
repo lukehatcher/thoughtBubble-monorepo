@@ -50,7 +50,6 @@ export const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, projectId, th
         position="right top"
         on="hover"
         arrow={false}
-        nested
       >
         <div className="menu-item top-corners" onClick={() => handleThoughtToggle()}>
           <BsCheckBox size="1em" color="#AAB2C0" />
