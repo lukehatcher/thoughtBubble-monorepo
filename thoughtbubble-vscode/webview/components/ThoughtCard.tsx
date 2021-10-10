@@ -28,7 +28,6 @@ export const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, projectId, th
     // see https://react-popup.elazizi.com/controlled-popup/#using-ref-to-access-popup-actions for close documentation
     popupRef.current.close();
   };
-  const [showTextBox, setShowTextBox] = useState<boolean>(false);
 
   const handleThoughtDeletion = (): void => {
     dispatch(deleteThoughtAction(projectId, thoughtId));
@@ -52,7 +51,6 @@ export const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, projectId, th
 
   const showEditThoughtBox = (): void => {
     if (!textBoxRef.current) return; // might be undefined first time cause of null initial ref status
-    setShowTextBox(!showTextBox);
     // close the tooltip dropdown when we want to show the edit thought box
     closePopup();
     if (textBoxRef.current.style.height) {

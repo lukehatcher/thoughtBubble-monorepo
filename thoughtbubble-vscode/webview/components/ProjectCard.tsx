@@ -43,6 +43,11 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
   const saveOrderSetting = useSelector((state: RootState) => state.userInfo.saveOrder);
   const tbGrey = '#AAB2C0';
   const filters = useSelector((state: RootState) => state.filters);
+  const thoughtListRef = useRef<HTMLDivElement>(null);
+  // get the total number of thoughts this project has (used to calculate the height of the expandable/collapsible)
+  const thoughtCount = useSelector(
+    (state: RootState) => state.userProjectData.find((proj) => proj.id === projectId)!.projectThoughts.length
+  );
 
   const handleNewThought = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -104,9 +109,35 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
     return directionOption === direction;
   };
 
+  // let hasOpened = false;
+  const showThoughtLists = (): void => {
+    if (!thoughtListRef.current) return; // might be undefined first time cause of null initial ref status
+    // hasOpened = true;
+    if (thoughtListRef.current.style.height) {
+      thoughtListRef.current.style.height = ''; // 0px in css equates to '' in js
+    } else {
+      // thoughtListRef.current.style.height = '100%';
+      // animations dont work but resize on add and delete works
+      thoughtListRef.current.style.height = 'auto';
+      // animation works but no resize on add or delete
+      // thoughtListRef.current.style.height = thoughtListRef.current.scrollHeight + 'px';
+      // trying to calculate height
+      // thoughtListRef.current.style.height = (thoughtCount * 100).toString() + 'px';
+      // console.log(thoughtListRef.current.scrollHeight / thoughtCount);
+    }
+  };
+
+  // const [height, setHeight] = useState();
+
+  // const calcHeight = (): string => {
+  //   return hasOpened ? (thoughtCount * 100).toString() + 'px' : '0px'
+
+  // }
+
   return (
     <div className="projectCard-container">
       <h1 style={{ color: '#BB86FC' }}>{projectName}</h1>
+      <button onClick={showThoughtLists}>show thoughts</button>
 
       {/* =============================== */}
 
@@ -251,16 +282,22 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
           nested
         >
           <ButtonContainer className="menu-item" onClick={() => handleProjectPin(projectId)}>
-            {/* TODO: pin project */}
             <VscPinned size="1em" color="#AAB2C0" />
             &nbsp;&nbsp; {project.pinned ? 'unpin' : 'pin'} project
           </ButtonContainer>
         </Popup>
       </div>
-      {/* display the actual thoughts */}
-      {project.projectThoughts.map((thought) => (
-        <ThoughtCard thought={thought} key={thought.id} projectId={projectId} thoughtId={thought.id} />
-      ))}
+      {/* ====== display the actual thoughts ====== */}
+      <div
+        className="collapsible-thoughts"
+        ref={thoughtListRef}
+        // style={{ height: (thoughtCount * 100).toString() + 'px' }}
+        // style={{ height: calcHeight() }}
+      >
+        {project.projectThoughts.map((thought) => (
+          <ThoughtCard thought={thought} key={thought.id} projectId={projectId} thoughtId={thought.id} />
+        ))}
+      </div>
     </div>
   );
 };

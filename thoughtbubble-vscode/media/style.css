@@ -182,3 +182,11 @@ textarea:focus {
   /* will prevent resizing horizontally */
   resize: vertical;
 }
+
+.collapsible-thoughts {
+  /* border: 1px solid white; */
+  height: 0px;
+  width: 100%;
+  transition: height 0.2s ease-out;
+  overflow: hidden;
+}
