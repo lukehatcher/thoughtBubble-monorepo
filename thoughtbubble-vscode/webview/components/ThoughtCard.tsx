@@ -25,6 +25,7 @@ export const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, projectId, th
   const popupRef = useRef<PopupActions>(null);
   const closePopup = () => {
     if (!popupRef.current) return;
+    // see https://react-popup.elazizi.com/controlled-popup/#using-ref-to-access-popup-actions for close documentation
     popupRef.current.close();
   };
   const [showTextBox, setShowTextBox] = useState<boolean>(false);
@@ -68,7 +69,7 @@ export const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, projectId, th
 
       <form className="collapsible" ref={textBoxRef} onSubmit={(e) => handleThoughtEdit(e)}>
         <textarea
-          // className="new-thought-input"
+          className="edit-thought-input"
           value={input}
           placeholder={`add a new thought...`}
           onChange={(e) => setInput(e.target.value)}
