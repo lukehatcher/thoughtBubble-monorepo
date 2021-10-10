@@ -109,38 +109,35 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
     return directionOption === direction;
   };
 
-  // let hasOpened = false;
+  const [hasOpened, setHasOpened] = useState<boolean>(false);
   const showThoughtLists = (): void => {
     if (!thoughtListRef.current) return; // might be undefined first time cause of null initial ref status
-    // hasOpened = true;
+    setHasOpened(true);
     if (thoughtListRef.current.style.height) {
       thoughtListRef.current.style.height = ''; // 0px in css equates to '' in js
     } else {
       // thoughtListRef.current.style.height = '100%';
       // animations dont work but resize on add and delete works
-      thoughtListRef.current.style.height = 'auto';
+      // thoughtListRef.current.style.height = 'auto';
       // animation works but no resize on add or delete
       // thoughtListRef.current.style.height = thoughtListRef.current.scrollHeight + 'px';
       // trying to calculate height
-      // thoughtListRef.current.style.height = (thoughtCount * 100).toString() + 'px';
-      // console.log(thoughtListRef.current.scrollHeight / thoughtCount);
+      thoughtListRef.current.style.height = (thoughtCount * 100).toString() + 'px';
     }
   };
 
-  // const [height, setHeight] = useState();
-
-  // const calcHeight = (): string => {
-  //   return hasOpened ? (thoughtCount * 100).toString() + 'px' : '0px'
-
-  // }
+  /**
+   * calculate the height of all the thoughts
+   */
+  const calcHeight = (): string => {
+    return hasOpened ? (thoughtCount * 100).toString() + 'px' : '';
+  };
 
   return (
     <div className="projectCard-container">
       <h1 style={{ color: '#BB86FC' }}>{projectName}</h1>
       <button onClick={showThoughtLists}>show thoughts</button>
-
       {/* =============================== */}
-
       <div className="proj-title-container">
         {/* show that the project is pinned */}
         {project.pinned ? (
@@ -288,12 +285,7 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
         </Popup>
       </div>
       {/* ====== display the actual thoughts ====== */}
-      <div
-        className="collapsible-thoughts"
-        ref={thoughtListRef}
-        // style={{ height: (thoughtCount * 100).toString() + 'px' }}
-        // style={{ height: calcHeight() }}
-      >
+      <div className="collapsible-thoughts" ref={thoughtListRef} style={{ height: calcHeight() }}>
         {project.projectThoughts.map((thought) => (
           <ThoughtCard thought={thought} key={thought.id} projectId={projectId} thoughtId={thought.id} />
         ))}
