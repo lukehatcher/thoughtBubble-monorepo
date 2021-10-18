@@ -35,6 +35,8 @@ import {
 } from 'react-icons/vsc';
 
 export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
+  // used to set CSS for the hover effects of the project container as well as the show the close button on a project if its open
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const { projectName, id: projectId } = project;
   const [input, setInput] = useState<string>('');
   const dispatch = useDispatch();
@@ -110,11 +112,15 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
   };
 
   const [hasOpened, setHasOpened] = useState<boolean>(false);
+  /**
+   * opens/closes project
+   */
   const showThoughtLists = (): void => {
     if (!thoughtListRef.current) return; // might be undefined first time cause of null initial ref status
     setHasOpened(true);
     if (thoughtListRef.current.style.height) {
       thoughtListRef.current.style.height = ''; // 0px in css equates to '' in js
+      setIsOpen(false);
     } else {
       // thoughtListRef.current.style.height = '100%';
       // animations dont work but resize on add and delete works
@@ -123,6 +129,7 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
       // thoughtListRef.current.style.height = thoughtListRef.current.scrollHeight + 'px';
       // trying to calculate height
       thoughtListRef.current.style.height = (thoughtCount * 100).toString() + 'px';
+      setIsOpen(true);
     }
   };
 
@@ -130,13 +137,17 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
    * calculate the height of all the thoughts
    */
   const calcHeight = (): string => {
+    // TODO: not actually 100px -> edit the CSS so the height is const for each addition
     return hasOpened ? (thoughtCount * 100).toString() + 'px' : '';
   };
 
   return (
-    <div className="projectCard-container">
+    <div
+      className={isOpen ? 'projectCard-container--open' : 'projectCard-container--closed'}
+      onClick={isOpen ? () => {} : showThoughtLists}
+    >
+      {isOpen ? <button onClick={showThoughtLists}> &#10005;</button> : <></>}
       <h1 style={{ color: '#BB86FC' }}>{projectName}</h1>
-      <button onClick={showThoughtLists}>show thoughts</button>
       {/* =============================== */}
       <div className="proj-title-container">
         {/* show that the project is pinned */}

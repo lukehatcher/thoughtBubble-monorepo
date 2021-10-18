@@ -86,6 +86,17 @@ textarea:focus {
 
 /* container for all projects (scrollview) */
 
+/* (the --closed and --open flags indicate the state of the project collapsible) */
+.projectCard-container--closed,
+.projectCard-container--open {
+  border: 1px solid grey;
+}
+
+.projectCard-container--closed:hover {
+  background-color: grey;
+  cursor: pointer;
+}
+
 #projectList-container {
   margin-bottom: 100px;
 }
