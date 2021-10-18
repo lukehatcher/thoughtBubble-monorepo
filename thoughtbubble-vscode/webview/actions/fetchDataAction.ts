@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { FilterActionTypes } from '../constants/actionTypes';
 import { BASE_URL } from '../constants/config';
 
 export const fetchDataAction = () => {
@@ -8,6 +9,7 @@ export const fetchDataAction = () => {
     try {
       const response = await axios.get(`${BASE_URL}/projects`, { headers: { Authorization: `Bearer ${token}` } });
       dispatch({ type: 'fetchData', payload: response.data });
+      dispatch({ type: FilterActionTypes.INIT, payload: response.data });
     } catch (err) {
       console.error('@fetchDataAction.ts: ', err);
     }

@@ -8,6 +8,7 @@ import { useDarkCheck } from '../hooks/useDarkCheck';
 import { MoreModalProps } from '../interfaces/componentProps';
 import { RootState } from '../reducers/rootReducer';
 import styled from 'styled-components/native';
+import { Tags } from '../interfaces/stringLiteralTypes';
 
 export const MoreModal: FC<MoreModalProps> = ({ moreModalView, setMoreModalView, projectId, thoughtId }) => {
   const [input, setInput] = useState('');
@@ -19,7 +20,7 @@ export const MoreModal: FC<MoreModalProps> = ({ moreModalView, setMoreModalView,
   const tag: string | null = useSelector(tagSelector);
   const isDarkMode = useDarkCheck();
 
-  const handleThoughtEdit = function (newThought: string, id: string) {
+  const handleThoughtEdit = (newThought: string, id: string) => {
     if (!newThought) {
       setMoreModalView(false);
       return;
@@ -28,11 +29,11 @@ export const MoreModal: FC<MoreModalProps> = ({ moreModalView, setMoreModalView,
     setMoreModalView(false);
   };
 
-  const handleThoughtTag = function (tagColor: string | null) {
+  const handleThoughtTag = (tagColor: Tags): void => {
     dispatch(thoughtTagChangeAction(projectId, thoughtId, tagColor)); // should take thought id (for db) and maybe project id for the new data in redux
   };
 
-  const generateTagStyle = function () {
+  const generateTagStyle = () => {
     return [styles.currentTag, { borderColor: isDarkMode ? darkMode.primary : lightMode.primary }];
   };
 

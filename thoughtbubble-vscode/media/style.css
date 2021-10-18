@@ -78,8 +78,6 @@ textarea:focus {
   outline: none;
   color: #aab2c0;
   border: none;
-  /* border: 1px solid #AAB2C0; */
-  /* border-radius: 5px; */
 }
 
 .edit-thought-submit:hover {
@@ -87,6 +85,17 @@ textarea:focus {
 }
 
 /* container for all projects (scrollview) */
+
+/* (the --closed and --open flags indicate the state of the project collapsible) */
+.projectCard-container--closed,
+.projectCard-container--open {
+  border: 1px solid grey;
+}
+
+.projectCard-container--closed:hover {
+  background-color: grey;
+  cursor: pointer;
+}
 
 #projectList-container {
   margin-bottom: 100px;
@@ -99,39 +108,26 @@ textarea:focus {
 
 /* project card + their thought cards */
 
-.projectCard-container {
-  /* border: 1px solid black; */
-}
-
 .thoughtCard-container {
   background: #1f232b;
   border-radius: 10px;
   padding: 10px;
   margin: 10px;
-  /* box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.35); */
-}
-
-.thoughtCard-container:hover {
-  /* background-color: grey; */
 }
 
 .completed-text {
   text-decoration: line-through;
   color: #aab2c046;
-  /* opacity: 0.4; */
-}
-
-.incompleted-text {
 }
 
 /* header + logout/in buttons */
 
-#header-toolbar-container {
+/* #header-toolbar-container {
   display: flex;
   flex-direction: row;
   align-items: center;
   padding: 10px;
-}
+} */
 
 #main-header {
   position: sticky;
@@ -162,4 +158,46 @@ textarea:focus {
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+
+/* slide animation */
+
+.textbox {
+  border: 1px solid red;
+  /* overflow: hidden; */
+  height: 200px;
+  width: 0px;
+  transition: width 600ms ease-in-out, height 600ms ease-in-out;
+}
+
+.textbox--hidden {
+  overflow: hidden;
+  border: 1px solid red;
+  height: 0px;
+  width: 0px;
+  transition: width 600ms ease-in-out, height 600ms ease-in-out;
+}
+
+/* from w3 https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_collapsible_animate */
+
+.collapsible {
+  border: 1px solid white;
+  height: 0px;
+  width: 300px;
+  transition: height 0.2s ease-out;
+  overflow: hidden;
+}
+
+.edit-thought-input {
+  width: 250px;
+  /* will prevent resizing horizontally */
+  resize: vertical;
+}
+
+.collapsible-thoughts {
+  /* border: 1px solid white; */
+  height: 0px;
+  width: 100%;
+  transition: height 0.2s ease-out;
+  overflow: hidden;
 }

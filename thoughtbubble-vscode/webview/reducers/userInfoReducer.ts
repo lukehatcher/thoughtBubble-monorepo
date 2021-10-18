@@ -1,13 +1,6 @@
-interface UserInfoShape {
-  // from query on User entity table
-  id: string;
-  email: string;
-  username: string;
-  githubId: string;
-  dailyEmail: boolean;
-  weeklyEmail: boolean;
-  darkMode: boolean;
-}
+import { UserInfoActionTypes } from '../constants/actionTypes';
+import { Directions, OrderTypes } from '../constants/orders';
+import { UserInfoShape } from '../interfaces/data';
 
 const initialState: UserInfoShape = {
   id: '',
@@ -16,27 +9,38 @@ const initialState: UserInfoShape = {
   githubId: '',
   dailyEmail: true,
   weeklyEmail: true,
-  darkMode: true, // not used atm
+  darkMode: true,
+  projectOrder: OrderTypes.LAST_UPDATED,
+  projectDirection: Directions.DESC,
+  saveOrder: false,
+  avatarUrl: 'filler',
+  displayName: '',
 };
 
 export const userInfoReducer = (state = initialState, action): UserInfoShape => {
-  switch (action.type) {
-    case 'fetchUserInfo':
-      return action.payload;
-    case 'toggleDailyEmail':
+  const { payload, type } = action;
+  switch (type) {
+    case UserInfoActionTypes.FETCH:
+      return payload;
+    case UserInfoActionTypes.UPDATE_ORDER:
       return {
         ...state,
-        dailyEmail: !state.dailyEmail,
+        projectOrder: payload as OrderTypes,
       };
-    case 'toggleWeeklyEmail':
+    case UserInfoActionTypes.UPDATE_DIRECTION:
       return {
         ...state,
-        weeklyEmail: !state.weeklyEmail,
+        projectDirection: payload as Directions,
       };
-    // case 'toggleDarkMode':
+    // case 'toggleDailyEmail':
     //   return {
     //     ...state,
-    //     darkMode: !state.darkMode,
+    //     dailyEmail: !state.dailyEmail,
+    //   };
+    // case 'toggleWeeklyEmail':
+    //   return {
+    //     ...state,
+    //     weeklyEmail: !state.weeklyEmail,
     //   };
     default:
       return state;
