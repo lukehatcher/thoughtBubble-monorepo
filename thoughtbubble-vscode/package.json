@@ -1,8 +1,9 @@
 {
-  "name": "thoughtbubble",
-  "description": "",
+  "name": "thoughtbubble-vscode",
   "version": "0.0.1",
   "author": "Luke Hatcher",
+  "private": true,
+  "license": "MIT",
   "engines": {
     "vscode": "^1.47.0"
   },
