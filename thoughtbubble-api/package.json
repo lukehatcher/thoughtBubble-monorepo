@@ -1,14 +1,13 @@
 {
-  "name": "thoughtbubble-api2",
-  "version": "1.0.0",
-  "description": "",
+  "name": "thoughtbubble-api",
+  "version": "0.0.1",
+  "author": "Luke Hatcher",
+  "private": true,
+  "license": "MIT",
   "main": "index.ts",
   "scripts": {
     "server": "nodemon index.ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "axios": "^0.21.1",
     "cors": "^2.8.5",

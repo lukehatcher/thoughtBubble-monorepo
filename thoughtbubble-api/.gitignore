@@ -4,3 +4,4 @@ node_modules
 aws-launch.sh
 services/generateEmailToken.ts
 redis-keys.txt
+logfile

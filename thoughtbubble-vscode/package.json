@@ -1,8 +1,9 @@
 {
-  "name": "thoughtbubble",
-  "description": "",
+  "name": "thoughtbubble-vscode",
   "version": "0.0.1",
   "author": "Luke Hatcher",
+  "private": true,
+  "license": "MIT",
   "engines": {
     "vscode": "^1.47.0"
   },
@@ -51,13 +52,12 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "npm run bundle-view && npm run bundle-ext",
-    "compile": "tsc -p ./",
+    "bundle": "yarn bundle-view && yarn bundle-ext",
+    "bundle-ext": "webpack --config webpack.config.js --mode development",
+    "bundle-view": "webpack --config webpack.view.config.js --mode development",
     "lint": "eslint . --ext .ts,.tsx",
     "watch-ext": "webpack --config webpack.config.js --mode development -w",
-    "bundle-ext": "webpack --config webpack.config.js --mode development",
-    "watch-view": "webpack --config webpack.view.config.js --mode development -w",
-    "bundle-view": "webpack --config webpack.view.config.js --mode development"
+    "watch-view": "webpack --config webpack.view.config.js --mode development -w"
   },
   "dependencies": {
     "@octokit/rest": "^18.3.5",
