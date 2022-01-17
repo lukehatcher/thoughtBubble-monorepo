@@ -10,7 +10,7 @@ import {
 } from '../actions/thoughtActions';
 import { ThoughtCardProps } from '../interfaces/componentProps';
 import { VscEllipsis, VscTrash, VscTag, VscCloudUpload, VscEdit, VscStarFull, VscCircleSlash } from 'react-icons/vsc';
-import { BsCheckBox } from 'react-icons/bs';
+import { BsCheck2 } from 'react-icons/bs';
 import styled from 'styled-components';
 import { tagColors } from '../constants/colors';
 import { Tags, Tag } from '../constants/tags';
@@ -91,7 +91,7 @@ export const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, projectId, th
         arrow={false}
       >
         <div className="menu-item top-corners" onClick={() => handleThoughtToggle()}>
-          <BsCheckBox size="1em" color="#AAB2C0" />
+          <BsCheck2 size="1em" color="#AAB2C0" />
           &nbsp;&nbsp; toggle status
         </div>
 
