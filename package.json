@@ -1,0 +1,27 @@
+{
+  "name": "thoughtbubble-monorepo",
+  "version": "0.0.1",
+  "author": "Luke Hatcher",
+  "private": true,
+  "license": "MIT",
+  "description": "<div align=\"center\"><img src=\"./docs/images/logo256.png\" width=\"35%\" height=\"35%\"></img></div> <h1 align=\"center\"><strong>thoughtBubble</strong></h1> <h4 align=\"center\">bubble your thoughts together by syncing them between your phone and code editor</h4>",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "jest --coverage=true"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lukehatcher/thoughtBubble-monorepo.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/lukehatcher/thoughtBubble-monorepo/issues"
+  },
+  "homepage": "https://github.com/lukehatcher/thoughtBubble-monorepo#readme",
+  "devDependencies": {
+    "jest": "^27.4.7"
+  },
+  "dependencies": {}
+}

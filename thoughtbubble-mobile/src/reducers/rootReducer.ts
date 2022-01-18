@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import { AnyAction, combineReducers } from 'redux';
 import { UserProjectDataReducer } from './userProjectDataReducer';
 import { userInfoReducer } from './userInfoReducer';
 import { filterReducer } from './filterReducer';
@@ -14,8 +14,7 @@ const appReducer = combineReducers({
   archive: archiveReducer,
 });
 
-export const rootReducer = (state: State, action: any) => {
-  // TODO: type action param
+export const rootReducer = (state: State, action: AnyAction) => {
   if (action.type === 'USER_LOGOUT') {
     state = undefined;
   }
