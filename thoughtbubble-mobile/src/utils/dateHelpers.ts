@@ -1,5 +1,5 @@
-import { activityRangeMap } from '../constants/activityRanges';
-import { ActivityRanges } from '../interfaces/stringLiteralTypes';
+// import { activityRangeMap } from '../constants/activityRanges';
+// import { ActivityRanges } from '../interfaces/stringLiteralTypes';
 
 /**
  * Methods for dealing with dates. Predominantly used in stats screen.

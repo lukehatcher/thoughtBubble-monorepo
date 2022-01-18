@@ -4,12 +4,21 @@
   "author": "Luke Hatcher",
   "private": true,
   "license": "MIT",
+  "workspaces": [
+    "thoughtbubble-api",
+    "thoughtbubble-mobile",
+    "thoughtbubble-vscode"
+  ],
   "description": "<div align=\"center\"><img src=\"./docs/images/logo256.png\" width=\"35%\" height=\"35%\"></img></div> <h1 align=\"center\"><strong>thoughtBubble</strong></h1> <h4 align=\"center\">bubble your thoughts together by syncing them between your phone and code editor</h4>",
   "directories": {
     "doc": "docs"
   },
   "scripts": {
-    "test": "jest --coverage=true"
+    "install-api": "cd ./thoughtbubble-api && yarn install",
+    "install-mobile": "cd ./thoughtbubble-mobile && yarn install",
+    "install-vscode": "cd ./thoughtbubble-vscode && yarn install",
+    "install-mono": "yarn install-api && yarn install-mobile && yarn install-vscode",
+    "test": "lerna run test --stream"
   },
   "repository": {
     "type": "git",
@@ -21,7 +30,8 @@
   },
   "homepage": "https://github.com/lukehatcher/thoughtBubble-monorepo#readme",
   "devDependencies": {
-    "jest": "^27.4.7"
+    "jest": "^27.4.7",
+    "lerna": "^4.0.0"
   },
   "dependencies": {}
 }
