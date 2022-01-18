@@ -21,7 +21,7 @@ import { DateHelper } from '../utils/dateHelpers';
 import { Modal, StyleSheet, Linking, Text } from 'react-native';
 import { Button, IconButton, Snackbar, ProgressBar } from 'react-native-paper';
 import { activityRangeMap } from '../constants/activityRanges';
-import { Activity, ProjectShape } from '../interfaces/data';
+import { ProjectShape } from '../interfaces/data';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Overlay } from '../components/Overlay';
 
@@ -29,7 +29,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
   const isDarkMode = useDarkCheck();
   const dispatch = useDispatch();
   const userProjectsData: ProjectShape[] = useSelector((state: RootState) => state.userProjectData, equal);
-  const userActivityData: Activity = useSelector((state: RootState) => state.activity, equal);
+  const userActivityData = useSelector((state: RootState) => state.activity, equal);
   const [currRange, setCurrRange] = useState(activityRangeMap.get('1W'));
   const [snackbarVisable, setSnackbarVisable] = useState(false);
   const [snackbarText, setSnackbarText] = useState('');

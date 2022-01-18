@@ -1,0 +1,10 @@
+{
+  "version": "0.0.1",
+  "packages": [
+    "thoughtbubble-api",
+    "thoughtbubble-mobile",
+    "thoughtbubble-vscode"
+  ],
+  "npmClient": "yarn",
+  "useWorkspaces": true
+}

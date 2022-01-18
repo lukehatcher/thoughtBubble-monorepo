@@ -1,5 +1,5 @@
-import { activityRangeMap } from '../constants/activityRanges';
-import { ActivityRanges } from '../interfaces/stringLiteralTypes';
+// import { activityRangeMap } from '../constants/activityRanges';
+// import { ActivityRanges } from '../interfaces/stringLiteralTypes';
 
 /**
  * Methods for dealing with dates. Predominantly used in stats screen.
@@ -16,22 +16,22 @@ export class DateHelper {
     const diff = (date as any) - (start as any);
     const oneDay = 1000 * 60 * 60 * 24;
     const dayN = Math.floor(diff / oneDay);
-    // console.log('Day of tB: ' + dayN);
-    return dayN;
+    // if date is before 4/1/2021 -> return 0
+    return dayN >= 0 ? dayN : 0;
   }
 
   /**
    * create map which is used to create activity per day iterable
    * @returns a map contained the day #s out of 365 for the last week
    */
-  static getLastNDayNumbers(range: ActivityRanges): Map<number, number> {
-    const currentIso = new Date().toISOString();
-    let currentDayNumb = this.getDayNumber(currentIso);
-    const N = activityRangeMap.get(range);
-    const map = new Map<number, number>();
-    for (let i = 0; i < N; i++) map.set(currentDayNumb--, 0);
-    return map;
-  }
+  // static getLastNDayNumbers(range: ActivityRanges): Map<number, number> {
+  //   const currentIso = new Date().toISOString();
+  //   let currentDayNumb = this.getDayNumber(currentIso);
+  //   const N = activityRangeMap.get(range);
+  //   const map = new Map<number, number>();
+  //   for (let i = 0; i < N; i++) map.set(currentDayNumb--, 0);
+  //   return map;
+  // }
 
   /**
    * @param lastUpdatedDate from db in iso format `2021-05-04T21:34:08.689Z`
@@ -47,6 +47,9 @@ export class DateHelper {
    * @returns date object of the date #
    */
   static dayNToDate(dayN: number): Date {
+    if (dayN < 0) {
+      throw new TypeError('Param dayN must be > 0.');
+    }
     const result = new Date(2021, 3, 1);
     result.setDate(result.getDate() + dayN);
     return result;
@@ -61,8 +64,8 @@ export class DateHelper {
   }
 
   /**
-   * given array of x, y coords generate x label of the form "mm/dd/yyyy -> mm/dd/yyyy"
-   * @param graphData xy, pairs for victorychart
+   * given array of x, y coords generate x-axis label of the form "mm/dd/yyyy -> mm/dd/yyyy"
+   * @param graphData xy, pairs for victorychart, x is day N from 4/ 1/21
    * @param currRange 7, 30, 91 etc...
    * @returns "mm/dd/yyyy -> mm/dd/yyyy"
    */

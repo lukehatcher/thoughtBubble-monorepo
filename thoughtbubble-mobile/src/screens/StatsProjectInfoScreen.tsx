@@ -8,7 +8,6 @@ import { darkMode, lightMode } from '../constants/colors';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { locations } from '../constants/locations';
 import { DateHelper } from '../utils/dateHelpers';
-import { Activity } from '../interfaces/data';
 import { DrawerActions, useFocusEffect } from '@react-navigation/native';
 import { fetchActivityDataAction } from '../actions/fetchActivityAction';
 import { Button, IconButton, ProgressBar, Snackbar } from 'react-native-paper';
@@ -31,7 +30,7 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
   const dispatch = useDispatch();
   const userProjectsData = useSelector((state: RootState) => state.userProjectData);
   const project = userProjectsData.find((proj) => proj.id === projectId);
-  const userActivityData: Activity = useSelector((state: RootState) => state.activity);
+  const userActivityData = useSelector((state: RootState) => state.activity);
   const [snackbarVisable, setSnackbarVisable] = useState(false);
   const [snackbarText, setSnackbarText] = useState('');
   const [currRange, setCurrRange] = useState(activityRangeMap.get('1W'));
