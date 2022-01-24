@@ -30,7 +30,6 @@
   },
   "homepage": "https://github.com/lukehatcher/thoughtBubble-monorepo#readme",
   "devDependencies": {
-    "jest": "^27.4.7",
     "lerna": "^4.0.0"
   },
   "dependencies": {}

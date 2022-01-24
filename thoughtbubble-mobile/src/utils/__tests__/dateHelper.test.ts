@@ -68,7 +68,6 @@ describe('Testing DateHelper util class', () => {
         { x: 6, y: Math.random() },
       ];
       const actual = DateHelper.generateXaxisDateLabel(data, 7);
-      console.log(actual);
       expect(actual).toBe('04/01/2021  →  04/07/2021');
     });
   });
@@ -96,7 +95,6 @@ describe('Testing DateHelper util class', () => {
       { x: 16, y: Math.random() },
     ];
     const actual = DateHelper.generateXaxisDateLabel(data, 31);
-    console.log(actual, 'asdf');
     expect(actual).toBe('04/11/2021  →  04/17/2021');
   });
 });

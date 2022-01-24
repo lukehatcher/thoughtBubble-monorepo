@@ -2,7 +2,6 @@
   "name": "thoughtbubble-api",
   "version": "0.0.1",
   "author": "Luke Hatcher",
-  "private": true,
   "license": "MIT",
   "main": "index.ts",
   "scripts": {

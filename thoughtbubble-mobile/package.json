@@ -2,7 +2,6 @@
   "name": "thoughtbubble-mobile",
   "version": "0.0.1",
   "author": "Luke Hatcher",
-  "private": true,
   "license": "MIT",
   "scripts": {
     "launch-android": "react-native run-android",
@@ -10,6 +9,11 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest"
+  },
+  "workspaces": {
+    "nohoist": [
+      "**"
+    ]
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.13.4",
@@ -22,7 +26,7 @@
     "axios": "^0.21.1",
     "deep-equal": "^2.0.5",
     "dotenv": "^8.6.0",
-    "react": "16.13.1",
+    "react": "^17.0.2",
     "react-native": "0.63.4",
     "react-native-bootsplash": "^3.2.4",
     "react-native-dotenv": "^2.5.5",
