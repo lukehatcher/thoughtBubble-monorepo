@@ -9,7 +9,7 @@
     "thoughtbubble-mobile",
     "thoughtbubble-vscode"
   ],
-  "description": "<div align=\"center\"><img src=\"./docs/images/logo256.png\" width=\"35%\" height=\"35%\"></img></div> <h1 align=\"center\"><strong>thoughtBubble</strong></h1> <h4 align=\"center\">bubble your thoughts together by syncing them between your phone and code editor</h4>",
+  "description": "",
   "directories": {
     "doc": "docs"
   },
