@@ -11,8 +11,10 @@
       "type": "extensionHost",
       "request": "launch",
       "runtimeExecutable": "${execPath}",
-      "args": ["--extensionDevelopmentPath=${workspaceRoot}"],
-      "outFiles": ["${workspaceFolder}/out/**/*.js"],
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/thoughtbubble-vscode"
+      ],
+      "outFiles": ["${workspaceFolder}/thoughtbubble-vscode/out/**/*.js"],
       "preLaunchTask": "npm: watch"
     }
   ]
