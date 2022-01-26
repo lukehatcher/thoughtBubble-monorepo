@@ -48,7 +48,7 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
   const thoughtListRef = useRef<HTMLDivElement>(null);
   // get the total number of thoughts this project has (used to calculate the height of the expandable/collapsible)
   const thoughtCount = useSelector(
-    (state: RootState) => state.userProjectData.find((proj) => proj.id === projectId)!.projectThoughts.length
+    (state: RootState) => state.userProjectData.find((proj) => proj.id === projectId)!.projectThoughts.length,
   );
 
   const handleNewThought = (e: React.FormEvent<HTMLFormElement>): void => {

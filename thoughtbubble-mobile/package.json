@@ -7,7 +7,6 @@
   "scripts": {
     "launch-android": "react-native run-android",
     "launch-ios": "react-native run-ios",
-    "lint": "eslint .",
     "start": "react-native start",
     "test": "jest"
   },
