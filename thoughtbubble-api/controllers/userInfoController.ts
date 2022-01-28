@@ -56,7 +56,7 @@ class userInfoController {
 
     let userId = '';
     try {
-      const payload: any = jwt.verify(token, config.auth.github_client_secret!);
+      const payload: any = jwt.verify(token, config.auth.github_client_secret ?? '');
       userId = payload.userId;
     } catch (err) {
       res.send({ user: null });
@@ -98,9 +98,9 @@ class userInfoController {
       // opting out
       try {
         sendEmail(
-          user!.email,
+          user.email ?? '',
           'thoughtBubble email settings changed',
-          '<h1>thoughtBubble</h1><p>you have successfully turned <b>off</b> daily email notifications</p>'
+          '<h1>thoughtBubble</h1><p>you have successfully turned <b>off</b> daily email notifications</p>',
         );
       } catch (err) {
         console.error(this.location, err);
@@ -110,9 +110,9 @@ class userInfoController {
       // opting in
       try {
         sendEmail(
-          user!.email,
+          user?.email ?? '',
           'thoughtBubble email settings changed',
-          '<h3>thoughtBubble</h3><p>you have successfully turned <b>on</b> daily email notifications</p>'
+          '<h3>thoughtBubble</h3><p>you have successfully turned <b>on</b> daily email notifications</p>',
         );
       } catch (err) {
         console.error(this.location, err);
@@ -136,9 +136,9 @@ class userInfoController {
       // opting out
       try {
         sendEmail(
-          user!.email,
+          user.email ?? '',
           'thoughtBubble email settings changed',
-          '<h1>thoughtBubble</h1><p>you have successfully turned <b>off</b> weekly email notifications</p>'
+          '<h1>thoughtBubble</h1><p>you have successfully turned <b>off</b> weekly email notifications</p>',
         );
       } catch (err) {
         console.error(this.location, err);
@@ -148,9 +148,9 @@ class userInfoController {
       // opting in
       try {
         sendEmail(
-          user!.email,
+          user?.email ?? '',
           'thoughtBubble email settings changed',
-          '<h3>thoughtBubble</h3><p>you have successfully turned <b>on</b> weekly email notifications</p>'
+          '<h3>thoughtBubble</h3><p>you have successfully turned <b>on</b> weekly email notifications</p>',
         );
       } catch (err) {
         console.error(this.location, err);

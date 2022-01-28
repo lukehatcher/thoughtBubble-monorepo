@@ -5,15 +5,14 @@ import { Switch } from 'react-native-paper';
 import styled, { ThemeProvider } from 'styled-components/native';
 import { RootState } from '../reducers/rootReducer';
 import { _logout } from '../utils/auth';
-import { SettingsScreenProps } from '../interfaces/screenProps';
 import { changeEmailSettingsAction, changeDarkModeAction } from '../actions/userInfoActions';
 import { darkMode, lightMode } from '../constants/colors';
 import { useDarkCheck } from '../hooks/useDarkCheck';
 import { styleOptions3 } from '../interfaces/stringLiteralTypes';
 
-export const SettingsScreen: React.FC<SettingsScreenProps> = () => {
+export const SettingsScreen: React.FC = () => {
   const dispatch = useDispatch();
-  let user = useSelector((state: RootState) => state.userInfo);
+  const user = useSelector((state: RootState) => state.userInfo);
   const dailyEmailSetting = useSelector((state: RootState) => state.userInfo.dailyEmail);
   const weeklyEmailSetting = useSelector((state: RootState) => state.userInfo.weeklyEmail);
   const isDarkMode = useDarkCheck();

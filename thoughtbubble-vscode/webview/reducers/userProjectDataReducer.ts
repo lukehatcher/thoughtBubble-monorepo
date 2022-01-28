@@ -93,7 +93,7 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
       const filterPayload = payload;
       // payload has all userProjectData, projectId and filters[] props on it, filters has id, status and tags[] on each object
       return filterPayload.data.map((project) => {
-        let { status, tags } = filterPayload.filters.find((proj) => proj.id === filterPayload.projectId);
+        const { status, tags } = filterPayload.filters.find((proj) => proj.id === filterPayload.projectId);
         if (status === 'all') {
           if (project.id === filterPayload.projectId) {
             if (!tags.length) return project; // if no tags
@@ -117,7 +117,7 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
             return {
               ...project,
               projectThoughts: project.projectThoughts.filter(
-                (thought) => thought.completed === newStatus && tags.includes(thought.tag)
+                (thought) => thought.completed === newStatus && tags.includes(thought.tag),
               ),
             };
           } else {

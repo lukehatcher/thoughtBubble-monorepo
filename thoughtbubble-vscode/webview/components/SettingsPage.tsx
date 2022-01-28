@@ -10,7 +10,7 @@ import { Directions, OrderTypes } from '../constants/orders';
 
 // interface SettingsPageProps {}
 
-export const SettingsPage: React.FC = function () {
+export const SettingsPage: React.FC = (): React.ReactElement => {
   const dispatch = useDispatch();
   const dailyEmailSetting = useSelector((state: RootState) => state.userInfo.dailyEmail);
   const weeklyEmailSetting = useSelector((state: RootState) => state.userInfo.weeklyEmail);
@@ -20,7 +20,9 @@ export const SettingsPage: React.FC = function () {
   const direction = useSelector((state: RootState) => state.userInfo.projectDirection);
   // ==========
 
-  const handleEmailSettingToggle = function (emailSetting: string): void {
+  const handleEmailSettingToggle = (emailSetting: string): void => {
+    if (emailSetting) return; // short circuit until implemented
+
     // if (emailSetting === 'daily') dispatch(changeEmailSettingsAction('daily'));
     // else dispatch(changeEmailSettingsAction('weekly'));
   };

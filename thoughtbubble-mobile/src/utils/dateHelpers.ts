@@ -13,7 +13,8 @@ export class DateHelper {
   static getDayNumber(isoDate: string): number {
     const date = new Date(isoDate);
     const start = new Date(2021, 3, 1);
-    const diff = (date as any) - (start as any);
+    // const diff = (date as any) - (start as any);
+    const diff = date.getTime() - start.getTime();
     const oneDay = 1000 * 60 * 60 * 24;
     const dayN = Math.floor(diff / oneDay);
     // if date is before 4/1/2021 -> return 0
@@ -57,9 +58,9 @@ export class DateHelper {
 
   static dateToMMDDYYY(date: Date): string {
     // from SO
-    let year = date.getFullYear();
-    let month = (1 + date.getMonth()).toString().padStart(2, '0');
-    let day = date.getDate().toString().padStart(2, '0');
+    const year = date.getFullYear();
+    const month = (1 + date.getMonth()).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
     return month + '/' + day + '/' + year;
   }
 

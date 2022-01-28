@@ -10,6 +10,10 @@ export const EmptyPlaceholder: FC<EmptyPlaceholderProps> = function ({
   displayTextLine1,
   displayTextLine2,
 }) {
+  // Prettier and eslint clashing here.
+  // eslint-disable-next-line quotes
+  const placeHolderText = "Oops, there's nothing to see here... yet";
+
   return (
     <ThemeProvider theme={theme}>
       <Container>
@@ -18,9 +22,7 @@ export const EmptyPlaceholder: FC<EmptyPlaceholderProps> = function ({
           size={125}
           color={isDarkMode ? `${darkMode.textOnBackground}20` : `${lightMode.textOnBackground}20`}
         />
-        <TextNothingHere>
-          {displayTextLine1 ? displayTextLine1 : "Oops, there's nothing to see here... yet"}
-        </TextNothingHere>
+        <TextNothingHere>{displayTextLine1 ? displayTextLine1 : placeHolderText}</TextNothingHere>
         <TextNothingHere>{displayTextLine2 ? displayTextLine2 : ''}</TextNothingHere>
       </Container>
     </ThemeProvider>

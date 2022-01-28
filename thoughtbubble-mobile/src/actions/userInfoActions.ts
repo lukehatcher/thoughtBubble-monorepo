@@ -6,7 +6,7 @@ import { getToken } from '../utils/asyncStorage';
 import { AppThunk } from '../interfaces/redux';
 
 export const fetchUserAction = (token: string): AppThunk<void> => {
-  return async (dispatch, _getState) => {
+  return async (dispatch) => {
     axios
       .get(`${BASE_URL}/userinfo`, { headers: { Authorization: `Bearer ${token}` } })
       .then(async (res) => {
@@ -18,7 +18,7 @@ export const fetchUserAction = (token: string): AppThunk<void> => {
 
 export const changeEmailSettingsAction = (emailSetting: string): AppThunk<void> => {
   if (emailSetting === 'daily') {
-    return async (dispatch, _getState) => {
+    return async (dispatch) => {
       const token = await getToken();
       axios
         .put(`${BASE_URL}/userinfo/dailyemail`, {}, { headers: { Authorization: `Bearer ${token}` } })
@@ -28,7 +28,7 @@ export const changeEmailSettingsAction = (emailSetting: string): AppThunk<void> 
         .catch((err) => console.error('@userInfoActions.ts: ', err));
     };
   } else {
-    return async (dispatch, _getState) => {
+    return async (dispatch) => {
       const token = await getToken();
       axios
         .put(`${BASE_URL}/userinfo/weeklyemail`, {}, { headers: { Authorization: `Bearer ${token}` } })
@@ -41,7 +41,7 @@ export const changeEmailSettingsAction = (emailSetting: string): AppThunk<void> 
 };
 
 export const changeDarkModeAction = (): AppThunk<void> => {
-  return async (dispatch, _getState) => {
+  return async (dispatch) => {
     const token = await getToken();
     axios
       .put(`${BASE_URL}/userinfo/darkmode`, {}, { headers: { Authorization: `Bearer ${token}` } })
@@ -53,7 +53,7 @@ export const changeDarkModeAction = (): AppThunk<void> => {
 };
 
 export const changeProjectOrderAction = (projectOrder: OrderType): AppThunk<void> => {
-  return async (dispatch, _getState) => {
+  return async (dispatch) => {
     const token = await getToken();
     axios
       .put(
@@ -71,7 +71,7 @@ export const changeProjectOrderAction = (projectOrder: OrderType): AppThunk<void
 };
 
 export const changeProjectDirectionAction = (projectDirection: Direction): AppThunk<void> => {
-  return async (dispatch, _getState) => {
+  return async (dispatch) => {
     const token = await getToken();
     axios
       .put(
@@ -89,7 +89,7 @@ export const changeProjectDirectionAction = (projectDirection: Direction): AppTh
 };
 
 export const changeSaveOrderSettingAction = (projectOrder: OrderType, projectDirection: Direction): AppThunk<void> => {
-  return async (dispatch, _getState) => {
+  return async (dispatch) => {
     const token = await getToken();
     axios
       .put(

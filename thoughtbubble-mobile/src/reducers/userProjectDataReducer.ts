@@ -12,7 +12,7 @@ import {
 const initialState: ProjectShape[] = [];
 
 export const UserProjectDataReducer = (state = initialState, action: UserProjectDataReducerAction): ProjectShape[] => {
-  let { type, payload } = action;
+  const { type, payload } = action;
   switch (type) {
     case ProjectActionTypes.FETCH:
       return (payload as ProjectShape[]).filter((proj) => !proj.archived);
@@ -25,7 +25,7 @@ export const UserProjectDataReducer = (state = initialState, action: UserProject
     case ProjectActionTypes.UNARCHIVE:
       // move to front because by default projects are shown in lastUpdated order
       return [payload as ProjectShape, ...state];
-    case ProjectActionTypes.ADD_THOUGHT: // all typed
+    case ProjectActionTypes.ADD_THOUGHT: {
       const newThought = payload as ThoughtShape;
       return state.map((item) => {
         if (item.id !== newThought.projectId) {
@@ -38,7 +38,8 @@ export const UserProjectDataReducer = (state = initialState, action: UserProject
           };
         }
       });
-    case ProjectActionTypes.DELETE_THOUGHT: // all typed
+    }
+    case ProjectActionTypes.DELETE_THOUGHT: {
       const newProject = payload as DeleteThoughtPayload;
       return state.map((item) => {
         if (item.id !== newProject.projectId) {
@@ -51,6 +52,7 @@ export const UserProjectDataReducer = (state = initialState, action: UserProject
           };
         }
       });
+    }
     case ProjectActionTypes.EDIT_THOUGHT: {
       const updatedThought = payload as EditThoughtPayload;
       return state.map((item) => {
@@ -112,7 +114,7 @@ export const UserProjectDataReducer = (state = initialState, action: UserProject
       const filterPayload = payload as FilterPayload;
       // payload has all userProjectData, projectId and filters[] props on it, filters has id, status and tags[] on each object
       return filterPayload.data.map((project) => {
-        let { status, tags } = filterPayload.filters.find((proj) => proj.id === filterPayload.projectId);
+        const { status, tags } = filterPayload.filters.find((proj) => proj.id === filterPayload.projectId);
         if (status === 'all') {
           if (project.id === filterPayload.projectId) {
             if (!tags.length) return project; // if no tags

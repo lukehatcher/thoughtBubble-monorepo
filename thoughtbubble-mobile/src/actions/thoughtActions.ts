@@ -6,7 +6,7 @@ import { ProjectActionTypes } from '../constants/actionTypes';
 import { AppThunk } from '../interfaces/redux';
 
 export const addThoughtAction = (projectId: string, thought: string): AppThunk<void> => {
-  return async (dispatch, _getState) => {
+  return async (dispatch) => {
     const token = await getToken();
     axios
       .post(
@@ -26,7 +26,7 @@ export const addThoughtAction = (projectId: string, thought: string): AppThunk<v
 };
 
 export const deleteThoughtAction = (projectId: string, thoughtId: string): AppThunk<void> => {
-  return async (dispatch, _getState) => {
+  return async (dispatch) => {
     const token = await getToken();
     axios
       .delete(`${BASE_URL}/thoughts`, {
@@ -44,7 +44,7 @@ export const deleteThoughtAction = (projectId: string, thoughtId: string): AppTh
 };
 
 export const editThoughtAction = (newThought: string, projectId: string, thoughtId: string): AppThunk<void> => {
-  return async (dispatch, _getState) => {
+  return async (dispatch) => {
     const token = await getToken();
     axios
       .put(
@@ -64,7 +64,7 @@ export const editThoughtAction = (newThought: string, projectId: string, thought
 };
 
 export const thoughtStatusChangeAction = (projectId: string, thoughtId: string): AppThunk<void> => {
-  return async (dispatch, _getState) => {
+  return async (dispatch) => {
     const token = await getToken();
     axios
       .put(
@@ -87,7 +87,7 @@ export const thoughtTagChangeAction = function (
   thoughtId: string,
   tag: string | null,
 ): AppThunk<void> {
-  return async (dispatch, _getState) => {
+  return async (dispatch) => {
     const token = await getToken();
     axios
       .put(

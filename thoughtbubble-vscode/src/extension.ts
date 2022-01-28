@@ -10,26 +10,26 @@ export async function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.commands.registerCommand('thoughtBubble.authenticate', () => {
-      authenticate(() => {});
-    })
+      authenticate(() => undefined);
+    }),
   );
 
   context.subscriptions.push(
     vscode.commands.registerCommand('thoughtBubble.test', () => {
       vscode.window.showInformationMessage('token is:' + StateManager.getToken());
-    })
+    }),
   );
 
   context.subscriptions.push(
     vscode.commands.registerCommand('thoughtBubble.start', () => {
       MainPanel.createOrShow(context.extensionUri);
-    })
+    }),
   );
 
   context.subscriptions.push(
     vscode.commands.registerCommand('thoughtBubble.kill', () => {
       MainPanel.kill();
-    })
+    }),
   );
 
   context.subscriptions.push(
@@ -47,7 +47,7 @@ export async function activate(context: vscode.ExtensionContext) {
       }
       // extend quickpickitem to take a hidden id prop
       const quickPick: vscode.QuickPick<vscode.QuickPickItem & { projectId: string }> = vscode.window.createQuickPick();
-      quickPick.items = projectData!.map((proj: projectTuple) => ({
+      quickPick.items = projectData?.map((proj: projectTuple) => ({
         label: proj.projectName,
         projectId: proj.projectId,
       }));
@@ -66,7 +66,7 @@ export async function activate(context: vscode.ExtensionContext) {
       // hides quickpicker is its closed without a selection
       quickPick.onDidHide(() => quickPick.dispose());
       quickPick.show();
-    })
+    }),
   );
 }
 
@@ -99,7 +99,7 @@ class MainPanel {
         enableScripts: true,
         retainContextWhenHidden: true,
         localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'media')],
-      }
+      },
     );
     MainPanel.currentPanel = new MainPanel(panel, extensionUri);
   }
@@ -156,7 +156,7 @@ class MainPanel {
         }
       },
       null,
-      this._disposables
+      this._disposables,
     );
   }
 

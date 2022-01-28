@@ -6,7 +6,7 @@ import { getToken } from '../utils/asyncStorage';
 import { AppThunk } from '../interfaces/redux';
 
 export const addProjectAction = function (projectName: string): AppThunk<void> {
-  return async (dispatch, _getState) => {
+  return async (dispatch) => {
     const token = await getToken();
     axios
       .post(
@@ -28,7 +28,7 @@ export const addProjectAction = function (projectName: string): AppThunk<void> {
 };
 
 export const deleteProjectAction = function (projectId: string): AppThunk<void> {
-  return async (dispatch, _getState) => {
+  return async (dispatch) => {
     const token = await getToken();
     axios
       .delete(`${BASE_URL}/projects`, {
@@ -46,7 +46,7 @@ export const deleteProjectAction = function (projectId: string): AppThunk<void> 
 };
 
 export const filterProjectAction = function (projectId: string, filters: any): AppThunk<void> {
-  return async (dispatch, _getState) => {
+  return async (dispatch) => {
     const token = await getToken();
     try {
       const response = await axios.get(`${BASE_URL}/projects`, { headers: { Authorization: `Bearer ${token}` } });
@@ -60,7 +60,7 @@ export const filterProjectAction = function (projectId: string, filters: any): A
 };
 
 export const archiveProjectAction = function (projectId: string): AppThunk<void> {
-  return async (dispatch, _getState) => {
+  return async (dispatch) => {
     const token = await getToken();
     try {
       const response = await axios.put(
@@ -78,7 +78,7 @@ export const archiveProjectAction = function (projectId: string): AppThunk<void>
 };
 
 export const unarchiveProjectAction = function (projectId: string): AppThunk<void> {
-  return async (dispatch, _getState) => {
+  return async (dispatch) => {
     const token = await getToken();
     try {
       const response = await axios.put(
@@ -100,7 +100,7 @@ export const unarchiveProjectAction = function (projectId: string): AppThunk<voi
  * handle pin and un-pin
  */
 export const pinProjectAction = function (projectId: string): AppThunk<void> {
-  return async (dispatch, _getState) => {
+  return async (dispatch) => {
     const token = await getToken();
     try {
       const response = await axios.put(

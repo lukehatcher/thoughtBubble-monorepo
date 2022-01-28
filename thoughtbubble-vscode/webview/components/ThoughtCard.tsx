@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Popup } from 'reactjs-popup';
 import {
   deleteThoughtAction,
@@ -69,7 +69,7 @@ export const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, projectId, th
         <textarea
           className="edit-thought-input"
           value={input}
-          placeholder={`add a new thought...`}
+          placeholder="add a new thought..."
           onChange={(e) => setInput(e.target.value)}
         />
         <button className="edit-thought-submit" type="submit">

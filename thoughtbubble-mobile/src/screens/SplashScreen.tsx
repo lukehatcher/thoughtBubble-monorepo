@@ -2,9 +2,7 @@ import React, { FC } from 'react';
 import styled from 'styled-components/native';
 import { darkMode } from '../constants/colors';
 
-interface SplashScreenProps {}
-
-export const SplashScreen: FC<SplashScreenProps> = function () {
+export const SplashScreen: FC = () => {
   return <MainContainer></MainContainer>;
 };
 

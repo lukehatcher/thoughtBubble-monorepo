@@ -2,7 +2,7 @@ import { FilterActionTypes } from '../constants/actionTypes';
 import { Status } from '../constants/status';
 import { Tags } from '../constants/tags';
 import { ProjectShape } from '../interfaces/interfaces';
-import { FilterReducerAction, FilterReducerInitialState } from '../interfaces/redux';
+import { FilterReducerInitialState } from '../interfaces/redux';
 
 const initialState: FilterReducerInitialState[] = [];
 
@@ -23,7 +23,7 @@ export const filterReducer = (state = initialState, action): FilterReducerInitia
       return [...state, { id: (payload as ProjectShape).id, status: Status.ALL, tags: [] }];
     case FilterActionTypes.DELETE_PROJ:
       return state.filter((proj) => proj.id !== payload);
-    case FilterActionTypes.UPDATE:
+    case FilterActionTypes.UPDATE: {
       const { typeOfFilter, projectId } = payload as { typeOfFilter: Status | Tags; projectId: string };
 
       // if typeOfFilter is a status, check enum // maybe wrong
@@ -51,6 +51,7 @@ export const filterReducer = (state = initialState, action): FilterReducerInitia
           }
         });
       }
+    }
     case FilterActionTypes.CLEAR:
       return state.map((proj) => {
         if (proj.id === payload) {

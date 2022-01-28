@@ -16,12 +16,12 @@ passport.use(
   'github:mobile', // my custom strategy name -> defaults to 'github' with the github passport.js
   new GitHubStrategy(
     {
-      clientID: config.auth.github_client_id!,
-      clientSecret: config.auth.github_client_secret!,
+      clientID: config.auth.github_client_id ?? '',
+      clientSecret: config.auth.github_client_secret ?? '',
       callbackURL: config.auth.github_callback_url,
     },
-    githubVerifyCallback
-  )
+    githubVerifyCallback,
+  ),
 );
 
 router.route('/').get(passport.authenticate('github:mobile', { session: false }));

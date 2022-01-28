@@ -31,7 +31,7 @@ class ProjectsController extends ControllerHelper {
         .orderBy('project.lastUpdatedDate', 'DESC')
         .getMany();
 
-      let data: any[] = usersProjects as any[];
+      const data: any[] = usersProjects as any[];
       for (let i = 0; i < data.length; i++) {
         const projectIdx = data[i].id;
         const projectThoughts = await getRepository(Thought) //
