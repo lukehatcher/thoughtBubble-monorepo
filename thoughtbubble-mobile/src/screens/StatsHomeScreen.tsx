@@ -312,7 +312,8 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
                 color={isDarkMode ? darkMode.primaryVariant : lightMode.primaryVariant}
               />
               <InfoModalText>
-                Have a statistic you'd like to see here? Stop by our GitHub and start a discussion or open an issue!
+                Have a statistic you&apos;d like to see here? Stop by our GitHub and start a discussion or open an
+                issue!
               </InfoModalText>
             </InfoModalTextContainer>
             <Button

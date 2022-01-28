@@ -6,7 +6,7 @@ export const sendEmail = async function (destination: string, subject: string, h
   const oauth2Client = new google.auth.OAuth2(
     config.email.client_id,
     config.email.client_secret,
-    config.email.redirect_uri
+    config.email.redirect_uri,
   );
 
   oauth2Client.setCredentials({ refresh_token: config.email.refresh_token });

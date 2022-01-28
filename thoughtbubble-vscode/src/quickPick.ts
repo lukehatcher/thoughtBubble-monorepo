@@ -33,7 +33,7 @@ export const addThoughtFromQuickPick = async (projectId: string, newThought: str
         thought: newThought,
         creationLocation: 'vscode',
       },
-      { headers: { Authorization: `Bearer ${token}` } }
+      { headers: { Authorization: `Bearer ${token}` } },
     );
   } catch (err) {
     vscode.window.showErrorMessage(JSON.stringify(err));

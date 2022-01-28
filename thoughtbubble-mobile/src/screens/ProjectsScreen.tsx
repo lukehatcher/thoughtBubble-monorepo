@@ -18,7 +18,7 @@ export const ProjectsScreen: FC<ProjectsScreenProps> = ({ navigation }) => {
   const [addProjModalView, setAddProjModalView] = useState(false);
   const [projectSettingsModal, setProjectSettingsModal] = useState(false);
   const isDarkMode = useDarkCheck();
-  let userProjectsData = useOrderProjects();
+  const userProjectsData = useOrderProjects();
 
   const theme = {
     // for styled-components ThemeProvider
@@ -93,7 +93,7 @@ export const ProjectsScreen: FC<ProjectsScreenProps> = ({ navigation }) => {
   }, []);
 
   // for dev https://github.com/jemise111/react-native-swipe-list-view/issues/388
-  LogBox.ignoreLogs(["Sending 'onAnimatedValueUpdate' with no listeners registered"]);
+  LogBox.ignoreLogs(['Sending "onAnimatedValueUpdate" with no listeners registered']);
 
   return (
     <ThemeProvider theme={theme}>

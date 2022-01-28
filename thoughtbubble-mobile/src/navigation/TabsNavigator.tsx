@@ -4,7 +4,6 @@ import { SettingsScreen } from '../screens/SettingsScreen';
 import { ProjectsStackNavigator } from './ProjectsStackNavigator';
 import { StatsStackNavigator } from './StatsStackNavigator';
 import { TabsParamList } from '../interfaces/navigation';
-import { AppNavTabsProps } from '../interfaces/navigation';
 import { darkMode, lightMode } from '../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useDarkCheck } from '../hooks/useDarkCheck';
@@ -13,10 +12,10 @@ import { BlurView } from '@react-native-community/blur';
 
 const Tab = createBottomTabNavigator<TabsParamList>();
 
-export const AppTabsNavigator: FC<AppNavTabsProps> = () => {
+export const AppTabsNavigator: FC = () => {
   const isDarkMode = useDarkCheck();
 
-  const TabBar = (props) => (
+  const TabBar = (props: any) => (
     <BlurView
       style={{
         position: 'absolute',

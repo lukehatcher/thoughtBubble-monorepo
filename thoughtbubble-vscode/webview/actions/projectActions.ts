@@ -3,8 +3,6 @@ import { locations } from '../constants/locations';
 import { BASE_URL } from '../constants/config';
 import { AppThunk } from '../interfaces/redux';
 import { FilterActionTypes, ProjectActionTypes } from '../constants/actionTypes';
-import { Status } from '../constants/status';
-import { Tags } from '../constants/tags';
 
 export const addProjectAction = (projectName: string) => {
   return async (dispatch, getState) => {
@@ -17,7 +15,7 @@ export const addProjectAction = (projectName: string) => {
           projectName,
           creationLocation: locations.VSCODE,
         },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       )
       .then((res) => {
         const newProject = res.data;
@@ -70,7 +68,7 @@ export const pinProjectAction = (projectId: string): AppThunk<void> => {
       const response = await axios.put(
         `${BASE_URL}/projects/pin`,
         { projectId },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
       dispatch({ type: ProjectActionTypes.PIN, payload: response.data }); // add/re-initialize project to master filters state
     } catch (err) {

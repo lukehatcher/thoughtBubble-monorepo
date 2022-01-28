@@ -6,7 +6,7 @@ import { AppThunk } from '../interfaces/redux';
 import { BASE_URL } from '@env';
 
 export const fetchProjectDataAction = (): AppThunk<void> => {
-  return async (dispatch, _getState) => {
+  return async (dispatch) => {
     const token = await getToken();
     try {
       const response = await axios.get(`${BASE_URL}/projects`, { headers: { Authorization: `Bearer ${token}` } });

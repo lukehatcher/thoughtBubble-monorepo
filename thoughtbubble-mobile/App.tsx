@@ -1,10 +1,10 @@
-import React, { FC, useEffect, useState } from 'react';
-import { ActivityIndicator, Linking, Platform, StatusBar } from 'react-native';
+import React, { FC, useEffect } from 'react';
+import { Linking, Platform, StatusBar } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Provider as ReduxProvider } from 'react-redux';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { LoginScreen } from './src/screens/LoginScreen';
-import { clearAsyncStorage, getToken } from './src/utils/asyncStorage';
+import { getToken } from './src/utils/asyncStorage';
 import { fetchProjectDataAction } from './src/actions/fetchProjectDataAction';
 import { RootState } from './src/reducers/rootReducer'; // type
 import store from './src/store';

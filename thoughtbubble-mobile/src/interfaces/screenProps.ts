@@ -2,11 +2,7 @@ import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { ProjectStackParamList, StatsStackParamList } from './navigation';
 
-// typing reactnavigation -> https://reactnavigation.org/docs/typescript/
-
-export interface SettingsScreenProps {}
-export interface LoginScreenProps {}
-export interface ArchiveScreenProps {}
+// typing react-navigation -> https://reactnavigation.org/docs/typescript/
 
 export interface ProjectsScreenProps {
   navigation: StackNavigationProp<ProjectStackParamList, 'Projects'>;

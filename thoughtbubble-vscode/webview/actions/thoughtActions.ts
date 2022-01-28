@@ -16,7 +16,7 @@ export const addThoughtAction = (projectId: string, thought: string) => {
           thought,
           creationLocation: locations.VSCODE,
         },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       )
       .then((res) => {
         // const newThoughtId = res.data;
@@ -38,7 +38,7 @@ export const deleteThoughtAction = (projectId: string, thoughtId: string) => {
           thoughtId,
         },
       })
-      .then((_res) => {
+      .then(() => {
         dispatch({ type: 'deleteThought', payload: { projectId, id: thoughtId } });
       })
       .catch((err) => console.error('@thoughtActions.ts: ', err));
@@ -58,9 +58,9 @@ export const editThoughtAction = (newThought: string, projectId: string, thought
             thoughtId,
             newThought,
           },
-          { headers: { Authorization: `Bearer ${token}` } }
+          { headers: { Authorization: `Bearer ${token}` } },
         )
-        .then((_res) => {
+        .then(() => {
           dispatch({ type: 'editThought', payload: { projectId, id: thoughtId, newThought } });
         });
     } catch (err) {
@@ -80,9 +80,9 @@ export const thoughtStatusChangeAction = (projectId: string, thoughtId: string) 
           projectId, // not used atm
           thoughtId,
         },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       )
-      .then((_res) => {
+      .then(() => {
         dispatch({ type: 'thoughtStatusChange', payload: { projectId, id: thoughtId } });
       })
       .catch((err) => console.error('@thoughtActions.ts: ', err));
@@ -92,7 +92,7 @@ export const thoughtStatusChangeAction = (projectId: string, thoughtId: string) 
 export const thoughtTagChangeAction = function (
   projectId: string,
   thoughtId: string,
-  tag: string | null
+  tag: string | null,
 ): AppThunk<void> {
   return async (dispatch, getState) => {
     const { token } = getState();
@@ -104,7 +104,7 @@ export const thoughtTagChangeAction = function (
           thoughtId,
           tag,
         },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       )
       .then(() => {
         dispatch({ type: ProjectActionTypes.EDIT_THOUGHT_TAG, payload: { projectId, tag, id: thoughtId } });

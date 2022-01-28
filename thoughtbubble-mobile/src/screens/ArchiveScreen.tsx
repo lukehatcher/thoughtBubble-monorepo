@@ -8,11 +8,10 @@ import { darkMode, lightMode } from '../constants/colors';
 import { RootState } from '../reducers/rootReducer';
 import { ExpandableListItem } from '../components/ExpandableListItem';
 import { EmptyPlaceholder } from '../components/EmptyPlaceholder';
-import { ArchiveScreenProps } from '../interfaces/screenProps';
 import { IconButton } from 'react-native-paper';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 
-export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
+export const ArchiveScreen: FC = function () {
   const userArchiveData = useSelector((state: RootState) => state.archive);
   userArchiveData.sort((a, b) => b.archivedDate.localeCompare(a.archivedDate)); // sort by date added to archive
   const [showTitle, setShowTitle] = useState(false);
@@ -130,7 +129,7 @@ export const ArchiveScreen: FC<ArchiveScreenProps> = function () {
         {userArchiveData.length ? (
           <Animated.ScrollView onScroll={handleScroll} scrollEventThrottle={1} contentContainerStyle={{ flexGrow: 1 }}>
             <TopPaddingView />
-            {userArchiveData.map((proj, _index) => (
+            {userArchiveData.map((proj) => (
               <ExpandableListItem
                 key={proj.id}
                 projectId={proj.id}

@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, TouchableHighlight } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { LoginScreenProps } from '../interfaces/screenProps';
 import { TextTB } from '../components/Text';
 import { _loginGitHub } from '../utils/auth';
 import { darkMode } from '../constants/colors';
 import RNBootSplash from 'react-native-bootsplash';
 
-export const LoginScreen: React.FC<LoginScreenProps> = () => {
+export const LoginScreen: React.FC = () => {
   useEffect(() => {
     (async () => {
       await RNBootSplash.hide();

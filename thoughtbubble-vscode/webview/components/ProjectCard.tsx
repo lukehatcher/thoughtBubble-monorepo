@@ -5,7 +5,6 @@ import { addThoughtAction } from '../actions/thoughtActions';
 import { ProjectCardProps } from '../interfaces/componentProps';
 import { ThoughtCard } from './ThoughtCard';
 import { Popup } from 'reactjs-popup';
-import { fetchDataAction } from '../actions/fetchDataAction';
 import { RootState } from '../reducers/rootReducer';
 import { AiOutlineCloseCircle, AiOutlineCheckCircle } from 'react-icons/ai';
 import { Directions, OrderTypes } from '../constants/orders';
@@ -47,9 +46,10 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
   const filters = useSelector((state: RootState) => state.filters);
   const thoughtListRef = useRef<HTMLDivElement>(null);
   // get the total number of thoughts this project has (used to calculate the height of the expandable/collapsible)
-  const thoughtCount = useSelector(
-    (state: RootState) => state.userProjectData.find((proj) => proj.id === projectId)!.projectThoughts.length
-  );
+  const thoughtCount =
+    useSelector(
+      (state: RootState) => state.userProjectData.find((proj) => proj.id === projectId)?.projectThoughts.length,
+    ) ?? 0;
 
   const handleNewThought = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -144,7 +144,7 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
   return (
     <div
       className={isOpen ? 'projectCard-container--open' : 'projectCard-container--closed'}
-      onClick={isOpen ? () => {} : showThoughtLists}
+      onClick={isOpen ? () => undefined : showThoughtLists}
     >
       {isOpen ? <button onClick={showThoughtLists}> &#10005;</button> : <></>}
       <h1 style={{ color: '#BB86FC' }}>{projectName}</h1>
@@ -267,7 +267,7 @@ export const ProjectCard: FC<ProjectCardProps> = function ({ project }) {
             <textarea
               className="new-thought-input"
               value={input}
-              placeholder={`add a new thought...`}
+              placeholder="add a new thought..."
               onChange={(e) => setInput(e.target.value)}
             />
             <button className="edit-thought-submit" type="submit">

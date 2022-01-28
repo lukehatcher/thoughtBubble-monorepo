@@ -55,7 +55,6 @@
     "bundle": "yarn bundle-view && yarn bundle-ext",
     "bundle-ext": "webpack --config webpack.config.js --mode development",
     "bundle-view": "webpack --config webpack.view.config.js --mode development",
-    "lint": "eslint . --ext .ts,.tsx",
     "watch-ext": "webpack --config webpack.config.js --mode development -w",
     "watch-view": "webpack --config webpack.view.config.js --mode development -w"
   },
@@ -86,9 +85,6 @@
     "@typescript-eslint/eslint-plugin": "^3.0.2",
     "@typescript-eslint/parser": "^3.0.2",
     "css-loader": "^5.1.1",
-    "eslint": "^7.22.0",
-    "eslint-config-prettier": "^8.1.0",
-    "prettier": "2.2.1",
     "redux-devtools-extension": "^2.13.9",
     "style-loader": "^2.0.0",
     "supports-color": "^8.1.1",

@@ -1,9 +1,7 @@
-'use strict';
-
 const path = require('path');
 
 const config = {
-	mode: 'development',
+  mode: 'development',
   entry: './webview/index.tsx',
   output: {
     path: path.resolve(__dirname, 'media'),
@@ -11,7 +9,7 @@ const config = {
   },
   devtool: 'source-map', // needed
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', 'jsx']
+    extensions: ['.ts', '.tsx', '.js', 'jsx'],
   },
   module: {
     rules: [
@@ -22,13 +20,13 @@ const config = {
           {
             loader: 'ts-loader',
             options: {
-              configFile: 'tsconfig.view.json'
-            }
-          }
-        ]
-      }
-    ]
-  }
+              configFile: 'tsconfig.view.json',
+            },
+          },
+        ],
+      },
+    ],
+  },
 };
 
 module.exports = config;

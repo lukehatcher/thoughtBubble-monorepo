@@ -19,9 +19,13 @@ export class ControllerHelper {
   private async saveActivity(userId: string, projectId: string) {
     const activity = new Activity();
     activity.activityDate = new Date();
-    activity.user = (await User.findOne({ id: userId }))!;
-    activity.project = (await Project.findOne({ id: projectId }))!;
-    getConnection().manager.save(activity);
+
+    const foundUser = await User.findOne({ id: userId });
+    const foundProject = await User.findOne({ id: projectId });
+
+    if (foundUser && foundProject) {
+      getConnection().manager.save(activity);
+    }
   }
 
   /**

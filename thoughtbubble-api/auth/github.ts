@@ -9,7 +9,7 @@ export const githubVerifyCallback = async (
   _: string, // accessToken
   __: string, // refreshToken
   profile: GitHubStrategy.Profile,
-  cb: oauth2.VerifyCallback
+  cb: oauth2.VerifyCallback,
 ) => {
   // console.log(profile);
   // check if user exists before saving
@@ -38,6 +38,6 @@ export const githubVerifyCallback = async (
     }).save();
   }
   cb(null, {
-    accessToken: jwt.sign({ userId: user.id }, config.auth.github_client_secret!, { expiresIn: '1y' }),
+    accessToken: jwt.sign({ userId: user.id }, config.auth.github_client_secret ?? '', { expiresIn: '1y' }),
   });
 };

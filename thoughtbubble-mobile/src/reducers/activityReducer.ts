@@ -49,7 +49,7 @@ export const activityReducer = (state = initialState, action: ActivityReducerAct
       });
       // for individual projects
       const graphDataPerProject: { [key: string]: Point[] } = {}; // return object
-      for (let k in graphDataPerProjectMap) {
+      for (const k in graphDataPerProjectMap) {
         const projGraphData: Point[] = []; // for curr proj
         graphDataPerProjectMap[k].forEach((val, key) => {
           projGraphData.push({ x: key, y: val });

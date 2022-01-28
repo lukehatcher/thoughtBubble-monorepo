@@ -16,12 +16,12 @@ passport.use(
   'github:vscode', // my custom strategy name -> defaults to 'github' with github passport.js
   new GitHubStrategy(
     {
-      clientID: config.auth.github_client_id_vscode!,
-      clientSecret: config.auth.github_client_secret_vscode!,
+      clientID: config.auth.github_client_id_vscode ?? '',
+      clientSecret: config.auth.github_client_secret_vscode ?? '',
       callbackURL: config.auth.github_callback_url_vscode,
     },
-    githubVerifyCallback
-  )
+    githubVerifyCallback,
+  ),
 );
 
 router.route('/').get(passport.authenticate('github:vscode', { session: false }));

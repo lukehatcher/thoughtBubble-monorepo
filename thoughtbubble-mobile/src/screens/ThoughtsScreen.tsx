@@ -117,7 +117,7 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
   }, []);
 
   // for dev https://github.com/jemise111/react-native-swipe-list-view/issues/388
-  LogBox.ignoreLogs(["Sending 'onAnimatedValueUpdate' with no listeners registered"]);
+  LogBox.ignoreLogs(['Sending "onAnimatedValueUpdate" with no listeners registered']);
 
   return (
     <>

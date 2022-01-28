@@ -22,7 +22,7 @@ export const filterReducer = (state = initialState, action: FilterReducerAction)
       return [...state, { id: (payload as ProjectShape).id, status: 'all', tags: [] }];
     case FilterActionTypes.DELETE_PROJ:
       return state.filter((proj) => proj.id !== payload);
-    case FilterActionTypes.UPDATE:
+    case FilterActionTypes.UPDATE: {
       const { typeOfFilter, projectId } = payload as { typeOfFilter: StatusFilters | Tags; projectId: string };
 
       // if typeOfFilter is a status
@@ -50,6 +50,7 @@ export const filterReducer = (state = initialState, action: FilterReducerAction)
           }
         });
       }
+    }
     case FilterActionTypes.CLEAR:
       return state.map((proj) => {
         if (proj.id === payload) {

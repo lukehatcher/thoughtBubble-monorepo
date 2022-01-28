@@ -5,11 +5,10 @@ import { StatsProjectInfoScreen } from '../screens/StatsProjectInfoScreen';
 import { StatsStackParamList } from '../interfaces/navigation';
 import { darkMode, lightMode } from '../constants/colors';
 import { useDarkCheck } from '../hooks/useDarkCheck';
-import { StatsStackNavigatorProps } from '../interfaces/navigation';
 
 const Stack = createStackNavigator<StatsStackParamList>();
 
-export const StatsStackNavigator: FC<StatsStackNavigatorProps> = function () {
+export const StatsStackNavigator: FC = function () {
   const isDarkMode = useDarkCheck();
   const dynamicScreenOptions = {
     headerStyle: {
