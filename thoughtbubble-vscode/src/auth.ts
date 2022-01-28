@@ -38,7 +38,7 @@ export const authenticate = (cb: () => void) => {
               // window.close();
             </script>
           </div>
-      `
+      `,
     );
     // res.end('<script> this.document.location = "vscode://"; </script>');
     // res.end('<script> this.document.location = "vscode://"; window.close(); </script>'); // this version does not redirect you to vscode, it just closes out

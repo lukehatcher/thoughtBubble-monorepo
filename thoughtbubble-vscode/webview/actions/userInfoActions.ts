@@ -28,7 +28,7 @@ export const changeProjectOrderAction = (projectOrder: OrderTypes): AppThunk<voi
         {
           projectOrder,
         },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       )
       .then(() => {
         dispatch({ type: UserInfoActionTypes.UPDATE_ORDER, payload: projectOrder });
@@ -46,7 +46,7 @@ export const changeProjectDirectionAction = (projectDirection: Directions): AppT
         {
           projectDirection,
         },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       )
       .then(() => {
         dispatch({ type: UserInfoActionTypes.UPDATE_DIRECTION, payload: projectDirection });
@@ -57,7 +57,7 @@ export const changeProjectDirectionAction = (projectDirection: Directions): AppT
 
 export const changeSaveOrderSettingAction = (
   projectOrder: OrderTypes,
-  projectDirection: Directions
+  projectDirection: Directions,
 ): AppThunk<void> => {
   return async (dispatch, getState) => {
     const { token } = await getState();
@@ -68,7 +68,7 @@ export const changeSaveOrderSettingAction = (
           projectOrder,
           projectDirection,
         },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       )
       .then(() => {
         dispatch({ type: UserInfoActionTypes.UPDATE_SAVE_SETTING });

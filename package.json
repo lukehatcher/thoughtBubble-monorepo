@@ -14,8 +14,9 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "lerna run test --stream",
-    "lint": "eslint ."
+    "format": "prettier --write .",
+    "lint": "eslint .",
+    "test": "lerna run test --stream"
   },
   "repository": {
     "type": "git",

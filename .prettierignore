@@ -3,3 +3,9 @@ node_modules
 # vscode output
 media
 dist
+
+*.json
+*.yaml
+*.md
+*.markdown
+*README
