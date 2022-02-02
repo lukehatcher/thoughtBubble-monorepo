@@ -1,17 +1,14 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "rootDirs": ["src", "webview"],
     "module": "commonjs",
     "target": "es2019",
-    "lib": ["ES2019", "DOM"],
+    "lib": ["ES2019"],
     "outDir": "dist",
     "sourceMap": true,
     "strict": true,
-    // "rootDir": "src",
-
-    "jsx": "react",
-    "esModuleInterop": true,
+    "rootDir": "src",
+    "jsx": "react"
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "webview"]
 }

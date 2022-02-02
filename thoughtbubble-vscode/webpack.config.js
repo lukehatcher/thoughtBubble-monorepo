@@ -28,7 +28,7 @@ const config = {
           {
             loader: 'ts-loader',
             options: {
-              configFile: 'tsconfig.json',
+              configFile: 'tsconfig.ext.json',
             },
           },
         ],

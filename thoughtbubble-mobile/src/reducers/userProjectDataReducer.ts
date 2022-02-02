@@ -114,7 +114,11 @@ export const UserProjectDataReducer = (state = initialState, action: UserProject
       const filterPayload = payload as FilterPayload;
       // payload has all userProjectData, projectId and filters[] props on it, filters has id, status and tags[] on each object
       return filterPayload.data.map((project) => {
-        const { status, tags } = filterPayload.filters.find((proj) => proj.id === filterPayload.projectId);
+        const filtered = filterPayload.filters.find((proj) => proj.id === filterPayload.projectId);
+        // TODO: remove this line and fix TS error
+        if (!filtered) return project;
+        const { status, tags } = filtered;
+
         if (status === 'all') {
           if (project.id === filterPayload.projectId) {
             if (!tags.length) return project; // if no tags
