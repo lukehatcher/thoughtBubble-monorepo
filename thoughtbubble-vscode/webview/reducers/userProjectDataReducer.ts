@@ -1,9 +1,10 @@
+import { AnyAction } from 'redux';
 import { ProjectActionTypes } from '../constants/actionTypes';
 import { ProjectShape } from '../interfaces/interfaces';
 
 const initialState: ProjectShape[] = [];
 
-export const UserProjectDataReducer = (state = initialState, action): ProjectShape[] => {
+export const UserProjectDataReducer = (state = initialState, action: AnyAction): ProjectShape[] => {
   const { type, payload } = action; // need to add destructuring in other files
   switch (type) {
     case 'fetchData':
@@ -92,8 +93,10 @@ export const UserProjectDataReducer = (state = initialState, action): ProjectSha
       // const filterPayload = payload as FilterPayload;
       const filterPayload = payload;
       // payload has all userProjectData, projectId and filters[] props on it, filters has id, status and tags[] on each object
-      return filterPayload.data.map((project) => {
-        const { status, tags } = filterPayload.filters.find((proj) => proj.id === filterPayload.projectId);
+      return filterPayload.data.map((project: ProjectShape) => {
+        const { status, tags } = filterPayload.filters.find(
+          (proj: ProjectShape) => proj.id === filterPayload.projectId,
+        );
         if (status === 'all') {
           if (project.id === filterPayload.projectId) {
             if (!tags.length) return project; // if no tags

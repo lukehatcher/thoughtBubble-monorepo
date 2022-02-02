@@ -1,3 +1,4 @@
+import { AnyAction } from 'redux';
 import { FilterActionTypes } from '../constants/actionTypes';
 import { Status } from '../constants/status';
 import { Tags } from '../constants/tags';
@@ -6,7 +7,7 @@ import { FilterReducerInitialState } from '../interfaces/redux';
 
 const initialState: FilterReducerInitialState[] = [];
 
-export const filterReducer = (state = initialState, action): FilterReducerInitialState[] => {
+export const filterReducer = (state = initialState, action: AnyAction): FilterReducerInitialState[] => {
   const { type, payload } = action;
   switch (type) {
     // INIT action is called in fetchDataAction.ts right after data is fetched

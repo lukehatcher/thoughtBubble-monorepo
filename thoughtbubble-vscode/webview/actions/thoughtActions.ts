@@ -4,7 +4,7 @@ import { BASE_URL } from '../constants/config';
 import { AppThunk } from '../interfaces/redux';
 import { ProjectActionTypes } from '../constants/actionTypes';
 
-export const addThoughtAction = (projectId: string, thought: string) => {
+export const addThoughtAction = (projectId: string, thought: string): AppThunk<void> => {
   return async (dispatch, getState) => {
     const { token } = getState();
     if (!token) return; // TODO: validate if this logic is needed
@@ -26,7 +26,7 @@ export const addThoughtAction = (projectId: string, thought: string) => {
   };
 };
 
-export const deleteThoughtAction = (projectId: string, thoughtId: string) => {
+export const deleteThoughtAction = (projectId: string, thoughtId: string): AppThunk<void> => {
   return async (dispatch, getState) => {
     const { token } = getState();
     if (!token) return; // TODO: validate if this logic is needed
@@ -45,7 +45,7 @@ export const deleteThoughtAction = (projectId: string, thoughtId: string) => {
   };
 };
 
-export const editThoughtAction = (newThought: string, projectId: string, thoughtId: string) => {
+export const editThoughtAction = (newThought: string, projectId: string, thoughtId: string): AppThunk<void> => {
   return async (dispatch, getState) => {
     const { token } = getState();
     if (!token) return; // TODO: validate if this logic is needed
@@ -69,7 +69,7 @@ export const editThoughtAction = (newThought: string, projectId: string, thought
   };
 };
 
-export const thoughtStatusChangeAction = (projectId: string, thoughtId: string) => {
+export const thoughtStatusChangeAction = (projectId: string, thoughtId: string): AppThunk<void> => {
   return async (dispatch, getState) => {
     const { token } = getState();
     if (!token) return; // TODO: validate if this logic is needed

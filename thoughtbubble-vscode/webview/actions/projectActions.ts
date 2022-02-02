@@ -4,7 +4,7 @@ import { BASE_URL } from '../constants/config';
 import { AppThunk } from '../interfaces/redux';
 import { FilterActionTypes, ProjectActionTypes } from '../constants/actionTypes';
 
-export const addProjectAction = (projectName: string) => {
+export const addProjectAction = (projectName: string): AppThunk<void> => {
   return async (dispatch, getState) => {
     const { token } = getState();
     if (!token) return; // TODO: validate if this logic is needed
@@ -27,7 +27,7 @@ export const addProjectAction = (projectName: string) => {
   };
 };
 
-export const deleteProjectAction = (projectId: string) => {
+export const deleteProjectAction = (projectId: string): AppThunk<void> => {
   return async (dispatch, getState) => {
     const { token } = getState();
     if (!token) return; // TODO: validate if this logic is needed

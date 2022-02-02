@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import * as polka from 'polka';
+import polka from 'polka';
 import { Server } from 'http';
 import { StateManager } from './stateManager';
 

@@ -1,3 +1,4 @@
+import { AnyAction } from 'redux';
 import { UserInfoActionTypes } from '../constants/actionTypes';
 import { Directions, OrderTypes } from '../constants/orders';
 import { UserInfoShape } from '../interfaces/data';
@@ -17,7 +18,7 @@ const initialState: UserInfoShape = {
   displayName: '',
 };
 
-export const userInfoReducer = (state = initialState, action): UserInfoShape => {
+export const userInfoReducer = (state = initialState, action: AnyAction): UserInfoShape => {
   const { payload, type } = action;
   switch (type) {
     case UserInfoActionTypes.FETCH:
