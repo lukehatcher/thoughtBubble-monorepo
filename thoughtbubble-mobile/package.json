@@ -5,10 +5,11 @@
   "private": true,
   "license": "MIT",
   "scripts": {
+    "start": "react-native start",
     "launch-android": "react-native run-android",
     "launch-ios": "react-native run-ios",
-    "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "type-check": "tsc --noEmit --pretty"
   },
   "workspaces": {
     "nohoist": [

@@ -55,6 +55,7 @@
     "bundle": "yarn bundle-view && yarn bundle-ext",
     "bundle-ext": "webpack --config webpack.config.js --mode development",
     "bundle-view": "webpack --config webpack.view.config.js --mode development",
+    "type-check": "tsc --noEmit --pretty",
     "watch-ext": "webpack --config webpack.config.js --mode development -w",
     "watch-view": "webpack --config webpack.view.config.js --mode development -w"
   },
