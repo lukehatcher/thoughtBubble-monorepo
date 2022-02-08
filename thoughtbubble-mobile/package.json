@@ -9,7 +9,7 @@
     "launch-android": "react-native run-android",
     "launch-ios": "react-native run-ios",
     "test": "jest",
-    "type-check": "tsc --noEmit --pretty"
+    "type-check": "tsc --noEmit --pretty --project ."
   },
   "workspaces": {
     "nohoist": [
@@ -58,7 +58,7 @@
     "@types/react-native-vector-icons": "^6.4.8",
     "@types/react-redux": "^7.1.16",
     "@types/styled-components": "^5.1.9",
-    "@types/styled-components-react-native": "^5.1.1",
+    "@types/styled-components-react-native": "^5.1.3",
     "babel-jest": "^25.1.0",
     "jest": "^25.1.0",
     "metro-react-native-babel-preset": "^0.59.0",
