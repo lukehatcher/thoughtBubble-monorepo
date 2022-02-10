@@ -1,7 +1,8 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "typeRoots": ["@types"],  
+    "typeRoots": ["@types", "node_modules/@types"],
+    "types": ["express"], 
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   }

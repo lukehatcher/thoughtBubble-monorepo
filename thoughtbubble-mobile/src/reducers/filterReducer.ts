@@ -12,7 +12,7 @@ export const filterReducer = (state = initialState, action: FilterReducerAction)
     case FilterActionTypes.INIT: {
       const data = payload as ProjectShape[];
       const newState = [];
-      for (let i = 0; i < data.length; i++) {
+      for (let i = 0; i < data.length; ++i) {
         const status: StatusFilters = 'all';
         newState.push({ id: data[i].id, status, tags: [] });
       }
@@ -26,7 +26,7 @@ export const filterReducer = (state = initialState, action: FilterReducerAction)
       const { typeOfFilter, projectId } = payload as { typeOfFilter: StatusFilters | Tags; projectId: string };
 
       // if typeOfFilter is a status
-      if (statusFilters.includes(typeOfFilter)) {
+      if (typeOfFilter && statusFilters.includes(typeOfFilter)) {
         return state.map((proj) => {
           if (proj.id === projectId) {
             proj.status = typeOfFilter as StatusFilters;
@@ -36,7 +36,7 @@ export const filterReducer = (state = initialState, action: FilterReducerAction)
           }
         });
       } else {
-        // if typeOfFilter is a color
+        // if typeOfFilter is a color or null
         return state.map((proj) => {
           if (proj.id === projectId) {
             if (proj.tags.includes(typeOfFilter as Tags)) {

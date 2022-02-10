@@ -33,25 +33,26 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
   const userActivityData = useSelector((state: RootState) => state.activity);
   const [snackbarVisable, setSnackbarVisable] = useState(false);
   const [snackbarText, setSnackbarText] = useState('');
-  const [currRange, setCurrRange] = useState(activityRangeMap.get('1W'));
+  const [currRange, setCurrRange] = useState<number>(activityRangeMap['1W']);
 
-  const handle1WClick = () => setCurrRange(activityRangeMap.get('1W'));
-  const handle1MClick = () => setCurrRange(activityRangeMap.get('1M'));
-  const handle3MClick = () => setCurrRange(activityRangeMap.get('3M'));
-  const handle6MClick = () => setCurrRange(activityRangeMap.get('6M'));
-  const handle1YClick = () => setCurrRange(activityRangeMap.get('1Y'));
+  const handle1WClick = () => setCurrRange(activityRangeMap['1W']);
+  const handle1MClick = () => setCurrRange(activityRangeMap['1M']);
+  const handle3MClick = () => setCurrRange(activityRangeMap['3M']);
+  const handle6MClick = () => setCurrRange(activityRangeMap['6M']);
+  const handle1YClick = () => setCurrRange(activityRangeMap['1Y']);
 
   // lib
-  const totalThoughts = project.projectThoughts.length;
-  const totalCompletedThoughts = project.projectThoughts.reduce((acc, curr) => {
-    if (curr.completed) acc++;
-    return acc;
-  }, 0);
+  const totalThoughts = project?.projectThoughts.length ?? 0;
+  const totalCompletedThoughts =
+    project?.projectThoughts.reduce((acc, curr) => {
+      if (curr.completed) acc++;
+      return acc;
+    }, 0) ?? 0;
 
   useLayoutEffect(() => {
     // set screen title
     navigation.setOptions({
-      title: userProjectsData.find((proj) => proj.id === projectId).projectName,
+      title: userProjectsData.find((proj) => proj.id === projectId)?.projectName,
       headerLeft: () => <StackBackButton location="Analytics" />,
       headerRight: () => (
         <IconButton
@@ -75,7 +76,7 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
   // tally up the number of thoughts added via vscode and mobile
   const count = userProjectsData
     .find((proj) => proj.id === projectId)
-    .projectThoughts.reduce(
+    ?.projectThoughts.reduce(
       (acc, curr) => {
         if (curr.creationLocation === locations.MOBILE) acc.mobile += 1;
         else acc.vscode += 1;
@@ -85,13 +86,15 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
     );
 
   const pieChartData = [
-    { x: 'vscode', y: count.vscode },
-    { x: 'mobile', y: count.mobile },
+    { x: 'vscode', y: count?.vscode },
+    { x: 'mobile', y: count?.mobile },
   ];
 
   const gridlessGraphTheme = VictoryTheme.material;
   // remove colored grid
-  gridlessGraphTheme.axis.style.grid.stroke = isDarkMode ? '#FFFFFF15' : '#00000015';
+  if (gridlessGraphTheme?.axis?.style?.grid?.stroke) {
+    gridlessGraphTheme.axis.style.grid.stroke = isDarkMode ? '#FFFFFF15' : '#00000015';
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -184,7 +187,7 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
           <Button
             compact
             style={styles.btn}
-            mode={currRange === activityRangeMap.get('1W') ? 'contained' : 'text'}
+            mode={currRange === activityRangeMap['1W'] ? 'contained' : 'text'}
             onPress={() => handle1WClick()} // and change currrange
             color={`${darkMode.primary}18`}
             labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary, fontFamily: 'Inter' }}
@@ -194,7 +197,7 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
           <Button
             compact
             style={styles.btn}
-            mode={currRange === activityRangeMap.get('1M') ? 'contained' : 'text'}
+            mode={currRange === activityRangeMap['1M'] ? 'contained' : 'text'}
             onPress={() => handle1MClick()}
             color={`${darkMode.primary}18`}
             labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary, fontFamily: 'Inter' }}
@@ -204,7 +207,7 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
           <Button
             compact
             style={styles.btn}
-            mode={currRange === activityRangeMap.get('3M') ? 'contained' : 'text'}
+            mode={currRange === activityRangeMap['3M'] ? 'contained' : 'text'}
             onPress={() => handle3MClick()}
             color={`${darkMode.primary}18`}
             labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary, fontFamily: 'Inter' }}
@@ -214,7 +217,7 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
           <Button
             compact
             style={styles.btn}
-            mode={currRange === activityRangeMap.get('6M') ? 'contained' : 'text'}
+            mode={currRange === activityRangeMap['6M'] ? 'contained' : 'text'}
             onPress={() => handle6MClick()}
             color={`${darkMode.primary}18`}
             labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary, fontFamily: 'Inter' }}
@@ -224,7 +227,7 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
           <Button
             compact
             style={styles.btn}
-            mode={currRange === activityRangeMap.get('1Y') ? 'contained' : 'text'}
+            mode={currRange === activityRangeMap['1Y'] ? 'contained' : 'text'}
             onPress={() => handle1YClick()}
             color={`${darkMode.primary}18`}
             labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary, fontFamily: 'Inter' }}
@@ -245,7 +248,7 @@ export const StatsProjectInfoScreen: FC<StatsProjectInfoScreenProps> = function 
           height={350}
           colorScale={'heatmap'}
         />
-        <CreatedDateText>project created on: {DateHelper.parseOutTime(project.createdDate)}</CreatedDateText>
+        <CreatedDateText>project created on: {DateHelper.parseOutTime(project?.createdDate ?? '')}</CreatedDateText>
       </MainContainer>
     </ThemeProvider>
   );

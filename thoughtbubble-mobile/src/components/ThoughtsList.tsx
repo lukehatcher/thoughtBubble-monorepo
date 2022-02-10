@@ -72,7 +72,7 @@ export const ThoughtsList: FC<ThoughtsListProps> = memo(function ({
           style={[useTheme('backRightBtn'), useTheme('backRightBtnRight')]}
           onPress={() => {
             handleThoughtStatusChange(data.item.id);
-            closeRow(rowMap, data.item.key);
+            closeRow(rowMap, data.item.key ?? '');
           }}
         >
           <MaterialCommunityIcons name="checkbox-marked-outline" size={25} color="white" />
@@ -80,7 +80,7 @@ export const ThoughtsList: FC<ThoughtsListProps> = memo(function ({
 
         <TouchableOpacity
           style={[useTheme('backRightBtn'), useTheme('backRightBtnLeft')]}
-          onPress={() => confirmDeletion(data.item.id, rowMap, data.item.key)}
+          onPress={() => confirmDeletion(data.item.id, rowMap, data.item.key ?? '')}
         >
           <MaterialCommunityIcons name="trash-can-outline" size={25} color="white" />
         </TouchableOpacity>
@@ -100,13 +100,13 @@ export const ThoughtsList: FC<ThoughtsListProps> = memo(function ({
         <>
           <Text style={data.item.completed ? useTheme('textCompleted') : useTheme('text')}>{data.item.text}</Text>
           {data.item.tag ? (
-            <TouchableOpacity style={sharedStyles.tagIcon} onPress={() => renderModal(data.item.key)}>
+            <TouchableOpacity style={sharedStyles.tagIcon} onPress={() => renderModal(data.item.key ?? '')}>
               <TagIcon size={25} tag={data.item.tag as Tags} />
             </TouchableOpacity>
           ) : (
             <></>
           )}
-          <TouchableOpacity style={sharedStyles.moreBtn} onPress={() => renderModal(data.item.key)}>
+          <TouchableOpacity style={sharedStyles.moreBtn} onPress={() => renderModal(data.item.key ?? '')}>
             <MaterialCommunityIcons
               name="dots-vertical"
               size={35}

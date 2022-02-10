@@ -30,7 +30,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
   const dispatch = useDispatch();
   const userProjectsData: ProjectShape[] = useSelector((state: RootState) => state.userProjectData, equal);
   const userActivityData = useSelector((state: RootState) => state.activity, equal);
-  const [currRange, setCurrRange] = useState(activityRangeMap.get('1W'));
+  const [currRange, setCurrRange] = useState<number>(activityRangeMap['1W']);
   const [snackbarVisable, setSnackbarVisable] = useState(false);
   const [snackbarText, setSnackbarText] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
@@ -43,11 +43,11 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
     return acc;
   }, 0);
 
-  const handle1WClick = () => setCurrRange(activityRangeMap.get('1W'));
-  const handle1MClick = () => setCurrRange(activityRangeMap.get('1M'));
-  const handle3MClick = () => setCurrRange(activityRangeMap.get('3M'));
-  const handle6MClick = () => setCurrRange(activityRangeMap.get('6M'));
-  const handle1YClick = () => setCurrRange(activityRangeMap.get('1Y'));
+  const handle1WClick = () => setCurrRange(activityRangeMap['1W']);
+  const handle1MClick = () => setCurrRange(activityRangeMap['1M']);
+  const handle3MClick = () => setCurrRange(activityRangeMap['3M']);
+  const handle6MClick = () => setCurrRange(activityRangeMap['6M']);
+  const handle1YClick = () => setCurrRange(activityRangeMap['1Y']);
 
   useFocusEffect(
     useCallback(() => {
@@ -107,7 +107,9 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
 
   const gridlessGraphTheme = VictoryTheme.material;
   // remove colored grid
-  gridlessGraphTheme.axis.style.grid.stroke = isDarkMode ? '#FFFFFF15' : '#00000015';
+  if (gridlessGraphTheme?.axis?.style?.grid?.stroke) {
+    gridlessGraphTheme.axis.style.grid.stroke = isDarkMode ? '#FFFFFF15' : '#00000015';
+  }
 
   const calculateStreak = (): number => {
     // given a set of xy graph coords
@@ -219,7 +221,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
           <Button
             compact
             style={styles.btn}
-            mode={currRange === activityRangeMap.get('1W') ? 'contained' : 'text'}
+            mode={currRange === activityRangeMap['1W'] ? 'contained' : 'text'}
             onPress={() => handle1WClick()} // and change currrange
             color={`${darkMode.primary}18`}
             labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary, fontFamily: 'Inter' }}
@@ -229,7 +231,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
           <Button
             compact
             style={styles.btn}
-            mode={currRange === activityRangeMap.get('1M') ? 'contained' : 'text'}
+            mode={currRange === activityRangeMap['1M'] ? 'contained' : 'text'}
             onPress={() => handle1MClick()}
             color={`${darkMode.primary}18`}
             labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary, fontFamily: 'Inter' }}
@@ -239,7 +241,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
           <Button
             compact
             style={styles.btn}
-            mode={currRange === activityRangeMap.get('3M') ? 'contained' : 'text'}
+            mode={currRange === activityRangeMap['3M'] ? 'contained' : 'text'}
             onPress={() => handle3MClick()}
             color={`${darkMode.primary}18`}
             labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary, fontFamily: 'Inter' }}
@@ -249,7 +251,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
           <Button
             compact
             style={styles.btn}
-            mode={currRange === activityRangeMap.get('6M') ? 'contained' : 'text'}
+            mode={currRange === activityRangeMap['6M'] ? 'contained' : 'text'}
             onPress={() => handle6MClick()}
             color={`${darkMode.primary}18`}
             labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary, fontFamily: 'Inter' }}
@@ -259,7 +261,7 @@ export const StatsHomeScreen: FC<StatsHomeScreenProps> = ({ navigation }) => {
           <Button
             compact
             style={styles.btn}
-            mode={currRange === activityRangeMap.get('1Y') ? 'contained' : 'text'}
+            mode={currRange === activityRangeMap['1Y'] ? 'contained' : 'text'}
             onPress={() => handle1YClick()}
             color={`${darkMode.primary}18`}
             labelStyle={{ color: isDarkMode ? darkMode.primary : lightMode.primary, fontFamily: 'Inter' }}

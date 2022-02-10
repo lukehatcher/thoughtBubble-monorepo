@@ -3,7 +3,7 @@ import { tagColorsDark } from './colors';
 export const statusFilters = ['all', 'incomplete', 'completed'];
 export const tagFilters = ['red', 'orange', 'green', 'blue', 'purple', 'favorite'];
 
-export const tagIconMap = new Map<string, string>([
+export const tagIconMap = new Map<string | null, string>([
   ['red', 'tag'],
   ['orange', 'tag'],
   ['green', 'tag'],
@@ -13,7 +13,7 @@ export const tagIconMap = new Map<string, string>([
   [null, 'file'],
 ]);
 
-export const tagColorMap = new Map<string, string>([
+export const tagColorMap = new Map<string | null, string>([
   ['red', tagColorsDark.red],
   ['orange', tagColorsDark.orange],
   ['green', tagColorsDark.green],

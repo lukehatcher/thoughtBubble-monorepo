@@ -16,44 +16,44 @@ export const activityReducer = (state = initialState, action: ActivityReducerAct
 
       // ==== for all projects combined ====
       const graphDataMap = new Map<number, number>();
-      for (let i = 0; i <= todayNumb; i++) {
+      for (let i = 0; i <= todayNumb; ++i) {
         graphDataMap.set(i, 0); // create map of all possible days
       }
       const graphData: Point[] = [];
 
       // ==== split up by project ====
-      const graphDataPerProjectMap: { [key: string]: Map<number, number> } = {};
+      const graphDataPerProjectMap: Record<string, Map<number, number>> = {};
 
       // ==== populate activity maps ====
-      for (let i = 0; i < payload.length; i++) {
+      for (let i = 0; i < payload.length; ++i) {
         const { projectId } = payload[i];
         const day = DateHelper.getDayNumber(payload[i].activityDate);
         // handle map for all combined projects
-        graphDataMap.set(day, graphDataMap.get(day) + 1);
+        graphDataMap.set(day, (graphDataMap.get(day) ?? 0) + 1);
         // handle individual project maps
         if (!graphDataPerProjectMap[projectId]) {
           const map = new Map<number, number>();
-          for (let i = 0; i <= todayNumb; i++) {
+          for (let i = 0; i <= todayNumb; ++i) {
             map.set(i, 0);
           }
           graphDataPerProjectMap[projectId] = map;
         } else {
-          graphDataPerProjectMap[projectId].set(day, graphDataPerProjectMap[projectId].get(day) + 1);
+          graphDataPerProjectMap[projectId].set(day, (graphDataPerProjectMap[projectId].get(day) ?? 0) + 1);
         }
       }
 
       // ==== turn populated maps into graph data ====
       // for combined projects
-      graphDataMap.forEach((val, key) => {
+      for (const [key, val] of graphDataMap.entries()) {
         graphData.push({ x: key, y: val });
-      });
+      }
       // for individual projects
-      const graphDataPerProject: { [key: string]: Point[] } = {}; // return object
+      const graphDataPerProject: Record<string, Point[]> = {}; // return object
       for (const k in graphDataPerProjectMap) {
         const projGraphData: Point[] = []; // for curr proj
-        graphDataPerProjectMap[k].forEach((val, key) => {
+        for (const [key, val] of graphDataPerProjectMap[k].entries()) {
           projGraphData.push({ x: key, y: val });
-        });
+        }
         graphDataPerProject[k] = projGraphData;
       }
 

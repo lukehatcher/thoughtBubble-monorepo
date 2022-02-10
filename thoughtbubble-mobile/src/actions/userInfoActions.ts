@@ -16,6 +16,17 @@ export const fetchUserAction = (token: string): AppThunk<void> => {
   };
 };
 
+// export const fetchUserAction = async (token: string): {type: string, data: any} => {
+//   return async (dispatch) => {
+//     axios
+//       .get(`${BASE_URL}/userinfo`, { headers: { Authorization: `Bearer ${token}` } })
+//       .then(async (res) => {
+//         dispatch({ type: UserInfoActionTypes.FETCH, payload: res.data });
+//       })
+//       .catch((err) => console.error('@userInfoActions.ts: ', err));
+//   };
+// };
+
 export const changeEmailSettingsAction = (emailSetting: string): AppThunk<void> => {
   if (emailSetting === 'daily') {
     return async (dispatch) => {
