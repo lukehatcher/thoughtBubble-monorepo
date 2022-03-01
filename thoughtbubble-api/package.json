@@ -6,7 +6,8 @@
   "license": "MIT",
   "main": "index.ts",
   "scripts": {
-    "server": "nodemon index.ts"
+    "server": "nodemon index.ts",
+    "type-check": "tsc --noEmit --pretty --skipLibcheck"
   },
   "dependencies": {
     "axios": "^0.25.0",

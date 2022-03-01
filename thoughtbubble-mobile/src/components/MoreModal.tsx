@@ -16,8 +16,8 @@ export const MoreModal: FC<MoreModalProps> = ({ moreModalView, setMoreModalView,
   const tagSelector = (state: RootState) =>
     state.userProjectData
       .find((proj) => proj.id === projectId)
-      .projectThoughts.find((thought) => thought.id === thoughtId).tag;
-  const tag: string | null = useSelector(tagSelector);
+      ?.projectThoughts.find((thought) => thought.id === thoughtId)?.tag;
+  const tag: string | null = useSelector(tagSelector) ?? null;
   const isDarkMode = useDarkCheck();
 
   const handleThoughtEdit = (newThought: string, id: string) => {

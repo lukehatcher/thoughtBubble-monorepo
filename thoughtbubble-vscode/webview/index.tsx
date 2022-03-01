@@ -9,6 +9,7 @@ import { ProjectPage } from './components/ProjectPage';
 import { fetchUserInfoAction } from './actions/userInfoActions';
 import { routerLocations } from './constants/routerLocations';
 import { TokenActionTypes } from './constants/actionTypes';
+import { AnyAction } from 'redux';
 
 // request user token from extension
 vscodeGlobal.postMessage({
@@ -17,7 +18,7 @@ vscodeGlobal.postMessage({
 });
 
 // receive the user token from extension
-window.addEventListener('message', (e) => {
+window.addEventListener('message', (e: any) => {
   const message = e.data; // The json data that the extension sent
   switch (message.command) {
     case 'sendingData/refresh': {
@@ -26,8 +27,9 @@ window.addEventListener('message', (e) => {
       store.dispatch({ type: TokenActionTypes.STORE, payload: message.token });
 
       // seed redux store (after we fetched token)
-      store.dispatch(fetchDataAction());
-      store.dispatch(fetchUserInfoAction());
+      // TODO: -fix typings
+      store.dispatch(fetchDataAction() as unknown as AnyAction);
+      store.dispatch(fetchUserInfoAction() as unknown as AnyAction);
       return;
     }
   }

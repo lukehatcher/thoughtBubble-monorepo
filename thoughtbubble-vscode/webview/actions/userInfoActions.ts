@@ -6,7 +6,7 @@ import { AppThunk } from '../interfaces/redux';
 
 const fname = '@userInfoActions.ts: ';
 
-export const fetchUserInfoAction = () => {
+export const fetchUserInfoAction = (): AppThunk<void> => {
   return async (dispatch, getState) => {
     const { token } = getState();
     if (!token) return; // TODO: validate if this logic is needed

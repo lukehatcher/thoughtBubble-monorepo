@@ -25,7 +25,7 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
   const dispatch = useDispatch();
   const { projectId } = route.params;
   const thoughtsSelector = (state: RootState) =>
-    state.userProjectData.find((proj) => proj.id === projectId).projectThoughts;
+    state.userProjectData.find((proj) => proj.id === projectId)?.projectThoughts;
   const thoughts = useSelector(thoughtsSelector); // retrive thoughts for the project we're on
 
   const isDarkMode = useDarkCheck();
@@ -182,7 +182,7 @@ export const ThoughtsScreen: FC<ThoughtScreenProps> = ({ route, navigation }) =>
               ]}
             ></Animated.View>
           </Animated.View>
-          {thoughts.length ? (
+          {thoughts && thoughts.length ? (
             <ThoughtsList
               isDarkMode={isDarkMode}
               thoughts={thoughts}

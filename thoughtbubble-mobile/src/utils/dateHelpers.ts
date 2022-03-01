@@ -28,7 +28,7 @@ export class DateHelper {
   // static getLastNDayNumbers(range: ActivityRanges): Map<number, number> {
   //   const currentIso = new Date().toISOString();
   //   let currentDayNumb = this.getDayNumber(currentIso);
-  //   const N = activityRangeMap.get(range);
+  //   const N = activityRangeMap.[range];
   //   const map = new Map<number, number>();
   //   for (let i = 0; i < N; i++) map.set(currentDayNumb--, 0);
   //   return map;

@@ -22,25 +22,27 @@ export const FilterThoughtModal: FC<FilterThoughtModalProps> = function ({
   const useTheme = (name: chipStyle) => (isDarkMode ? stylesDark[name] : stylesLight[name]);
   const filters = useSelector((state: RootState) => state.filters);
 
-  const handleThoughtFilter = async function (typeOfFilter: Tags | StatusFilters) {
+  const handleThoughtFilter = async (typeOfFilter: Tags | StatusFilters) => {
     await dispatch(updateFiltersAction(projectId, typeOfFilter));
     await dispatch(filterProjectAction(projectId, filters)); // do I HAVE to pass filters here?
   };
 
-  const handleClearTags = async function () {
+  const handleClearTags = async () => {
     await dispatch(clearTagsAction(projectId));
     await dispatch(filterProjectAction(projectId, filters));
   };
 
-  const isStatusSelected = function (status: StatusFilters) {
+  const isStatusSelected = (status: StatusFilters) => {
     if (!filters.length) return false;
-    return filters.find((proj) => proj.id === projectId).status === status;
+    return filters.find((proj) => proj.id === projectId)?.status === status;
   };
 
-  const isTagSelected = function (tag: Tags) {
+  const isTagSelected = (tag: Tags) => {
     if (!filters.length) return false;
-    return filters.find((proj) => proj.id === projectId).tags.includes(tag);
+    return filters.find((proj) => proj.id === projectId)?.tags.includes(tag);
   };
+
+  const chipTextStyle = { color: isDarkMode ? 'white' : undefined, fontFamily: 'Inter' };
 
   return (
     <Modal animationType="fade" visible={filterModalVisible} transparent>
@@ -60,8 +62,8 @@ export const FilterThoughtModal: FC<FilterThoughtModalProps> = function ({
             <Chip
               selected={isStatusSelected('completed')}
               style={isStatusSelected('completed') ? useTheme('chipSelected') : useTheme('chip')}
-              textStyle={{ color: isDarkMode ? 'white' : null, fontFamily: 'Inter' }}
-              selectedColor={isDarkMode ? darkMode.textOnBackground87 : null}
+              textStyle={chipTextStyle}
+              selectedColor={isDarkMode ? darkMode.textOnBackground87 : 'grey'} // TODO: find a real color
               icon="check"
               onPress={() => handleThoughtFilter('completed')}
             >
@@ -70,8 +72,8 @@ export const FilterThoughtModal: FC<FilterThoughtModalProps> = function ({
             <Chip
               selected={isStatusSelected('incomplete')}
               style={isStatusSelected('incomplete') ? useTheme('chipSelected') : useTheme('chip')}
-              textStyle={{ color: isDarkMode ? 'white' : null, fontFamily: 'Inter' }}
-              selectedColor={isDarkMode ? darkMode.textOnBackground87 : null}
+              textStyle={chipTextStyle}
+              selectedColor={isDarkMode ? darkMode.textOnBackground87 : 'grey'}
               icon="close"
               onPress={() => handleThoughtFilter('incomplete')}
             >
@@ -80,8 +82,8 @@ export const FilterThoughtModal: FC<FilterThoughtModalProps> = function ({
             <Chip
               selected={isStatusSelected('all')}
               style={isStatusSelected('all') ? useTheme('chipSelected') : useTheme('chip')}
-              textStyle={{ color: isDarkMode ? 'white' : null, fontFamily: 'Inter' }}
-              selectedColor={isDarkMode ? darkMode.textOnBackground87 : null}
+              textStyle={chipTextStyle}
+              selectedColor={isDarkMode ? darkMode.textOnBackground87 : 'grey'}
               icon="eye-outline"
               onPress={() => handleThoughtFilter('all')}
             >
@@ -90,7 +92,7 @@ export const FilterThoughtModal: FC<FilterThoughtModalProps> = function ({
             <Chip
               selected={isTagSelected('red')}
               style={isTagSelected('red') ? useTheme('chipSelected') : useTheme('chip')}
-              textStyle={{ color: isDarkMode ? 'white' : null, fontFamily: 'Inter' }}
+              textStyle={chipTextStyle}
               icon="tag"
               selectedColor={tagColorsDark.red}
               onPress={() => handleThoughtFilter('red')}
@@ -100,7 +102,7 @@ export const FilterThoughtModal: FC<FilterThoughtModalProps> = function ({
             <Chip
               selected={isTagSelected('orange')}
               style={isTagSelected('orange') ? useTheme('chipSelected') : useTheme('chip')}
-              textStyle={{ color: isDarkMode ? 'white' : null, fontFamily: 'Inter' }}
+              textStyle={chipTextStyle}
               icon="tag"
               selectedColor={tagColorsDark.orange}
               onPress={() => handleThoughtFilter('orange')}
@@ -110,7 +112,7 @@ export const FilterThoughtModal: FC<FilterThoughtModalProps> = function ({
             <Chip
               selected={isTagSelected('green')}
               style={isTagSelected('green') ? useTheme('chipSelected') : useTheme('chip')}
-              textStyle={{ color: isDarkMode ? 'white' : null, fontFamily: 'Inter' }}
+              textStyle={chipTextStyle}
               icon="tag"
               selectedColor={tagColorsDark.green}
               onPress={() => handleThoughtFilter('green')}
@@ -120,7 +122,7 @@ export const FilterThoughtModal: FC<FilterThoughtModalProps> = function ({
             <Chip
               selected={isTagSelected('blue')}
               style={isTagSelected('blue') ? useTheme('chipSelected') : useTheme('chip')}
-              textStyle={{ color: isDarkMode ? 'white' : null, fontFamily: 'Inter' }}
+              textStyle={chipTextStyle}
               icon="tag"
               selectedColor={tagColorsDark.blue}
               onPress={() => handleThoughtFilter('blue')}
@@ -130,7 +132,7 @@ export const FilterThoughtModal: FC<FilterThoughtModalProps> = function ({
             <Chip
               selected={isTagSelected('purple')}
               style={isTagSelected('purple') ? useTheme('chipSelected') : useTheme('chip')}
-              textStyle={{ color: isDarkMode ? 'white' : null, fontFamily: 'Inter' }}
+              textStyle={chipTextStyle}
               icon="tag"
               selectedColor={tagColorsDark.purple}
               onPress={() => handleThoughtFilter('purple')}
@@ -140,7 +142,7 @@ export const FilterThoughtModal: FC<FilterThoughtModalProps> = function ({
             <Chip
               selected={isTagSelected('favorite')}
               style={isTagSelected('favorite') ? useTheme('chipSelected') : useTheme('chip')}
-              textStyle={{ color: isDarkMode ? 'white' : null, fontFamily: 'Inter' }}
+              textStyle={chipTextStyle}
               icon="star"
               selectedColor={tagColorsDark.gold}
               onPress={() => handleThoughtFilter('favorite')}
@@ -151,8 +153,8 @@ export const FilterThoughtModal: FC<FilterThoughtModalProps> = function ({
               icon="tag-off-outline"
               onPress={() => handleClearTags()}
               style={useTheme('chip')}
-              textStyle={{ color: isDarkMode ? 'white' : null, fontFamily: 'Inter' }}
-              selectedColor={isDarkMode ? darkMode.textOnBackground87 : null}
+              textStyle={chipTextStyle}
+              selectedColor={isDarkMode ? darkMode.textOnBackground87 : 'grey'}
             >
               remove all tags
             </Chip>
@@ -183,7 +185,6 @@ const ChipContainer = styled.View`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
 `;
 
 const stylesDark = StyleSheet.create({

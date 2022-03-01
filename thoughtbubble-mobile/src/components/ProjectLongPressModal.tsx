@@ -76,10 +76,10 @@ export const ProjectLongPressModal: FC<ProjectLongPressProps> = memo(function ({
                 Total thoughts: <TextWithColor>{project?.projectThoughts.length}</TextWithColor>
               </PreviewInfoText>
               <PreviewInfoText>
-                Date created: <TextWithColor>{DateHelper.parseOutTime(project?.createdDate)}</TextWithColor>
+                Date created: <TextWithColor>{DateHelper.parseOutTime(project?.createdDate ?? '')}</TextWithColor>
               </PreviewInfoText>
               <PreviewInfoText>
-                Last updated: <TextWithColor>{DateHelper.parseOutTime(project?.lastUpdatedDate)}</TextWithColor>
+                Last updated: <TextWithColor>{DateHelper.parseOutTime(project?.lastUpdatedDate ?? '')}</TextWithColor>
               </PreviewInfoText>
             </InfoWrapper>
           </ProjectPreviewContainer>
@@ -189,7 +189,11 @@ const LongPressModalItem = styled.TouchableHighlight`
   padding: 10px;
 `;
 
-const LongPressModalItemText = styled.Text`
+interface LongPressModalItemTextProps {
+  color?: string;
+}
+
+const LongPressModalItemText = styled.Text<LongPressModalItemTextProps>`
   font-family: Inter;
   color: ${(props) => (props.color ? props.color : props.theme.textOnSurface)};
   margin-left: 10px;

@@ -82,9 +82,10 @@ getToken().then(async (token) => {
   // this function updates the redux store to match any contents in the asyncstorage before rendering app
   // only executed when app is first loaded/launched
   if (token !== null) {
-    await store.dispatch(fetchUserAction(token));
-    await store.dispatch(fetchProjectDataAction());
-    await store.dispatch(fetchActivityDataAction()); // fetch user's activity data
+    // TODO: fix types
+    await store.dispatch<any>(fetchUserAction(token));
+    await store.dispatch<any>(fetchProjectDataAction());
+    await store.dispatch<any>(fetchActivityDataAction()); // fetch user's activity data
     // RNBootSplash.hide();
   } else {
     await store.dispatch({ type: UserInfoActionTypes.RECORD_NO_USER }); // set an empty token to get the completed flag

@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import { AnyAction, combineReducers } from 'redux';
 import { tokenReducer } from './tokenReducer';
 import { UserProjectDataReducer } from './userProjectDataReducer';
 import { userInfoReducer } from './userInfoReducer';
@@ -11,7 +11,9 @@ const appReducer = combineReducers({
   filters: filterReducer,
 });
 
-export const rootReducer = (state, action) => {
+type IRootState = ReturnType<typeof appReducer> | undefined;
+
+export const rootReducer = (state: IRootState, action: AnyAction) => {
   if (action.type === 'USER_LOGOUT') {
     state = undefined;
   }

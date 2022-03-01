@@ -94,7 +94,7 @@ export const ProjectList: FC<ProjectListProps> = memo(function ({ userProjectsDa
         </View>
         <TouchableOpacity
           style={[useTheme('backRightBtn')]}
-          onPress={() => handleProjectDeletionPress(data.item.id, rowMap, data.item.key)}
+          onPress={() => handleProjectDeletionPress(data.item.id, rowMap, data.item.key ?? '')}
         >
           <MaterialCommunityIcons name="minus-circle-outline" size={25} color="white" />
         </TouchableOpacity>

@@ -1,10 +1,9 @@
-import { AnyAction, combineReducers } from 'redux';
+import { combineReducers } from 'redux';
 import { UserProjectDataReducer } from './userProjectDataReducer';
 import { userInfoReducer } from './userInfoReducer';
 import { filterReducer } from './filterReducer';
 import { activityReducer } from './activityReducer';
 import { archiveReducer } from './archiveReducer';
-import { State } from '../interfaces/redux';
 
 const appReducer = combineReducers({
   userProjectData: UserProjectDataReducer,
@@ -14,11 +13,13 @@ const appReducer = combineReducers({
   archive: archiveReducer,
 });
 
-export const rootReducer = (state: State, action: AnyAction) => {
+export type RootState = ReturnType<typeof appReducer>;
+
+export const rootReducer = (state: RootState, action: any) => {
   if (action.type === 'USER_LOGOUT') {
+    // @ts-ignore TODO
     state = undefined;
   }
+  // @ts-ignore TODO
   return appReducer(state, action);
 };
-
-export type RootState = ReturnType<typeof rootReducer>;

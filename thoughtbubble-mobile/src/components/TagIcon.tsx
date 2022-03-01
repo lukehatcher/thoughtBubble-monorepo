@@ -4,5 +4,7 @@ import { tagColorMap, tagIconMap } from '../constants/filters';
 import { TagIconProps } from '../interfaces/componentProps';
 
 export const TagIcon: FC<TagIconProps> = function ({ style, tag, size }) {
-  return <MaterialCommunityIcons name={tagIconMap.get(tag)} size={size} style={style} color={tagColorMap.get(tag)} />;
+  return (
+    <MaterialCommunityIcons name={tagIconMap.get(tag) ?? ''} size={size} style={style} color={tagColorMap.get(tag)} />
+  );
 };
