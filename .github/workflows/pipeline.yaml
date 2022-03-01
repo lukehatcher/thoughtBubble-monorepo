@@ -22,6 +22,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
         run: yarn install
+      - name: Type check
+        run: yarn type-check
       - name: Format codebase
         run: yarn format
       - name: Lint codebase
